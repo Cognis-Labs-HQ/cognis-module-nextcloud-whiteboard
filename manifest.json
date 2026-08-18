@@ -2,7 +2,7 @@
   "id": "nextcloud-whiteboard",
   "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
   "name": "Nextcloud Whiteboard",
-  "version": "2.3.22",
+  "version": "2.3.23",
   "class": "extension",
   "coreApiVersion": "v1",
   "capabilities": [
@@ -35,8 +35,8 @@
   "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard",
   "assets": {
     "screenshots": [],
-    "icon": "assets/icon.svg",
-    "banner": "assets/banner.svg"
+    "icon": "assets/icon.png",
+    "banner": "assets/banner.png"
   },
   "tags": [
     "whiteboard",
@@ -134,12 +134,12 @@
       "sha256": "9358d1caa377734b956c247651c9b250d13f876f4759036dd5d895636ece0ee1"
     },
     {
-      "path": "assets/banner.svg",
-      "sha256": "3b9cc41306b1cf22dcee062ab946dabcd940906d9d929710f9d7467aa25ef33b"
+      "path": "assets/banner.png",
+      "sha256": "45dd4406dc20616597a0117d1c8ec68330606b7258c68b52e636f475cd19ed1b"
     },
     {
-      "path": "assets/icon.svg",
-      "sha256": "dc527e3c57adb784b0d0d434cf01a9c3f7005e4d3d48efdd75c98fe06c54af70"
+      "path": "assets/icon.png",
+      "sha256": "d3a31ab15a4f41f771d855bb9ea1d56fa42488ddef1390e0d79cfb57dcf5428c"
     },
     {
       "path": "bootstrap.js",

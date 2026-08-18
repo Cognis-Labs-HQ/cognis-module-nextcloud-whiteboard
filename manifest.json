@@ -1,0 +1,174 @@
+{
+  "id": "module-template",
+  "uuid": "cc810afb-4fe6-5ef7-8f0b-e23676e01db3",
+  "name": "Module Template",
+  "version": "1.0.0",
+  "class": "extension",
+  "coreApiVersion": "v1",
+  "capabilities": [
+    "showcase:listItems"
+  ],
+  "entrypoints": {
+    "bootstrap": "./bootstrap.js",
+    "api": "./api/index.js",
+    "ui": "./ui/index.html",
+    "cli": "./cli/index.js"
+  },
+  "publisher": "Cognis Labs HQ",
+  "requires": [],
+  "requiresCapabilities": [
+    "auth:requireAuth",
+    "db:executor"
+  ],
+  "summary": "An end-to-end reference module for Cognis contributors.",
+  "description": "Demonstrates Cognis UI, API, database, CLI, capability, flow, localization, testing, and packaging contracts.",
+  "categories": [
+    "Developer Tools"
+  ],
+  "license": "AGPL-3.0-or-later",
+  "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-template",
+  "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-template#readme",
+  "support": "https://github.com/Cognis-Labs-HQ/cognis-module-template/issues",
+  "assets": {
+    "screenshots": [
+        "assets/screenshots/cognis-logo.png"
+    ],
+    "icon": "assets/icon.svg",
+    "banner": "assets/banner.svg"
+  },
+  "tags": [
+    "template",
+    "development",
+    "example"
+  ],
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "509784a889286aad75c8b21042dddeaa20bd7a4929eb80db40a9deefe92e1ff5"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d91613b467fdfbe43fb2c9cadd64c5533f5a5f9b454aedceec293b6912f26ae1"
+    },
+    {
+      "path": "api/index.js",
+      "sha256": "cafcf9197f1f0d3ca11daa861592fc70431c4553f30996a403f4a9f274b264a8"
+    },
+    {
+      "path": "api/reuse/http.js",
+      "sha256": "2d69b2e8bb6cf5d01d339a15a1de81b8e06542cc55ca5d7b871988d9a4249a3d"
+    },
+    {
+      "path": "api/store.js",
+      "sha256": "75ca20ced50c5301e0fbda5aae48245007a0cb15b22f160673abc14052ca82f4"
+    },
+    {
+      "path": "api/tests/http.test.js",
+      "sha256": "0986bb8711d6b9ccc78b0f76ba7e9663803f2df7f96bf376de865f72fd75a3fb"
+    },
+    {
+      "path": "api/tests/store.test.js",
+      "sha256": "acfcd27a8f30cf8d4e679ddf4abb454bcda0d43e54797e3108fe48ebd6f7da64"
+    },
+    {
+      "path": "api/ui.js",
+      "sha256": "8aa76f432b45a4448999bfca1dcac4f8a616af1fdca962e0b0b6763afd2338ec"
+    },
+    {
+      "path": "assets/banner.svg",
+      "sha256": "157f5636c6c892ac71eb81037ad20bd1005c2778aee3445514762a63ef789dfc"
+    },
+    {
+      "path": "assets/icon.svg",
+      "sha256": "a71eb90ae9528834d16f9fc401d3e98a395da601c149f0c740cb20128ec6c364"
+    },
+    {
+      "path": "assets/screenshots/cognis-logo.png",
+      "sha256": "4ef4d3f734ba671cb380be4c3eac9297ffdb70775a93109257bcd80d0c4dc3e1"
+    },
+    {
+      "path": "bootstrap.js",
+      "sha256": "cfbf1ba6266899cf7b61bd3a78a93162fe27eca244aa2c43e421d2872ad23c79"
+    },
+    {
+      "path": "cli/index.js",
+      "sha256": "e671f86e9a1ca108d7f010c3e4fc2724aeff02558a5ba744a657c091fd556024"
+    },
+    {
+      "path": "cli/tests/index.test.js",
+      "sha256": "6c15b7b90d61ed42ccc0538238d692e7a160db601c8bed25e9de73ca3ced68aa"
+    },
+    {
+      "path": "docs/architecture.md",
+      "sha256": "5d95939e8e6d7e8433c089503d2c89863430126688bcb2874e5f187286f1fd47"
+    },
+    {
+      "path": "docs/releasing.md",
+      "sha256": "4f9a13471373e56c4cbf0e3b966efa20edb99a4423aebf5e8ce0d0e3a91f33db"
+    },
+    {
+      "path": "docs/security.md",
+      "sha256": "b2804841d0fe36018f36ee008b0a950da6d5bcacba750c57f823f5bdaed882c2"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "01451c096b2c4a7888d5a15d89fdf7898d5fb5aaab4d9aeb8fa6cfe842fac59e"
+    },
+    {
+      "path": "package.json",
+      "sha256": "132ee49d99b54c325c543e4850b75ccb710c102cfe5be64d317f749af3854214"
+    },
+    {
+      "path": "routes.json",
+      "sha256": "fa2b23af61527603977fc61f36043aedff689ed48ab84cb2345c94bc4e954350"
+    },
+    {
+      "path": "scripts/update-manifest-hashes.js",
+      "sha256": "dbfad276635f8b40f77f7228d1ee0a385ecab845c432604136a4bb45c9c02a6a"
+    },
+    {
+      "path": "scripts/validate-manifest.js",
+      "sha256": "57884058e42355fcd8728763e7b65582613959e59efd66358c21a8ada0cf34ba"
+    },
+    {
+      "path": "ui/app.js",
+      "sha256": "e4d71645d000e0efd238fc2a0e17a38e1840e60d581bf63c7eea99a9bdf7c79e"
+    },
+    {
+      "path": "ui/index.html",
+      "sha256": "881f083645dbccac35c89610a7d4a6107efa17ac7daec3527626470212dc62c5"
+    },
+    {
+      "path": "ui/languages/de/strings.xml",
+      "sha256": "1f35153aed2d2729f14ae31dce00f33887352fd728da2b7cf0c4b5819659539a"
+    },
+    {
+      "path": "ui/languages/en/strings.xml",
+      "sha256": "022f1ecef325cfcfecc511c7025ef47884d05968939d853034db0733dd414cb8"
+    },
+    {
+      "path": "ui/languages/id/strings.xml",
+      "sha256": "d9a3c982a03dd9cfa97f1f6e3aaa7432c546bed02034bb5bda7efeca5e858235"
+    },
+    {
+      "path": "ui/languages/ja/strings.xml",
+      "sha256": "cbb92640aaa284391942c7be2fb1f9f8851e07ea4bb8461f436a72f8e867155f"
+    },
+    {
+      "path": "ui/navbar.js",
+      "sha256": "0de520cb27d0b3f8eba0a45458d6468aa70a1d2938f3b29591bcd39e85d866d3"
+    },
+    {
+      "path": "ui/styles/showcase.css",
+      "sha256": "45b17863c6fc357ee4ac3c2956a93d63c69fca0137063af870245d6f8180ddeb"
+    },
+    {
+      "path": "ui/tests/regression.test.js",
+      "sha256": "d58d994499dbdcbda1bb15ba52f136ca13d9c21ffae6e5971bfeb3d4c63e73d8"
+    }
+  ]
+}

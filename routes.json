@@ -1,0 +1,6 @@
+[
+  {
+    "path": "/showcase",
+    "access": { "minRole": "user" }
+  }
+]

@@ -1,6 +1,14 @@
 [
-  {
-    "path": "/showcase",
-    "access": { "minRole": "user" }
-  }
+    {
+        "path": "/whiteboards",
+        "access": {
+            "minRole": "user"
+        }
+    },
+    {
+        "path": "/whiteboard",
+        "access": {
+            "minRole": "user"
+        }
+    }
 ]

@@ -1,10 +1,10 @@
 {
-  "name": "@cognis/module-template",
-  "version": "1.0.0",
+  "name": "@cognis/module-nextcloud-whiteboard",
+  "version": "2.3.22",
   "private": false,
   "type": "module",
   "scripts": {
-    "test": "node --test api/tests/*.test.js cli/tests/*.test.js ui/tests/*.test.js",
+    "test": "node --test tests/*.test.js",
     "check:manifest": "node scripts/validate-manifest.js",
     "manifest:hashes": "node scripts/update-manifest-hashes.js",
     "check": "npm test && npm run check:manifest"

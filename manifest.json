@@ -1,12 +1,15 @@
 {
-  "id": "module-template",
-  "uuid": "cc810afb-4fe6-5ef7-8f0b-e23676e01db3",
-  "name": "Module Template",
-  "version": "1.0.0",
+  "id": "nextcloud-whiteboard",
+  "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
+  "name": "Nextcloud Whiteboard",
+  "version": "2.3.22",
   "class": "extension",
   "coreApiVersion": "v1",
   "capabilities": [
-    "showcase:listItems"
+    "whiteboard:collaboration",
+    "whiteboard:access-control",
+    "whiteboard:getEmbedUrl",
+    "whiteboard:fetchBoardData"
   ],
   "entrypoints": {
     "bootstrap": "./bootstrap.js",
@@ -15,32 +18,48 @@
     "cli": "./cli/index.js"
   },
   "publisher": "Cognis Labs HQ",
-  "requires": [],
-  "requiresCapabilities": [
-    "auth:requireAuth",
-    "db:executor"
+  "ui": {
+    "componentConfig": {
+      "scriptUrl": "/static/modules/nextcloud-whiteboard/admin-section.js"
+    }
+  },
+  "requires": [
+    "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
+    "0da92508-63fa-53ed-918c-e6f08692a382"
   ],
-  "summary": "An end-to-end reference module for Cognis contributors.",
-  "description": "Demonstrates Cognis UI, API, database, CLI, capability, flow, localization, testing, and packaging contracts.",
+  "summary": "Collaborative whiteboards backed by Nextcloud.",
+  "description": "Create and share realtime whiteboards with Cognis access controls.",
   "categories": [
-    "Developer Tools"
+    "Collaboration"
   ],
-  "license": "AGPL-3.0-or-later",
-  "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-template",
-  "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-template#readme",
-  "support": "https://github.com/Cognis-Labs-HQ/cognis-module-template/issues",
+  "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard",
   "assets": {
-    "screenshots": [
-        "assets/screenshots/cognis-logo.png"
-    ],
+    "screenshots": [],
     "icon": "assets/icon.svg",
     "banner": "assets/banner.svg"
   },
   "tags": [
-    "template",
-    "development",
-    "example"
+    "whiteboard",
+    "collaboration"
   ],
+  "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard#readme",
+  "support": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/issues",
+  "requiresCapabilities": [
+    "auth:registerPageScriptOrigins",
+    "db:executor",
+    "files:namespace",
+    "files:registerNamespace",
+    "logging:log",
+    "share:listByResource",
+    "share:openPopup",
+    "share:resolveGuestAccess",
+    "share:resolveGuestId",
+    "share:resolveUserAccess",
+    "social:profileStore",
+    "system:ctx",
+    "ui:profileAvatarRenderer"
+  ],
+  "license": "AGPL-3.0-or-later",
   "files": [
     {
       "path": "AGENTS.md",
@@ -52,79 +71,111 @@
     },
     {
       "path": "README.md",
-      "sha256": "d91613b467fdfbe43fb2c9cadd64c5533f5a5f9b454aedceec293b6912f26ae1"
+      "sha256": "e14bcdeabdfc4ea74fdbf67badd5ab80466af4934101331c4e4be25e71dc81b0"
+    },
+    {
+      "path": "api/access.js",
+      "sha256": "c421dc4a8e59eb22ca244118e18d1bd3303946adb3f96f3b42ba26b40a5990dc"
+    },
+    {
+      "path": "api/config-values.js",
+      "sha256": "9eddc899c4bdc7ac9427fba3b67f19d2712b26dd6e0d224ca06c1835882ee700"
+    },
+    {
+      "path": "api/enable-test.js",
+      "sha256": "3cef60fef54de72b9e823e8bfe3a38a4f302565637e2d35c1fc53ba08015416d"
+    },
+    {
+      "path": "api/image-routes.js",
+      "sha256": "d8104625cb34ff44e0128a51b4fb5230c218df873f2052e2ae7295ef893a3cf4"
     },
     {
       "path": "api/index.js",
-      "sha256": "cafcf9197f1f0d3ca11daa861592fc70431c4553f30996a403f4a9f274b264a8"
+      "sha256": "b202022f83841c9ec073ba938633f07279cc1fc63385aaf91de6c4afd67ca625"
+    },
+    {
+      "path": "api/reuse/flow-helpers.js",
+      "sha256": "2d294e46f61661b0a25c8c4697486e24b5f6012902c905a54830ee0ba63400d8"
+    },
+    {
+      "path": "api/reuse/http-liveness.js",
+      "sha256": "42d0f21c509932fc37ffca0fa32d0bd8041472c4bb00a36d32e12f366ca9e761"
     },
     {
       "path": "api/reuse/http.js",
-      "sha256": "2d69b2e8bb6cf5d01d339a15a1de81b8e06542cc55ca5d7b871988d9a4249a3d"
+      "sha256": "f45571c8a277a259e673e48f34b6958670280b3271fa6127029a4da8f74caad0"
+    },
+    {
+      "path": "api/reuse/jwt.js",
+      "sha256": "479233fca29899437ee3e5b43e4198389247e063ba875581bf80996b0c7e4616"
+    },
+    {
+      "path": "api/reuse/normalize-handle.js",
+      "sha256": "f4d10d90ba23f159ab4fbc85ef4d0527ef5948a34cf846460b6811ec2a290b77"
+    },
+    {
+      "path": "api/reuse/random-token.js",
+      "sha256": "a9d482781606326681f2d07d8cc191b35b5817274072731e5c556e8fc59c6e48"
+    },
+    {
+      "path": "api/reuse/text-normalizers.js",
+      "sha256": "114abd33118e936fac4ce8575814af6c84c02613aacb6e37b420868227f4d4fd"
+    },
+    {
+      "path": "api/reuse/url-parts.js",
+      "sha256": "e19215eacdecc43c2af3e3dc60a616216e81f799ca94c19022f901f5e21fcf3b"
+    },
+    {
+      "path": "api/share-hooks.js",
+      "sha256": "c697d1d0d783d67e3560dcc4868ad220895530e67d6a7f5d13440a3698d8c3e2"
     },
     {
       "path": "api/store.js",
-      "sha256": "75ca20ced50c5301e0fbda5aae48245007a0cb15b22f160673abc14052ca82f4"
-    },
-    {
-      "path": "api/tests/http.test.js",
-      "sha256": "0986bb8711d6b9ccc78b0f76ba7e9663803f2df7f96bf376de865f72fd75a3fb"
-    },
-    {
-      "path": "api/tests/store.test.js",
-      "sha256": "acfcd27a8f30cf8d4e679ddf4abb454bcda0d43e54797e3108fe48ebd6f7da64"
-    },
-    {
-      "path": "api/ui.js",
-      "sha256": "8aa76f432b45a4448999bfca1dcac4f8a616af1fdca962e0b0b6763afd2338ec"
+      "sha256": "9358d1caa377734b956c247651c9b250d13f876f4759036dd5d895636ece0ee1"
     },
     {
       "path": "assets/banner.svg",
-      "sha256": "157f5636c6c892ac71eb81037ad20bd1005c2778aee3445514762a63ef789dfc"
+      "sha256": "3b9cc41306b1cf22dcee062ab946dabcd940906d9d929710f9d7467aa25ef33b"
     },
     {
       "path": "assets/icon.svg",
-      "sha256": "a71eb90ae9528834d16f9fc401d3e98a395da601c149f0c740cb20128ec6c364"
-    },
-    {
-      "path": "assets/screenshots/cognis-logo.png",
-      "sha256": "4ef4d3f734ba671cb380be4c3eac9297ffdb70775a93109257bcd80d0c4dc3e1"
+      "sha256": "dc527e3c57adb784b0d0d434cf01a9c3f7005e4d3d48efdd75c98fe06c54af70"
     },
     {
       "path": "bootstrap.js",
-      "sha256": "cfbf1ba6266899cf7b61bd3a78a93162fe27eca244aa2c43e421d2872ad23c79"
+      "sha256": "dcf90e431b88f612d881f7b9c8b3afcf0d54df7d4e109b749e38bac519da8fb5"
     },
     {
       "path": "cli/index.js",
-      "sha256": "e671f86e9a1ca108d7f010c3e4fc2724aeff02558a5ba744a657c091fd556024"
+      "sha256": "241f1511b44128b182295212af730f6cc468d7c20f6511a69d30cab5e1584d73"
     },
     {
-      "path": "cli/tests/index.test.js",
-      "sha256": "6c15b7b90d61ed42ccc0538238d692e7a160db601c8bed25e9de73ca3ced68aa"
+      "path": "docs/standard.de.md",
+      "sha256": "c4013268181d4c1953d67f5712454a1aa33b044fd8fcabd5a980fb23943f82ae"
     },
     {
-      "path": "docs/architecture.md",
-      "sha256": "5d95939e8e6d7e8433c089503d2c89863430126688bcb2874e5f187286f1fd47"
+      "path": "docs/standard.en.md",
+      "sha256": "8ea2d543ac95cd390d3af768abc8591795407ec1b5e3b0b80f41afcb8189f02b"
     },
     {
-      "path": "docs/releasing.md",
-      "sha256": "4f9a13471373e56c4cbf0e3b966efa20edb99a4423aebf5e8ce0d0e3a91f33db"
+      "path": "docs/standard.id.md",
+      "sha256": "c770fad3aee1130c07791423392cc4c0c691a62f5fadb72598f12d47e99474e9"
     },
     {
-      "path": "docs/security.md",
-      "sha256": "b2804841d0fe36018f36ee008b0a950da6d5bcacba750c57f823f5bdaed882c2"
+      "path": "docs/standard.ja.md",
+      "sha256": "ad522ce098b74a5acaa93081548375c2e0a8cec8cb0a4772318b5d28f77e95bc"
     },
     {
       "path": "package-lock.json",
-      "sha256": "01451c096b2c4a7888d5a15d89fdf7898d5fb5aaab4d9aeb8fa6cfe842fac59e"
+      "sha256": "d699a1a9c23ea6e39d7d14fde29d7089d391e752e6b00d1053f0c95ba0f1df2b"
     },
     {
       "path": "package.json",
-      "sha256": "132ee49d99b54c325c543e4850b75ccb710c102cfe5be64d317f749af3854214"
+      "sha256": "eb1ffaace5b6953d11012c946f8707f4920c2e5558909fa7eb2f318d7f00726d"
     },
     {
       "path": "routes.json",
-      "sha256": "fa2b23af61527603977fc61f36043aedff689ed48ab84cb2345c94bc4e954350"
+      "sha256": "b83fa242293bf36a2ff15c6da019d12977240b96f04d1d03584599804abc686a"
     },
     {
       "path": "scripts/update-manifest-hashes.js",
@@ -135,40 +186,128 @@
       "sha256": "57884058e42355fcd8728763e7b65582613959e59efd66358c21a8ada0cf34ba"
     },
     {
-      "path": "ui/app.js",
-      "sha256": "e4d71645d000e0efd238fc2a0e17a38e1840e60d581bf63c7eea99a9bdf7c79e"
+      "path": "tests/api-routes-sharing.test.js",
+      "sha256": "a10e5f4b59604e0c343ee912f104f076603bd17c5d45700590ec823a6dbe8d05"
+    },
+    {
+      "path": "tests/api-routes.test.js",
+      "sha256": "2b15a9022844b5afa35c1a32908c6de85802dca128a238b1045432fb4a1f044e"
+    },
+    {
+      "path": "tests/language-keys.test.js",
+      "sha256": "eb7e8bfb5e815337d78bce5fb81efccad0f3053fe32e90b8441217ead78a646e"
+    },
+    {
+      "path": "tests/status.test.js",
+      "sha256": "fc11856d4fc4146e23093a2ff4f48b5493075019f511d0fba621063c40729224"
+    },
+    {
+      "path": "tests/store.test.js",
+      "sha256": "91d9330ffb6ca9ab336bd324cd272efb861efd166220908d67f1f05db50e2703"
+    },
+    {
+      "path": "tests/ui-registration.test.js",
+      "sha256": "d7310adc9f2f1ea5f031ee9d89cde3a5399a736a25bcfe0bb7001882e3d455eb"
+    },
+    {
+      "path": "ui/admin-section.js",
+      "sha256": "38a9757e309e3a1037a181d42c4645809955801f3b92b45539b4534a50f45e76"
+    },
+    {
+      "path": "ui/app/api.js",
+      "sha256": "a1756b8c478904bdebd6cd99cefe427a50002ddcf3422449898d6d1346e6a50c"
+    },
+    {
+      "path": "ui/app/clear-canvas.js",
+      "sha256": "be7315aa4d2455d5fbe06d1dd7bfae397f8e9ac56344ca0b3e47189e5ae92e09"
+    },
+    {
+      "path": "ui/app/history-popup.js",
+      "sha256": "91856fdb8e901c7d125d122ae7e5efaee8d43bd70582890d6781f51ce4409cf2"
+    },
+    {
+      "path": "ui/app/index.js",
+      "sha256": "eb27763a0a4024c420f6139fd6b746208f4005294e7551f54e4f1d7a77984eb2"
+    },
+    {
+      "path": "ui/app/overlay.js",
+      "sha256": "bc09b22893c090d2fff01510b41a3347e83f3b49d1adda217ab0fc393d3397f8"
+    },
+    {
+      "path": "ui/app/presence.js",
+      "sha256": "25f1ea5037e0e31fccb6e0d84f830d70734b88725aaea19fcb61d6ae6a979f24"
+    },
+    {
+      "path": "ui/app/realtime.js",
+      "sha256": "80e5220b04f5e849ab4ffe8578400a9028fde6660c1e29b70000530947189ac4"
+    },
+    {
+      "path": "ui/app/render.js",
+      "sha256": "4733777a8e0de3d6985fe8f0dd279761b6c4f8c046ecb2a09e7409a0248ace52"
+    },
+    {
+      "path": "ui/app/search-index.js",
+      "sha256": "b79a8a8005193eec22bf8250f9296868dcdd629300dac2d33211c9ac0be47ba0"
+    },
+    {
+      "path": "ui/app/status.js",
+      "sha256": "1cf8ae9453720a67586f0465b897ee2c70d703a8f8523b1ecac8e7d37efc0913"
     },
     {
       "path": "ui/index.html",
-      "sha256": "881f083645dbccac35c89610a7d4a6107efa17ac7daec3527626470212dc62c5"
+      "sha256": "82053fb187b5e2711136f072b1e2bed77e063b2e665b0c4c67da9945022cc3cb"
     },
     {
       "path": "ui/languages/de/strings.xml",
-      "sha256": "1f35153aed2d2729f14ae31dce00f33887352fd728da2b7cf0c4b5819659539a"
+      "sha256": "3b0e5320c8fba8240a84bc2365b73f4de4314bbc3bb67a46a79d371af40e80d3"
     },
     {
       "path": "ui/languages/en/strings.xml",
-      "sha256": "022f1ecef325cfcfecc511c7025ef47884d05968939d853034db0733dd414cb8"
+      "sha256": "3a7fa7c3bfe7b1aada60aef81d916501e888d262c90bad41c0a616dca2dd3a62"
     },
     {
       "path": "ui/languages/id/strings.xml",
-      "sha256": "d9a3c982a03dd9cfa97f1f6e3aaa7432c546bed02034bb5bda7efeca5e858235"
+      "sha256": "69f77d1b18d5fd6286b8d68675d12b09efa697ad9149682416f1a5713b52787d"
     },
     {
       "path": "ui/languages/ja/strings.xml",
-      "sha256": "cbb92640aaa284391942c7be2fb1f9f8851e07ea4bb8461f436a72f8e867155f"
+      "sha256": "621eb89d382aed234349f63d2a6fe1872488c31d4ca0f621980a0ad523d65122"
     },
     {
       "path": "ui/navbar.js",
-      "sha256": "0de520cb27d0b3f8eba0a45458d6468aa70a1d2938f3b29591bcd39e85d866d3"
+      "sha256": "227eaaaf5e78fb0726abff78de7dcd88468b6be591366bfa12998d3799be37e7"
     },
     {
-      "path": "ui/styles/showcase.css",
-      "sha256": "45b17863c6fc357ee4ac3c2956a93d63c69fca0137063af870245d6f8180ddeb"
+      "path": "ui/styles/presence.css",
+      "sha256": "5e0b45b3b22e1a191fcee5a97e096d133c1b6d4bb13c0cc081ead0eb0c7c5a88"
     },
     {
-      "path": "ui/tests/regression.test.js",
-      "sha256": "d58d994499dbdcbda1bb15ba52f136ca13d9c21ffae6e5971bfeb3d4c63e73d8"
+      "path": "ui/styles/whiteboards.css",
+      "sha256": "a76e407398d6698e8e6ed87c7fa41332a10afac89c354cbc2bc2a70257fcadf2"
+    },
+    {
+      "path": "ui/whiteboard/canvas-events.js",
+      "sha256": "796e2fd951577ff2c5220d3ac74ac3a489442b5084ae28bc01d3f097f4b68a22"
+    },
+    {
+      "path": "ui/whiteboard/canvas.js",
+      "sha256": "cab1cb98f3855188cf1cda9ef61909b5e247fa93c15637719f889cc289687b3b"
+    },
+    {
+      "path": "ui/whiteboard/clipboard-images.js",
+      "sha256": "1951b99d397605b23d303c830f9775773eb02573b7c20ad68e31c7de765a8c2d"
+    },
+    {
+      "path": "ui/whiteboard/elements.js",
+      "sha256": "1246c532ba5961e8198d64a3efc2b79d11b80e67d45f372d5b2d2cb6e59e64a9"
+    },
+    {
+      "path": "ui/whiteboard/render-scene.js",
+      "sha256": "c8ad90eb8e2846cae5e861b3654754bdf2017b17fbeeba36097fc7e08b8387c8"
+    },
+    {
+      "path": "ui/whiteboard/text-tools.js",
+      "sha256": "3e3dc46db0df272923f67d4c4fafbafb0c36110f3bff44cc3a5d5b8f0e94edc6"
     }
   ]
 }

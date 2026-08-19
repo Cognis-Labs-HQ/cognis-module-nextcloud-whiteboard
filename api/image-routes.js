@@ -1,5 +1,4 @@
 import { readJson } from "./reuse/http.js";
-import { requireAuth } from "./reuse/http.js";
 import { sendError, sendJson } from "./reuse/http.js";
 
 function decodeImageDataUrl(dataUrl) {
@@ -34,6 +33,7 @@ function inferImageContentType(key) {
 export function registerWhiteboardImageRoutes(
     router,
     {
+        requireAuth,
         store,
         profileStore,
         resolveShareGuestAccess,

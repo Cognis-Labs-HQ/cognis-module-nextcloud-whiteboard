@@ -21,3 +21,7 @@ test('module manifest requires the profile adapter and share gateway', () => {
     '0da92508-63fa-53ed-918c-e6f08692a382',
   ]);
 });
+
+test('module manifest requires the Cognis authentication gateway', () => {
+  assert.ok(manifest.requiresCapabilities.includes('auth:requireAuth'));
+});

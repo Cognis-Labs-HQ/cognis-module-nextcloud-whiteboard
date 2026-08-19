@@ -1,5 +1,5 @@
 import path from "node:path";
-import { hasMinRole, requireAuth } from "./reuse/http.js";
+import { hasMinRole } from "./reuse/http.js";
 import { readJson } from "./reuse/http.js";
 import { sendError, sendJson } from "./reuse/http.js";
 import { getFirstStageResult } from "./reuse/flow-helpers.js";
@@ -71,6 +71,7 @@ export function registerUi(ctx) {
 }
 
 export function registerApiRoutes(router, ctx) {
+    const requireAuth = ctx.getCapability("auth:requireAuth");
     const dbExecutor = ctx.getCapability("db:executor");
     const profileStore = createProfileStoreCapability(ctx);
     const log = ctx.getCapability("logging:log");
@@ -392,6 +393,7 @@ export function registerApiRoutes(router, ctx) {
     );
 
     registerWhiteboardImageRoutes(router, {
+        requireAuth,
         store,
         profileStore,
         resolveShareGuestAccess,

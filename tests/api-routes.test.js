@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { issueAccessToken } from "../api/reuse/http.js";
 import { registerApiRoutes } from "../api/index.js";
 import { NextcloudWhiteboardStore } from "../api/store.js";
+
+import { issueAccessToken, requireTestAuth } from './reuse/auth.js';
 
 function createMemoryDb() {
     const tables = new Map();
@@ -138,6 +139,7 @@ test("nextcloud whiteboard admin listing does not require a profile handle", asy
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {
@@ -184,6 +186,7 @@ test("nextcloud whiteboard session route works without share capabilities", asyn
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {
@@ -229,6 +232,7 @@ test("nextcloud whiteboard rename route allows only the owner", async () => {
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {
@@ -298,6 +302,7 @@ test("nextcloud whiteboard presence route handles store failures without server-
     const logs = [];
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {
@@ -370,6 +375,7 @@ test("nextcloud whiteboard registers share hooks on system ctx flow", () => {
 
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {
@@ -455,6 +461,7 @@ test("nextcloud whiteboard share hooks reject share guests managing links", asyn
 
     registerApiRoutes(createRouterCapture(), {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {
@@ -536,6 +543,7 @@ test("nextcloud whiteboard share hooks preserve direct participant sessions with
 
     registerApiRoutes(createRouterCapture(), {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {
@@ -613,6 +621,7 @@ test("nextcloud whiteboard elements persist through session reload", async () =>
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
                 return {

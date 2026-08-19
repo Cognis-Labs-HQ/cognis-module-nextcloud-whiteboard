@@ -167,11 +167,11 @@
     },
     {
       "path": "package-lock.json",
-      "sha256": "d699a1a9c23ea6e39d7d14fde29d7089d391e752e6b00d1053f0c95ba0f1df2b"
+      "sha256": "a63ce079d0038133b799245dcc69b41a3d3efcd9ea92c0f929913e462596921f"
     },
     {
       "path": "package.json",
-      "sha256": "eb1ffaace5b6953d11012c946f8707f4920c2e5558909fa7eb2f318d7f00726d"
+      "sha256": "5e2ff3eb67fcfc10e35eb521c7bda8fa1941aca0c1db839baee111d70edfb2bd"
     },
     {
       "path": "routes.json",

@@ -23,7 +23,10 @@
       "scriptUrl": "/static/modules/nextcloud-whiteboard/admin-section.js"
     }
   },
-  "requires": [],
+  "requires": [
+    "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
+    "0da92508-63fa-53ed-918c-e6f08692a382"
+  ],
   "summary": "Collaborative whiteboards backed by Nextcloud.",
   "description": "Create and share realtime whiteboards with Cognis access controls.",
   "categories": [
@@ -193,6 +196,10 @@
     {
       "path": "tests/language-keys.test.js",
       "sha256": "eb7e8bfb5e815337d78bce5fb81efccad0f3053fe32e90b8441217ead78a646e"
+    },
+    {
+      "path": "tests/manifest-contract.test.js",
+      "sha256": "464230ca1751eafdeb95411ecfa695479d48f287c06de67f32cd776cf848a948"
     },
     {
       "path": "tests/status.test.js",

@@ -45,6 +45,7 @@
   "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard#readme",
   "support": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/issues",
   "requiresCapabilities": [
+    "auth:requireAuth",
     "auth:registerPageScriptOrigins",
     "db:executor",
     "files:namespace",
@@ -87,11 +88,11 @@
     },
     {
       "path": "api/image-routes.js",
-      "sha256": "d8104625cb34ff44e0128a51b4fb5230c218df873f2052e2ae7295ef893a3cf4"
+      "sha256": "befc10189bda8a2bf87ae25b0214f321da932e756edcdcd8c9204e27660ef2d1"
     },
     {
       "path": "api/index.js",
-      "sha256": "b202022f83841c9ec073ba938633f07279cc1fc63385aaf91de6c4afd67ca625"
+      "sha256": "66dee284001182d07b60abda4c6e8a80ded6c555e512f234c5d9e99e16f5b28f"
     },
     {
       "path": "api/reuse/flow-helpers.js",
@@ -103,7 +104,7 @@
     },
     {
       "path": "api/reuse/http.js",
-      "sha256": "f45571c8a277a259e673e48f34b6958670280b3271fa6127029a4da8f74caad0"
+      "sha256": "67208816f414fe8819454318e53d43f0f8b2b2c186e1629a82612f5a17290746"
     },
     {
       "path": "api/reuse/jwt.js",
@@ -187,11 +188,11 @@
     },
     {
       "path": "tests/api-routes-sharing.test.js",
-      "sha256": "a10e5f4b59604e0c343ee912f104f076603bd17c5d45700590ec823a6dbe8d05"
+      "sha256": "c6c97201a3c1cc48ddc9887a170a0a07f9ff65083a6e8365dfe17222c0e172bb"
     },
     {
       "path": "tests/api-routes.test.js",
-      "sha256": "2b15a9022844b5afa35c1a32908c6de85802dca128a238b1045432fb4a1f044e"
+      "sha256": "4cd76e758ec63b014ca709034ae39fd39c243da16899c293adfa20e502ad5443"
     },
     {
       "path": "tests/language-keys.test.js",
@@ -199,7 +200,11 @@
     },
     {
       "path": "tests/manifest-contract.test.js",
-      "sha256": "464230ca1751eafdeb95411ecfa695479d48f287c06de67f32cd776cf848a948"
+      "sha256": "deec1dd83076416c7873120a0bcc3299ce24489b978626e7d319d21104a62585"
+    },
+    {
+      "path": "tests/reuse/auth.js",
+      "sha256": "b4fed081d2b2d023331e4254aaeaaa1c3d008e6b90a7830aeb8a25404aa911d2"
     },
     {
       "path": "tests/status.test.js",

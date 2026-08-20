@@ -2,7 +2,7 @@
   "id": "nextcloud-whiteboard",
   "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
   "name": "Nextcloud Whiteboard",
-  "version": "2.3.24",
+  "version": "2.3.25",
   "class": "extension",
   "coreApiVersion": "v1",
   "capabilities": [
@@ -21,7 +21,30 @@
   "ui": {
     "componentConfig": {
       "scriptUrl": "/static/modules/nextcloud-whiteboard/admin-section.js"
-    }
+    },
+    "preferences": [
+      {
+        "key": "serverUrl",
+        "label": "Whiteboard server URL",
+        "description": "HTTPS URL of the standalone Nextcloud Whiteboard Socket.IO server.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "imageUploadMaxBytes",
+        "label": "Image upload limit",
+        "description": "Maximum image upload size in bytes. Set to 0 to disable image uploads.",
+        "type": "number",
+        "default": 1048576
+      },
+      {
+        "key": "apiKey",
+        "label": "Whiteboard API key",
+        "description": "Shared API key used to sign whiteboard sessions; it must contain at least 16 characters.",
+        "type": "password",
+        "default": ""
+      }
+    ]
   },
   "requires": [
     "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
@@ -152,27 +175,27 @@
     },
     {
       "path": "docs/standard.de.md",
-      "sha256": "c4013268181d4c1953d67f5712454a1aa33b044fd8fcabd5a980fb23943f82ae"
+      "sha256": "9e5feb0fbeeb0d9786cea50a9d89ed20a86a9404c806e70b7dd79f36b55f6a95"
     },
     {
       "path": "docs/standard.en.md",
-      "sha256": "8ea2d543ac95cd390d3af768abc8591795407ec1b5e3b0b80f41afcb8189f02b"
+      "sha256": "ce669823b93be9b10310d72e77ce48a67fb91e554a3d9240d3b318c3ade19c59"
     },
     {
       "path": "docs/standard.id.md",
-      "sha256": "c770fad3aee1130c07791423392cc4c0c691a62f5fadb72598f12d47e99474e9"
+      "sha256": "d5e590c39e0691dab644cf46cbc1d6fc58ae863392f6a9b2cc9634df38d19201"
     },
     {
       "path": "docs/standard.ja.md",
-      "sha256": "ad522ce098b74a5acaa93081548375c2e0a8cec8cb0a4772318b5d28f77e95bc"
+      "sha256": "95541d0324406c2888cd5330e320dcf11ee313dd04ba49f83db5f63a749f7bfe"
     },
     {
       "path": "package-lock.json",
-      "sha256": "ae96d0b2001dac8501b7ce656e3664bf8fd82f4ba2bb277037a146d7e0262b62"
+      "sha256": "707a7e067806e05e90858d9940f1c2fec976f187436666002ac10fa26ef98223"
     },
     {
       "path": "package.json",
-      "sha256": "62e75a4cb63828b33354600aaf2c85050d6b00713ca2fb084e6c07548454006c"
+      "sha256": "01ee9e07700db76979682fe86ca4cecbb50482e6051aff8bc1645e8007adbe9d"
     },
     {
       "path": "routes.json",
@@ -200,7 +223,7 @@
     },
     {
       "path": "tests/manifest-contract.test.js",
-      "sha256": "deec1dd83076416c7873120a0bcc3299ce24489b978626e7d319d21104a62585"
+      "sha256": "b34ea20aa3283ab2d2954f7317bc22ccb5805f4f5608e1f629c9c20f35d524a3"
     },
     {
       "path": "tests/reuse/auth.js",

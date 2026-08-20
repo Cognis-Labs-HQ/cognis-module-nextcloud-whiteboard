@@ -25,3 +25,22 @@ test('module manifest requires the profile adapter and share gateway', () => {
 test('module manifest requires the Cognis authentication gateway', () => {
   assert.ok(manifest.requiresCapabilities.includes('auth:requireAuth'));
 });
+
+test('module manifest exposes whiteboard configuration to preference ingestion', () => {
+  assert.deepEqual(
+    manifest.ui.preferences.map(({ key, type, default: defaultValue }) => ({
+      key,
+      type,
+      default: defaultValue,
+    })),
+    [
+      { key: 'serverUrl', type: 'string', default: '' },
+      {
+        key: 'imageUploadMaxBytes',
+        type: 'number',
+        default: 1048576,
+      },
+      { key: 'apiKey', type: 'password', default: '' },
+    ],
+  );
+});

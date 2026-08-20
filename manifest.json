@@ -199,19 +199,19 @@
         },
         {
             "path": "docs/standard.de.md",
-            "sha256": "9e5feb0fbeeb0d9786cea50a9d89ed20a86a9404c806e70b7dd79f36b55f6a95"
+            "sha256": "c9fc66950d118fa4488fad02c52c07b28b1d6a93c48523b650119c7fd9bf94ba"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "ce669823b93be9b10310d72e77ce48a67fb91e554a3d9240d3b318c3ade19c59"
+            "sha256": "ba4f76fa7dbd2d4011270fd74eecf361ed3e36e3b3e927efde1484d2be11ccf6"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "d5e590c39e0691dab644cf46cbc1d6fc58ae863392f6a9b2cc9634df38d19201"
+            "sha256": "604e995a77ca44fa9ac434dac0de3385464018dae75baa6869fbc6e4cf89c9d1"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "95541d0324406c2888cd5330e320dcf11ee313dd04ba49f83db5f63a749f7bfe"
+            "sha256": "94c75b66cd4112d4462226003020caf22e80c3dfe7009950cc7bf4dae9e59048"
         },
         {
             "path": "package-lock.json",

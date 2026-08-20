@@ -131,11 +131,15 @@ test("nextcloud whiteboard store uses structured update payloads", async () => {
     );
     assert.doesNotMatch(
         source,
-        new RegExp('option:\\s*"UPDATE",\\n\\s*table:[^\\n]+\\n\\s*values:'),
+        new RegExp(
+            "option:\\s*['\"]UPDATE['\"],\\n\\s*table:[^\\n]+\\n\\s*values:",
+        ),
     );
     assert.match(
         source,
-        new RegExp('option:\\s*"UPDATE",\\n\\s*table:[^\\n]+\\n\\s*set:'),
+        new RegExp(
+            "option:\\s*['\"]UPDATE['\"],\\n\\s*table:[^\\n]+\\n\\s*set:",
+        ),
     );
 });
 

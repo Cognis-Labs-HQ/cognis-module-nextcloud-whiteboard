@@ -40,7 +40,7 @@ test("user-share recipients keep their account identity for whiteboard access", 
     assert.equal(nativeAccessChecked, false);
 });
 
-import { issueAccessToken, requireTestAuth } from './reuse/auth.js';
+import { issueAccessToken, requireTestAuth } from "./reuse/auth.js";
 
 function createMemoryDb() {
     const tables = new Map();

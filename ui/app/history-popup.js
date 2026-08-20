@@ -1,3 +1,5 @@
+import { formatDateTime } from "/static/reuse/timestamp.js";
+
 export async function openWhiteboardHistoryPopup({
     boards,
     escapeHtml,
@@ -10,7 +12,7 @@ export async function openWhiteboardHistoryPopup({
                   (board) => `
                     <article class="whiteboard-history-card">
                         <h3>${escapeHtml(board.title)}</h3>
-                        <p>${escapeHtml(new Date(board.updatedAt).toLocaleString())}</p>
+                        <p>${escapeHtml(formatDateTime(board.updatedAt, ""))}</p>
                         <button type="button" disabled>${escapeHtml(translate("module.nextcloud_whiteboard.open"))}</button>
                     </article>`,
               )

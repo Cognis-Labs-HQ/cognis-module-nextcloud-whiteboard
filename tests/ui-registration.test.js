@@ -145,30 +145,27 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         ),
         import("node:fs/promises").then((fs) =>
             fs.readFile(
-                new URL(
-                    "../ui/styles/presence.css",
-                    import.meta.url,
-                ),
+                new URL("../ui/styles/presence.css", import.meta.url),
                 "utf8",
             ),
         ),
     ]);
     assert.match(
         source,
-        /componentStringBaseUrls:\s*\[\s*"\/static\/modules\/nextcloud-whiteboard\/languages"/,
+        /componentStringBaseUrls:\s*\[\s*['"]\/static\/modules\/nextcloud-whiteboard\/languages['"]/,
     );
     assert.doesNotMatch(source, /whiteboard-connection-status/);
-    assert.match(source, /uiCtx\.capabilities\.get\("share:openPopup"\)/);
-    assert.match(source, /resourceType:\s*"whiteboard"/);
+    assert.match(source, /uiCtx\.capabilities\.get\(['"]share:openPopup['"]\)/);
+    assert.match(source, /resourceType:\s*['"]whiteboard['"]/);
     assert.match(source, /resourceId:\s*activeBoard\.id/);
     assert.match(source, /supportsReadOnly:\s*true/);
     assert.match(source, /readOnly:\s*session\.canWrite !== true/);
     assert.match(source, /mountedComposer\.destroy\(\)/);
+    assert.match(source, /button\.addEventListener\(['"]click['"],/);
     assert.match(
         source,
-        /\/static\/gateways\/share\/ui\/reuse\/share-button\.js/,
+        /showNavbar:\s*sharePageFlag\(['"]showNavbar['"],\s*true\)/,
     );
-    assert.match(source, /showNavbar:\s*sharePageFlag\("showNavbar",\s*true\)/);
     assert.match(source, /requireAccountSession:\s*!activeShareContext/);
     assert.match(
         source,
@@ -178,7 +175,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(source, /pointerTracking:\s*true/);
     assert.match(
         source,
-        /const canvasElement = document\.getElementById\("whiteboard-canvas"\);/,
+        /const canvasElement = document\.getElementById\(['"]whiteboard-canvas['"]\);/,
     );
     assert.match(presenceSource, /function getPointerOffset\(canvasInstance\)/);
     assert.match(
@@ -214,12 +211,12 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(realtimeSource, /function throttleLatest\(callback, delay\)/);
     assert.match(source, /function updateHistoryControls\(\)/);
     assert.match(source, /whiteboard-toolbar-group\[hidden\]/);
-    assert.match(source, /insertAdjacentHTML\(\s*"afterend"/);
+    assert.match(source, /insertAdjacentHTML\(\s*['"]afterend['"]/);
     assert.match(
         source,
         /canvas\.onHistoryChange\?\.\(updateHistoryControls\)/,
     );
-    assert.match(source, /redoButton\?\.addEventListener\("click"/);
+    assert.match(source, /redoButton\?\.addEventListener\(['"]click['"]/);
     assert.match(
         source,
         /if \(canWrite && meta\?\.transient !== true\) persistChanges\(elements\)/,
@@ -270,15 +267,15 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
     assert.doesNotMatch(source, /parent\.scrollLeft =/);
     assert.match(
         source,
-        /event\.key !== "Delete" && event\.key !== "Backspace"/,
+        /event\.key !== ['"]Delete['"] && event\.key !== ['"]Backspace['"]/,
     );
     assert.match(
         canvasEventsSource,
-        /canvasElement\.addEventListener\("keydown", onKeyDown\)/,
+        /canvasElement\.addEventListener\(['"]keydown['"], onKeyDown\)/,
     );
     assert.match(
         canvasEventsSource,
-        /canvasElement\.removeEventListener\("keydown", onKeyDown\)/,
+        /canvasElement\.removeEventListener\(['"]keydown['"], onKeyDown\)/,
     );
 });
 
@@ -323,7 +320,7 @@ test("nextcloud whiteboard image paste saves and selects resizable image objects
     assert.match(clipboardSource, /commitCreatedElement\(\s*buildImageElement/);
     assert.match(
         canvasEventsSource,
-        /document\.addEventListener\("paste", onPaste\)/,
+        /document\.addEventListener\(['"]paste['"], onPaste\)/,
     );
     assert.match(clipboardSource, /if \(event\.defaultPrevented\) return/);
     assert.match(clipboardSource, /findClipboardImageFile\(event\)/);
@@ -335,7 +332,7 @@ test("nextcloud whiteboard image paste saves and selects resizable image objects
     assert.match(elementsSource, /whiteboard:image-loaded/);
     assert.match(
         canvasEventsSource,
-        /addEventListener\("whiteboard:image-loaded", scheduleRender\)/,
+        /addEventListener\(['"]whiteboard:image-loaded['"], scheduleRender\)/,
     );
     assert.match(
         elementsSource,
@@ -379,35 +376,44 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
             ),
         ),
     ]);
-    assert.match(canvasSource, /let activeTool = "select"/);
-    assert.match(canvasSource, /normalizedKey === "z" && !event\.shiftKey/);
-    assert.match(canvasSource, /normalizedKey === "y"/);
+    assert.match(canvasSource, /let activeTool = ['"]select['"]/);
+    assert.match(
+        canvasSource,
+        /normalizedKey === ['"]z['"] && !event\.shiftKey/,
+    );
+    assert.match(canvasSource, /normalizedKey === ['"]y['"]/);
     assert.match(canvasSource, /undo\(\)/);
     assert.match(canvasSource, /redo\(\)/);
     assert.match(
         canvasSource,
-        /if \(readOnly\) canvasElement\.style\.cursor = "pointer"/,
+        /if \(readOnly\) canvasElement\.style\.cursor = ['"]pointer['"]/,
     );
-    assert.match(renderSource, /tool === "select" \? " active" : ""/);
+    assert.match(
+        renderSource,
+        /tool === ['"]select['"] \? ['"] active['"] : ['"]['"]/,
+    );
     assert.match(
         appSource + renderSource,
         /data-tool="\$\{tool\}" class="whiteboard-tool/,
     );
     assert.match(
         appSource + renderSource,
-        /toolButton\("pen", "module.nextcloud_whiteboard.tool_pen", "✎"\)/,
+        /toolButton\(['"]pen['"], ['"]module.nextcloud_whiteboard.tool_pen['"], ['"]✎['"]\)/,
     );
     assert.match(
         appSource,
-        /const SYNC_MESSAGE_BOARD_RENAMED = "BOARD_RENAMED"/,
+        /const SYNC_MESSAGE_BOARD_RENAMED = ['"]BOARD_RENAMED['"]/,
     );
     assert.match(appSource, /function canRenameActiveBoard\(\)/);
     assert.match(appSource, /function emitBoardRenamed\(title\)/);
     assert.match(appSource, /function syncBoardUrl\(boardId\)/);
-    assert.match(appSource, /searchParams\.set\("instantCanvas", "1"\)/);
     assert.match(
         appSource,
-        /window\.history\.replaceState\(null, "", nextUrl\)/,
+        /searchParams\.set\(['"]instantCanvas['"], ['"]1['"]\)/,
+    );
+    assert.match(
+        appSource,
+        /window\.history\.replaceState\(null, ['"]['"], nextUrl\)/,
     );
     assert.match(elementsSource, /ensureVisibleStrokeColor/);
     assert.match(elementsSource, /contrastRatio/);

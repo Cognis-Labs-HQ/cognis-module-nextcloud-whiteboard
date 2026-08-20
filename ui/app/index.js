@@ -441,26 +441,18 @@ function bindCanvasToolbar(canvas) {
 async function bindShareButton(toolbar) {
     const slot = toolbar.querySelector("#whiteboard-share-slot");
     if (!(slot instanceof HTMLElement) || !activeBoard?.id) return;
-    let shareModule;
-    try {
-        shareModule =
-            await import("/static/gateways/share/ui/reuse/share-button.js");
-    } catch {
-        return;
-    }
-    shareModule.mountShareButton?.({
-        container: slot,
-        label: translateModuleString(
-            "module.nextcloud_whiteboard.share_button",
-        ),
-        id: "whiteboard-share",
-        className: "whiteboard-tool",
-        icon: "🔗",
-        title: translateModuleString(
-            "module.nextcloud_whiteboard.share_button",
-        ),
-        onClick: () => void openSharePopup(),
-    });
+    const label = translateModuleString(
+        "module.nextcloud_whiteboard.share_button",
+    );
+    const button = document.createElement("button");
+    button.type = "button";
+    button.id = "whiteboard-share";
+    button.className = "whiteboard-tool";
+    button.title = label;
+    button.setAttribute("aria-label", label);
+    button.textContent = "🔗";
+    button.addEventListener("click", () => void openSharePopup());
+    slot.replaceChildren(button);
 }
 
 async function openSharePopup() {

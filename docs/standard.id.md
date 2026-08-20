@@ -12,7 +12,7 @@ The API key never leaves the Cognis server. Browsers receive only a short-lived 
 
 ## Administrator setup
 
-1. Enable the module and open **Nextcloud Whiteboard Settings** from administration.
+1. Enable the module and open **Nextcloud Whiteboard Settings** from the installed module settings or administration controls.
 2. Enter the **Whiteboard Server URL** for the standalone Socket.IO service, for example `https://whiteboard.example.com:3002`.
 3. Enter the shared API key used by the whiteboard server. Cognis requires at least 16 characters.
 4. Save the settings. Cognis registers the configured server origin for script and websocket CSP access.

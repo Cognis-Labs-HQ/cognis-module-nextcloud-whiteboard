@@ -44,3 +44,19 @@ test("module manifest exposes whiteboard configuration to preference ingestion",
         ],
     );
 });
+
+test("module manifest exposes localized preference metadata", () => {
+    assert.equal(
+        manifest.ui.stringsBaseUrl,
+        "/static/modules/nextcloud-whiteboard/languages",
+    );
+    for (const preference of manifest.ui.preferences) {
+        assert.match(preference.labelKey, /^module\.nextcloud_whiteboard\./);
+        assert.match(
+            preference.descriptionKey,
+            /^module\.nextcloud_whiteboard\./,
+        );
+        assert.equal(preference.label, undefined);
+        assert.equal(preference.description, undefined);
+    }
+});

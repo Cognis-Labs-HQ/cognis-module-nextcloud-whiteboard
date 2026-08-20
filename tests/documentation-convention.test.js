@@ -45,3 +45,23 @@ test("documentation templates exist for every supported language", () => {
         assert.deepEqual(headingLevels(template), expected);
     }
 });
+
+test("every documentation topic has one variant per supported language", () => {
+    const documents = markdownFiles(resolve(ROOT, "docs"));
+    const families = new Map();
+    for (const path of documents) {
+        const relativePath = relative(resolve(ROOT, "docs"), path);
+        const match = /^(.*)\.(de|en|id|ja)\.md$/.exec(relativePath);
+        assert.ok(
+            match,
+            `${relative(ROOT, path)} must include a language suffix`,
+        );
+        const [, topic, language] = match;
+        const variants = families.get(topic) ?? new Set();
+        variants.add(language);
+        families.set(topic, variants);
+    }
+    for (const [topic, variants] of families) {
+        assert.deepEqual([...variants].sort(), [...LANGUAGES].sort(), topic);
+    }
+});

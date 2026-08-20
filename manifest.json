@@ -25,26 +25,27 @@
         "preferences": [
             {
                 "key": "serverUrl",
-                "label": "Whiteboard server URL",
-                "description": "HTTPS URL of the standalone Nextcloud Whiteboard Socket.IO server.",
                 "type": "string",
-                "default": ""
+                "default": "",
+                "labelKey": "module.nextcloud_whiteboard.server_url",
+                "descriptionKey": "module.nextcloud_whiteboard.server_url_description"
             },
             {
                 "key": "imageUploadMaxBytes",
-                "label": "Image upload limit",
-                "description": "Maximum image upload size in bytes. Set to 0 to disable image uploads.",
                 "type": "number",
-                "default": 1048576
+                "default": 1048576,
+                "labelKey": "module.nextcloud_whiteboard.image_upload_limit",
+                "descriptionKey": "module.nextcloud_whiteboard.image_upload_limit_description"
             },
             {
                 "key": "apiKey",
-                "label": "Whiteboard API key",
-                "description": "Shared API key used to sign whiteboard sessions; it must contain at least 16 characters.",
                 "type": "password",
-                "default": ""
+                "default": "",
+                "labelKey": "module.nextcloud_whiteboard.api_key",
+                "descriptionKey": "module.nextcloud_whiteboard.api_key_description"
             }
-        ]
+        ],
+        "stringsBaseUrl": "/static/modules/nextcloud-whiteboard/languages"
     },
     "requires": [
         "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
@@ -214,11 +215,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "daab431ef5291bed25744e9bd5188147f3713ea55380d1aa5ece9ad8dacf41b1"
+            "sha256": "e36128faaa1e74cc10ac2ea2ca6608d610d71dda9af902bc759c91877dd25886"
         },
         {
             "path": "package.json",
-            "sha256": "543e104a2fc23af1768b29e3905e490304e16b88c68bafccaa9c6351ad84d09f"
+            "sha256": "9187760c709d11ba7b5f1d521ff990a3d91ab88f0f03cc59b54c43559251bd12"
         },
         {
             "path": "routes.json",
@@ -226,7 +227,7 @@
         },
         {
             "path": "scripts/update-manifest-hashes.js",
-            "sha256": "9af2d018e56207ae772b9bea87c5a8fd1bd8e0533fb94b03c4be38c0aa2746f5"
+            "sha256": "db03051ff02c1ef362ba025e4f69329928d167e0a674e76c1f242cb5ce467c5c"
         },
         {
             "path": "scripts/validate-manifest.js",
@@ -246,7 +247,7 @@
         },
         {
             "path": "tests/documentation-convention.test.js",
-            "sha256": "a85e2603ef94ca7af1f5ab928e59d8a518aee628914104c844a41ca449853ecb"
+            "sha256": "4b8db59e7d7ec21e6cac9f623ffd1f66f2374295eb97cb6828b4985cff7acd40"
         },
         {
             "path": "tests/language-keys.test.js",
@@ -254,11 +255,11 @@
         },
         {
             "path": "tests/localization-quality.test.js",
-            "sha256": "404769bbfd008944f9464f756dd9666640e9dd6a6736c484a3542849c93ab1ca"
+            "sha256": "3c1835419bf91945ecddf27fb059386560ec176e510261321af6d53a46c033e4"
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "14b46234a191f722ad5cc9723da6b80c74ef1058d063c2c0d296e8bad0ea7b1d"
+            "sha256": "25671f5207b347b4a2f65e3a9f6ef3b1de31c7ad45f31315693549c6a417bb08"
         },
         {
             "path": "tests/reuse/auth.js",
@@ -282,7 +283,7 @@
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
-            "sha256": "cec3474fc210fbe6f74cc4e17de395050d0021b556b70a83b15aef7d9b093f41"
+            "sha256": "c869f4af45abd4f82500f836d5e50af93b9988a56283477ae45bd0aa45f47fd1"
         },
         {
             "path": "tooling/scripts/lint-readable.mjs",

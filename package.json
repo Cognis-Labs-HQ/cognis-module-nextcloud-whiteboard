@@ -1,12 +1,16 @@
 {
-  "name": "@cognis/module-nextcloud-whiteboard",
-  "version": "2.3.25",
-  "private": false,
-  "type": "module",
-  "scripts": {
-    "test": "node --test tests/*.test.js",
-    "check:manifest": "node scripts/validate-manifest.js",
-    "manifest:hashes": "node scripts/update-manifest-hashes.js",
-    "check": "npm test && npm run check:manifest"
-  }
+    "name": "@cognis/module-nextcloud-whiteboard",
+    "version": "2.3.25",
+    "private": false,
+    "type": "module",
+    "scripts": {
+        "test": "node --test tests/*.test.js",
+        "check:manifest": "node scripts/validate-manifest.js",
+        "manifest:hashes": "node scripts/update-manifest-hashes.js",
+        "check": "npm test && npm run check:manifest",
+        "lint": "node ./tooling/scripts/lint-placeholder.mjs && node ./tooling/scripts/lint-readable.mjs"
+    },
+    "devDependencies": {
+        "prettier": "^3.9.0"
+    }
 }

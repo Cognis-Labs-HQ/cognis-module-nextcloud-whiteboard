@@ -4,7 +4,7 @@ import test from "node:test";
 import { registerApiRoutes } from "../api/index.js";
 import { NextcloudWhiteboardStore } from "../api/store.js";
 
-import { issueAccessToken, requireTestAuth } from './reuse/auth.js';
+import { issueAccessToken, requireTestAuth } from "./reuse/auth.js";
 
 function createMemoryDb() {
     const tables = new Map();

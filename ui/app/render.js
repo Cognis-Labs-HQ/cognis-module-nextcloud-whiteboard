@@ -1,3 +1,4 @@
+import { formatDateTime } from "/static/reuse/timestamp.js";
 import { escapeHtml } from "/static/reuse/escape-html.js";
 
 export function renderCanvasElement({
@@ -20,7 +21,7 @@ export function renderCanvasElement({
     const boardList = boards
         .map(
             (board) =>
-                `<button type="button" class="whiteboard-overlay-board" data-board-id="${escapeHtml(board.id)}"><span class="whiteboard-overlay-board-title">${escapeHtml(board.title)}</span><span class="whiteboard-overlay-board-updated">${escapeHtml(new Date(board.updatedAt).toLocaleString())}</span></button>`,
+                `<button type="button" class="whiteboard-overlay-board" data-board-id="${escapeHtml(board.id)}"><span class="whiteboard-overlay-board-title">${escapeHtml(board.title)}</span><span class="whiteboard-overlay-board-updated">${escapeHtml(formatDateTime(board.updatedAt, ""))}</span></button>`,
         )
         .join("");
     const toolButton = (tool, labelKey, icon) =>

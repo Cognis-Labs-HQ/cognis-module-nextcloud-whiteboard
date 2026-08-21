@@ -1,5 +1,5 @@
-export function setOverlayVisible(visible, message = "") {
-    const overlay = document.getElementById("whiteboard-canvas-overlay");
+export function setOverlayVisible(root, visible, message = "") {
+    const overlay = root?.querySelector("#whiteboard-canvas-overlay");
     if (!overlay) return;
     overlay.hidden = !visible;
     const messageElement = overlay.querySelector(".whiteboard-overlay-message");

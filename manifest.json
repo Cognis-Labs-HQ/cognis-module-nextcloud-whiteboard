@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.30",
+    "version": "2.3.31",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -83,7 +83,9 @@
         "share:resolveUserAccess",
         "social:profileStore",
         "system:ctx",
-        "ui:profileAvatarRenderer"
+        "ui:profileAvatarRenderer",
+        "share:uiGateway",
+        "ui:resourceLoader"
     ],
     "license": "AGPL-3.0-or-later",
     "files": [
@@ -138,10 +140,6 @@
         {
             "path": "README.ja.md",
             "sha256": "78e74fe6af8be17a4c3ba4024fa4f295322779bf7d50f84998b5d25394bbde11"
-        },
-        {
-            "path": "README.md",
-            "sha256": "eb3b30411f9a53f91f019187d95d501cb3580b59d5244511dbde49d014814b99"
         },
         {
             "path": "api/access.js",
@@ -237,11 +235,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "4a744146873be78621120aa306c46ec48aa3b608a5a9c3d7c2508ed60591a77a"
+            "sha256": "a08ba3fc5566946e9b88288c605a602d6045f6e6bca4c2b4915d3dee7ff351f5"
         },
         {
             "path": "package.json",
-            "sha256": "b01c61aa3fc56571c22f7b9d024fe2c9766db96ba2428a467916a8cf9886f3e5"
+            "sha256": "bf0c988727b9aea562feff184e8eb2af153fafc66e018eec9bbcafcc2a41af2a"
         },
         {
             "path": "routes.json",
@@ -249,11 +247,11 @@
         },
         {
             "path": "scripts/update-manifest-hashes.js",
-            "sha256": "db03051ff02c1ef362ba025e4f69329928d167e0a674e76c1f242cb5ce467c5c"
+            "sha256": "93470991c6c53828caab5b311f6b5e29cd632677d0780ad08f2485f6b45d41fa"
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "98d89ae4f391c0a2a4ea6a46d54b6ae87b894960af2510e562f6460fd9551ea4"
+            "sha256": "95011c1e32838d92fb45c03e20f997b3177377395fe925b9cd5b89b29701dba4"
         },
         {
             "path": "tests/ambiguous-names.test.js",
@@ -301,7 +299,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "540f332c5bfeac84e6c168d7ffa3f9041123e8aa0ae3c7972eae63b2594f73ac"
+            "sha256": "57523a29d8935961089d2696e7d51274118df4e8e6a1b2010b03117510d7055d"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -313,7 +311,7 @@
         },
         {
             "path": "ui/admin-section.js",
-            "sha256": "bd8026781db1c002570b3f3b5729f200eabfd7171e68b5dfb24b6a7ed0e7fc0c"
+            "sha256": "d996d28371047e458abf96d3cfaa9f44c7c82fc467fe5dac838b96fb616345a8"
         },
         {
             "path": "ui/app/api.js",
@@ -329,23 +327,23 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "46e16150c804d79fed59cc89adef9cf5510a999f8d6e67feb55e127b49f9dd38"
+            "sha256": "7e7408c38ce670581cfb9dcd2c0fcac82ce7ced2926b6ba95f33e5687889607b"
         },
         {
             "path": "ui/app/overlay.js",
-            "sha256": "bc09b22893c090d2fff01510b41a3347e83f3b49d1adda217ab0fc393d3397f8"
+            "sha256": "5ad11a17859c541336b3e3ee4126adb922e9cc8ac22c2deed5d3286c0e151dd9"
         },
         {
             "path": "ui/app/presence.js",
-            "sha256": "25f1ea5037e0e31fccb6e0d84f830d70734b88725aaea19fcb61d6ae6a979f24"
+            "sha256": "ee5abad676aa6083f691615b5191e93f38028f33e840d6ca6bdefc47e4088659"
         },
         {
             "path": "ui/app/realtime.js",
-            "sha256": "80e5220b04f5e849ab4ffe8578400a9028fde6660c1e29b70000530947189ac4"
+            "sha256": "da66f7f5dfae38e2e7c96757b2ac01517932cc8e0f92f4b225050b2317688376"
         },
         {
             "path": "ui/app/render.js",
-            "sha256": "ac726c0c19e59a954284be73b6b719b2bb9914d43e288454b608677c8043c223"
+            "sha256": "2dc148bf770361184c53d30b9950a64720508cce22472bc203e908336d4ddef0"
         },
         {
             "path": "ui/app/search-index.js",
@@ -380,12 +378,8 @@
             "sha256": "eb6b1c3c9286c0f1125839aa6e7a3a2338c2d6aabb237e1f8554879bded88bcc"
         },
         {
-            "path": "ui/styles/presence.css",
-            "sha256": "5e0b45b3b22e1a191fcee5a97e096d133c1b6d4bb13c0cc081ead0eb0c7c5a88"
-        },
-        {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "a76e407398d6698e8e6ed87c7fa41332a10afac89c354cbc2bc2a70257fcadf2"
+            "sha256": "f628770538564bb80ff545a68feca985d3ba79b55301dfb7d33b2454c892a7dc"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",
@@ -393,7 +387,7 @@
         },
         {
             "path": "ui/whiteboard/canvas.js",
-            "sha256": "cab1cb98f3855188cf1cda9ef61909b5e247fa93c15637719f889cc289687b3b"
+            "sha256": "b2d10b04eac7ca597fb0640de841550d17bf5b6e24e68820f0ec979baa1db47c"
         },
         {
             "path": "ui/whiteboard/clipboard-images.js",

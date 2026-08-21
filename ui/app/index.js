@@ -56,6 +56,10 @@ let preflightStatus = "idle";
 let lastConnectionToast = "";
 let imageUploadMaxBytes = 1048576;
 let integrationCanvasMode = false;
+let mountRoot = null;
+let runtimeDispose = null;
+let shareControlDispose = null;
+const withinMount = (selector) => mountRoot?.querySelector(selector) ?? null;
 const {
     buildConnectionErrorMessage,
     canManageShares,
@@ -82,6 +86,8 @@ async function loadBoards() {
     boards = await fetchWhiteboardList();
 }
 function teardownCanvas() {
+    shareControlDispose?.();
+    shareControlDispose = null;
     if (socketInstance) {
         try {
             socketInstance.cognisCleanup?.();
@@ -106,6 +112,8 @@ function teardownCanvas() {
         canvasInstance = null;
     }
     activeSession = null;
+    runtimeDispose?.();
+    runtimeDispose = null;
 }
 function canRenameActiveBoard() {
     return Boolean(
@@ -120,7 +128,7 @@ function applyBoardTitle(title) {
         title: normalizedTitle,
     };
     if (activeSession) activeSession.title = normalizedTitle;
-    const titleEl = document.getElementById("whiteboard-board-title");
+    const titleEl = withinMount("#whiteboard-board-title");
     if (titleEl && titleEl.dataset.renaming !== "true") {
         titleEl.textContent = normalizedTitle;
     }
@@ -300,11 +308,11 @@ async function createAndOpenBoard() {
     await openBoard(spawnResult.whiteboard);
 }
 function bindCanvasToolbar(canvas) {
-    const toolbar = document.getElementById("whiteboard-toolbar");
+    const toolbar = withinMount("#whiteboard-toolbar");
     if (!toolbar || toolbar.dataset.bound === "true") return;
     toolbar.dataset.bound = "true";
-    if (!document.getElementById("whiteboard-tool-lock")) {
-        const historyButton = document.getElementById("whiteboard-history");
+    if (!withinMount("#whiteboard-tool-lock")) {
+        const historyButton = withinMount("#whiteboard-history");
         historyButton?.insertAdjacentHTML(
             "afterend",
             `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translateModuleString("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translateModuleString("module.nextcloud_whiteboard.tool_lock"))}">🔒</button>`,
@@ -340,7 +348,7 @@ function bindCanvasToolbar(canvas) {
         return strokeTools.has(activeTool);
     }
     function updateStyleControls() {
-        const strokeSelect = document.getElementById("whiteboard-stroke-width");
+        const strokeSelect = withinMount("#whiteboard-stroke-width");
         if (strokeSelect) {
             strokeSelect.disabled = !(
                 selectedCanUseStrokeWidth() || activeToolCanUseStrokeWidth()
@@ -350,8 +358,8 @@ function bindCanvasToolbar(canvas) {
             }
         }
     }
-    const undoButton = document.getElementById("whiteboard-undo");
-    const redoButton = document.getElementById("whiteboard-redo");
+    const undoButton = withinMount("#whiteboard-undo");
+    const redoButton = withinMount("#whiteboard-redo");
     function updateHistoryControls() {
         if (undoButton) undoButton.disabled = !canvas.canUndo?.();
         if (redoButton) redoButton.disabled = !canvas.canRedo?.();
@@ -367,7 +375,7 @@ function bindCanvasToolbar(canvas) {
     });
     canvas.onToolChange?.((tool) => activateTool(tool));
     canvas.onHistoryChange?.(updateHistoryControls);
-    const lockButton = document.getElementById("whiteboard-tool-lock");
+    const lockButton = withinMount("#whiteboard-tool-lock");
     lockButton?.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -376,12 +384,14 @@ function bindCanvasToolbar(canvas) {
         lockButton.setAttribute("aria-pressed", String(keepToolActive));
         canvas.setKeepToolActive?.(keepToolActive);
     });
-    document
-        .getElementById("whiteboard-new")
-        ?.addEventListener("click", () => void createAndOpenBoard());
-    document
-        .getElementById("whiteboard-history")
-        ?.addEventListener("click", () => void openHistoryPopup());
+    withinMount("#whiteboard-new")?.addEventListener(
+        "click",
+        () => void createAndOpenBoard(),
+    );
+    withinMount("#whiteboard-history")?.addEventListener(
+        "click",
+        () => void openHistoryPopup(),
+    );
     undoButton?.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -398,13 +408,14 @@ function bindCanvasToolbar(canvas) {
         bindShareButton(toolbar);
     }
     if (canRenameActiveBoard()) {
-        document
-            .getElementById("whiteboard-board-title")
-            ?.addEventListener("dblclick", () => void renameActiveBoard());
+        withinMount("#whiteboard-board-title")?.addEventListener(
+            "dblclick",
+            () => void renameActiveBoard(),
+        );
     }
-    const colorInput = document.getElementById("whiteboard-color");
+    const colorInput = withinMount("#whiteboard-color");
     const themeStrokeColor = () =>
-        getComputedStyle(document.body).getPropertyValue("--text").trim() ||
+        getComputedStyle(mountRoot).getPropertyValue("--text").trim() ||
         "#111827";
     if (colorInput) {
         colorInput.value = themeStrokeColor();
@@ -413,7 +424,7 @@ function bindCanvasToolbar(canvas) {
     colorInput?.addEventListener("input", () => {
         canvas.setStrokeColor(colorInput.value);
     });
-    const strokeSelect = document.getElementById("whiteboard-stroke-width");
+    const strokeSelect = withinMount("#whiteboard-stroke-width");
     strokeSelect?.addEventListener("change", () => {
         canvas.setStrokeWidth(strokeSelect.value);
     });
@@ -429,30 +440,27 @@ function bindCanvasToolbar(canvas) {
         composer?.refreshPresence?.();
     });
     updateStyleControls();
-    document
-        .getElementById("whiteboard-clear")
-        ?.addEventListener("click", async (event) => {
+    withinMount("#whiteboard-clear")?.addEventListener(
+        "click",
+        async (event) => {
             event.preventDefault();
             if (!(await confirmClearCanvas(translateModuleString))) return;
             canvas.clearAll();
             savedElements = [];
-        });
+        },
+    );
 }
 async function bindShareButton(toolbar) {
     const slot = toolbar.querySelector("#whiteboard-share-slot");
     if (!(slot instanceof HTMLElement) || !activeBoard?.id) return;
-    const label = translateModuleString(
-        "module.nextcloud_whiteboard.share_button",
-    );
-    const button = document.createElement("button");
-    button.type = "button";
-    button.id = "whiteboard-share";
-    button.className = "whiteboard-tool";
-    button.title = label;
-    button.setAttribute("aria-label", label);
-    button.textContent = "🔗";
-    button.addEventListener("click", () => void openSharePopup());
-    slot.replaceChildren(button);
+    const shareGateway = uiCtx.capabilities.get("share:uiGateway");
+    if (typeof shareGateway?.mountTrigger !== "function") return;
+    shareControlDispose?.();
+    const mounted = await shareGateway.mountTrigger(slot, {
+        onActivate: openSharePopup,
+        variant: "toolbar",
+    });
+    shareControlDispose = () => mounted?.destroy?.();
 }
 
 async function openSharePopup() {
@@ -487,95 +495,6 @@ async function openSharePopup() {
                     ],
                 },
             ],
-            title: translateModuleString(
-                "module.nextcloud_whiteboard.share_popup_title",
-            ),
-            labels: {
-                empty: translateModuleString(
-                    "module.nextcloud_whiteboard.share_empty",
-                ),
-                untitled: translateModuleString(
-                    "module.nextcloud_whiteboard.share_untitled",
-                ),
-                copyLink: translateModuleString(
-                    "module.nextcloud_whiteboard.share_copy_link",
-                ),
-                revoke: translateModuleString(
-                    "module.nextcloud_whiteboard.share_revoke",
-                ),
-                shareOptions: translateModuleString(
-                    "module.nextcloud_whiteboard.share_options_label",
-                ),
-                permission: translateModuleString(
-                    "module.nextcloud_whiteboard.share_options_label",
-                ),
-                accessMode: translateModuleString(
-                    "module.nextcloud_whiteboard.share_options_label",
-                ),
-                readPermission: translateModuleString(
-                    "module.nextcloud_whiteboard.share_permission_read",
-                ),
-                writePermission: translateModuleString(
-                    "module.nextcloud_whiteboard.share_permission_write",
-                ),
-                mail: translateModuleString("ui.reuse.mail"),
-                label: translateModuleString(
-                    "module.nextcloud_whiteboard.share_label",
-                ),
-                labelPlaceholder: translateModuleString(
-                    "module.nextcloud_whiteboard.share_label_placeholder",
-                ),
-                expiryLabel: translateModuleString(
-                    "module.nextcloud_whiteboard.share_expiry_label",
-                ),
-                password: translateModuleString(
-                    "module.nextcloud_whiteboard.share_password_optional",
-                ),
-                passwordPopupTitle: translateModuleString(
-                    "module.nextcloud_whiteboard.share_password_title",
-                ),
-                passwordPopupLabel: translateModuleString(
-                    "module.nextcloud_whiteboard.share_password_instruction",
-                ),
-                passwordPlaceholder: translateModuleString(
-                    "module.nextcloud_whiteboard.share_password_placeholder",
-                ),
-                cancel: translateModuleString("ui.reuse.cancel"),
-                confirm: translateModuleString(
-                    "module.nextcloud_whiteboard.share_revoke",
-                ),
-                deleteConfirmMessage: translateModuleString(
-                    "module.nextcloud_whiteboard.share_delete_prompt",
-                ),
-                statusActive: translateModuleString(
-                    "module.nextcloud_whiteboard.share_status_active",
-                ),
-                statusExpired: translateModuleString(
-                    "module.nextcloud_whiteboard.share_status_expired",
-                ),
-                expiresAtLabel: translateModuleString(
-                    "module.nextcloud_whiteboard.share_expires_at_label",
-                ),
-                expiredAtLabel: translateModuleString(
-                    "module.nextcloud_whiteboard.share_expired_at_label",
-                ),
-                generateLink: translateModuleString(
-                    "module.nextcloud_whiteboard.share_generate_link",
-                ),
-                close: translateModuleString("ui.reuse.close"),
-                createFailed: translateModuleString(
-                    "module.nextcloud_whiteboard.share_create_failed",
-                ),
-                copySuccess: translateModuleString(
-                    "module.nextcloud_whiteboard.share_copy_success",
-                ),
-                copyFailed: translateModuleString(
-                    "module.nextcloud_whiteboard.share_copy_failed",
-                ),
-                deleteFailed: translateModuleString(
-                    "module.nextcloud_whiteboard.share_delete_failed",
-                ),
-            },
         });
     } catch (error) {
         reportClientError(
@@ -603,7 +522,7 @@ async function openHistoryPopup() {
 }
 async function renameActiveBoard() {
     if (!activeBoard || !canRenameActiveBoard()) return;
-    const titleEl = document.getElementById("whiteboard-board-title");
+    const titleEl = withinMount("#whiteboard-board-title");
     if (!titleEl || titleEl.dataset.renaming === "true") return;
     titleEl.dataset.renaming = "true";
     titleEl.contentEditable = "true";
@@ -669,7 +588,11 @@ async function renameActiveBoard() {
 }
 async function verifyWebsocketAuth(result) {
     if (!result?.serverUrl || !result?.websocketAuthToken) return false;
-    const io = await loadSocketIo(result.serverUrl);
+    const runtime = await loadSocketIo(
+        result.serverUrl,
+        uiCtx.capabilities.get("ui:resourceLoader"),
+    );
+    const io = runtime.io;
     return new Promise((resolve) => {
         const socket = io(result.serverUrl, {
             auth: { token: result.websocketAuthToken },
@@ -679,6 +602,7 @@ async function verifyWebsocketAuth(result) {
         });
         const finish = (passed) => {
             socket.disconnect();
+            runtime.dispose();
             resolve(passed);
         };
         const timer = window.setTimeout(() => finish(false), 5500);
@@ -696,6 +620,7 @@ async function runPreflightCheck() {
     if (preflightStatus === "running") return false;
     preflightStatus = "running";
     setOverlayVisible(
+        mountRoot,
         true,
         translateModuleString("module.nextcloud_whiteboard.preflight_checking"),
     );
@@ -714,7 +639,7 @@ async function runPreflightCheck() {
                 : translateModuleString(
                       "module.nextcloud_whiteboard.preflight_failed",
                   );
-        setOverlayVisible(true, message);
+        setOverlayVisible(mountRoot, true, message);
         showToast(message, { variant: "error" });
         return false;
     }
@@ -723,7 +648,7 @@ async function runPreflightCheck() {
         const message = translateModuleString(
             "module.nextcloud_whiteboard.preflight_unreachable",
         );
-        setOverlayVisible(true, message);
+        setOverlayVisible(mountRoot, true, message);
         showToast(message, { variant: "error" });
         return false;
     }
@@ -735,7 +660,7 @@ async function runPreflightCheck() {
         const message = translateModuleString(
             "module.nextcloud_whiteboard.preflight_websocket_failed",
         );
-        setOverlayVisible(true, message);
+        setOverlayVisible(mountRoot, true, message);
         showToast(message, { variant: "error" });
         return false;
     }
@@ -765,6 +690,7 @@ async function openBoard(board) {
     const passed = await runPreflightCheck();
     if (!passed) return;
     setOverlayVisible(
+        mountRoot,
         true,
         translateModuleString("module.nextcloud_whiteboard.connecting"),
     );
@@ -772,7 +698,7 @@ async function openBoard(board) {
     try {
         session = await fetchWhiteboardSession(board.id);
     } catch (error) {
-        setOverlayVisible(true, error.message);
+        setOverlayVisible(mountRoot, true, error.message);
         showToast(error.message, { variant: "error" });
         return;
     }
@@ -783,13 +709,19 @@ async function openBoard(board) {
     applyBoardTitle(session.title);
     let io;
     try {
-        io = await loadSocketIo(session.serverUrl);
+        const runtime = await loadSocketIo(
+            session.serverUrl,
+            uiCtx.capabilities.get("ui:resourceLoader"),
+        );
+        io = runtime.io;
+        runtimeDispose?.();
+        runtimeDispose = runtime.dispose;
     } catch (error) {
-        setOverlayVisible(true, error.message);
+        setOverlayVisible(mountRoot, true, error.message);
         showToast(error.message, { variant: "error" });
         return;
     }
-    const canvasElement = document.getElementById("whiteboard-canvas");
+    const canvasElement = withinMount("#whiteboard-canvas");
     if (!canvasElement) return;
     canvasInstance = createWhiteboardCanvas(canvasElement, {
         readOnly: session.canWrite !== true,
@@ -809,15 +741,15 @@ async function openBoard(board) {
     composer?.refreshPresence?.();
     bindCanvasToolbar(canvasInstance);
     if (session.canWrite !== true) {
-        document
-            .querySelectorAll(
+        mountRoot
+            ?.querySelectorAll(
                 "#whiteboard-toolbar button, #whiteboard-toolbar select, #whiteboard-toolbar input",
             )
             .forEach((control) => {
                 control.disabled = true;
             });
     }
-    setOverlayVisible(false);
+    setOverlayVisible(mountRoot, false);
 }
 
 function renderCanvasElement() {
@@ -836,21 +768,25 @@ function renderCanvasElement() {
     });
 }
 function onCanvasRender() {
-    document
-        .getElementById("whiteboard-start-new")
-        ?.addEventListener("click", () => void createAndOpenBoard());
-    document
-        .getElementById("whiteboard-start-history")
-        ?.addEventListener("click", () => void openHistoryPopup());
-    document.querySelectorAll(".whiteboard-overlay-board").forEach((button) => {
-        button.addEventListener("click", () => {
-            const board = boards.find(
-                (item) => item.id === button.dataset.boardId,
-            );
-            if (board) void openBoard(board);
+    withinMount("#whiteboard-start-new")?.addEventListener(
+        "click",
+        () => void createAndOpenBoard(),
+    );
+    withinMount("#whiteboard-start-history")?.addEventListener(
+        "click",
+        () => void openHistoryPopup(),
+    );
+    mountRoot
+        ?.querySelectorAll(".whiteboard-overlay-board")
+        .forEach((button) => {
+            button.addEventListener("click", () => {
+                const board = boards.find(
+                    (item) => item.id === button.dataset.boardId,
+                );
+                if (board) void openBoard(board);
+            });
         });
-    });
-    const canvasElement = document.getElementById("whiteboard-canvas");
+    const canvasElement = withinMount("#whiteboard-canvas");
     if (!canvasElement || canvasInstance || !activeBoard || !activeSession)
         return;
     if (preflightStatus !== "passed") return;
@@ -888,6 +824,7 @@ function buildElements() {
     ];
 }
 export async function mount(root, { signal, shareContext } = {}) {
+    mountRoot = root;
     registerSearchIndex("nextcloud-whiteboard", collectWhiteboardSearchGroups);
     i18n = await createI18n({
         componentStringBaseUrls: [

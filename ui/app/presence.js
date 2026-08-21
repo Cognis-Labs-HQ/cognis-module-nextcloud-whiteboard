@@ -57,11 +57,17 @@ export function renderWhiteboardPresenceEntry(entry) {
         avatarKey: String(entry.avatarKey || "").trim(),
         label,
         colorSeed: handle || displayName,
-        avatarClass: "page-presence__profile",
-        imageClass: ["page-presence__avatar-img", active ? "is-active" : ""]
+        avatarClass: "whiteboard-presence-avatar",
+        imageClass: [
+            "whiteboard-presence-avatar-image",
+            active ? "is-active" : "",
+        ]
             .filter(Boolean)
             .join(" "),
-        fallbackClass: ["page-presence__avatar", active ? "is-active" : ""]
+        fallbackClass: [
+            "whiteboard-presence-avatar-fallback",
+            active ? "is-active" : "",
+        ]
             .filter(Boolean)
             .join(" "),
         profileHandle: entry.guest || !handle ? null : handle,

@@ -95,6 +95,9 @@ function createRouterCapture() {
         post(path, handler) {
             routes.set(`POST ${path}`, handler);
         },
+        put(path, handler) {
+            routes.set(`PUT ${path}`, handler);
+        },
         handler(method, path) {
             const handler = routes.get(`${method} ${path}`);
             assert.ok(handler, `${method} ${path} should be registered`);
@@ -102,6 +105,57 @@ function createRouterCapture() {
         },
     };
 }
+
+test("nextcloud whiteboard config endpoint reads and persists configuration", async () => {
+    const db = createMemoryDb();
+    const router = createRouterCapture();
+    registerApiRoutes(router, {
+        getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
+            if (key === "db:executor") return db;
+            if (key === "logging:log") return () => {};
+            return undefined;
+        },
+    });
+    const headers = {
+        authorization: `Bearer ${issueAccessToken("alice", "admin", 60)}`,
+    };
+    const putResponse = createJsonResponse();
+
+    await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
+        {
+            headers,
+            async *[Symbol.asyncIterator]() {
+                yield Buffer.from(
+                    JSON.stringify({
+                        serverUrl: "https://whiteboard.example.test",
+                        apiKey: "configuration-secret-at-least-16-chars",
+                        imageUploadMaxBytes: 2097152,
+                    }),
+                );
+            },
+        },
+        putResponse,
+    );
+
+    assert.equal(putResponse.statusCode, 200);
+    assert.deepEqual(putResponse.json().data, {
+        serverUrl: "https://whiteboard.example.test",
+        imageUploadMaxBytes: 2097152,
+        apiKeyConfigured: true,
+        updatedAt: putResponse.json().data.updatedAt,
+    });
+
+    const getResponse = createJsonResponse();
+    await router.handler("GET", "/api/v1/modules/nextcloud-whiteboard/config")(
+        { headers },
+        getResponse,
+    );
+
+    assert.equal(getResponse.statusCode, 200);
+    assert.deepEqual(getResponse.json().data, putResponse.json().data);
+    assert.equal(getResponse.json().data.apiKey, undefined);
+});
 
 function decodeJwtPayload(token) {
     const payload = String(token ?? "").split(".")[1] ?? "";

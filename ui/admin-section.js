@@ -70,7 +70,7 @@ export async function mount(root) {
         const saveResponse = await fetch(`${API_BASE}/config`, {
             credentials: "same-origin",
             headers: { "content-type": "application/json" },
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({
                 serverUrl: formData.get("serverUrl"),
                 apiKey: formData.get("apiKey"),

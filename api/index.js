@@ -105,7 +105,7 @@ export function registerApiRoutes(router, ctx) {
             { access: { minRole: "admin" }, allowWhenDisabled: true },
         );
 
-        router.post(
+        router.put(
             "/api/v1/modules/nextcloud-whiteboard/config",
             async (_req, res) => {
                 unavailablePayload(res);
@@ -146,19 +146,21 @@ export function registerApiRoutes(router, ctx) {
 
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/config",
-        async (_req, res) => {
+        async (req, res) => {
+            const claims = requireAuth(req, res, "user");
+            if (!claims) return;
             await store.ensureSchema();
             sendJson(res, 200, { data: publicConfig(await store.getConfig()) });
         },
-        { access: { minRole: "admin" }, allowWhenDisabled: true },
+        { access: { minRole: "user" }, allowWhenDisabled: true },
     );
 
-    router.post(
+    router.put(
         "/api/v1/modules/nextcloud-whiteboard/config",
         async (req, res) => {
-            await store.ensureSchema();
             const claims = requireAuth(req, res, "admin");
             if (!claims) return;
+            await store.ensureSchema();
             const body = await readJson(req);
             const serverUrl = normalizeHttpUrl(body.serverUrl);
             const existingConfig = await store.getConfig();

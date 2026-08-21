@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "Nextcloud Whiteboard",
-    "version": "2.3.25",
+    "version": "2.3.26",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -139,7 +139,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "66dee284001182d07b60abda4c6e8a80ded6c555e512f234c5d9e99e16f5b28f"
+            "sha256": "28e77753063b93e3ece23155328fbbd3eb75bb2fceb89a37e79fef6f13e23b7c"
         },
         {
             "path": "api/reuse/flow-helpers.js",
@@ -215,11 +215,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "e36128faaa1e74cc10ac2ea2ca6608d610d71dda9af902bc759c91877dd25886"
+            "sha256": "ee894784c2872f678919d6799186def03dc53e4bf9b6b86b91dbb26ea4f0f40d"
         },
         {
             "path": "package.json",
-            "sha256": "9187760c709d11ba7b5f1d521ff990a3d91ab88f0f03cc59b54c43559251bd12"
+            "sha256": "3689c6ebe5507bf7b9caea5064ab01a709f58a2fb72f79eebf7072b6538d8d4c"
         },
         {
             "path": "routes.json",
@@ -239,11 +239,11 @@
         },
         {
             "path": "tests/api-routes-sharing.test.js",
-            "sha256": "e94bfd54beee658129ab8af79911c126c62fe12d2027a80646bac592ecb525b0"
+            "sha256": "81c7041efe0fc70fab18f0b773689cd10950cb29966d9f0f569b30d71e6fc2ae"
         },
         {
             "path": "tests/api-routes.test.js",
-            "sha256": "a4b440e96107a3fa1c888ac4dddff8652dad39c4cf7a3d8c0b6a551a8c22cdbc"
+            "sha256": "0603aea7ba9e4f2243ad7488ee0e2912d59f5ea66588633e521e575e058ed5d4"
         },
         {
             "path": "tests/documentation-convention.test.js",
@@ -291,7 +291,7 @@
         },
         {
             "path": "ui/admin-section.js",
-            "sha256": "38a9757e309e3a1037a181d42c4645809955801f3b92b45539b4534a50f45e76"
+            "sha256": "bd8026781db1c002570b3f3b5729f200eabfd7171e68b5dfb24b6a7ed0e7fc0c"
         },
         {
             "path": "ui/app/api.js",

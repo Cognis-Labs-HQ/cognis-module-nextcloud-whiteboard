@@ -131,6 +131,9 @@ function createRouterCapture() {
         post(path, handler) {
             routes.set(`POST ${path}`, handler);
         },
+        put(path, handler) {
+            routes.set(`PUT ${path}`, handler);
+        },
         handler(method, path) {
             const handler = routes.get(`${method} ${path}`);
             assert.ok(handler, `${method} ${path} should be registered`);
@@ -511,7 +514,11 @@ test("nextcloud whiteboard config remains available without the profile store", 
 
     const res = createJsonResponse();
     await router.handler("GET", "/api/v1/modules/nextcloud-whiteboard/config")(
-        {},
+        {
+            headers: {
+                authorization: `Bearer ${issueAccessToken("alice", "user", 60)}`,
+            },
+        },
         res,
     );
 
@@ -590,7 +597,7 @@ test("nextcloud whiteboard config save preserves existing API key when omitted",
     });
 
     const res = createJsonResponse();
-    await router.handler("POST", "/api/v1/modules/nextcloud-whiteboard/config")(
+    await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
                 authorization: `Bearer ${issueAccessToken("admin", "admin", 60)}`,
@@ -629,7 +636,7 @@ test("nextcloud whiteboard config save accepts URL updates before an API key is 
     });
 
     const res = createJsonResponse();
-    await router.handler("POST", "/api/v1/modules/nextcloud-whiteboard/config")(
+    await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
                 authorization: `Bearer ${issueAccessToken("admin", "admin", 60)}`,
@@ -674,7 +681,7 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
     });
 
     const urlRes = createJsonResponse();
-    await router.handler("POST", "/api/v1/modules/nextcloud-whiteboard/config")(
+    await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
                 authorization: `Bearer ${issueAccessToken("admin", "admin", 60)}`,
@@ -694,7 +701,7 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
     );
 
     const apiKeyRes = createJsonResponse();
-    await router.handler("POST", "/api/v1/modules/nextcloud-whiteboard/config")(
+    await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
                 authorization: `Bearer ${issueAccessToken("admin", "admin", 60)}`,

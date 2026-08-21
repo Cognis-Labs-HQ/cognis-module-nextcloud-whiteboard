@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "Nextcloud Whiteboard",
-    "version": "2.3.26",
+    "version": "2.3.27",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -26,6 +26,7 @@
             {
                 "key": "serverUrl",
                 "type": "string",
+                "required": true,
                 "default": "",
                 "labelKey": "module.nextcloud_whiteboard.server_url",
                 "descriptionKey": "module.nextcloud_whiteboard.server_url_description"
@@ -33,6 +34,7 @@
             {
                 "key": "imageUploadMaxBytes",
                 "type": "number",
+                "required": true,
                 "default": 1048576,
                 "labelKey": "module.nextcloud_whiteboard.image_upload_limit",
                 "descriptionKey": "module.nextcloud_whiteboard.image_upload_limit_description"
@@ -40,6 +42,7 @@
             {
                 "key": "apiKey",
                 "type": "password",
+                "required": true,
                 "default": "",
                 "labelKey": "module.nextcloud_whiteboard.api_key",
                 "descriptionKey": "module.nextcloud_whiteboard.api_key_description"
@@ -111,7 +114,7 @@
         },
         {
             "path": "AGENTS.md",
-            "sha256": "6552f72537da7691f7f4005f7a03fb4a6250eeea1e3eee5b88e9164867bd391e"
+            "sha256": "b185d419629b8cb63248a6803e9d367465d622642eb5526b4f10a7fa009b6ff4"
         },
         {
             "path": "LICENSE",
@@ -215,11 +218,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "ee894784c2872f678919d6799186def03dc53e4bf9b6b86b91dbb26ea4f0f40d"
+            "sha256": "40aa65b29b8aed5bce5c374d503d517f273da4aedc6af8bb238db46e419f9134"
         },
         {
             "path": "package.json",
-            "sha256": "3689c6ebe5507bf7b9caea5064ab01a709f58a2fb72f79eebf7072b6538d8d4c"
+            "sha256": "3785c272320e339f74e6f9be017410f76439468dbb5c697952eb1a382998d98a"
         },
         {
             "path": "routes.json",
@@ -259,7 +262,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "25671f5207b347b4a2f65e3a9f6ef3b1de31c7ad45f31315693549c6a417bb08"
+            "sha256": "d63d0ba6eb7631696e8b9df06e79c06f86fe6747114e214775fa0b0ede479f5d"
         },
         {
             "path": "tests/reuse/auth.js",

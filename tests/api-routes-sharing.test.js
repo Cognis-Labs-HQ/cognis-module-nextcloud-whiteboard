@@ -134,6 +134,9 @@ function createRouterCapture() {
         put(path, handler) {
             routes.set(`PUT ${path}`, handler);
         },
+        delete(path, handler) {
+            routes.set(`DELETE ${path}`, handler);
+        },
         handler(method, path) {
             const handler = routes.get(`${method} ${path}`);
             assert.ok(handler, `${method} ${path} should be registered`);

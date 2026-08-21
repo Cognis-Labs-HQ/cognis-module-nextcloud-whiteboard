@@ -1,8 +1,8 @@
 {
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
-    "name": "Nextcloud Whiteboard",
-    "version": "2.3.28",
+    "name": "module.nextcloud_whiteboard.name",
+    "version": "2.3.29",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -54,16 +54,19 @@
         "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
         "0da92508-63fa-53ed-918c-e6f08692a382"
     ],
-    "summary": "Collaborative whiteboards backed by Nextcloud.",
-    "description": "Create and share realtime whiteboards with Cognis access controls.",
-    "categories": ["Collaboration"],
+    "summary": "module.nextcloud_whiteboard.summary",
+    "description": "module.nextcloud_whiteboard.description",
+    "categories": ["module.nextcloud_whiteboard.category_collaboration"],
     "repository": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard",
     "assets": {
         "screenshots": [],
         "icon": "assets/icon.png",
         "banner": "assets/banner.png"
     },
-    "tags": ["whiteboard", "collaboration"],
+    "tags": [
+        "module.nextcloud_whiteboard.tag_whiteboard",
+        "module.nextcloud_whiteboard.tag_collaboration"
+    ],
     "homepage": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard#readme",
     "support": "https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/issues",
     "requiresCapabilities": [
@@ -142,7 +145,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "40b7edba14bedd4dc0522f6954d6366c6c43a59c84f07109cbec6f2d1a45ee09"
+            "sha256": "e392846dbd349e3d033d6bb190ef5467283a764fecdb6764fb2dc0cb77682fc8"
         },
         {
             "path": "api/reuse/flow-helpers.js",
@@ -182,7 +185,7 @@
         },
         {
             "path": "api/store.js",
-            "sha256": "9358d1caa377734b956c247651c9b250d13f876f4759036dd5d895636ece0ee1"
+            "sha256": "9017a067f6257d12ef57de72ab67326aa721f1c07991cf16338c53e13850f0d1"
         },
         {
             "path": "assets/banner.png",
@@ -194,7 +197,7 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "dcf90e431b88f612d881f7b9c8b3afcf0d54df7d4e109b749e38bac519da8fb5"
+            "sha256": "5c1ac799df40fed8212831bc0192f218f31225ef1dd714a882a14657247c9c92"
         },
         {
             "path": "cli/index.js",
@@ -218,11 +221,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "6a9de29e3c8bcda73a76713b013a9824684e5597a483ef2e0e7f202fe29c2b4d"
+            "sha256": "3df47a8ae0624fd5e790f1a71fefdf30ae52cfa6e111ca2cff9e07d88c83585a"
         },
         {
             "path": "package.json",
-            "sha256": "61fe236fcf4830fee2c0935842f2ced93c7b428032e2f13287775bac3d8b5d7c"
+            "sha256": "1d00da87ddaec85324e50f2da6fec2d6331e0e83b9510dc5e15082cafd7dfd5f"
         },
         {
             "path": "routes.json",
@@ -242,11 +245,11 @@
         },
         {
             "path": "tests/api-routes-sharing.test.js",
-            "sha256": "81c7041efe0fc70fab18f0b773689cd10950cb29966d9f0f569b30d71e6fc2ae"
+            "sha256": "58a0c3a9fe7c78209fabcb2e95bd3c89ff64f6b8c4db7de661461cf5e14b8d29"
         },
         {
             "path": "tests/api-routes.test.js",
-            "sha256": "0603aea7ba9e4f2243ad7488ee0e2912d59f5ea66588633e521e575e058ed5d4"
+            "sha256": "1840fc8ef81932b41d02da2d3fd0cb76cde5de14fa3ec685fcb7cae4a3cf3fdc"
         },
         {
             "path": "tests/documentation-convention.test.js",
@@ -274,7 +277,7 @@
         },
         {
             "path": "tests/store.test.js",
-            "sha256": "04fe6dd9be7455737a7118f9194c9ba51e0b72f09637daa2a34ff088d707ee76"
+            "sha256": "9f28bcd21485a4164f5f440380ec263571ae716503d7b620558a10942ba83a3a"
         },
         {
             "path": "tests/structural-compliance.test.js",
@@ -326,11 +329,11 @@
         },
         {
             "path": "ui/app/render.js",
-            "sha256": "df60322bc9731b7a49f479bf8584e3da873ace1c882bb7a1438b720921f5382e"
+            "sha256": "ac726c0c19e59a954284be73b6b719b2bb9914d43e288454b608677c8043c223"
         },
         {
             "path": "ui/app/search-index.js",
-            "sha256": "b79a8a8005193eec22bf8250f9296868dcdd629300dac2d33211c9ac0be47ba0"
+            "sha256": "1750d3ff3e4259e05357c29f8ef196e51f5621bf579cd37e750ad297a04cfee4"
         },
         {
             "path": "ui/app/status.js",
@@ -342,23 +345,23 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "3b0e5320c8fba8240a84bc2365b73f4de4314bbc3bb67a46a79d371af40e80d3"
+            "sha256": "6de4510aed64ad2b4850e02a25c89fd9008c21f6f29483744636c1eaebfb2b7d"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "3a7fa7c3bfe7b1aada60aef81d916501e888d262c90bad41c0a616dca2dd3a62"
+            "sha256": "e20347a9c121e5710cb666674e019134227a50ad1cfa84d8d64f48170e749b05"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "69f77d1b18d5fd6286b8d68675d12b09efa697ad9149682416f1a5713b52787d"
+            "sha256": "199494dc6880b41100a2c88b5cbf8eb1abf70808693f476303f1a70b2545b1ac"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "621eb89d382aed234349f63d2a6fe1872488c31d4ca0f621980a0ad523d65122"
+            "sha256": "7d6c5f6076c9cf716ad51f19b9e3e19a3e46c4ced905daeab1284c8e4048cb63"
         },
         {
             "path": "ui/navbar.js",
-            "sha256": "227eaaaf5e78fb0726abff78de7dcd88468b6be591366bfa12998d3799be37e7"
+            "sha256": "eb6b1c3c9286c0f1125839aa6e7a3a2338c2d6aabb237e1f8554879bded88bcc"
         },
         {
             "path": "ui/styles/presence.css",

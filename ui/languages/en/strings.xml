@@ -99,4 +99,14 @@
   <string name="module.nextcloud_whiteboard.tool_lock">Keep the current drawing tool active after creating an object</string>
   <string name="module.nextcloud_whiteboard.share_permission_read">Read-Only</string>
   <string name="module.nextcloud_whiteboard.share_permission_write">Read + Write</string>
+  <string name="module.nextcloud_whiteboard.name">Nextcloud Whiteboard</string>
+  <string name="module.nextcloud_whiteboard.summary">Collaborative whiteboards backed by Nextcloud.</string>
+  <string name="module.nextcloud_whiteboard.description">Create and share realtime whiteboards with Cognis access controls.</string>
+  <string name="module.nextcloud_whiteboard.category_collaboration">Collaboration</string>
+  <string name="module.nextcloud_whiteboard.nav_label">Whiteboards</string>
+  <string name="module.nextcloud_whiteboard.search_pages">Pages</string>
+  <string name="module.nextcloud_whiteboard.search_category">Whiteboards</string>
+  <string name="module.nextcloud_whiteboard.new">New</string>
+  <string name="module.nextcloud_whiteboard.tag_whiteboard">Whiteboard</string>
+  <string name="module.nextcloud_whiteboard.tag_collaboration">Collaboration</string>
 </resources>

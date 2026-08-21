@@ -73,6 +73,17 @@ function createMemoryDb() {
                 tables.set(command.table, rows);
                 return { rows: [] };
             }
+            if (command.option === "DELETE") {
+                tables.set(
+                    command.table,
+                    command.where
+                        ? rows.filter(
+                              (row) => !applyWhere([row], command.where).length,
+                          )
+                        : [],
+                );
+                return { rows: [] };
+            }
             return { rows: [] };
         },
         async transaction(callback) {
@@ -95,6 +106,25 @@ test("nextcloud whiteboard store persists normalized configuration", async () =>
     assert.equal(saved.apiKeyConfigured, true);
     assert.equal(saved.apiKey, "secret-api-key-minimum-16-chars");
     assert.equal(saved.imageUploadMaxBytes, 2097152);
+});
+
+test("nextcloud whiteboard store deletes configuration", async () => {
+    const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
+    await store.ensureSchema();
+    await store.saveConfig({
+        serverUrl: "https://whiteboard.example.test",
+        apiKey: "secret-api-key-minimum-16-chars",
+        imageUploadMaxBytes: 4096,
+    });
+    await store.deleteConfig();
+
+    assert.deepEqual(await store.getConfig(), {
+        serverUrl: "",
+        apiKeyConfigured: false,
+        apiKey: "",
+        imageUploadMaxBytes: 1048576,
+        updatedAt: null,
+    });
 });
 
 test("nextcloud whiteboard store enforces allow-list access", async () => {

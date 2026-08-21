@@ -99,4 +99,14 @@
   <string name="module.nextcloud_whiteboard.tool_lock">オブジェクト作成後も現在の描画ツールを維持</string>
   <string name="module.nextcloud_whiteboard.share_permission_read">読み取り専用</string>
   <string name="module.nextcloud_whiteboard.share_permission_write">読み取り + 書き込み</string>
+  <string name="module.nextcloud_whiteboard.name">Nextcloud ホワイトボード</string>
+  <string name="module.nextcloud_whiteboard.summary">Nextcloud を基盤とする共同ホワイトボード。</string>
+  <string name="module.nextcloud_whiteboard.description">Cognis のアクセス制御を使用してリアルタイムのホワイトボードを作成、共有します。</string>
+  <string name="module.nextcloud_whiteboard.category_collaboration">コラボレーション</string>
+  <string name="module.nextcloud_whiteboard.nav_label">ホワイトボード</string>
+  <string name="module.nextcloud_whiteboard.search_pages">ページ</string>
+  <string name="module.nextcloud_whiteboard.search_category">ホワイトボード</string>
+  <string name="module.nextcloud_whiteboard.new">新規</string>
+  <string name="module.nextcloud_whiteboard.tag_whiteboard">ホワイトボード</string>
+  <string name="module.nextcloud_whiteboard.tag_collaboration">コラボレーション</string>
 </resources>

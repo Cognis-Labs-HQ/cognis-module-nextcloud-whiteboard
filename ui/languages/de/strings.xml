@@ -99,4 +99,14 @@
   <string name="module.nextcloud_whiteboard.tool_lock">Aktuelles Zeichenwerkzeug nach dem Erstellen eines Objekts aktiv lassen</string>
   <string name="module.nextcloud_whiteboard.share_permission_read">Nur Lesen</string>
   <string name="module.nextcloud_whiteboard.share_permission_write">Lesen + Schreiben</string>
+  <string name="module.nextcloud_whiteboard.name">Nextcloud-Whiteboard</string>
+  <string name="module.nextcloud_whiteboard.summary">Kollaborative Whiteboards auf Basis von Nextcloud.</string>
+  <string name="module.nextcloud_whiteboard.description">Whiteboards mit Cognis-Zugriffskontrollen erstellen und in Echtzeit teilen.</string>
+  <string name="module.nextcloud_whiteboard.category_collaboration">Zusammenarbeit</string>
+  <string name="module.nextcloud_whiteboard.nav_label">Whiteboards</string>
+  <string name="module.nextcloud_whiteboard.search_pages">Seiten</string>
+  <string name="module.nextcloud_whiteboard.search_category">Whiteboards</string>
+  <string name="module.nextcloud_whiteboard.new">Neu</string>
+  <string name="module.nextcloud_whiteboard.tag_whiteboard">Whiteboard</string>
+  <string name="module.nextcloud_whiteboard.tag_collaboration">Zusammenarbeit</string>
 </resources>

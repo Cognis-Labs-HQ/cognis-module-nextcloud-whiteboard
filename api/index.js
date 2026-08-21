@@ -62,7 +62,7 @@ export function registerUi(ctx) {
     });
     ctx.registerAdminSection({
         id: "module-nextcloud-whiteboard",
-        label: "Nextcloud Whiteboard",
+        label: "module.nextcloud_whiteboard.name",
         scriptUrl: "/static/modules/nextcloud-whiteboard/admin-section.js",
         access: { minRole: "admin" },
         stringsBaseUrl: "/static/modules/nextcloud-whiteboard/languages",
@@ -203,6 +203,24 @@ export function registerApiRoutes(router, ctx) {
                 updatedBy: claims.sub,
             });
             sendJson(res, 200, { data: publicConfig(saved) });
+        },
+        { access: { minRole: "admin" }, allowWhenDisabled: true },
+    );
+
+    router.delete(
+        "/api/v1/modules/nextcloud-whiteboard/config",
+        async (req, res) => {
+            const claims = requireAuth(req, res, "admin");
+            if (!claims) return;
+            await store.ensureSchema();
+            await store.deleteConfig();
+            log?.("info", "Nextcloud Whiteboard configuration deleted.", {
+                component: "nextcloud-whiteboard-module",
+                operation: "delete_config",
+                deletedBy: claims.sub,
+            });
+            res.writeHead(204);
+            res.end();
         },
         { access: { minRole: "admin" }, allowWhenDisabled: true },
     );

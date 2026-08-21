@@ -36,8 +36,8 @@ function whiteboardFileSearchItem(board) {
 async function collectWhiteboardNavbarSearchGroups() {
     const pageItem = {
         id: "whiteboards-page",
-        label: "Whiteboards",
-        description: "Pages",
+        label: "module.nextcloud_whiteboard.nav_label",
+        description: "module.nextcloud_whiteboard.search_pages",
         url: "/whiteboards",
         resultClass: "page",
         searchText: "Whiteboards Whiteboard files boards canvas",
@@ -47,15 +47,23 @@ async function collectWhiteboardNavbarSearchGroups() {
         .map(whiteboardFileSearchItem)
         .filter(Boolean);
     return [
-        { category: "Pages", items: [pageItem] },
-        fileItems.length ? { category: "Whiteboards", items: fileItems } : null,
+        {
+            category: "module.nextcloud_whiteboard.search_pages",
+            items: [pageItem],
+        },
+        fileItems.length
+            ? {
+                  category: "module.nextcloud_whiteboard.search_category",
+                  items: fileItems,
+              }
+            : null,
     ].filter(Boolean);
 }
 
 export function register({ addItem }) {
     addItem?.({
         id: "nextcloud-whiteboard",
-        label: "Whiteboards",
+        label: "module.nextcloud_whiteboard.nav_label",
         href: "/whiteboards",
         access: { minRole: "user" },
     });

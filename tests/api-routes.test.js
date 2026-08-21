@@ -77,6 +77,17 @@ function createMemoryDb() {
                 tables.set(command.table, rows);
                 return { rows: [] };
             }
+            if (command.option === "DELETE") {
+                tables.set(
+                    command.table,
+                    command.where
+                        ? rows.filter(
+                              (row) => !applyWhere([row], command.where).length,
+                          )
+                        : [],
+                );
+                return { rows: [] };
+            }
             return { rows: [] };
         },
         async transaction(callback) {
@@ -97,6 +108,9 @@ function createRouterCapture() {
         },
         put(path, handler) {
             routes.set(`PUT ${path}`, handler);
+        },
+        delete(path, handler) {
+            routes.set(`DELETE ${path}`, handler);
         },
         handler(method, path) {
             const handler = routes.get(`${method} ${path}`);
@@ -155,6 +169,21 @@ test("nextcloud whiteboard config endpoint reads and persists configuration", as
     assert.equal(getResponse.statusCode, 200);
     assert.deepEqual(getResponse.json().data, putResponse.json().data);
     assert.equal(getResponse.json().data.apiKey, undefined);
+
+    const deleteResponse = createJsonResponse();
+    await router.handler(
+        "DELETE",
+        "/api/v1/modules/nextcloud-whiteboard/config",
+    )({ headers }, deleteResponse);
+    assert.equal(deleteResponse.statusCode, 204);
+
+    const emptyResponse = createJsonResponse();
+    await router.handler("GET", "/api/v1/modules/nextcloud-whiteboard/config")(
+        { headers },
+        emptyResponse,
+    );
+    assert.equal(emptyResponse.json().data.serverUrl, "");
+    assert.equal(emptyResponse.json().data.apiKeyConfigured, false);
 });
 
 function decodeJwtPayload(token) {

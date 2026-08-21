@@ -243,6 +243,26 @@ export class NextcloudWhiteboardStore {
         return this.getConfig();
     }
 
+    async deleteConfig() {
+        await this.db.executeCommand({
+            option: "DELETE",
+            table: "nextcloud_whiteboard_config",
+            where: [{ column: "id", value: "default" }],
+        });
+    }
+
+    async deleteAllData() {
+        for (const table of [
+            "nextcloud_whiteboard_presence",
+            "nextcloud_whiteboard_snapshots",
+            "nextcloud_whiteboard_access",
+            "nextcloud_whiteboards",
+            "nextcloud_whiteboard_config",
+        ]) {
+            await this.db.executeCommand({ option: "DELETE", table });
+        }
+    }
+
     async createWhiteboard({ title, createdBy, participants, externalPath }) {
         const id = randomUUID();
         const normalizedCreator = normalizeHandleKey(createdBy);

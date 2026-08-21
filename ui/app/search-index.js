@@ -41,6 +41,11 @@ export function createWhiteboardSearchCollector({
                 searchText: elementText,
             });
         }
-        return [{ category: "Whiteboards", items }];
+        return [
+            {
+                category: "module.nextcloud_whiteboard.search_category",
+                items,
+            },
+        ];
     };
 }

@@ -99,4 +99,14 @@
   <string name="module.nextcloud_whiteboard.tool_lock">Pertahankan alat gambar saat ini setelah membuat objek</string>
   <string name="module.nextcloud_whiteboard.share_permission_read">Hanya Baca</string>
   <string name="module.nextcloud_whiteboard.share_permission_write">Baca + Tulis</string>
+  <string name="module.nextcloud_whiteboard.name">Papan Tulis Nextcloud</string>
+  <string name="module.nextcloud_whiteboard.summary">Papan tulis kolaboratif yang didukung oleh Nextcloud.</string>
+  <string name="module.nextcloud_whiteboard.description">Buat dan bagikan papan tulis waktu nyata dengan kontrol akses Cognis.</string>
+  <string name="module.nextcloud_whiteboard.category_collaboration">Kolaborasi</string>
+  <string name="module.nextcloud_whiteboard.nav_label">Papan Tulis</string>
+  <string name="module.nextcloud_whiteboard.search_pages">Halaman</string>
+  <string name="module.nextcloud_whiteboard.search_category">Papan Tulis</string>
+  <string name="module.nextcloud_whiteboard.new">Baru</string>
+  <string name="module.nextcloud_whiteboard.tag_whiteboard">Papan tulis</string>
+  <string name="module.nextcloud_whiteboard.tag_collaboration">Kolaborasi</string>
 </resources>

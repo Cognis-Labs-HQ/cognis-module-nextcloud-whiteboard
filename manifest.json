@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.29",
+    "version": "2.3.30",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -117,15 +117,31 @@
         },
         {
             "path": "AGENTS.md",
-            "sha256": "b185d419629b8cb63248a6803e9d367465d622642eb5526b4f10a7fa009b6ff4"
+            "sha256": "7ac7862de4ce02d238bb34de9097564e8c743ab2c4fdbcf86be824c8bd024a65"
         },
         {
             "path": "LICENSE",
             "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
         },
         {
+            "path": "README.de.md",
+            "sha256": "9b3df2b03290b0f937f47be2a0b8f626f9c22571cca22c4ad7c3b8f9596204bb"
+        },
+        {
+            "path": "README.en.md",
+            "sha256": "eb3b30411f9a53f91f019187d95d501cb3580b59d5244511dbde49d014814b99"
+        },
+        {
+            "path": "README.id.md",
+            "sha256": "78f89fad690ae5f657dcebff5d2caf18f701aae2ae75e0e116d0b738a83f27d9"
+        },
+        {
+            "path": "README.ja.md",
+            "sha256": "78e74fe6af8be17a4c3ba4024fa4f295322779bf7d50f84998b5d25394bbde11"
+        },
+        {
             "path": "README.md",
-            "sha256": "e14bcdeabdfc4ea74fdbf67badd5ab80466af4934101331c4e4be25e71dc81b0"
+            "sha256": "eb3b30411f9a53f91f019187d95d501cb3580b59d5244511dbde49d014814b99"
         },
         {
             "path": "api/access.js",
@@ -221,11 +237,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "3df47a8ae0624fd5e790f1a71fefdf30ae52cfa6e111ca2cff9e07d88c83585a"
+            "sha256": "4a744146873be78621120aa306c46ec48aa3b608a5a9c3d7c2508ed60591a77a"
         },
         {
             "path": "package.json",
-            "sha256": "1d00da87ddaec85324e50f2da6fec2d6331e0e83b9510dc5e15082cafd7dfd5f"
+            "sha256": "b01c61aa3fc56571c22f7b9d024fe2c9766db96ba2428a467916a8cf9886f3e5"
         },
         {
             "path": "routes.json",
@@ -261,7 +277,7 @@
         },
         {
             "path": "tests/localization-quality.test.js",
-            "sha256": "3c1835419bf91945ecddf27fb059386560ec176e510261321af6d53a46c033e4"
+            "sha256": "fbd3c1b54e49eaa7c9426b9afe32d63ab2b4b1f66e0456ca979c31e848b591ed"
         },
         {
             "path": "tests/manifest-contract.test.js",

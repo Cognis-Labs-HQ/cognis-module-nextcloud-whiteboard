@@ -798,15 +798,6 @@ export function createWhiteboardCanvas(
     });
     const resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(canvasElement.parentElement ?? document.body);
-    const themeObserver = new MutationObserver(scheduleRender);
-    themeObserver.observe(document.body, {
-        attributes: true,
-        attributeFilter: ["class", "data-theme", "style"],
-    });
-    themeObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["class", "data-theme", "style"],
-    });
     resizeCanvas();
     return {
         setTool(tool) {
@@ -964,7 +955,6 @@ export function createWhiteboardCanvas(
         destroy() {
             textFormatMenu?.remove();
             resizeObserver.disconnect();
-            themeObserver.disconnect();
             unbindCanvasEvents();
             canvasElement.parentElement
                 ?.querySelector(".wb-text-editor")

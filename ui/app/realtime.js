@@ -23,31 +23,22 @@ export function throttleLatest(callback, delay) {
     };
 }
 
-export function loadSocketIo(serverUrl, failureMessage) {
-    return new Promise((resolve, reject) => {
-        if (window.io) {
-            resolve(window.io);
-            return;
-        }
-        const origin = new URL(serverUrl).origin;
-        const script = document.createElement("script");
-        const timeout = window.setTimeout(() => {
-            script.remove();
-            reject(new Error(failureMessage));
-        }, 10_000);
-        script.async = true;
-        script.src = `${origin}/socket.io/socket.io.js`;
-        script.onload = () => {
-            window.clearTimeout(timeout);
-            resolve(window.io);
-        };
-        script.onerror = () => {
-            window.clearTimeout(timeout);
-            script.remove();
-            reject(new Error(failureMessage));
-        };
-        document.head.appendChild(script);
+export async function loadSocketIo(serverUrl, resourceLoader) {
+    if (typeof resourceLoader?.loadScript !== "function") {
+        throw new Error("Whiteboard runtime loader unavailable");
+    }
+    const origin = new URL(serverUrl).origin;
+    const resource = await resourceLoader.loadScript({
+        id: "nextcloud-whiteboard:socket-io",
+        src: `${origin}/socket.io/socket.io.js`,
+        globalName: "io",
     });
+    const io = resource?.value ?? resource?.global ?? window.io;
+    if (typeof io !== "function") {
+        resource?.dispose?.();
+        throw new Error("Whiteboard runtime unavailable");
+    }
+    return { io, dispose: () => resource?.dispose?.() };
 }
 
 export function encodeSyncMessage(type, payload = {}) {

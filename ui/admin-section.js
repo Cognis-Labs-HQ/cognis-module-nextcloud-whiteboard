@@ -3,7 +3,14 @@ import { openModuleSettingsPopup } from "/static/reuse/module-settings-popup.js"
 
 const API_BASE = "/api/v1/modules/nextcloud-whiteboard";
 
-export async function mount(root) {
+export async function mount(root, { i18n: hostI18n } = {}) {
+    const i18n = await createI18n({
+        locale: hostI18n?.locale,
+        componentStringBaseUrls: [
+            "/static/modules/nextcloud-whiteboard/languages",
+        ],
+    });
+    const text = (key) => i18n.t(key) ?? key;
     const configResponse = await fetch(`${API_BASE}/config`, {
         credentials: "same-origin",
         headers: { "content-type": "application/json" },
@@ -17,14 +24,10 @@ export async function mount(root) {
     const form = document.createElement("form");
     form.className = "whiteboard-admin";
     const heading = document.createElement("h2");
-    heading.textContent =
-        window.CognisI18n?.t?.("module.nextcloud_whiteboard.admin_title") ??
-        "module.nextcloud_whiteboard.admin_title";
+    heading.textContent = text("module.nextcloud_whiteboard.admin_title");
     const serverUrlLabel = document.createElement("label");
     const serverUrlText = document.createElement("span");
-    serverUrlText.textContent = window.CognisI18n?.t?.(
-        "module.nextcloud_whiteboard.server_url",
-    );
+    serverUrlText.textContent = text("module.nextcloud_whiteboard.server_url");
     const serverUrlInput = document.createElement("input");
     serverUrlInput.name = "serverUrl";
     serverUrlInput.type = "url";
@@ -33,9 +36,7 @@ export async function mount(root) {
     serverUrlLabel.append(serverUrlText, serverUrlInput);
     const keyLabel = document.createElement("label");
     const keyText = document.createElement("span");
-    keyText.textContent = window.CognisI18n?.t?.(
-        "module.nextcloud_whiteboard.api_key",
-    );
+    keyText.textContent = text("module.nextcloud_whiteboard.api_key");
     const keyInput = document.createElement("input");
     keyInput.name = "apiKey";
     keyInput.type = "password";
@@ -56,7 +57,7 @@ export async function mount(root) {
     uploadLimitLabel.append(uploadLimitText, uploadLimitInput);
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
-    submitButton.textContent = window.CognisI18n?.t?.("ui.reuse.save");
+    submitButton.textContent = text("ui.reuse.save");
     form.append(
         heading,
         serverUrlLabel,

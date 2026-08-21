@@ -102,7 +102,6 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         renderSource,
         textToolsSource,
         styles,
-        presenceStyles,
     ] = await Promise.all([
         import("node:fs/promises").then((fs) =>
             fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
@@ -143,12 +142,6 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fs) =>
-            fs.readFile(
-                new URL("../ui/styles/presence.css", import.meta.url),
-                "utf8",
-            ),
-        ),
     ]);
     assert.match(
         source,
@@ -161,7 +154,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(source, /supportsReadOnly:\s*true/);
     assert.match(source, /readOnly:\s*session\.canWrite !== true/);
     assert.match(source, /mountedComposer\.destroy\(\)/);
-    assert.match(source, /button\.addEventListener\(['"]click['"],/);
+    assert.match(source, /shareGateway\.mountTrigger\(slot/);
     assert.match(
         source,
         /showNavbar:\s*sharePageFlag\(['"]showNavbar['"],\s*true\)/,
@@ -175,7 +168,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(source, /pointerTracking:\s*true/);
     assert.match(
         source,
-        /const canvasElement = document\.getElementById\(['"]whiteboard-canvas['"]\);/,
+        /const canvasElement = withinMount\(['"]#whiteboard-canvas['"]\);/,
     );
     assert.match(presenceSource, /function getPointerOffset\(canvasInstance\)/);
     assert.match(
@@ -206,7 +199,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(renderSource, /id="page-presence-section"/);
     assert.match(
         renderSource,
-        /class="whiteboard-toolbar-group" aria-live="polite"/,
+        /class="whiteboard-toolbar-group whiteboard-presence" aria-live="polite"/,
     );
     assert.match(realtimeSource, /function throttleLatest\(callback, delay\)/);
     assert.match(source, /function updateHistoryControls\(\)/);
@@ -221,20 +214,12 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         source,
         /if \(canWrite && meta\?\.transient !== true\) persistChanges\(elements\)/,
     );
-    assert.match(styles, /#page-presence-section\s*\{[^}]*flex:\s*0 0 auto;/s);
     assert.match(
         styles,
-        /#page-presence-section\s*\{[^}]*width:\s*fit-content;/s,
+        /\.whiteboard-canvas-wrap \.whiteboard-presence\s*\{[^}]*flex:\s*0 0 auto;/s,
     );
-    assert.match(
-        styles,
-        /#page-presence-section\s*\{[^}]*justify-content:\s*flex-start;/s,
-    );
-    assert.match(styles, /#page-presence-section\s*\{[^}]*margin-left:\s*0;/s);
-    assert.match(
-        presenceStyles,
-        /\.page-presence__avatar-img\s*\{[^}]*height:\s*2rem;[^}]*object-fit:\s*cover;[^}]*width:\s*2rem;/s,
-    );
+    assert.doesNotMatch(styles, /\.page-presence/);
+    assert.match(presenceSource, /avatarClass: "whiteboard-presence-avatar"/);
     assert.match(styles, /\.whiteboard-text-menu/);
     assert.doesNotMatch(source, /share-adapter\.js/);
 });
@@ -417,9 +402,11 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
     );
     assert.match(elementsSource, /ensureVisibleStrokeColor/);
     assert.match(elementsSource, /contrastRatio/);
-    assert.match(stylesSource, /--whiteboard-auto-stroke: #0f172a/);
-    assert.match(stylesSource, /--whiteboard-auto-stroke: #f8fafc/);
-    assert.match(stylesSource, /#page-presence-section/);
+    assert.match(stylesSource, /--whiteboard-auto-stroke: var\(--text/);
+    assert.match(
+        stylesSource,
+        /\.whiteboard-canvas-wrap \.whiteboard-presence/,
+    );
 });
 test("nextcloud whiteboard entrusts its internal URL to the share popup", async () => {
     const appSource = await import("node:fs/promises").then((fs) =>
@@ -442,8 +429,9 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
     assert.match(appSource, /document\.hidden[\s\S]*socket\.disconnect\(\)/);
     assert.match(appSource, /socket\.connect\(\)/);
     assert.match(appSource, /socketInstance\.cognisCleanup\?\.\(\)/);
-    assert.match(realtimeSource, /window\.setTimeout[\s\S]*10_000/);
-    assert.match(realtimeSource, /script\.remove\(\)/);
+    assert.match(realtimeSource, /resourceLoader\.loadScript/);
+    assert.match(realtimeSource, /resource\?\.dispose/);
+    assert.doesNotMatch(realtimeSource, /document\.head/);
     assert.match(
         appSource,
         /const mountedComposer = createPageComposer[\s\S]*signal\?\.addEventListener\([\s\S]*mountedComposer\.destroy\(\)/,

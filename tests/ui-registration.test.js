@@ -50,18 +50,18 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
         );
         assert.deepEqual(route.stylesheets, [
             "/static/styles/page-builder.css",
-            "/static/styles/reuse/layout.css",
             "/static/styles/reuse/page-sections.css",
             "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
         ]);
     }
 });
 
-test("nextcloud whiteboard standalone shell loads shared layout styles", async () => {
+test("nextcloud whiteboard does not reload shared layout styles", async () => {
     const shellSource = await import("node:fs/promises").then((fs) =>
         fs.readFile(new URL("../ui/index.html", import.meta.url), "utf8"),
     );
-    assert.match(shellSource, /\/static\/styles\/reuse\/layout\.css/);
+    assert.match(shellSource, /\/static\/styles\/page-builder\.css/);
+    assert.doesNotMatch(shellSource, /\/static\/styles\/reuse\/layout\.css/);
 });
 
 test("nextcloud whiteboard share permissions use explicit access labels", async () => {

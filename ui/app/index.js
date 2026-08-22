@@ -9,7 +9,7 @@ import { createWhiteboardCanvas } from "../whiteboard/canvas.js";
 import { confirmClearCanvas } from "./clear-canvas.js";
 import { createWhiteboardSearchCollector } from "./search-index.js";
 import { createWhiteboardStatusController } from "./status.js";
-import { setOverlayVisible } from "./overlay.js";
+import { bindOverlayBoardSelection, setOverlayVisible } from "./overlay.js";
 import { openWhiteboardHistoryPopup } from "./history-popup.js";
 import { renderCanvasElement as renderWhiteboardCanvasElement } from "./render.js";
 import {
@@ -56,10 +56,12 @@ let preflightStatus = "idle";
 let lastConnectionToast = "";
 let imageUploadMaxBytes = 1048576;
 let integrationCanvasMode = false;
-let mountRoot = null;
+/** @type {Element | null} */
+let pageMountRoot = null;
 let runtimeDispose = null;
 let shareControlDispose = null;
-const withinMount = (selector) => mountRoot?.querySelector(selector) ?? null;
+const withinMount = (selector) =>
+    pageMountRoot?.querySelector(selector) ?? null;
 const {
     buildConnectionErrorMessage,
     canManageShares,
@@ -415,7 +417,7 @@ function bindCanvasToolbar(canvas) {
     }
     const colorInput = withinMount("#whiteboard-color");
     const themeStrokeColor = () =>
-        getComputedStyle(mountRoot).getPropertyValue("--text").trim() ||
+        getComputedStyle(pageMountRoot).getPropertyValue("--text").trim() ||
         "#111827";
     if (colorInput) {
         colorInput.value = themeStrokeColor();
@@ -620,7 +622,7 @@ async function runPreflightCheck() {
     if (preflightStatus === "running") return false;
     preflightStatus = "running";
     setOverlayVisible(
-        mountRoot,
+        pageMountRoot,
         true,
         translateModuleString("module.nextcloud_whiteboard.preflight_checking"),
     );
@@ -639,7 +641,7 @@ async function runPreflightCheck() {
                 : translateModuleString(
                       "module.nextcloud_whiteboard.preflight_failed",
                   );
-        setOverlayVisible(mountRoot, true, message);
+        setOverlayVisible(pageMountRoot, true, message);
         showToast(message, { variant: "error" });
         return false;
     }
@@ -648,7 +650,7 @@ async function runPreflightCheck() {
         const message = translateModuleString(
             "module.nextcloud_whiteboard.preflight_unreachable",
         );
-        setOverlayVisible(mountRoot, true, message);
+        setOverlayVisible(pageMountRoot, true, message);
         showToast(message, { variant: "error" });
         return false;
     }
@@ -660,7 +662,7 @@ async function runPreflightCheck() {
         const message = translateModuleString(
             "module.nextcloud_whiteboard.preflight_websocket_failed",
         );
-        setOverlayVisible(mountRoot, true, message);
+        setOverlayVisible(pageMountRoot, true, message);
         showToast(message, { variant: "error" });
         return false;
     }
@@ -690,7 +692,7 @@ async function openBoard(board) {
     const passed = await runPreflightCheck();
     if (!passed) return;
     setOverlayVisible(
-        mountRoot,
+        pageMountRoot,
         true,
         translateModuleString("module.nextcloud_whiteboard.connecting"),
     );
@@ -698,7 +700,7 @@ async function openBoard(board) {
     try {
         session = await fetchWhiteboardSession(board.id);
     } catch (error) {
-        setOverlayVisible(mountRoot, true, error.message);
+        setOverlayVisible(pageMountRoot, true, error.message);
         showToast(error.message, { variant: "error" });
         return;
     }
@@ -717,7 +719,7 @@ async function openBoard(board) {
         runtimeDispose?.();
         runtimeDispose = runtime.dispose;
     } catch (error) {
-        setOverlayVisible(mountRoot, true, error.message);
+        setOverlayVisible(pageMountRoot, true, error.message);
         showToast(error.message, { variant: "error" });
         return;
     }
@@ -741,15 +743,15 @@ async function openBoard(board) {
     composer?.refreshPresence?.();
     bindCanvasToolbar(canvasInstance);
     if (session.canWrite !== true) {
-        mountRoot
-            ?.querySelectorAll(
+        pageMountRoot
+            .querySelectorAll(
                 "#whiteboard-toolbar button, #whiteboard-toolbar select, #whiteboard-toolbar input",
             )
             .forEach((control) => {
                 control.disabled = true;
             });
     }
-    setOverlayVisible(mountRoot, false);
+    setOverlayVisible(pageMountRoot, false);
 }
 
 function renderCanvasElement() {
@@ -776,16 +778,9 @@ function onCanvasRender() {
         "click",
         () => void openHistoryPopup(),
     );
-    mountRoot
-        ?.querySelectorAll(".whiteboard-overlay-board")
-        .forEach((button) => {
-            button.addEventListener("click", () => {
-                const board = boards.find(
-                    (item) => item.id === button.dataset.boardId,
-                );
-                if (board) void openBoard(board);
-            });
-        });
+    bindOverlayBoardSelection(pageMountRoot, boards, (board) => {
+        void openBoard(board);
+    });
     const canvasElement = withinMount("#whiteboard-canvas");
     if (!canvasElement || canvasInstance || !activeBoard || !activeSession)
         return;
@@ -824,7 +819,10 @@ function buildElements() {
     ];
 }
 export async function mount(root, { signal, shareContext } = {}) {
-    mountRoot = root;
+    if (!(root instanceof Element)) {
+        throw new TypeError("Whiteboard mount root must be an Element");
+    }
+    pageMountRoot = root;
     registerSearchIndex("nextcloud-whiteboard", collectWhiteboardSearchGroups);
     i18n = await createI18n({
         componentStringBaseUrls: [

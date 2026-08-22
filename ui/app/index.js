@@ -9,6 +9,7 @@ import { createWhiteboardCanvas } from "../whiteboard/canvas.js";
 import { confirmClearCanvas } from "./clear-canvas.js";
 import { createWhiteboardSearchCollector } from "./search-index.js";
 import { createWhiteboardStatusController } from "./status.js";
+import { openWhiteboardSharePopup } from "./share-popup.js";
 import { bindOverlayBoardSelection, setOverlayVisible } from "./overlay.js";
 import { openWhiteboardHistoryPopup } from "./history-popup.js";
 import { renderCanvasElement as renderWhiteboardCanvasElement } from "./render.js";
@@ -406,9 +407,7 @@ function bindCanvasToolbar(canvas) {
         canvas.redo?.();
         updateHistoryControls();
     });
-    if (canManageShares()) {
-        bindShareButton(toolbar);
-    }
+    bindShareButton(toolbar);
     if (canRenameActiveBoard()) {
         withinMount("#whiteboard-board-title")?.addEventListener(
             "dblclick",
@@ -465,46 +464,16 @@ async function bindShareButton(toolbar) {
     shareControlDispose = () => mounted?.destroy?.();
 }
 
-async function openSharePopup() {
-    if (!activeBoard?.id || !canManageShares()) return;
-    try {
-        const sharePopup = uiCtx.capabilities.get("share:openPopup");
-        if (typeof sharePopup !== "function") return;
-        await sharePopup({
-            resourceType: "whiteboard",
-            resourceId: activeBoard.id,
-            contentUrl: `/whiteboard?id=${encodeURIComponent(activeBoard.id)}`,
-            grantedCapabilities: ["whiteboard:read", "whiteboard:write"],
-            supportsReadOnly: true,
-            linkAccessOptions: [
-                {
-                    id: "read",
-                    label: translateModuleString(
-                        "module.nextcloud_whiteboard.share_permission_read",
-                    ),
-                    permissions: ["read"],
-                    grantedCapabilities: ["whiteboard:read"],
-                },
-                {
-                    id: "write",
-                    label: translateModuleString(
-                        "module.nextcloud_whiteboard.share_permission_write",
-                    ),
-                    permissions: ["read", "write"],
-                    grantedCapabilities: [
-                        "whiteboard:read",
-                        "whiteboard:write",
-                    ],
-                },
-            ],
-        });
-    } catch (error) {
-        reportClientError(
-            error,
-            "module.nextcloud_whiteboard.share_create_failed",
-        );
-    }
+function openSharePopup() {
+    return openWhiteboardSharePopup({
+        board: activeBoard,
+        canManageShares,
+        openPopup: uiCtx.capabilities.get("share:openPopup"),
+        reportError: reportClientError,
+        translate: translateModuleString,
+    });
 }
+
 async function openHistoryPopup() {
     try {
         await loadBoards();
@@ -748,6 +717,7 @@ async function openBoard(board) {
                 "#whiteboard-toolbar button, #whiteboard-toolbar select, #whiteboard-toolbar input",
             )
             .forEach((control) => {
+                if (control.closest("#whiteboard-share-slot")) return;
                 control.disabled = true;
             });
     }
@@ -760,7 +730,6 @@ function renderCanvasElement() {
         activeBoard,
         activeSession,
         boards,
-        canManageShares,
         canRenameActiveBoard,
         preflightStatus,
         syncStatus: syncState.status,

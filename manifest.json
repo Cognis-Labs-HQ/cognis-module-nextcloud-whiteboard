@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.32",
+    "version": "2.3.33",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -235,11 +235,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "d939b1786b0e091f1c885393bc9ef576dedcacdfaa785c7bf4b8ccb5e0002821"
+            "sha256": "3485e705c69e391d5da4fa11e58207ed472956475de8e6eabd68dc54fd30c892"
         },
         {
             "path": "package.json",
-            "sha256": "597ccf7b211aab3efba0e5e769b83f9423b04a00b15ca87b71b99f9c582fcaf7"
+            "sha256": "516e9cea51780c168c1a40a77d20864fca64bc2cccad959d6bb3dd929571d985"
         },
         {
             "path": "routes.json",
@@ -303,7 +303,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "57523a29d8935961089d2696e7d51274118df4e8e6a1b2010b03117510d7055d"
+            "sha256": "0ee899f11e84de7c18143f7da0470c34823dce9a8ff2e4f055609620642badad"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -331,7 +331,7 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "5a36f1c3e90e4978347293b3e6ef2788dfc38b7cfa6fd4edf296671505d1bfdd"
+            "sha256": "a876e39be4de252cd1a1b0edf40555a5fc13e375396d7186d7a1df5aa71d4cc0"
         },
         {
             "path": "ui/app/overlay.js",
@@ -347,11 +347,15 @@
         },
         {
             "path": "ui/app/render.js",
-            "sha256": "2dc148bf770361184c53d30b9950a64720508cce22472bc203e908336d4ddef0"
+            "sha256": "38b99899073f547b93f9d12fc1018500ff6121edd8f0a4dc1850e4834dee4524"
         },
         {
             "path": "ui/app/search-index.js",
             "sha256": "1750d3ff3e4259e05357c29f8ef196e51f5621bf579cd37e750ad297a04cfee4"
+        },
+        {
+            "path": "ui/app/share-popup.js",
+            "sha256": "e41efd77d65f4f17db16fc70434ae110e37adba9863aa05ec1733e1d40aee494"
         },
         {
             "path": "ui/app/status.js",

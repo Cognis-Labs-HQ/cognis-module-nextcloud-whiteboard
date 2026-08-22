@@ -5,7 +5,6 @@ export function renderCanvasElement({
     activeBoard,
     activeSession,
     boards,
-    canManageShares,
     canRenameActiveBoard,
     preflightStatus,
     syncStatus,
@@ -59,7 +58,7 @@ export function renderCanvasElement({
           </select>
         </div>
         <div class="whiteboard-toolbar-group" ${hasActiveBoard ? "" : "hidden"}>
-          ${canManageShares() ? '<span id="whiteboard-share-slot"></span>' : ""}
+          <span id="whiteboard-share-slot"></span>
           <a href="#" id="whiteboard-clear" class="whiteboard-tool btn-cancel" role="button" title="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}">×</a>
         </div>
         ${integrationCanvasMode ? "" : `<span id="whiteboard-board-title" class="whiteboard-board-title" title="${escapeHtml(canRenameActiveBoard() ? translate("module.nextcloud_whiteboard.rename_hint") : "")}">${escapeHtml(activeSession?.title ?? activeBoard?.title ?? "")}</span>`}

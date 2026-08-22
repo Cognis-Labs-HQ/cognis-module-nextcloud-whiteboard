@@ -100,6 +100,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         presenceSource,
         realtimeSource,
         renderSource,
+        sharePopupSource,
         textToolsSource,
         styles,
     ] = await Promise.all([
@@ -132,6 +133,12 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         ),
         import("node:fs/promises").then((fs) =>
             fs.readFile(
+                new URL("../ui/app/share-popup.js", import.meta.url),
+                "utf8",
+            ),
+        ),
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/whiteboard/text-tools.js", import.meta.url),
                 "utf8",
             ),
@@ -149,12 +156,27 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     );
     assert.doesNotMatch(source, /whiteboard-connection-status/);
     assert.match(source, /uiCtx\.capabilities\.get\(['"]share:openPopup['"]\)/);
-    assert.match(source, /resourceType:\s*['"]whiteboard['"]/);
-    assert.match(source, /resourceId:\s*activeBoard\.id/);
-    assert.match(source, /supportsReadOnly:\s*true/);
+    assert.match(sharePopupSource, /resourceType:\s*['"]whiteboard['"]/);
+    assert.match(sharePopupSource, /resourceId:\s*board\.id/);
+    assert.match(sharePopupSource, /supportsReadOnly:\s*true/);
     assert.match(source, /readOnly:\s*session\.canWrite !== true/);
     assert.match(source, /mountedComposer\.destroy\(\)/);
     assert.match(source, /shareGateway\.mountTrigger\(slot/);
+    assert.doesNotMatch(source, /document\.createElement\(["']button["']\)/);
+    assert.match(renderSource, /<span id="whiteboard-share-slot"><\/span>/);
+    assert.doesNotMatch(
+        renderSource,
+        /canManageShares\(\).*whiteboard-share-slot/,
+    );
+    assert.match(
+        source,
+        /if \(control\.closest\(["']#whiteboard-share-slot["']\)\) return;/,
+    );
+    assert.match(
+        sharePopupSource,
+        /title:\s*translate\(["']module\.nextcloud_whiteboard\.share_popup_title["']\)/,
+    );
+    assert.match(sharePopupSource, /labels:\s*\{/);
     assert.match(
         source,
         /showNavbar:\s*sharePageFlag\(['"]showNavbar['"],\s*true\)/,
@@ -410,11 +432,14 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
 });
 test("nextcloud whiteboard entrusts its internal URL to the share popup", async () => {
     const appSource = await import("node:fs/promises").then((fs) =>
-        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+        fs.readFile(
+            new URL("../ui/app/share-popup.js", import.meta.url),
+            "utf8",
+        ),
     );
     assert.match(
         appSource,
-        /contentUrl: `\/whiteboard\?id=\$\{encodeURIComponent\(activeBoard\.id\)\}`/,
+        /contentUrl: `\/whiteboard\?id=\$\{encodeURIComponent\(board\.id\)\}`/,
     );
 });
 

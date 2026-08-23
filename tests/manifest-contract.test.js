@@ -26,6 +26,13 @@ test("module manifest requires the Cognis authentication gateway", () => {
     assert.ok(manifest.requiresCapabilities.includes("auth:requireAuth"));
 });
 
+test("module manifest excludes changelog entries from packaged hashes", () => {
+    assert.equal(
+        manifest.files.some(({ path }) => path.startsWith("changelog/")),
+        false,
+    );
+});
+
 test("module manifest exposes required whiteboard configuration to preference ingestion", () => {
     assert.deepEqual(
         manifest.ui.preferences.map(

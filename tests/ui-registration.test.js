@@ -56,6 +56,25 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
     }
 });
 
+test("nextcloud whiteboard exposes its canvas as a component page", () => {
+    const { spaRoutes } = captureUiRegistration();
+    const canvasRoute = spaRoutes.find(
+        (route) => route.id === "module.nextcloud.whiteboard.canvas",
+    );
+
+    assert.deepEqual(canvasRoute?.componentPage, {
+        labelKey: "module.nextcloud_whiteboard.component_page_label",
+        descriptionKey:
+            "module.nextcloud_whiteboard.component_page_description",
+        modes: ["overlay", "fullscreen", "pip"],
+    });
+    assert.equal(
+        spaRoutes.find((route) => route.id === "module.nextcloud.whiteboard")
+            ?.componentPage,
+        undefined,
+    );
+});
+
 test("nextcloud whiteboard does not reload shared layout styles", async () => {
     const shellSource = await import("node:fs/promises").then((fs) =>
         fs.readFile(new URL("../ui/index.html", import.meta.url), "utf8"),

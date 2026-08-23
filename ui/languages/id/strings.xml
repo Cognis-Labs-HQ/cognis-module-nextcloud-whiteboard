@@ -11,6 +11,8 @@
   <string name="module.nextcloud_whiteboard.boards_window">Papan tulis</string>
   <string name="module.nextcloud_whiteboard.canvas_placeholder">Pilih papan tulis dari daftar untuk mulai menggambar.</string>
   <string name="module.nextcloud_whiteboard.canvas_label">Kanvas papan tulis</string>
+  <string name="module.nextcloud_whiteboard.component_page_label">Kanvas papan tulis</string>
+  <string name="module.nextcloud_whiteboard.component_page_description">Sematkan kanvas papan tulis kolaboratif di komponen lain.</string>
   <string name="module.nextcloud_whiteboard.toolbar_label">Alat menggambar</string>
   <string name="module.nextcloud_whiteboard.tool_pen">Pena</string>
   <string name="module.nextcloud_whiteboard.tool_eraser">Penghapus</string>

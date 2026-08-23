@@ -11,6 +11,8 @@
   <string name="module.nextcloud_whiteboard.boards_window">Whiteboards</string>
   <string name="module.nextcloud_whiteboard.canvas_placeholder">Select a whiteboard from the list to start drawing.</string>
   <string name="module.nextcloud_whiteboard.canvas_label">Whiteboard canvas</string>
+  <string name="module.nextcloud_whiteboard.component_page_label">Whiteboard canvas</string>
+  <string name="module.nextcloud_whiteboard.component_page_description">Embed a collaborative whiteboard canvas in another component.</string>
   <string name="module.nextcloud_whiteboard.toolbar_label">Drawing tools</string>
   <string name="module.nextcloud_whiteboard.tool_pen">Pen</string>
   <string name="module.nextcloud_whiteboard.tool_eraser">Eraser</string>

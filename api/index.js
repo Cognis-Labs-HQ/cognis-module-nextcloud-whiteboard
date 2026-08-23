@@ -44,7 +44,7 @@ export function registerUi(ctx) {
     });
 
     ctx.registerSpaRoute({
-        id: "module-nextcloud-whiteboard",
+        id: "module.nextcloud.whiteboard",
         pattern: "^/whiteboards$",
         base: "/whiteboards",
         scriptUrl: "/static/modules/nextcloud-whiteboard/app/index.js",
@@ -53,12 +53,18 @@ export function registerUi(ctx) {
     });
 
     ctx.registerSpaRoute({
-        id: "module-nextcloud-whiteboard-canvas",
+        id: "module.nextcloud.whiteboard.canvas",
         pattern: "^/whiteboard$",
         base: "/whiteboard",
         scriptUrl: "/static/modules/nextcloud-whiteboard/app/index.js",
         stylesheets: WHITEBOARD_STYLESHEETS,
         access: { minRole: "user" },
+        componentPage: {
+            labelKey: "module.nextcloud_whiteboard.component_page_label",
+            descriptionKey:
+                "module.nextcloud_whiteboard.component_page_description",
+            modes: ["overlay", "fullscreen", "pip"],
+        },
     });
     ctx.registerAdminSection({
         id: "module-nextcloud-whiteboard",

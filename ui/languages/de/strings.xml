@@ -11,8 +11,6 @@
   <string name="module.nextcloud_whiteboard.boards_window">Whiteboards</string>
   <string name="module.nextcloud_whiteboard.canvas_placeholder">Wählen Sie ein Whiteboard aus der Liste, um mit dem Zeichnen zu beginnen.</string>
   <string name="module.nextcloud_whiteboard.canvas_label">Whiteboard-Zeichenfläche</string>
-  <string name="module.nextcloud_whiteboard.component_page_label">Whiteboard-Zeichenfläche</string>
-  <string name="module.nextcloud_whiteboard.component_page_description">Eine kollaborative Whiteboard-Zeichenfläche in eine andere Komponente einbetten.</string>
   <string name="module.nextcloud_whiteboard.toolbar_label">Zeichenwerkzeuge</string>
   <string name="module.nextcloud_whiteboard.tool_pen">Stift</string>
   <string name="module.nextcloud_whiteboard.tool_eraser">Radierer</string>

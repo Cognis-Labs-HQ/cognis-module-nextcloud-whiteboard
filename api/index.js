@@ -60,9 +60,8 @@ export function registerUi(ctx) {
         stylesheets: WHITEBOARD_STYLESHEETS,
         access: { minRole: "user" },
         componentPage: {
-            labelKey: "module.nextcloud_whiteboard.component_page_label",
-            descriptionKey:
-                "module.nextcloud_whiteboard.component_page_description",
+            labelKey: "module.nextcloud_whiteboard.name",
+            descriptionKey: "module.nextcloud_whiteboard.description",
             modes: ["overlay", "fullscreen", "pip"],
         },
     });

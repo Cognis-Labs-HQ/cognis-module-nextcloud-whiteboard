@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.35",
+    "version": "2.3.36",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -159,7 +159,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "d1b04c077968279dad11c0fa4a23e150c5d7cbe6ca6b17c994ada45fec9aff3e"
+            "sha256": "1d00d87212915cc49ad64946d1ffc651cb7a2faa538db533dc91b0fb7a907428"
         },
         {
             "path": "api/reuse/flow-helpers.js",
@@ -235,11 +235,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "f4c64d820ffe1d1cbfc2b2604ec5aaafa9c25025b67b59535dd1f027f0f5033c"
+            "sha256": "5d7d47fc9aabfab0600f659b5fdef766c92df8606ca330714db9e9ec43ea42ff"
         },
         {
             "path": "package.json",
-            "sha256": "a0502f2ac59d2ec31b10cf0255e6bfeb8b38e67a65ecd32ce4c66e532526fd92"
+            "sha256": "6f4f520773bba5dfca1193489aa35a5079f8c2ff98b0e90e2335142e258f9b3a"
         },
         {
             "path": "routes.json",
@@ -303,7 +303,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "970e07cb4e563de7d23874b75c6c56c03f7a917712d07bc224e79e58e2cca704"
+            "sha256": "4eb650d1a23b4b023e1d82ff7c8f1aae424080140a993b6bde41d0da65ce66f7"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -367,19 +367,19 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "300b5eb31027b5e8be7992ce24db4026d7d869549a28891acfb5adb2e968e752"
+            "sha256": "6de4510aed64ad2b4850e02a25c89fd9008c21f6f29483744636c1eaebfb2b7d"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "ad4d27b40a44ac0ee8f94f9ecaec00a0ae2424ec9a04dd5a32e036faa0531a6d"
+            "sha256": "e20347a9c121e5710cb666674e019134227a50ad1cfa84d8d64f48170e749b05"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "3cc64870218dbec1250de8684b263f96b19b7ad068047c36c4882542279c68dd"
+            "sha256": "199494dc6880b41100a2c88b5cbf8eb1abf70808693f476303f1a70b2545b1ac"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "e34f0e79e13adcfcdbb7bfd997cdfdc773e253067d91e4c47e25b5e9dc8c2f9e"
+            "sha256": "7d6c5f6076c9cf716ad51f19b9e3e19a3e46c4ced905daeab1284c8e4048cb63"
         },
         {
             "path": "ui/navbar.js",

@@ -63,9 +63,8 @@ test("nextcloud whiteboard exposes its canvas as a component page", () => {
     );
 
     assert.deepEqual(canvasRoute?.componentPage, {
-        labelKey: "module.nextcloud_whiteboard.component_page_label",
-        descriptionKey:
-            "module.nextcloud_whiteboard.component_page_description",
+        labelKey: "module.nextcloud_whiteboard.name",
+        descriptionKey: "module.nextcloud_whiteboard.description",
         modes: ["overlay", "fullscreen", "pip"],
     });
     assert.equal(

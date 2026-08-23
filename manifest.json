@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.36",
+    "version": "2.3.37",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -119,7 +119,7 @@
         },
         {
             "path": "AGENTS.md",
-            "sha256": "7ac7862de4ce02d238bb34de9097564e8c743ab2c4fdbcf86be824c8bd024a65"
+            "sha256": "6c8241bf4681aef09af5f9b2b1d2db1b5df69e5e56bff5ff3d0a06edbf67b5df"
         },
         {
             "path": "LICENSE",
@@ -214,6 +214,22 @@
             "sha256": "5c1ac799df40fed8212831bc0192f218f31225ef1dd714a882a14657247c9c92"
         },
         {
+            "path": "changelog/feature-update-module-for-page-component-compatibility.de.md",
+            "sha256": "498ee280be8889f09727062761833db2e02128e4b369e539e4b7f8a468ce6267"
+        },
+        {
+            "path": "changelog/feature-update-module-for-page-component-compatibility.en.md",
+            "sha256": "79ac3583fd9fd4ecaaf260f9e35e261c99553e491e7b3e49509797677b56c933"
+        },
+        {
+            "path": "changelog/feature-update-module-for-page-component-compatibility.id.md",
+            "sha256": "5b304d8b49720ebb9b56868e62bb66280c944201d91a0aac38577bf485d6ff65"
+        },
+        {
+            "path": "changelog/feature-update-module-for-page-component-compatibility.ja.md",
+            "sha256": "565365250695dc140d1de6db876393512473f2008141979fc8fcc9cf0982f4ea"
+        },
+        {
             "path": "cli/index.js",
             "sha256": "241f1511b44128b182295212af730f6cc468d7c20f6511a69d30cab5e1584d73"
         },
@@ -235,11 +251,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "5d7d47fc9aabfab0600f659b5fdef766c92df8606ca330714db9e9ec43ea42ff"
+            "sha256": "0e70a08cdaeee6f1f1eb4561976e43cfc0befa42c4946772c83a8dc8624683ad"
         },
         {
             "path": "package.json",
-            "sha256": "6f4f520773bba5dfca1193489aa35a5079f8c2ff98b0e90e2335142e258f9b3a"
+            "sha256": "15ea2d0cb08a38b6180b00635aa1c710bb39e6101788c58a7bc49bc66c83c512"
         },
         {
             "path": "routes.json",

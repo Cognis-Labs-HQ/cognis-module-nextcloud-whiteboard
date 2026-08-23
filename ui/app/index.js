@@ -171,6 +171,7 @@ function connectSocket(io, session, canvas) {
     let joinedRoom = false;
     let isDedicatedSyncer = false;
     const persistChanges = debounce(async (elements) => {
+        if (session.disposable) return;
         try {
             await saveWhiteboardElements(roomId, elements);
             setSyncStatus(
@@ -204,10 +205,12 @@ function connectSocket(io, session, canvas) {
                 encodeSceneMessage(type, elements),
                 [],
             );
-            setSyncStatus(
-                "synced",
-                "module.nextcloud_whiteboard.status_synced",
-            );
+            if (session.disposable) {
+                setSyncStatus(
+                    "idle",
+                    "module.nextcloud_whiteboard.status_unsaved",
+                );
+            }
         },
         EMIT_DEBOUNCE_MS,
     );
@@ -235,7 +238,12 @@ function connectSocket(io, session, canvas) {
     });
     socket.on("room-user-change", () => {
         joinedRoom = true;
-        setSyncStatus("synced", "module.nextcloud_whiteboard.status_synced");
+        setSyncStatus(
+            session.disposable && !session.saved ? "idle" : "synced",
+            session.disposable && !session.saved
+                ? "module.nextcloud_whiteboard.status_unsaved"
+                : "module.nextcloud_whiteboard.status_synced",
+        );
         if (isDedicatedSyncer)
             emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
     });
@@ -245,8 +253,10 @@ function connectSocket(io, session, canvas) {
             emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
         } else if (joinedRoom) {
             setSyncStatus(
-                "synced",
-                "module.nextcloud_whiteboard.status_synced",
+                session.disposable && !session.saved ? "idle" : "synced",
+                session.disposable && !session.saved
+                    ? "module.nextcloud_whiteboard.status_unsaved"
+                    : "module.nextcloud_whiteboard.status_synced",
             );
         }
     });
@@ -711,6 +721,33 @@ async function openBoard(board) {
     socketInstance = connectSocket(io, session, canvasInstance);
     composer?.refreshPresence?.();
     bindCanvasToolbar(canvasInstance);
+    withinMount("#whiteboard-save-copy")?.addEventListener(
+        "click",
+        async () => {
+            try {
+                setSyncStatus(
+                    "syncing",
+                    "module.nextcloud_whiteboard.status_syncing",
+                );
+                await saveWhiteboardElements(
+                    session.roomId,
+                    canvasInstance.getElements(),
+                    {
+                        explicitSave: true,
+                    },
+                );
+                setSyncStatus(
+                    "synced",
+                    "module.nextcloud_whiteboard.status_synced",
+                );
+            } catch (error) {
+                reportClientError(
+                    error,
+                    "module.nextcloud_whiteboard.status_sync_failed",
+                );
+            }
+        },
+    );
     if (session.canWrite !== true) {
         pageMountRoot
             .querySelectorAll(
@@ -736,6 +773,7 @@ function renderCanvasElement() {
         syncStatusMessage: syncState.message,
         translate: translateModuleString,
         integrationCanvasMode,
+        disposable: activeSession?.disposable === true,
     });
 }
 function onCanvasRender() {

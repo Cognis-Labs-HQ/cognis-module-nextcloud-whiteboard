@@ -282,9 +282,12 @@ export function registerApiRoutes(router, ctx) {
                 createdBy,
                 participants: options.participants,
                 externalPath: options.externalPath,
+                disposable: options.disposable === true,
             });
             const launchUrl = buildCognisWhiteboardUrl(whiteboard.id, {
-                instantCanvas: options.instantCanvas === true,
+                instantCanvas:
+                    options.instantCanvas === true ||
+                    options.disposable === true,
             });
             log?.("info", "Nextcloud Whiteboard window spawned.", {
                 component: "nextcloud-whiteboard-module",
@@ -303,6 +306,7 @@ export function registerApiRoutes(router, ctx) {
                         ? [createdBy, ...(options.participants ?? [])]
                         : [createdBy],
                 },
+                disposable: whiteboard.disposable,
             };
         },
         async fetchBoardData(whiteboardId) {
@@ -474,7 +478,10 @@ export function registerApiRoutes(router, ctx) {
                 whiteboardId: whiteboard.id,
                 username,
             });
-            const elements = await store.getElementsSnapshot(whiteboard.id);
+            const elements = whiteboard.disposable
+                ? await store.getUserCopy(whiteboard.id, username)
+                : await store.getElementsSnapshot(whiteboard.id);
+            const saved = await store.hasUserCopy(whiteboard.id, username);
             sendJson(res, 200, {
                 data: {
                     roomId: whiteboard.id,
@@ -484,6 +491,8 @@ export function registerApiRoutes(router, ctx) {
                     serverUrl: config.serverUrl,
                     imageUploadMaxBytes: config.imageUploadMaxBytes,
                     elements,
+                    disposable: whiteboard.disposable,
+                    saved,
                     token,
                 },
             });
@@ -517,9 +526,31 @@ export function registerApiRoutes(router, ctx) {
                 sendError(res, access.status, access.code, access.message);
                 return;
             }
-            const saved = await store.saveElementsSnapshot(
+            if (whiteboard.disposable && body.explicitSave !== true) {
+                sendError(
+                    res,
+                    409,
+                    "explicit_save_required",
+                    "Disposable canvases are only stored when Save is pressed.",
+                );
+                return;
+            }
+            const saved = whiteboard.disposable
+                ? {
+                      elements: body.elements,
+                      updatedAt: new Date().toISOString(),
+                  }
+                : await store.saveElementsSnapshot(
+                      whiteboard.id,
+                      body.elements,
+                  );
+            const copyOwners = whiteboard.disposable
+                ? [access.username]
+                : await store.listParticipants(whiteboard.id);
+            await store.saveUserCopies(
                 whiteboard.id,
                 body.elements,
+                copyOwners,
             );
             sendJson(res, 200, { data: saved });
         },
@@ -849,6 +880,10 @@ export function registerApiRoutes(router, ctx) {
                 );
                 return;
             }
+            await store.deleteUserCopy(
+                String(body.whiteboardId ?? "").trim(),
+                `share:${String(body.shareId ?? "").trim()}`,
+            );
             sendJson(res, 200, { data: { deleted: true } });
         },
         { access: { minRole: "user" } },
@@ -923,6 +958,7 @@ export function registerApiRoutes(router, ctx) {
                 createdBy: username,
                 participants,
                 externalPath: body.externalPath,
+                disposable: body.disposable === true,
             });
             sendJson(res, 200, {
                 data: {

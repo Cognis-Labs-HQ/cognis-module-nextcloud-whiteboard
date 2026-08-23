@@ -109,4 +109,7 @@
   <string name="module.nextcloud_whiteboard.new">Baru</string>
   <string name="module.nextcloud_whiteboard.tag_whiteboard">Papan tulis</string>
   <string name="module.nextcloud_whiteboard.tag_collaboration">Kolaborasi</string>
+  <string name="module.nextcloud_whiteboard.saved">Tersimpan</string>
+  <string name="module.nextcloud_whiteboard.save_canvas">Simpan</string>
+  <string name="module.nextcloud_whiteboard.status_unsaved">Belum disimpan.</string>
 </resources>

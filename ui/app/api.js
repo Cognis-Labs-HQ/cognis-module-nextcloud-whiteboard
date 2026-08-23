@@ -59,11 +59,15 @@ export async function uploadWhiteboardImage(boardId, dataUrl) {
     });
 }
 
-export async function saveWhiteboardElements(boardId, elements) {
+export async function saveWhiteboardElements(
+    boardId,
+    elements,
+    { explicitSave = false } = {},
+) {
     return apiFetchJson("/whiteboards/elements", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ id: boardId, elements }),
+        body: JSON.stringify({ id: boardId, elements, explicitSave }),
     });
 }
 

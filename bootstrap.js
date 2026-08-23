@@ -53,6 +53,7 @@ export function bootstrapModule(ctx) {
         if (!whiteboardId) return null;
         const params = new URLSearchParams({ id: whiteboardId });
         if (options.instantCanvas === true) params.set("instantCanvas", "1");
+        if (options.disposable === true) params.set("disposable", "1");
         return `/whiteboard?${params.toString()}`;
     };
 

@@ -40,6 +40,11 @@ export function createWhiteboardStatusController({
         statusBox.title =
             syncStatusMessage ||
             translate("module.nextcloud_whiteboard.status_idle");
+        if (syncStatus === "synced") {
+            statusBox.classList.remove("whiteboard-save-confirmed");
+            void statusBox.offsetWidth;
+            statusBox.classList.add("whiteboard-save-confirmed");
+        }
     }
 
     function setSyncStatus(status, messageKey) {

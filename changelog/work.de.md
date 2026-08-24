@@ -27,3 +27,7 @@ Der Whiteboard-Navigationsleisteneintrag deklariert nun seine Browser-Funktion, 
 ## Eingebettete temporäre Leinwände öffnen
 
 Komponentenfenster verwenden nun den übergebenen Fokuszustand und öffnen sofort die angeforderte temporäre Leinwand, statt die Whiteboard-Startseite anzuzeigen.
+
+## Elementbezogene Komponentenfenster
+
+Elementbezogene Komponenten-Mounts bleiben nun rahmenlos und warten, bis die fokussierte temporäre Leinwand geöffnet ist, bevor die Komponentenseite als bereit gemeldet wird.

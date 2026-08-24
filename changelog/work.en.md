@@ -27,3 +27,7 @@ The Whiteboard navbar entry now declares its browser capability so the host prov
 ## Open embedded disposable canvases
 
 Component windows now consume their supplied focus state and immediately open the requested disposable canvas instead of showing the Whiteboard home view.
+
+## Element-targeted component windows
+
+Element-targeted component mounts now stay frameless and wait for the focused disposable canvas to open before reporting the component page as ready.

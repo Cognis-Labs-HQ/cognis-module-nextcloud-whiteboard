@@ -840,6 +840,7 @@ export async function mount(root, { signal, shareContext, focusState } = {}) {
     applyDocumentTitle(i18n, "module.nextcloud_whiteboard.page_title");
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
+    const embeddedComponentMode = Boolean(focusState);
     integrationCanvasMode =
         Boolean(focusState?.instantCanvas || focusState?.disposable) ||
         Boolean(shareContext?.page?.instantCanvas) ||
@@ -902,10 +903,11 @@ export async function mount(root, { signal, shareContext, focusState } = {}) {
                 "module.nextcloud_whiteboard.page_subtitle",
             ),
         },
-        showNavbar: sharePageFlag("showNavbar", true),
-        showTopbar: sharePageFlag("showTopbar", true),
-        showFooter: sharePageFlag("showFooter", true),
-        showThemeToggle: sharePageFlag("showThemeToggle", true),
+        showNavbar: !embeddedComponentMode && sharePageFlag("showNavbar", true),
+        showTopbar: !embeddedComponentMode && sharePageFlag("showTopbar", true),
+        showFooter: !embeddedComponentMode && sharePageFlag("showFooter", true),
+        showThemeToggle:
+            !embeddedComponentMode && sharePageFlag("showThemeToggle", true),
         requireAccountSession: !activeShareContext,
         signal,
     });
@@ -923,9 +925,8 @@ export async function mount(root, { signal, shareContext, focusState } = {}) {
     if (signal?.aborted) return;
 
     if (activeBoard) {
-        void openBoard(activeBoard).then(() => {
-            if (!signal?.aborted) mountedComposer.refreshPresence?.();
-        });
+        await openBoard(activeBoard);
+        if (!signal?.aborted) mountedComposer.refreshPresence?.();
     } else if (integrationCanvasMode) {
         void createAndOpenBoard();
     }

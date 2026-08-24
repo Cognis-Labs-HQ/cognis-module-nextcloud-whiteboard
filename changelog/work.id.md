@@ -27,3 +27,7 @@ Entri bilah navigasi Whiteboard kini mendeklarasikan kapabilitas perambannya aga
 ## Membuka kanvas sekali pakai tertanam
 
 Jendela komponen kini menggunakan status fokus yang diberikan dan langsung membuka kanvas sekali pakai yang diminta, bukan menampilkan beranda Whiteboard.
+
+## Jendela komponen bertarget elemen
+
+Mount komponen bertarget elemen kini tetap tanpa bingkai dan menunggu kanvas sekali pakai yang difokuskan terbuka sebelum melaporkan halaman komponen siap.

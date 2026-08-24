@@ -197,7 +197,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(sharePopupSource, /labels:\s*\{/);
     assert.match(
         source,
-        /showNavbar:\s*sharePageFlag\(['"]showNavbar['"],\s*true\)/,
+        /showNavbar:\s*!embeddedComponentMode\s*&&\s*sharePageFlag\(['"]showNavbar['"],\s*true\)/,
     );
     assert.match(source, /requireAccountSession:\s*!activeShareContext/);
     assert.match(
@@ -533,4 +533,13 @@ test("whiteboard component mounts the disposable canvas from focus state", async
         appSource,
         /String\(focusState\?\.whiteboardId \?\? ""\)\.trim\(\)/,
     );
+    assert.match(
+        appSource,
+        /const embeddedComponentMode = Boolean\(focusState\)/,
+    );
+    assert.match(
+        appSource,
+        /showNavbar:\s*!embeddedComponentMode[\s\S]*showTopbar:\s*!embeddedComponentMode[\s\S]*showFooter:\s*!embeddedComponentMode/,
+    );
+    assert.match(appSource, /await openBoard\(activeBoard\)/);
 });

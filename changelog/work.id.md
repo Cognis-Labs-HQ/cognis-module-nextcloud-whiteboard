@@ -15,3 +15,7 @@ Kartu membesar saat kanvas bertambah dan dapat digulir setelah empat entri, seme
 ## Gateway integrasi rapat
 
 Gateway UI peramban global kini memungkinkan integrasi rapat membuat atau menemukan kanvas sekali pakai yang tersinkronisasi tanpa bergantung pada rute HTTP milik modul lain.
+
+## Pendaftaran kapabilitas UI yang kompatibel
+
+Gateway Whiteboard kini mendaftar pada fasad kapabilitas peramban yang dapat diubah maupun hanya-baca tanpa menyebabkan galat runtime saat login tertunda atau popup galat umum.

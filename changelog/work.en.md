@@ -15,3 +15,7 @@ The home card grows for additional canvases and scrolls after four, while the st
 ## Meeting integration gateway
 
 The global browser UI gateway now lets meeting integrations create or resolve a disposable synchronized canvas without depending on another module’s HTTP routes.
+
+## Compatible UI capability registration
+
+The Whiteboard gateway now registers against both mutable and read-only browser capability facades without causing a deferred-login runtime error or generic error popup.

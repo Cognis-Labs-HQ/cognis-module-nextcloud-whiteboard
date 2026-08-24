@@ -15,3 +15,7 @@ Die Karte wächst bei zusätzlichen Leinwänden und scrollt nach vier Einträgen
 ## Gateway für Besprechungsintegrationen
 
 Das globale Browser-UI-Gateway ermöglicht Besprechungsintegrationen nun, eine synchronisierte temporäre Leinwand zu erstellen oder aufzulösen, ohne von den HTTP-Routen eines anderen Moduls abzuhängen.
+
+## Kompatible Registrierung der UI-Funktion
+
+Das Whiteboard-Gateway registriert sich nun sowohl bei veränderlichen als auch bei schreibgeschützten Browser-Funktionsfassaden, ohne einen Laufzeitfehler bei der verzögerten Anmeldung oder ein allgemeines Fehlerfenster auszulösen.

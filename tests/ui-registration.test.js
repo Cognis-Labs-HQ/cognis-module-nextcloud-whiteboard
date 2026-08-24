@@ -494,9 +494,12 @@ test("whiteboard navbar registers the disposable canvas UI gateway", async () =>
     assert.match(navbarSource, /whiteboard-ui-gateway\.js/);
     assert.match(
         gatewaySource,
-        /uiCtx\.capabilities\.set\("whiteboard:uiGateway"/,
+        /const capabilityName = "whiteboard:uiGateway"/,
     );
     assert.match(gatewaySource, /async createDisposableCanvas\(\{/);
     assert.match(gatewaySource, /participantHandles/);
     assert.match(gatewaySource, /return \{ whiteboardId \}/);
+    assert.match(gatewaySource, /typeof candidate === "function"/);
+    assert.match(gatewaySource, /originalGet\.call\(capabilities, name\)/);
+    assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
 });

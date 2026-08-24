@@ -5,6 +5,24 @@ const CREATE_DISPOSABLE_URL =
     "/api/v1/modules/nextcloud-whiteboard/whiteboards/spawn";
 
 const capabilityName = "whiteboard:uiGateway";
+const preparedCanvasIds = new Map();
+let latestPreparedCanvasId = "";
+
+function resourceKey(resourceType, resourceId) {
+    return `${String(resourceType ?? "").trim()}:${String(resourceId ?? "").trim()}`;
+}
+
+export function getPreparedDisposableCanvasId({
+    resourceType,
+    resourceId,
+    allowLatest = false,
+} = {}) {
+    return (
+        preparedCanvasIds.get(resourceKey(resourceType, resourceId)) ??
+        (allowLatest ? latestPreparedCanvasId : "")
+    );
+}
+
 const gateway = {
     async createDisposableCanvas({
         resourceType,
@@ -34,6 +52,11 @@ const gateway = {
         if (!whiteboardId) {
             throw new Error("Disposable canvas response was invalid.");
         }
+        preparedCanvasIds.set(
+            resourceKey(resourceType, resourceId),
+            whiteboardId,
+        );
+        latestPreparedCanvasId = whiteboardId;
         return { whiteboardId };
     },
 };

@@ -35,3 +35,7 @@ Elementbezogene Komponenten-Mounts bleiben nun rahmenlos und warten, bis die fok
 ## Geschützter Komponentenlebenszyklus
 
 Whiteboard-Komponenten-Mounts beachten nun die Navigationsrichtlinie des Hosts und geben einen idempotenten Destroy-Handle für den geschützten Komponentenfenster-Lebenszyklus zurück.
+
+## Übergabe der vorbereiteten Besprechungsleinwand
+
+Das Browser-Gateway behält nun die vorbereitete temporäre Leinwand bei, sodass der Komponenten-Mount die genaue Leinwand wiederherstellen kann, wenn ein Host einen umschlossenen oder unvollständigen Fokuskontext liefert.

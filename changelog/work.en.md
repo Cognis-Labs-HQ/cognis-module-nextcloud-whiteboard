@@ -35,3 +35,7 @@ Element-targeted component mounts now stay frameless and wait for the focused di
 ## Protected component lifecycle
 
 Whiteboard component mounts now honor the host navigation policy and return an idempotent destroy handle for the protected component-window lifecycle.
+
+## Prepared meeting canvas handoff
+
+The browser gateway now retains the disposable canvas it prepared, allowing the component mount to recover the exact canvas when a host supplies wrapped or incomplete focus context.

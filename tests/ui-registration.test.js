@@ -527,15 +527,15 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     assert.match(appSource, /navigationAllowed: allowNavigation = true/);
     assert.match(
         appSource,
-        /Boolean\(focusState\?\.instantCanvas \|\| focusState\?\.disposable\)/,
+        /const componentFocusState = focusState\?\.context \?\? focusState \?\? null/,
     );
     assert.match(
         appSource,
-        /String\(focusState\?\.whiteboardId \?\? ""\)\.trim\(\)/,
+        /String\(componentFocusState\?\.whiteboardId \?\? ""\)\.trim\(\)/,
     );
     assert.match(
         appSource,
-        /const embeddedComponentMode = Boolean\(focusState\)/,
+        /const embeddedComponentMode = Boolean\(componentFocusState\)/,
     );
     assert.match(
         appSource,
@@ -552,4 +552,22 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     );
     assert.match(appSource, /return \{ destroy \}/);
     assert.match(appSource, /if \(destroyed\) return/);
+    assert.match(appSource, /getPreparedDisposableCanvasId\(\{/);
+    assert.match(appSource, /allowLatest: embeddedComponentMode/);
+});
+
+test("whiteboard gateway remembers prepared disposable canvases for component mounts", async () => {
+    const gatewaySource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/reuse/whiteboard-ui-gateway.js", import.meta.url),
+            "utf8",
+        ),
+    );
+    assert.match(gatewaySource, /const preparedCanvasIds = new Map\(\)/);
+    assert.match(gatewaySource, /preparedCanvasIds\.set\(/);
+    assert.match(gatewaySource, /latestPreparedCanvasId = whiteboardId/);
+    assert.match(
+        gatewaySource,
+        /export function getPreparedDisposableCanvasId/,
+    );
 });

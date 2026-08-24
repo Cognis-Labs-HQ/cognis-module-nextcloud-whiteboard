@@ -39,7 +39,7 @@ import {
     hydratePresenceAvatars,
     renderWhiteboardPresenceEntry,
 } from "./presence.js";
-import "../reuse/whiteboard-ui-gateway.js";
+import { getPreparedDisposableCanvasId } from "../reuse/whiteboard-ui-gateway.js";
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
@@ -849,10 +849,14 @@ export async function mount(
     applyDocumentTitle(i18n, "module.nextcloud_whiteboard.page_title");
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
-    const embeddedComponentMode = Boolean(focusState);
+    const componentFocusState = focusState?.context ?? focusState ?? null;
+    const embeddedComponentMode = Boolean(componentFocusState);
     hostNavigationAllowed = allowNavigation && !embeddedComponentMode;
     integrationCanvasMode =
-        Boolean(focusState?.instantCanvas || focusState?.disposable) ||
+        Boolean(
+            componentFocusState?.instantCanvas ||
+            componentFocusState?.disposable,
+        ) ||
         Boolean(shareContext?.page?.instantCanvas) ||
         new URLSearchParams(window.location.search).get("instantCanvas") ===
             "1";
@@ -867,7 +871,12 @@ export async function mount(
     if (signal?.aborted) return;
 
     const initialBoardId =
-        String(focusState?.whiteboardId ?? "").trim() ||
+        String(componentFocusState?.whiteboardId ?? "").trim() ||
+        getPreparedDisposableCanvasId({
+            resourceType: "meeting",
+            resourceId: componentFocusState?.meetingId,
+            allowLatest: embeddedComponentMode,
+        }) ||
         activeShareContext?.payload?.whiteboardId ||
         new URLSearchParams(window.location.search).get("id");
     if (initialBoardId) {

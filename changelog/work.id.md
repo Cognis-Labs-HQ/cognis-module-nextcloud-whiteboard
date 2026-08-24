@@ -35,3 +35,7 @@ Mount komponen bertarget elemen kini tetap tanpa bingkai dan menunggu kanvas sek
 ## Siklus hidup komponen terlindungi
 
 Mount komponen Whiteboard kini mematuhi kebijakan navigasi host dan mengembalikan handle destroy idempoten untuk siklus hidup jendela komponen yang terlindungi.
+
+## Serah terima kanvas rapat yang disiapkan
+
+Gateway peramban kini menyimpan kanvas sekali pakai yang telah disiapkan sehingga mount komponen dapat memulihkan kanvas yang tepat ketika host memberikan konteks fokus terbungkus atau tidak lengkap.

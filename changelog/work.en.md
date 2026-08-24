@@ -39,3 +39,7 @@ Whiteboard component mounts now honor the host navigation policy and return an i
 ## Prepared meeting canvas handoff
 
 The browser gateway now retains the disposable canvas it prepared, allowing the component mount to recover the exact canvas when a host supplies wrapped or incomplete focus context.
+
+## Route-safe component cleanup
+
+Component cleanup now detaches its abort listener, ignores stale mount handles, and clears Whiteboard mount state before Cognis completes discardAll-driven SPA navigation.

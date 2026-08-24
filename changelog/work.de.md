@@ -39,3 +39,7 @@ Whiteboard-Komponenten-Mounts beachten nun die Navigationsrichtlinie des Hosts u
 ## Übergabe der vorbereiteten Besprechungsleinwand
 
 Das Browser-Gateway behält nun die vorbereitete temporäre Leinwand bei, sodass der Komponenten-Mount die genaue Leinwand wiederherstellen kann, wenn ein Host einen umschlossenen oder unvollständigen Fokuskontext liefert.
+
+## Routensichere Komponentenbereinigung
+
+Die Komponentenbereinigung entfernt nun ihren Abbruch-Listener, ignoriert veraltete Mount-Handles und löscht den Whiteboard-Mount-Zustand, bevor Cognis die durch discardAll gesteuerte SPA-Navigation abschließt.

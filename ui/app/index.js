@@ -935,9 +935,18 @@ export async function mount(
     const destroy = () => {
         if (destroyed) return;
         destroyed = true;
+        signal?.removeEventListener("abort", destroy);
         mountedComposer.destroy();
-        if (composer === mountedComposer) composer = null;
+        if (composer !== mountedComposer) return;
+        composer = null;
         teardownCanvas();
+        activeBoard = null;
+        activeShareContext = null;
+        savedElements = [];
+        preflightStatus = "idle";
+        integrationCanvasMode = false;
+        hostNavigationAllowed = true;
+        if (pageMountRoot === root) pageMountRoot = null;
     };
     signal?.addEventListener("abort", destroy, { once: true });
     await mountedComposer.init();

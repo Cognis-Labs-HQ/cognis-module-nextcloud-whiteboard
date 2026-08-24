@@ -552,6 +552,15 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     );
     assert.match(appSource, /return \{ destroy \}/);
     assert.match(appSource, /if \(destroyed\) return/);
+    assert.match(
+        appSource,
+        /signal\?\.removeEventListener\("abort", destroy\)/,
+    );
+    assert.match(appSource, /if \(composer !== mountedComposer\) return/);
+    assert.match(
+        appSource,
+        /if \(pageMountRoot === root\) pageMountRoot = null/,
+    );
     assert.match(appSource, /getPreparedDisposableCanvasId\(\{/);
     assert.match(appSource, /allowLatest: embeddedComponentMode/);
 });

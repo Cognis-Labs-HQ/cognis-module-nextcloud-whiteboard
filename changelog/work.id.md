@@ -39,3 +39,7 @@ Mount komponen Whiteboard kini mematuhi kebijakan navigasi host dan mengembalika
 ## Serah terima kanvas rapat yang disiapkan
 
 Gateway peramban kini menyimpan kanvas sekali pakai yang telah disiapkan sehingga mount komponen dapat memulihkan kanvas yang tepat ketika host memberikan konteks fokus terbungkus atau tidak lengkap.
+
+## Pembersihan komponen yang aman untuk rute
+
+Pembersihan komponen kini melepas listener pembatalan, mengabaikan handle mount usang, dan membersihkan status mount Whiteboard sebelum Cognis menyelesaikan navigasi SPA yang digerakkan discardAll.

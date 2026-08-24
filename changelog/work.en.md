@@ -18,4 +18,8 @@ The global browser UI gateway now lets meeting integrations create or resolve a 
 
 ## Compatible UI capability registration
 
-The Whiteboard gateway now registers against both mutable and read-only browser capability facades without causing a deferred-login runtime error or generic error popup.
+The Whiteboard gateway now uses the canonical browser capability contribution API without causing a deferred-login runtime error or generic error popup.
+
+## Whiteboard gateway provider discovery
+
+The Whiteboard navbar entry now declares its browser capability so the host provider loader imports the gateway before Jitsi binds its optional Whiteboard button.

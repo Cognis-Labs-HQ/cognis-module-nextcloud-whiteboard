@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.41",
+    "version": "2.3.42",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -159,7 +159,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "fff8d87a5e6a99a2a1b0fae0287625d573debabd370954befbd1106486b63b4c"
+            "sha256": "dfb580e7c4f5ceaf899326111d4e73bcb7d5aca5ed619a5485b6f97d4ac82fb7"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -192,6 +192,10 @@
         {
             "path": "api/reuse/text-normalizers.js",
             "sha256": "114abd33118e936fac4ce8575814af6c84c02613aacb6e37b420868227f4d4fd"
+        },
+        {
+            "path": "api/reuse/ui-provider.js",
+            "sha256": "ff122f65e6b6e721b07a8d5c0d7407f63469c63571f460276d69e69a1b07ae0f"
         },
         {
             "path": "api/reuse/url-parts.js",
@@ -239,11 +243,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "9bfd6167af639040df057b8efa660e6eaefe852be31e73e85cbb10e9e4a29363"
+            "sha256": "1c651b6257e60e55d64576866f11c80a4804ed378653fc335782509a53bd1abf"
         },
         {
             "path": "package.json",
-            "sha256": "f9bda28c8b14748e624936470a4e15dc7e3a9b969f616fb44db1304b403f42f9"
+            "sha256": "e27e095a9020624877e9b61d02a2f958fb08631bc53345198e008b8c1e22b763"
         },
         {
             "path": "routes.json",
@@ -307,7 +311,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "d1f881c14692c5f42855a49044fcac3079cb4b928f52b7ba2663ce7d244202d5"
+            "sha256": "b3ee6e479a4e36e5a2572f6540a59df1bb7205d0e3f8193afcefdacc99ae7b19"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -391,7 +395,7 @@
         },
         {
             "path": "ui/reuse/whiteboard-ui-gateway.js",
-            "sha256": "708750fea5d44b3099503c1b3a4950dd27a5e9113b96076fbcfc983af385f2f1"
+            "sha256": "5124c394c5a000470cf43ca0fe7de85f7fbfe36a0520c11b3b9a1ee26c93fbe2"
         },
         {
             "path": "ui/styles/whiteboards.css",

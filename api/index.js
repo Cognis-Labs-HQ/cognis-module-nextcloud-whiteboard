@@ -9,15 +9,14 @@ import { registerWhiteboardShareFlowHooks } from "./share-hooks.js";
 import { registerWhiteboardImageRoutes } from "./image-routes.js";
 import { publicConfig, resolveExpiry } from "./config-values.js";
 import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
+import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
 import {
     createWhiteboardEnableTest,
     registerWhiteboardEnableTestRoute,
 } from "./enable-test.js";
-
 const LIVENESS_TIMEOUT_MS = 5000;
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 const initializedRuntimeContexts = new WeakSet();
-
 const MODULE_ID = "nextcloud-whiteboard";
 const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
@@ -39,9 +38,11 @@ import {
 export function registerUi(ctx) {
     const moduleUiRoot = path.join(ctx.moduleRoot, "ui");
     ctx.registerStaticDir("", moduleUiRoot);
+    registerWhiteboardUiProvider(ctx);
     ctx.registerNavbarPlugin({
         scriptUrl: "/static/modules/nextcloud-whiteboard/navbar.js",
         access: { minRole: "user" },
+        providesCapabilities: ["whiteboard:uiGateway"],
     });
 
     ctx.registerSpaRoute({

@@ -483,15 +483,29 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
 });
 
 test("whiteboard navbar registers the disposable canvas UI gateway", async () => {
-    const [navbarSource, gatewaySource] = await Promise.all(
-        ["../ui/navbar.js", "../ui/reuse/whiteboard-ui-gateway.js"].map(
-            (relativePath) =>
+    const [navbarSource, gatewaySource, apiSource, providerSource] =
+        await Promise.all(
+            [
+                "../ui/navbar.js",
+                "../ui/reuse/whiteboard-ui-gateway.js",
+                "../api/index.js",
+                "../api/reuse/ui-provider.js",
+            ].map((relativePath) =>
                 import("node:fs/promises").then((fs) =>
                     fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
                 ),
-        ),
-    );
+            ),
+        );
     assert.match(navbarSource, /whiteboard-ui-gateway\.js/);
+    assert.match(
+        apiSource + providerSource,
+        /providesCapabilities: \["whiteboard:uiGateway"\]/,
+    );
+    assert.match(
+        providerSource,
+        /registerCapabilityProvider\?\.\(\{[\s\S]*scriptUrl: GATEWAY_SCRIPT/,
+    );
+    assert.match(providerSource, /whiteboard-ui-gateway\.js/);
     assert.match(
         gatewaySource,
         /const capabilityName = "whiteboard:uiGateway"/,
@@ -499,7 +513,9 @@ test("whiteboard navbar registers the disposable canvas UI gateway", async () =>
     assert.match(gatewaySource, /async createDisposableCanvas\(\{/);
     assert.match(gatewaySource, /participantHandles/);
     assert.match(gatewaySource, /return \{ whiteboardId \}/);
-    assert.match(gatewaySource, /typeof candidate === "function"/);
-    assert.match(gatewaySource, /originalGet\.call\(capabilities, name\)/);
+    assert.match(
+        gatewaySource,
+        /uiCtx\.capabilities\.contribute\(capabilityName, gateway\)/,
+    );
     assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
 });

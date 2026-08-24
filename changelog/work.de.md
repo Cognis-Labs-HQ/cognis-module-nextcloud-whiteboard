@@ -18,4 +18,8 @@ Das globale Browser-UI-Gateway ermöglicht Besprechungsintegrationen nun, eine s
 
 ## Kompatible Registrierung der UI-Funktion
 
-Das Whiteboard-Gateway registriert sich nun sowohl bei veränderlichen als auch bei schreibgeschützten Browser-Funktionsfassaden, ohne einen Laufzeitfehler bei der verzögerten Anmeldung oder ein allgemeines Fehlerfenster auszulösen.
+Das Whiteboard-Gateway verwendet nun die kanonische Browser-API zum Beitragen von Funktionen, ohne einen Laufzeitfehler bei der verzögerten Anmeldung oder ein allgemeines Fehlerfenster auszulösen.
+
+## Erkennung des Whiteboard-Gateway-Anbieters
+
+Der Whiteboard-Navigationsleisteneintrag deklariert nun seine Browser-Funktion, damit der Host-Anbieterlader das Gateway importiert, bevor Jitsi seine optionale Whiteboard-Schaltfläche bindet.

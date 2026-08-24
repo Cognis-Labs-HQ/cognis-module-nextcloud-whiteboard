@@ -18,4 +18,8 @@ Gateway UI peramban global kini memungkinkan integrasi rapat membuat atau menemu
 
 ## Pendaftaran kapabilitas UI yang kompatibel
 
-Gateway Whiteboard kini mendaftar pada fasad kapabilitas peramban yang dapat diubah maupun hanya-baca tanpa menyebabkan galat runtime saat login tertunda atau popup galat umum.
+Gateway Whiteboard kini menggunakan API kontribusi kapabilitas peramban yang kanonis tanpa menyebabkan galat runtime saat login tertunda atau popup galat umum.
+
+## Penemuan penyedia gateway Whiteboard
+
+Entri bilah navigasi Whiteboard kini mendeklarasikan kapabilitas perambannya agar pemuat penyedia host mengimpor gateway sebelum Jitsi mengikat tombol Whiteboard opsional.

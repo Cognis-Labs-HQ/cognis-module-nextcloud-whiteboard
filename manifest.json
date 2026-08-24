@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.48",
+    "version": "2.3.49",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -243,11 +243,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "8b6c40dac1e8a35c0eb8c4db103cf97ee02d4e69f76ced310d276a5c5be9ee30"
+            "sha256": "fa3227f0ca485730743e795b633e4b07e788b06cbc823032e456a6d1e436b21c"
         },
         {
             "path": "package.json",
-            "sha256": "209822c294e638c1da0675815de2f30f963da3c555eb484813fb7fb9be11a98c"
+            "sha256": "4e88ce42544be0d67f64b4963aecfa59f41f85da08ca5a71390b525194c724fd"
         },
         {
             "path": "routes.json",
@@ -311,7 +311,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "a5b7bddda6118fc3182acbc3deca1e439ebfe84516c392101ad44b29b1f5f790"
+            "sha256": "a0ac41765cbc70c44c1b082b4c95b8e2715413652b59e126246e867011734f46"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -339,7 +339,7 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "8005acb999e9f87ba2050b98f29d912e5784fe697e008a8ca44b28dcb5977cd5"
+            "sha256": "7f5d00a58eb1b3e8e964e1de59db2a190a36b4dd9414ed505a1b56d270188349"
         },
         {
             "path": "ui/app/overlay.js",
@@ -355,7 +355,7 @@
         },
         {
             "path": "ui/app/render.js",
-            "sha256": "f19fa74853fdc614147bc1480883ba50375f27fdcb1102673066734bd8f038dc"
+            "sha256": "757ae96c88f75b37d16978f05c4b209d1b725022632afcd0cdd5bb825c799639"
         },
         {
             "path": "ui/app/search-index.js",
@@ -399,7 +399,7 @@
         },
         {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "bf7c43ee234023cb7a6b94d2004f348c038022d4c745c4e241600e1241ce00f6"
+            "sha256": "4d4857cf1e4f088353745e5f351b8e9f69c8b7d9ad5e650c8747535eba51eecd"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",

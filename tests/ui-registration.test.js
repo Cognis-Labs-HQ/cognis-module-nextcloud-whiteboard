@@ -595,3 +595,36 @@ test("whiteboard direct entry mounts only on declared whiteboard routes", async 
     );
     assert.doesNotMatch(appSource, /^await mountWhenDirect\(mount\);$/m);
 });
+
+test("whiteboard toolbar keeps disposable save controls visible in compact windows", async () => {
+    const [appSource, renderSource, stylesSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/app/render.js",
+            "../ui/styles/whiteboards.css",
+        ].map((relativePath) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+            ),
+        ),
+    );
+    assert.match(renderSource, /class="whiteboard-toolbar-scroll"/);
+    assert.match(
+        stylesSource,
+        /\.whiteboard-toolbar-scroll\s*\{[^}]*overflow-x: auto/s,
+    );
+    assert.match(
+        stylesSource,
+        /\.whiteboard-save-state\s*\{[^}]*position: sticky/s,
+    );
+    assert.match(stylesSource, /@container \(max-width: 44rem\)/);
+    assert.match(
+        appSource,
+        /function bindDisposableSaveButton\(session, canvas\)/,
+    );
+    assert.match(appSource, /setDisposableSaveDirty\(session, true\)/);
+    assert.match(
+        appSource,
+        /saveButton\.dataset\.dirty = String\(!session\.saved\)/,
+    );
+});

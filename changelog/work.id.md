@@ -47,3 +47,7 @@ Pembersihan komponen kini melepas listener pembatalan, mengabaikan handle mount 
 ## Entri langsung berbatas rute
 
 Entri peramban Whiteboard kini melakukan mount langsung otomatis hanya pada /whiteboard dan /whiteboards sehingga impor komponen di halaman lain tidak dipasang ke root host yang tidak terkait.
+
+## Bilah alat kanvas ringkas
+
+Bilah alat kanvas kini menggulir alat gambar dalam jendela komponen sempit sambil mempertahankan status simpan terlihat, dan perubahan kanvas sekali pakai selalu menampilkan tombol Simpan yang disorot hingga tersimpan.

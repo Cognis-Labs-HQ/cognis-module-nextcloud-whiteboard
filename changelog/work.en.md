@@ -47,3 +47,7 @@ Component cleanup now detaches its abort listener, ignores stale mount handles, 
 ## Route-scoped direct entry
 
 The Whiteboard browser entry now performs an automatic direct mount only on /whiteboard and /whiteboards, preventing component imports on other pages from mounting into an unrelated host root.
+
+## Compact canvas toolbar
+
+The canvas toolbar now scrolls its drawing tools in narrow component windows while pinning save state in view, and disposable changes always reveal a highlighted Save button until stored.

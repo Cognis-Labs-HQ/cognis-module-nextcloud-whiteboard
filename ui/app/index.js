@@ -148,6 +148,53 @@ function emitBoardRenamed(title) {
         [],
     );
 }
+function setDisposableSaveDirty(session, dirty) {
+    if (!session?.disposable) return;
+    const saveButton = withinMount("#whiteboard-save-copy");
+    if (!saveButton) return;
+    saveButton.dataset.dirty = String(dirty);
+    saveButton.hidden = false;
+}
+function bindDisposableSaveButton(session, canvas) {
+    if (!session?.disposable) return;
+    const statusBox = withinMount("#whiteboard-sync-status");
+    if (!statusBox) return;
+    if (!withinMount("#whiteboard-save-copy")) {
+        statusBox.insertAdjacentHTML(
+            "beforebegin",
+            `<button type="button" id="whiteboard-save-copy" class="whiteboard-save-copy" aria-label="${escapeHtml(translateModuleString("module.nextcloud_whiteboard.save_canvas"))}">${escapeHtml(translateModuleString("module.nextcloud_whiteboard.save_canvas"))}</button>`,
+        );
+    }
+    const saveButton = withinMount("#whiteboard-save-copy");
+    if (!saveButton || saveButton.dataset.bound === "true") return;
+    saveButton.dataset.bound = "true";
+    saveButton.dataset.dirty = String(!session.saved);
+    saveButton.addEventListener("click", async () => {
+        saveButton.disabled = true;
+        try {
+            setSyncStatus(
+                "syncing",
+                "module.nextcloud_whiteboard.status_syncing",
+            );
+            await saveWhiteboardElements(session.roomId, canvas.getElements(), {
+                explicitSave: true,
+            });
+            session.saved = true;
+            setDisposableSaveDirty(session, false);
+            setSyncStatus(
+                "synced",
+                "module.nextcloud_whiteboard.status_synced",
+            );
+        } catch (error) {
+            reportClientError(
+                error,
+                "module.nextcloud_whiteboard.status_sync_failed",
+            );
+        } finally {
+            saveButton.disabled = false;
+        }
+    });
+}
 function connectSocket(io, session, canvas) {
     const { serverUrl, roomId, token } = session;
     const canWrite = session.canWrite === true;
@@ -229,6 +276,7 @@ function connectSocket(io, session, canvas) {
         }
         savedElements = elements;
         composer?.refreshPresence?.();
+        if (meta?.transient !== true) setDisposableSaveDirty(session, true);
         if (canWrite && meta?.transient !== true) persistChanges(elements);
         if (canWrite) emitChanges(elements, SYNC_MESSAGE_SCENE_UPDATE);
     });
@@ -724,33 +772,7 @@ async function openBoard(board) {
     socketInstance = connectSocket(io, session, canvasInstance);
     composer?.refreshPresence?.();
     bindCanvasToolbar(canvasInstance);
-    withinMount("#whiteboard-save-copy")?.addEventListener(
-        "click",
-        async () => {
-            try {
-                setSyncStatus(
-                    "syncing",
-                    "module.nextcloud_whiteboard.status_syncing",
-                );
-                await saveWhiteboardElements(
-                    session.roomId,
-                    canvasInstance.getElements(),
-                    {
-                        explicitSave: true,
-                    },
-                );
-                setSyncStatus(
-                    "synced",
-                    "module.nextcloud_whiteboard.status_synced",
-                );
-            } catch (error) {
-                reportClientError(
-                    error,
-                    "module.nextcloud_whiteboard.status_sync_failed",
-                );
-            }
-        },
-    );
+    bindDisposableSaveButton(session, canvasInstance);
     if (session.canWrite !== true) {
         pageMountRoot
             .querySelectorAll(

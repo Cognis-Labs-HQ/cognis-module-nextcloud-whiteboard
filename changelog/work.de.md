@@ -47,3 +47,7 @@ Die Komponentenbereinigung entfernt nun ihren Abbruch-Listener, ignoriert veralt
 ## Routenbezogener Direkteinstieg
 
 Der Whiteboard-Browsereinstieg führt eine automatische direkte Einbindung nun nur unter /whiteboard und /whiteboards aus, sodass Komponentenimporte auf anderen Seiten nicht in ein fremdes Host-Root eingebunden werden.
+
+## Kompakte Leinwand-Werkzeugleiste
+
+Die Leinwand-Werkzeugleiste scrollt Zeichenwerkzeuge nun in schmalen Komponentenfenstern und hält den Speicherstatus sichtbar; Änderungen an temporären Leinwänden zeigen bis zum Speichern stets eine hervorgehobene Speichern-Schaltfläche.

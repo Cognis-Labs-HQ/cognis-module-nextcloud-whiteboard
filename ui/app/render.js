@@ -30,6 +30,7 @@ export function renderCanvasElement({
     return `
     <div class="whiteboard-canvas-wrap">
       <div id="whiteboard-toolbar" class="whiteboard-toolbar" role="toolbar" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.toolbar_label"))}">
+        <div class="whiteboard-toolbar-scroll">
         <div class="whiteboard-toolbar-group">
           ${integrationCanvasMode ? "" : `<button type="button" id="whiteboard-new" class="whiteboard-tool whiteboard-new-tool" title="${escapeHtml(translate("module.nextcloud_whiteboard.new_board"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.new_board"))}">＋ <span>${escapeHtml(translate("module.nextcloud_whiteboard.new"))}</span></button>`}
           <button type="button" id="whiteboard-history" class="whiteboard-tool" title="${escapeHtml(translate("module.nextcloud_whiteboard.history_title"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.history_title"))}">↺</button>
@@ -63,8 +64,9 @@ export function renderCanvasElement({
           <a href="#" id="whiteboard-clear" class="whiteboard-tool btn-cancel" role="button" title="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}">×</a>
         </div>
         ${integrationCanvasMode ? "" : `<span id="whiteboard-board-title" class="whiteboard-board-title" title="${escapeHtml(canRenameActiveBoard() ? translate("module.nextcloud_whiteboard.rename_hint") : "")}">${escapeHtml(activeSession?.title ?? activeBoard?.title ?? "")}</span>`}
-        <span class="whiteboard-save-state"><span id="whiteboard-saved-pill" class="whiteboard-saved-pill">${escapeHtml(translate("module.nextcloud_whiteboard.saved"))}</span>${disposable ? `<button type="button" id="whiteboard-save-copy" class="whiteboard-save-copy">${escapeHtml(translate("module.nextcloud_whiteboard.save_canvas"))}</button>` : ""}<span id="whiteboard-sync-status" class="whiteboard-sync-status" data-status="${escapeHtml(syncStatus)}" title="${escapeHtml(syncStatusMessage || translate("module.nextcloud_whiteboard.status_idle"))}"></span></span>
         <div id="page-presence-section" class="whiteboard-toolbar-group whiteboard-presence" aria-live="polite"></div>
+        </div>
+        <span class="whiteboard-save-state"><span id="whiteboard-saved-pill" class="whiteboard-saved-pill">${escapeHtml(translate("module.nextcloud_whiteboard.saved"))}</span>${disposable ? `<button type="button" id="whiteboard-save-copy" class="whiteboard-save-copy">${escapeHtml(translate("module.nextcloud_whiteboard.save_canvas"))}</button>` : ""}<span id="whiteboard-sync-status" class="whiteboard-sync-status" data-status="${escapeHtml(syncStatus)}" title="${escapeHtml(syncStatusMessage || translate("module.nextcloud_whiteboard.status_idle"))}"></span></span>
       </div>
       <div class="whiteboard-canvas-stage">
         <canvas id="whiteboard-canvas" tabindex="0" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.canvas_label"))}"></canvas>

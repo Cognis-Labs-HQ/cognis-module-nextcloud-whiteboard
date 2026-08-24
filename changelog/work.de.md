@@ -43,3 +43,7 @@ Das Browser-Gateway behält nun die vorbereitete temporäre Leinwand bei, sodass
 ## Routensichere Komponentenbereinigung
 
 Die Komponentenbereinigung entfernt nun ihren Abbruch-Listener, ignoriert veraltete Mount-Handles und löscht den Whiteboard-Mount-Zustand, bevor Cognis die durch discardAll gesteuerte SPA-Navigation abschließt.
+
+## Routenbezogener Direkteinstieg
+
+Der Whiteboard-Browsereinstieg führt eine automatische direkte Einbindung nun nur unter /whiteboard und /whiteboards aus, sodass Komponentenimporte auf anderen Seiten nicht in ein fremdes Host-Root eingebunden werden.

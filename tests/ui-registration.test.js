@@ -580,3 +580,18 @@ test("whiteboard gateway remembers prepared disposable canvases for component mo
         /export function getPreparedDisposableCanvasId/,
     );
 });
+
+test("whiteboard direct entry mounts only on declared whiteboard routes", async () => {
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+    );
+    assert.match(
+        appSource,
+        /const DIRECT_WHITEBOARD_PATHS = new Set\(\["\/whiteboard", "\/whiteboards"\]\)/,
+    );
+    assert.match(
+        appSource,
+        /DIRECT_WHITEBOARD_PATHS\.has\(window\.location\.pathname\)[\s\S]*await mountWhenDirect\(mount\)/,
+    );
+    assert.doesNotMatch(appSource, /^await mountWhenDirect\(mount\);$/m);
+});

@@ -43,3 +43,7 @@ The browser gateway now retains the disposable canvas it prepared, allowing the 
 ## Route-safe component cleanup
 
 Component cleanup now detaches its abort listener, ignores stale mount handles, and clears Whiteboard mount state before Cognis completes discardAll-driven SPA navigation.
+
+## Route-scoped direct entry
+
+The Whiteboard browser entry now performs an automatic direct mount only on /whiteboard and /whiteboards, preventing component imports on other pages from mounting into an unrelated host root.

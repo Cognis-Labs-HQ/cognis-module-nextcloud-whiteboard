@@ -45,6 +45,7 @@ const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
 const SYNC_MESSAGE_SCENE_UPDATE = "SCENE_UPDATE";
 const SYNC_MESSAGE_BOARD_RENAMED = "BOARD_RENAMED";
+const DIRECT_WHITEBOARD_PATHS = new Set(["/whiteboard", "/whiteboards"]);
 let i18n = null;
 let composer = null;
 let boards = [];
@@ -961,4 +962,9 @@ export async function mount(
     return { destroy };
 }
 
-await mountWhenDirect(mount);
+if (
+    typeof window !== "undefined" &&
+    DIRECT_WHITEBOARD_PATHS.has(window.location.pathname)
+) {
+    await mountWhenDirect(mount);
+}

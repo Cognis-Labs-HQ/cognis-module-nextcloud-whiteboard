@@ -43,3 +43,7 @@ Gateway peramban kini menyimpan kanvas sekali pakai yang telah disiapkan sehingg
 ## Pembersihan komponen yang aman untuk rute
 
 Pembersihan komponen kini melepas listener pembatalan, mengabaikan handle mount usang, dan membersihkan status mount Whiteboard sebelum Cognis menyelesaikan navigasi SPA yang digerakkan discardAll.
+
+## Entri langsung berbatas rute
+
+Entri peramban Whiteboard kini melakukan mount langsung otomatis hanya pada /whiteboard dan /whiteboards sehingga impor komponen di halaman lain tidak dipasang ke root host yang tidak terkait.

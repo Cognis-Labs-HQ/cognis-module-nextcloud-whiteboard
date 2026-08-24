@@ -23,3 +23,7 @@ Gateway Whiteboard kini menggunakan API kontribusi kapabilitas peramban yang kan
 ## Penemuan penyedia gateway Whiteboard
 
 Entri bilah navigasi Whiteboard kini mendeklarasikan kapabilitas perambannya agar pemuat penyedia host mengimpor gateway sebelum Jitsi mengikat tombol Whiteboard opsional.
+
+## Membuka kanvas sekali pakai tertanam
+
+Jendela komponen kini menggunakan status fokus yang diberikan dan langsung membuka kanvas sekali pakai yang diminta, bukan menampilkan beranda Whiteboard.

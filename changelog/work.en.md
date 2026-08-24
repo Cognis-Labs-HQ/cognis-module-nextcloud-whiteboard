@@ -23,3 +23,7 @@ The Whiteboard gateway now uses the canonical browser capability contribution AP
 ## Whiteboard gateway provider discovery
 
 The Whiteboard navbar entry now declares its browser capability so the host provider loader imports the gateway before Jitsi binds its optional Whiteboard button.
+
+## Open embedded disposable canvases
+
+Component windows now consume their supplied focus state and immediately open the requested disposable canvas instead of showing the Whiteboard home view.

@@ -826,7 +826,7 @@ function buildElements() {
         },
     ];
 }
-export async function mount(root, { signal, shareContext } = {}) {
+export async function mount(root, { signal, shareContext, focusState } = {}) {
     if (!(root instanceof Element)) {
         throw new TypeError("Whiteboard mount root must be an Element");
     }
@@ -841,6 +841,7 @@ export async function mount(root, { signal, shareContext } = {}) {
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
     integrationCanvasMode =
+        Boolean(focusState?.instantCanvas || focusState?.disposable) ||
         Boolean(shareContext?.page?.instantCanvas) ||
         new URLSearchParams(window.location.search).get("instantCanvas") ===
             "1";
@@ -855,7 +856,8 @@ export async function mount(root, { signal, shareContext } = {}) {
     if (signal?.aborted) return;
 
     const initialBoardId =
-        activeShareContext?.payload?.whiteboardId ??
+        String(focusState?.whiteboardId ?? "").trim() ||
+        activeShareContext?.payload?.whiteboardId ||
         new URLSearchParams(window.location.search).get("id");
     if (initialBoardId) {
         activeBoard = {

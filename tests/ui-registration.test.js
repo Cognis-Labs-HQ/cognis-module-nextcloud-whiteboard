@@ -519,3 +519,18 @@ test("whiteboard navbar registers the disposable canvas UI gateway", async () =>
     );
     assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
 });
+
+test("whiteboard component mounts the disposable canvas from focus state", async () => {
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+    );
+    assert.match(appSource, /\{ signal, shareContext, focusState \}/);
+    assert.match(
+        appSource,
+        /Boolean\(focusState\?\.instantCanvas \|\| focusState\?\.disposable\)/,
+    );
+    assert.match(
+        appSource,
+        /String\(focusState\?\.whiteboardId \?\? ""\)\.trim\(\)/,
+    );
+});

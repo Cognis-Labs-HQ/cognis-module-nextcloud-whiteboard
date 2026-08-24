@@ -23,3 +23,7 @@ Das Whiteboard-Gateway verwendet nun die kanonische Browser-API zum Beitragen vo
 ## Erkennung des Whiteboard-Gateway-Anbieters
 
 Der Whiteboard-Navigationsleisteneintrag deklariert nun seine Browser-Funktion, damit der Host-Anbieterlader das Gateway importiert, bevor Jitsi seine optionale Whiteboard-Schaltfläche bindet.
+
+## Eingebettete temporäre Leinwände öffnen
+
+Komponentenfenster verwenden nun den übergebenen Fokuszustand und öffnen sofort die angeforderte temporäre Leinwand, statt die Whiteboard-Startseite anzuzeigen.

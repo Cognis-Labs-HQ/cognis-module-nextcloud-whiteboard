@@ -1,5 +1,6 @@
 import { apiFetch } from "/static/reuse/api-client.js";
 import { registerSearchIndex } from "/static/reuse/search-util/popup.js";
+import "./reuse/whiteboard-ui-gateway.js";
 
 const WHITEBOARD_API_BASE = "/api/v1/modules/nextcloud-whiteboard";
 

@@ -11,3 +11,7 @@ Kanvas biasa kini membuat dan memperbarui salinan tersimpan bagi setiap anggota,
 ## Beranda kanvas dan status penyimpanan yang lebih jelas
 
 Kartu membesar saat kanvas bertambah dan dapat digulir setelah empat entri, sementara lampu status mengonfirmasi penyimpanan dengan tanda centang animasi dan label Tersimpan.
+
+## Gateway integrasi rapat
+
+Gateway UI peramban global kini memungkinkan integrasi rapat membuat atau menemukan kanvas sekali pakai yang tersinkronisasi tanpa bergantung pada rute HTTP milik modul lain.

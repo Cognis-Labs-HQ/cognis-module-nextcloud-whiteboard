@@ -481,3 +481,22 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
     );
     assert.match(appSource, /if \(signal\?\.aborted\) return/);
 });
+
+test("whiteboard navbar registers the disposable canvas UI gateway", async () => {
+    const [navbarSource, gatewaySource] = await Promise.all(
+        ["../ui/navbar.js", "../ui/reuse/whiteboard-ui-gateway.js"].map(
+            (relativePath) =>
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+                ),
+        ),
+    );
+    assert.match(navbarSource, /whiteboard-ui-gateway\.js/);
+    assert.match(
+        gatewaySource,
+        /uiCtx\.capabilities\.set\("whiteboard:uiGateway"/,
+    );
+    assert.match(gatewaySource, /async createDisposableCanvas\(\{/);
+    assert.match(gatewaySource, /participantHandles/);
+    assert.match(gatewaySource, /return \{ whiteboardId \}/);
+});

@@ -354,6 +354,21 @@ export class NextcloudWhiteboardStore {
         return this.mapBoard(result.rows?.[0]);
     }
 
+    async getWhiteboardByExternalPath(externalPath) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboards",
+            where: [
+                {
+                    column: "external_path",
+                    value: normalizeLeadingSlashPath(externalPath),
+                },
+            ],
+            limit: 1,
+        });
+        return this.mapBoard(result.rows?.[0]);
+    }
+
     async listWhiteboards() {
         const result = await this.db.executeCommand({
             option: "SELECT",

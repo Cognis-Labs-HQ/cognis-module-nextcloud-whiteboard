@@ -8,6 +8,7 @@ import { checkHttpLiveness } from "./reuse/http-liveness.js";
 import { registerWhiteboardShareFlowHooks } from "./share-hooks.js";
 import { registerWhiteboardImageRoutes } from "./image-routes.js";
 import { publicConfig, resolveExpiry } from "./config-values.js";
+import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
 import {
     createWhiteboardEnableTest,
     registerWhiteboardEnableTestRoute,
@@ -953,13 +954,34 @@ export function registerApiRoutes(router, ctx) {
                 body.participants,
                 hasMinRole(claims.role, "admin"),
             );
-            const whiteboard = await store.createWhiteboard({
-                title: body.title,
-                createdBy: username,
-                participants,
-                externalPath: body.externalPath,
-                disposable: body.disposable === true,
-            });
+            let whiteboard;
+            if (body.disposable) {
+                const resolved = await resolveDisposableCanvas({
+                    store,
+                    resourceType: body.resourceType,
+                    resourceId: body.resourceId,
+                    title: body.title,
+                    username,
+                    participants,
+                });
+                if (!resolved.whiteboard) {
+                    sendError(
+                        res,
+                        resolved.status,
+                        resolved.error,
+                        "Disposable canvas could not be resolved.",
+                    );
+                    return;
+                }
+                whiteboard = resolved.whiteboard;
+            } else {
+                whiteboard = await store.createWhiteboard({
+                    title: body.title,
+                    createdBy: username,
+                    participants,
+                    externalPath: body.externalPath,
+                });
+            }
             sendJson(res, 200, {
                 data: {
                     whiteboard,

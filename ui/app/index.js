@@ -39,6 +39,7 @@ import {
     hydratePresenceAvatars,
     renderWhiteboardPresenceEntry,
 } from "./presence.js";
+import "../reuse/whiteboard-ui-gateway.js";
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";

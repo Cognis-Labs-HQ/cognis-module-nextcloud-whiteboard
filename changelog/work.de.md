@@ -11,3 +11,7 @@ Reguläre Leinwände erstellen und aktualisieren nun eine gespeicherte Kopie fü
 ## Übersichtlichere Startseite und Speicherstatus
 
 Die Karte wächst bei zusätzlichen Leinwänden und scrollt nach vier Einträgen; die Statusanzeige bestätigt Speichervorgänge mit einem animierten Häkchen und dem Hinweis Gespeichert.
+
+## Gateway für Besprechungsintegrationen
+
+Das globale Browser-UI-Gateway ermöglicht Besprechungsintegrationen nun, eine synchronisierte temporäre Leinwand zu erstellen oder aufzulösen, ohne von den HTTP-Routen eines anderen Moduls abzuhängen.

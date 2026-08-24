@@ -53,7 +53,7 @@ test("whiteboard mount validates its page root before initialization", async () 
 
     assert.match(
         source,
-        /export async function mount\(root[^]*?if \(!\(root instanceof Element\)\)/,
+        /export async function mount\(\s*root[^]*?if \(!\(root instanceof Element\)\)/,
     );
     assert.match(source, /let pageMountRoot = null/);
     assert.doesNotMatch(source, /let mountRoot/);

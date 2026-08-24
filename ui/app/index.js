@@ -58,6 +58,7 @@ let preflightStatus = "idle";
 let lastConnectionToast = "";
 let imageUploadMaxBytes = 1048576;
 let integrationCanvasMode = false;
+let hostNavigationAllowed = true;
 /** @type {Element | null} */
 let pageMountRoot = null;
 let runtimeDispose = null;
@@ -650,7 +651,7 @@ async function runPreflightCheck() {
     return true;
 }
 function syncBoardUrl(boardId) {
-    if (activeShareContext || !boardId) return;
+    if (!hostNavigationAllowed || activeShareContext || !boardId) return;
     const searchParams = new URLSearchParams({ id: boardId });
     if (integrationCanvasMode) {
         searchParams.set("instantCanvas", "1");
@@ -826,7 +827,15 @@ function buildElements() {
         },
     ];
 }
-export async function mount(root, { signal, shareContext, focusState } = {}) {
+export async function mount(
+    root,
+    {
+        signal,
+        shareContext,
+        focusState,
+        navigationAllowed: allowNavigation = true,
+    } = {},
+) {
     if (!(root instanceof Element)) {
         throw new TypeError("Whiteboard mount root must be an Element");
     }
@@ -841,6 +850,7 @@ export async function mount(root, { signal, shareContext, focusState } = {}) {
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
     const embeddedComponentMode = Boolean(focusState);
+    hostNavigationAllowed = allowNavigation && !embeddedComponentMode;
     integrationCanvasMode =
         Boolean(focusState?.instantCanvas || focusState?.disposable) ||
         Boolean(shareContext?.page?.instantCanvas) ||
@@ -912,15 +922,15 @@ export async function mount(root, { signal, shareContext, focusState } = {}) {
         signal,
     });
     composer = mountedComposer;
-    signal?.addEventListener(
-        "abort",
-        () => {
-            mountedComposer.destroy();
-            if (composer === mountedComposer) composer = null;
-            teardownCanvas();
-        },
-        { once: true },
-    );
+    let destroyed = false;
+    const destroy = () => {
+        if (destroyed) return;
+        destroyed = true;
+        mountedComposer.destroy();
+        if (composer === mountedComposer) composer = null;
+        teardownCanvas();
+    };
+    signal?.addEventListener("abort", destroy, { once: true });
     await mountedComposer.init();
     if (signal?.aborted) return;
 
@@ -930,6 +940,7 @@ export async function mount(root, { signal, shareContext, focusState } = {}) {
     } else if (integrationCanvasMode) {
         void createAndOpenBoard();
     }
+    return { destroy };
 }
 
 await mountWhenDirect(mount);

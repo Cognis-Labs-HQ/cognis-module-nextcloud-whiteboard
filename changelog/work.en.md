@@ -31,3 +31,7 @@ Component windows now consume their supplied focus state and immediately open th
 ## Element-targeted component windows
 
 Element-targeted component mounts now stay frameless and wait for the focused disposable canvas to open before reporting the component page as ready.
+
+## Protected component lifecycle
+
+Whiteboard component mounts now honor the host navigation policy and return an idempotent destroy handle for the protected component-window lifecycle.

@@ -31,3 +31,7 @@ Komponentenfenster verwenden nun den übergebenen Fokuszustand und öffnen sofor
 ## Elementbezogene Komponentenfenster
 
 Elementbezogene Komponenten-Mounts bleiben nun rahmenlos und warten, bis die fokussierte temporäre Leinwand geöffnet ist, bevor die Komponentenseite als bereit gemeldet wird.
+
+## Geschützter Komponentenlebenszyklus
+
+Whiteboard-Komponenten-Mounts beachten nun die Navigationsrichtlinie des Hosts und geben einen idempotenten Destroy-Handle für den geschützten Komponentenfenster-Lebenszyklus zurück.

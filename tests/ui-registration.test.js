@@ -477,7 +477,7 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
     assert.doesNotMatch(realtimeSource, /document\.head/);
     assert.match(
         appSource,
-        /const mountedComposer = createPageComposer[\s\S]*signal\?\.addEventListener\([\s\S]*mountedComposer\.destroy\(\)/,
+        /const mountedComposer = createPageComposer[\s\S]*mountedComposer\.destroy\(\)[\s\S]*signal\?\.addEventListener\(/,
     );
     assert.match(appSource, /if \(signal\?\.aborted\) return/);
 });
@@ -524,7 +524,7 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     const appSource = await import("node:fs/promises").then((fs) =>
         fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
-    assert.match(appSource, /\{ signal, shareContext, focusState \}/);
+    assert.match(appSource, /navigationAllowed: allowNavigation = true/);
     assert.match(
         appSource,
         /Boolean\(focusState\?\.instantCanvas \|\| focusState\?\.disposable\)/,
@@ -542,4 +542,14 @@ test("whiteboard component mounts the disposable canvas from focus state", async
         /showNavbar:\s*!embeddedComponentMode[\s\S]*showTopbar:\s*!embeddedComponentMode[\s\S]*showFooter:\s*!embeddedComponentMode/,
     );
     assert.match(appSource, /await openBoard\(activeBoard\)/);
+    assert.match(
+        appSource,
+        /hostNavigationAllowed = allowNavigation && !embeddedComponentMode/,
+    );
+    assert.match(
+        appSource,
+        /if \(!hostNavigationAllowed \|\| activeShareContext \|\| !boardId\) return/,
+    );
+    assert.match(appSource, /return \{ destroy \}/);
+    assert.match(appSource, /if \(destroyed\) return/);
 });

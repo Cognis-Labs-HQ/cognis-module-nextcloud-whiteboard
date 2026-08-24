@@ -31,3 +31,7 @@ Jendela komponen kini menggunakan status fokus yang diberikan dan langsung membu
 ## Jendela komponen bertarget elemen
 
 Mount komponen bertarget elemen kini tetap tanpa bingkai dan menunggu kanvas sekali pakai yang difokuskan terbuka sebelum melaporkan halaman komponen siap.
+
+## Siklus hidup komponen terlindungi
+
+Mount komponen Whiteboard kini mematuhi kebijakan navigasi host dan mengembalikan handle destroy idempoten untuk siklus hidup jendela komponen yang terlindungi.

@@ -42,6 +42,7 @@ import {
 import { getPreparedDisposableCanvasId } from "../reuse/whiteboard-ui-gateway.js";
 import { applySavedElements } from "../reuse/saved-elements.js";
 import { syncBoardUrl } from "../reuse/board-navigation.js";
+import { createWhiteboardPreflightController } from "./preflight.js";
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
@@ -57,7 +58,6 @@ let activeShareContext = null;
 let canvasInstance = null;
 let socketInstance = null;
 let savedElements = [];
-let preflightStatus = "idle";
 let lastConnectionToast = "";
 let imageUploadMaxBytes = 1048576;
 let integrationCanvasMode = false;
@@ -83,6 +83,16 @@ const {
     getIntegrationCanvasMode: () => integrationCanvasMode,
     getShareContext: () => activeShareContext,
     showToast,
+});
+const preflightController = createWhiteboardPreflightController({
+    fetchPreflight: () =>
+        apiFetchJson("/whiteboards/preflight", { method: "POST" }),
+    getMountRoot: () => pageMountRoot,
+    getResourceLoader: () => uiCtx.capabilities.get("ui:resourceLoader"),
+    loadSocketIo,
+    setOverlayVisible,
+    showToast,
+    translate: translateModuleString,
 });
 const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
     getActiveBoard: () => activeBoard,
@@ -626,86 +636,8 @@ async function renameActiveBoard() {
     titleEl.addEventListener("blur", finish);
     titleEl.addEventListener("keydown", onKeydown);
 }
-async function verifyWebsocketAuth(result) {
-    if (!result?.serverUrl || !result?.websocketAuthToken) return false;
-    const runtime = await loadSocketIo(
-        result.serverUrl,
-        uiCtx.capabilities.get("ui:resourceLoader"),
-    );
-    const io = runtime.io;
-    return new Promise((resolve) => {
-        const socket = io(result.serverUrl, {
-            auth: { token: result.websocketAuthToken },
-            transports: ["websocket"],
-            reconnection: false,
-            timeout: 5000,
-        });
-        const finish = (passed) => {
-            socket.disconnect();
-            runtime.dispose();
-            resolve(passed);
-        };
-        const timer = window.setTimeout(() => finish(false), 5500);
-        socket.on("connect", () => {
-            window.clearTimeout(timer);
-            finish(true);
-        });
-        socket.on("connect_error", () => {
-            window.clearTimeout(timer);
-            finish(false);
-        });
-    });
-}
 async function runPreflightCheck() {
-    if (preflightStatus === "running") return false;
-    preflightStatus = "running";
-    setOverlayVisible(
-        pageMountRoot,
-        true,
-        translateModuleString("module.nextcloud_whiteboard.preflight_checking"),
-    );
-    let result;
-    try {
-        result = await apiFetchJson("/whiteboards/preflight", {
-            method: "POST",
-        });
-    } catch (error) {
-        preflightStatus = "failed";
-        const message =
-            error.code === "config_required"
-                ? translateModuleString(
-                      "module.nextcloud_whiteboard.preflight_config_required",
-                  )
-                : translateModuleString(
-                      "module.nextcloud_whiteboard.preflight_failed",
-                  );
-        setOverlayVisible(pageMountRoot, true, message);
-        showToast(message, { variant: "error" });
-        return false;
-    }
-    if (!result?.alive) {
-        preflightStatus = "failed";
-        const message = translateModuleString(
-            "module.nextcloud_whiteboard.preflight_unreachable",
-        );
-        setOverlayVisible(pageMountRoot, true, message);
-        showToast(message, { variant: "error" });
-        return false;
-    }
-    const websocketAuthorized = await verifyWebsocketAuth(result).catch(
-        () => false,
-    );
-    if (!websocketAuthorized) {
-        preflightStatus = "failed";
-        const message = translateModuleString(
-            "module.nextcloud_whiteboard.preflight_websocket_failed",
-        );
-        setOverlayVisible(pageMountRoot, true, message);
-        showToast(message, { variant: "error" });
-        return false;
-    }
-    preflightStatus = "passed";
-    return true;
+    return preflightController.run();
 }
 async function openBoard(board) {
     activeBoard = board;
@@ -737,9 +669,9 @@ async function openBoard(board) {
         session.imageUploadMaxBytes ?? imageUploadMaxBytes,
     );
     applyBoardTitle(session.title);
-    preflightStatus = "rendering";
+    preflightController.setStatus("rendering");
     composer.refresh(buildElements());
-    preflightStatus = "passed";
+    preflightController.setStatus("passed");
     let io;
     try {
         const runtime = await loadSocketIo(
@@ -793,7 +725,7 @@ function renderCanvasElement() {
         activeSession,
         boards,
         canRenameActiveBoard,
-        preflightStatus,
+        preflightStatus: preflightController.getStatus(),
         syncStatus: syncState.status,
         syncStatusMessage: syncState.message,
         translate: translateModuleString,
@@ -817,7 +749,7 @@ function onCanvasRender() {
     const canvasElement = withinMount("#whiteboard-canvas");
     if (!canvasElement || canvasInstance || !activeBoard || !activeSession)
         return;
-    if (preflightStatus !== "passed") return;
+    if (preflightController.getStatus() !== "passed") return;
     canvasInstance = createWhiteboardCanvas(canvasElement, {
         readOnly: activeSession.canWrite !== true,
     });
@@ -966,7 +898,7 @@ export async function mount(
         activeBoard = null;
         activeShareContext = null;
         savedElements = [];
-        preflightStatus = "idle";
+        preflightController.setStatus("idle");
         integrationCanvasMode = false;
         disposableCanvasMode = false;
         hostNavigationAllowed = true;

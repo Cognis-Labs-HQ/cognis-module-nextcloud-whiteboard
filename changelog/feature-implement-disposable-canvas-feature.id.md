@@ -63,3 +63,7 @@ Penyimpanan manual dan otomatis kini menyimpan kanvas kolaboratif lengkap sebaga
 ## Kolaborasi dan pembatalan yang aman dari konflik
 
 Penyimpanan serentak kini dijalankan secara berurutan agar perubahan seorang peserta tidak menimpa perubahan peserta lain. Urungkan dan ulangi juga menerbitkan revisi elemen yang lebih baru, sementara kontrol sesi sekali pakai diperbarui segera setelah metadata sesi tersedia.
+
+## Modul aplikasi yang mudah dipelihara
+
+Navigasi Whiteboard dan pemeriksaan awal koneksi kini berada dalam modul terfokus sehingga entri utama aplikasi tetap mudah dibaca tanpa memadatkan atau menghapus spasi yang bermakna.

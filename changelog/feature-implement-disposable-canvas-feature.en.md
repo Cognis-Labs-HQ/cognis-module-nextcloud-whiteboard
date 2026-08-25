@@ -63,3 +63,7 @@ Manual and automatic saves now store the complete collaborative canvas as its ca
 ## Conflict-safe collaboration and undo
 
 Concurrent saves are now serialized so one participant cannot overwrite another participant’s changes. Undo and redo also publish newer element revisions, and disposable session controls refresh as soon as session metadata is available.
+
+## Maintainable application modules
+
+Whiteboard navigation and connection preflight behavior now live in focused modules, keeping the main application entry readable without compressing or removing meaningful whitespace.

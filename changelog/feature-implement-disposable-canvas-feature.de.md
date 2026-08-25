@@ -63,3 +63,7 @@ Manuelles und automatisches Speichern legt nun die vollständige gemeinschaftlic
 ## Konfliktsichere Zusammenarbeit und Rückgängig-Funktion
 
 Gleichzeitige Speichervorgänge werden nun nacheinander ausgeführt, damit Änderungen eines Teilnehmers nicht die eines anderen überschreiben. Rückgängig und Wiederholen veröffentlichen außerdem neuere Elementrevisionen, und die Bedienelemente temporärer Sitzungen werden aktualisiert, sobald die Sitzungsdaten verfügbar sind.
+
+## Wartbare Anwendungsmodule
+
+Whiteboard-Navigation und Verbindungsprüfung befinden sich nun in gezielten Modulen. Dadurch bleibt der Haupteinstieg der Anwendung lesbar, ohne sinnvolle Abstände zu komprimieren oder zu entfernen.

@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.53",
+    "version": "2.3.54",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -247,11 +247,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "1670ce44bee63c3fa7e7a143560499a3d673e89230ff69dc792c1236bd53371f"
+            "sha256": "fbf9fd75e0c82bb5e6fa4553d18c03c177856883f6e12506a54cb5084ddd07c3"
         },
         {
             "path": "package.json",
-            "sha256": "a8afa6ce1c3e7d6287ce9af88c17d85a5f55d01c63b9f09989ad7507dba5c706"
+            "sha256": "73ac82d000aec1abdd73919ad123820ac9177c50f906004260619de3b6621948"
         },
         {
             "path": "routes.json",
@@ -347,11 +347,15 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "ac9a90aefd2336ed4f5612ac82852cd6c1878a15011a679f7a91b24f4ca2c0cb"
+            "sha256": "bccfabc22b98b7fd8719ce7de0c29e36caf69833e59018b3636c814ba3ad539f"
         },
         {
             "path": "ui/app/overlay.js",
             "sha256": "d52053fd9a9098d3de94b07b28c27ac940e1f18ed00c9cfd329afe6a85c401df"
+        },
+        {
+            "path": "ui/app/preflight.js",
+            "sha256": "9b18b3f195d54dcdfefe1b368bff8492c8f307d1bf37483040f79ebe9959ca56"
         },
         {
             "path": "ui/app/presence.js",

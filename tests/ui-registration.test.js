@@ -453,13 +453,19 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
     );
     assert.match(appSource, /function canRenameActiveBoard\(\)/);
     assert.match(appSource, /function emitBoardRenamed\(title\)/);
-    assert.match(appSource, /function syncBoardUrl\(boardId\)/);
+    const navigationSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/reuse/board-navigation.js", import.meta.url),
+            "utf8",
+        ),
+    );
+    assert.match(navigationSource, /function syncBoardUrl\(/);
     assert.match(
-        appSource,
+        navigationSource,
         /searchParams\.set\(['"]instantCanvas['"], ['"]1['"]\)/,
     );
     assert.match(
-        appSource,
+        navigationSource,
         /window\.history\.replaceState\(null, ['"]['"], nextUrl\)/,
     );
     assert.match(elementsSource, /ensureVisibleStrokeColor/);
@@ -543,8 +549,12 @@ test("whiteboard navbar registers the disposable canvas UI gateway", async () =>
 });
 
 test("whiteboard component mounts the disposable canvas from focus state", async () => {
-    const appSource = await import("node:fs/promises").then((fs) =>
-        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+    const [appSource, navigationSource] = await Promise.all(
+        ["../ui/app/index.js", "../ui/reuse/board-navigation.js"].map((path) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(path, import.meta.url), "utf8"),
+            ),
+        ),
     );
     assert.match(appSource, /navigationAllowed: allowNavigation = true/);
     assert.match(
@@ -569,8 +579,8 @@ test("whiteboard component mounts the disposable canvas from focus state", async
         /hostNavigationAllowed = allowNavigation && !embeddedComponentMode/,
     );
     assert.match(
-        appSource,
-        /if \(!hostNavigationAllowed \|\| activeShareContext \|\| !boardId\) return/,
+        navigationSource,
+        /if \(!hostNavigationAllowed \|\| shareContext \|\| !boardId\) return/,
     );
     assert.match(appSource, /return \{ destroy \}/);
     assert.match(appSource, /if \(destroyed\) return/);

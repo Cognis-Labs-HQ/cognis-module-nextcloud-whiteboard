@@ -41,6 +41,7 @@ import {
 } from "./presence.js";
 import { getPreparedDisposableCanvasId } from "../reuse/whiteboard-ui-gateway.js";
 import { applySavedElements } from "../reuse/saved-elements.js";
+import { syncBoardUrl } from "../reuse/board-navigation.js";
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
@@ -706,24 +707,14 @@ async function runPreflightCheck() {
     preflightStatus = "passed";
     return true;
 }
-function syncBoardUrl(boardId) {
-    if (!hostNavigationAllowed || activeShareContext || !boardId) return;
-    const searchParams = new URLSearchParams({ id: boardId });
-    if (integrationCanvasMode) {
-        searchParams.set("instantCanvas", "1");
-    }
-    const nextSearch = `?${searchParams.toString()}`;
-    const nextUrl = `/whiteboard${nextSearch}`;
-    if (
-        window.location.pathname !== "/whiteboard" ||
-        window.location.search !== nextSearch
-    ) {
-        window.history.replaceState(null, "", nextUrl);
-    }
-}
 async function openBoard(board) {
     activeBoard = board;
-    syncBoardUrl(board?.id);
+    syncBoardUrl({
+        boardId: board?.id,
+        hostNavigationAllowed,
+        integrationCanvasMode,
+        shareContext: activeShareContext,
+    });
     teardownCanvas();
     composer.refresh(buildElements());
     const passed = await runPreflightCheck();
@@ -746,7 +737,9 @@ async function openBoard(board) {
         session.imageUploadMaxBytes ?? imageUploadMaxBytes,
     );
     applyBoardTitle(session.title);
-    preflightStatus = "rendering"; composer.refresh(buildElements()); preflightStatus = "passed";
+    preflightStatus = "rendering";
+    composer.refresh(buildElements());
+    preflightStatus = "passed";
     let io;
     try {
         const runtime = await loadSocketIo(
@@ -982,6 +975,7 @@ export async function mount(
     signal?.addEventListener("abort", destroy, { once: true });
     await mountedComposer.init();
     if (signal?.aborted) return;
+
     if (activeBoard) {
         await openBoard(activeBoard);
         if (!signal?.aborted) mountedComposer.refreshPresence?.();

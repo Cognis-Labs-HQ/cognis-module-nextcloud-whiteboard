@@ -524,8 +524,8 @@ export class NextcloudWhiteboardStore {
         }));
     }
 
-    async getElementsSnapshot(id) {
-        const result = await this.db.executeCommand({
+    async getElementsSnapshot(id, executor = this.db) {
+        const result = await executor.executeCommand({
             option: "SELECT",
             table: "nextcloud_whiteboard_snapshots",
             where: [{ column: "whiteboard_id", value: String(id ?? "") }],
@@ -541,10 +541,10 @@ export class NextcloudWhiteboardStore {
         }
     }
 
-    async saveElementsSnapshot(id, elements) {
+    async saveElementsSnapshot(id, elements, executor = this.db) {
         const safeElements = Array.isArray(elements) ? elements : [];
         const updatedAt = new Date().toISOString();
-        await this.db.executeCommand({
+        await executor.executeCommand({
             option: "INSERT",
             table: "nextcloud_whiteboard_snapshots",
             values: {
@@ -561,7 +561,7 @@ export class NextcloudWhiteboardStore {
                 },
             },
         });
-        await this.db.executeCommand({
+        await executor.executeCommand({
             option: "UPDATE",
             table: "nextcloud_whiteboards",
             set: { updated_at: updatedAt },
@@ -571,11 +571,19 @@ export class NextcloudWhiteboardStore {
     }
 
     async saveMergedElementsSnapshot(id, elements) {
-        const currentElements = await this.getElementsSnapshot(id);
-        return this.saveElementsSnapshot(
-            id,
-            mergeElementsSnapshots(currentElements, elements),
-        );
+        let saved;
+        await this.db.transaction(async (executor) => {
+            const currentElements = await this.getElementsSnapshot(
+                id,
+                executor,
+            );
+            saved = await this.saveElementsSnapshot(
+                id,
+                mergeElementsSnapshots(currentElements, elements),
+                executor,
+            );
+        });
+        return saved;
     }
 
     async saveUserCopies(id, elements, usernames) {

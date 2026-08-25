@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mergeElementsSnapshots } from "../api/reuse/elements-snapshot.js";
+import { bumpElementVersionPast } from "../ui/whiteboard/elements.js";
 
 test("snapshot merge preserves concurrent changes from different users", () => {
     const aliceShape = { id: "alice", version: 1, versionNonce: 1 };
@@ -29,4 +30,14 @@ test("snapshot merge keeps the newest update and deletion tombstones", () => {
 
     assert.deepEqual(mergeElementsSnapshots([original], [stale]), [original]);
     assert.deepEqual(mergeElementsSnapshots([original], [deleted]), [deleted]);
+});
+
+test("history revisions advance past the synchronized element", () => {
+    const restored = bumpElementVersionPast(
+        { id: "shared", version: 2, versionNonce: 1 },
+        { id: "shared", version: 7, versionNonce: 9 },
+    );
+
+    assert.equal(restored.version, 8);
+    assert.equal(Number.isInteger(restored.versionNonce), true);
 });

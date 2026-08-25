@@ -59,3 +59,7 @@ Kompakte Werkzeugleisten brechen Bedienelemente nun in verfügbare Zeilen um, st
 ## Eine synchronisierte Leinwand für jedes speichernde Mitglied
 
 Manuelles und automatisches Speichern legt nun die vollständige gemeinschaftliche Leinwand als maßgeblichen Stand ab. Beim erneuten Öffnen einer geteilten Leinwand erhalten alle denselben aktuellen Inhalt, während bei Wegwerf-Leinwänden nur die Kopien der Mitglieder aktualisiert werden, die sich für das Speichern entschieden haben.
+
+## Konfliktsichere Zusammenarbeit und Rückgängig-Funktion
+
+Gleichzeitige Speichervorgänge werden nun nacheinander ausgeführt, damit Änderungen eines Teilnehmers nicht die eines anderen überschreiben. Rückgängig und Wiederholen veröffentlichen außerdem neuere Elementrevisionen, und die Bedienelemente temporärer Sitzungen werden aktualisiert, sobald die Sitzungsdaten verfügbar sind.

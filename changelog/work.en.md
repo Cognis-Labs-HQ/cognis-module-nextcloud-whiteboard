@@ -59,3 +59,7 @@ Compact toolbars now wrap controls into available rows instead of scrolling hori
 ## One synchronized canvas for every saved member
 
 Manual and automatic saves now store the complete collaborative canvas as its canonical snapshot. Everyone reopening a shared canvas receives that same current content, while disposable saves update only the copies of members who have chosen to save.
+
+## Conflict-safe collaboration and undo
+
+Concurrent saves are now serialized so one participant cannot overwrite another participant’s changes. Undo and redo also publish newer element revisions, and disposable session controls refresh as soon as session metadata is available.

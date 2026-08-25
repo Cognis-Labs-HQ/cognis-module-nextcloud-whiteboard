@@ -746,6 +746,7 @@ async function openBoard(board) {
         session.imageUploadMaxBytes ?? imageUploadMaxBytes,
     );
     applyBoardTitle(session.title);
+    preflightStatus = "rendering"; composer.refresh(buildElements()); preflightStatus = "passed";
     let io;
     try {
         const runtime = await loadSocketIo(
@@ -981,7 +982,6 @@ export async function mount(
     signal?.addEventListener("abort", destroy, { once: true });
     await mountedComposer.init();
     if (signal?.aborted) return;
-
     if (activeBoard) {
         await openBoard(activeBoard);
         if (!signal?.aborted) mountedComposer.refreshPresence?.();

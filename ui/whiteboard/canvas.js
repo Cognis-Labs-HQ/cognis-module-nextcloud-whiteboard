@@ -5,6 +5,7 @@ import {
     buildShapeElement,
     buildTextElement,
     bumpElementVersion,
+    bumpElementVersionPast,
     getElementBounds,
     getElementAnchorPoints,
     elementContainsPoint,
@@ -243,6 +244,7 @@ export function createWhiteboardCanvas(
 
     function applyHistorySnapshot(snapshot, changedIds) {
         const snapshotById = new Map(snapshot.map((item) => [item.id, item]));
+        const currentById = new Map(elements.map((item) => [item.id, item]));
         const changed = new Set(changedIds);
         elements = [
             ...elements
@@ -254,10 +256,22 @@ export function createWhiteboardCanvas(
             ...[...changed]
                 .map((id) => snapshotById.get(id))
                 .filter(Boolean)
-                .map((element) => ({
-                    ...element,
-                    points: element.points?.map((point) => [...point]),
-                })),
+                .map((element) =>
+                    bumpElementVersionPast(
+                        element,
+                        currentById.get(element.id),
+                        {
+                            points: element.points?.map((point) => [...point]),
+                        },
+                    ),
+                ),
+            ...[...changed]
+                .filter((id) => !snapshotById.has(id) && currentById.has(id))
+                .map((id) =>
+                    bumpElementVersion(currentById.get(id), {
+                        isDeleted: true,
+                    }),
+                ),
         ];
         updateCanvasOverflow();
         scheduleRender();

@@ -59,3 +59,7 @@ Bilah alat ringkas kini membungkus kontrol ke baris yang tersedia alih-alih meng
 ## Satu kanvas tersinkronisasi untuk setiap anggota yang menyimpan
 
 Penyimpanan manual dan otomatis kini menyimpan kanvas kolaboratif lengkap sebagai cuplikan utama. Setiap orang yang membuka kembali kanvas bersama menerima konten terkini yang sama, sedangkan penyimpanan kanvas sekali pakai hanya memperbarui salinan anggota yang telah memilih untuk menyimpan.
+
+## Kolaborasi dan pembatalan yang aman dari konflik
+
+Penyimpanan serentak kini dijalankan secara berurutan agar perubahan seorang peserta tidak menimpa perubahan peserta lain. Urungkan dan ulangi juga menerbitkan revisi elemen yang lebih baru, sementara kontrol sesi sekali pakai diperbarui segera setelah metadata sesi tersedia.

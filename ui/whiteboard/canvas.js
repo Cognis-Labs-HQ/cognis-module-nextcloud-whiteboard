@@ -5,6 +5,7 @@ import {
     buildShapeElement,
     buildTextElement,
     bumpElementVersion,
+    bumpElementVersionPast,
     getElementBounds,
     getElementAnchorPoints,
     elementContainsPoint,
@@ -202,7 +203,10 @@ export function createWhiteboardCanvas(
     function findElementAt(x, y) {
         return [...elements]
             .reverse()
-            .find((element) => elementContainsPoint(element, x, y));
+            .find(
+                (element) =>
+                    !element.isDeleted && elementContainsPoint(element, x, y),
+            );
     }
 
     function notifyTransientChange() {
@@ -240,6 +244,7 @@ export function createWhiteboardCanvas(
 
     function applyHistorySnapshot(snapshot, changedIds) {
         const snapshotById = new Map(snapshot.map((item) => [item.id, item]));
+        const currentById = new Map(elements.map((item) => [item.id, item]));
         const changed = new Set(changedIds);
         elements = [
             ...elements
@@ -251,10 +256,22 @@ export function createWhiteboardCanvas(
             ...[...changed]
                 .map((id) => snapshotById.get(id))
                 .filter(Boolean)
-                .map((element) => ({
-                    ...element,
-                    points: element.points?.map((point) => [...point]),
-                })),
+                .map((element) =>
+                    bumpElementVersionPast(
+                        element,
+                        currentById.get(element.id),
+                        {
+                            points: element.points?.map((point) => [...point]),
+                        },
+                    ),
+                ),
+            ...[...changed]
+                .filter((id) => !snapshotById.has(id) && currentById.has(id))
+                .map((id) =>
+                    bumpElementVersion(currentById.get(id), {
+                        isDeleted: true,
+                    }),
+                ),
         ];
         updateCanvasOverflow();
         scheduleRender();
@@ -330,7 +347,11 @@ export function createWhiteboardCanvas(
         const box = buildDragBox(dragStartPoint, endPoint);
         eraserSelectionIds = new Set(
             elements
-                .filter((element) => boxContainsElementContent(box, element))
+                .filter(
+                    (element) =>
+                        !element.isDeleted &&
+                        boxContainsElementContent(box, element),
+                )
                 .map((element) => element.id),
         );
         scheduleRender();
@@ -366,7 +387,11 @@ export function createWhiteboardCanvas(
         if (selectedElementIds.size === 0) return false;
         const idsToDelete = new Set(selectedElementIds);
         commitElements(
-            elements.filter((element) => !idsToDelete.has(element.id)),
+            elements.map((element) =>
+                idsToDelete.has(element.id)
+                    ? bumpElementVersion(element, { isDeleted: true })
+                    : element,
+            ),
         );
         selectedElementIds = new Set();
         selectedElementId = null;
@@ -690,8 +715,10 @@ export function createWhiteboardCanvas(
         } else if (activeTool === "eraser") {
             if (eraserSelectionIds.size > 0) {
                 commitElements(
-                    elements.filter(
-                        (element) => !eraserSelectionIds.has(element.id),
+                    elements.map((element) =>
+                        eraserSelectionIds.has(element.id)
+                            ? bumpElementVersion(element, { isDeleted: true })
+                            : element,
                     ),
                 );
                 selectedElementIds = new Set();
@@ -917,17 +944,25 @@ export function createWhiteboardCanvas(
             scheduleRender();
         },
         clearAll() {
-            if (elements.length > 0) {
-                pushHistoryEntry(cloneElements(), []);
+            const visibleElements = elements.filter(
+                (element) => !element.isDeleted,
+            );
+            const clearedElements = elements.map((element) =>
+                element.isDeleted
+                    ? element
+                    : bumpElementVersion(element, { isDeleted: true }),
+            );
+            if (visibleElements.length > 0) {
+                pushHistoryEntry(cloneElements(), clearedElements);
             }
-            elements = [];
+            elements = clearedElements;
             currentPoints = [];
             eraserSelectionIds = new Set();
             selectedElementIds = new Set();
             scheduleRender();
             selectedElementId = null;
             notifySelection();
-            changeCallback?.([]);
+            changeCallback?.([...elements]);
         },
         onSelectionChange(callback) {
             selectionCallback = callback;

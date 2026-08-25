@@ -8,15 +8,15 @@ import { checkHttpLiveness } from "./reuse/http-liveness.js";
 import { registerWhiteboardShareFlowHooks } from "./share-hooks.js";
 import { registerWhiteboardImageRoutes } from "./image-routes.js";
 import { publicConfig, resolveExpiry } from "./config-values.js";
+import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
+import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
 import {
     createWhiteboardEnableTest,
     registerWhiteboardEnableTestRoute,
 } from "./enable-test.js";
-
 const LIVENESS_TIMEOUT_MS = 5000;
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 const initializedRuntimeContexts = new WeakSet();
-
 const MODULE_ID = "nextcloud-whiteboard";
 const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
@@ -38,9 +38,11 @@ import {
 export function registerUi(ctx) {
     const moduleUiRoot = path.join(ctx.moduleRoot, "ui");
     ctx.registerStaticDir("", moduleUiRoot);
+    registerWhiteboardUiProvider(ctx);
     ctx.registerNavbarPlugin({
         scriptUrl: "/static/modules/nextcloud-whiteboard/navbar.js",
         access: { minRole: "user" },
+        providesCapabilities: ["whiteboard:uiGateway"],
     });
 
     ctx.registerSpaRoute({
@@ -282,9 +284,12 @@ export function registerApiRoutes(router, ctx) {
                 createdBy,
                 participants: options.participants,
                 externalPath: options.externalPath,
+                disposable: options.disposable === true,
             });
             const launchUrl = buildCognisWhiteboardUrl(whiteboard.id, {
-                instantCanvas: options.instantCanvas === true,
+                instantCanvas:
+                    options.instantCanvas === true ||
+                    options.disposable === true,
             });
             log?.("info", "Nextcloud Whiteboard window spawned.", {
                 component: "nextcloud-whiteboard-module",
@@ -303,6 +308,7 @@ export function registerApiRoutes(router, ctx) {
                         ? [createdBy, ...(options.participants ?? [])]
                         : [createdBy],
                 },
+                disposable: whiteboard.disposable,
             };
         },
         async fetchBoardData(whiteboardId) {
@@ -475,6 +481,7 @@ export function registerApiRoutes(router, ctx) {
                 username,
             });
             const elements = await store.getElementsSnapshot(whiteboard.id);
+            const saved = await store.hasUserCopy(whiteboard.id, username);
             sendJson(res, 200, {
                 data: {
                     roomId: whiteboard.id,
@@ -484,6 +491,8 @@ export function registerApiRoutes(router, ctx) {
                     serverUrl: config.serverUrl,
                     imageUploadMaxBytes: config.imageUploadMaxBytes,
                     elements,
+                    disposable: whiteboard.disposable,
+                    saved,
                     token,
                 },
             });
@@ -517,9 +526,29 @@ export function registerApiRoutes(router, ctx) {
                 sendError(res, access.status, access.code, access.message);
                 return;
             }
-            const saved = await store.saveElementsSnapshot(
+            if (whiteboard.disposable && body.explicitSave !== true) {
+                sendError(
+                    res,
+                    409,
+                    "explicit_save_required",
+                    "Disposable canvases are only stored when Save is pressed.",
+                );
+                return;
+            }
+            const saved = await store.saveMergedElementsSnapshot(
                 whiteboard.id,
                 body.elements,
+            );
+            const copyOwners = whiteboard.disposable
+                ? [
+                      ...(await store.listUserCopyOwners(whiteboard.id)),
+                      access.username,
+                  ]
+                : await store.listParticipants(whiteboard.id);
+            await store.saveUserCopies(
+                whiteboard.id,
+                saved.elements,
+                copyOwners,
             );
             sendJson(res, 200, { data: saved });
         },
@@ -849,6 +878,10 @@ export function registerApiRoutes(router, ctx) {
                 );
                 return;
             }
+            await store.deleteUserCopy(
+                String(body.whiteboardId ?? "").trim(),
+                `share:${String(body.shareId ?? "").trim()}`,
+            );
             sendJson(res, 200, { data: { deleted: true } });
         },
         { access: { minRole: "user" } },
@@ -918,12 +951,34 @@ export function registerApiRoutes(router, ctx) {
                 body.participants,
                 hasMinRole(claims.role, "admin"),
             );
-            const whiteboard = await store.createWhiteboard({
-                title: body.title,
-                createdBy: username,
-                participants,
-                externalPath: body.externalPath,
-            });
+            let whiteboard;
+            if (body.disposable) {
+                const resolved = await resolveDisposableCanvas({
+                    store,
+                    resourceType: body.resourceType,
+                    resourceId: body.resourceId,
+                    title: body.title,
+                    username,
+                    participants,
+                });
+                if (!resolved.whiteboard) {
+                    sendError(
+                        res,
+                        resolved.status,
+                        resolved.error,
+                        "Disposable canvas could not be resolved.",
+                    );
+                    return;
+                }
+                whiteboard = resolved.whiteboard;
+            } else {
+                whiteboard = await store.createWhiteboard({
+                    title: body.title,
+                    createdBy: username,
+                    participants,
+                    externalPath: body.externalPath,
+                });
+            }
             sendJson(res, 200, {
                 data: {
                     whiteboard,

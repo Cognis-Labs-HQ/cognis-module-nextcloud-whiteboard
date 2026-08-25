@@ -197,7 +197,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(sharePopupSource, /labels:\s*\{/);
     assert.match(
         source,
-        /showNavbar:\s*sharePageFlag\(['"]showNavbar['"],\s*true\)/,
+        /showNavbar:\s*!embeddedComponentMode\s*&&\s*sharePageFlag\(['"]showNavbar['"],\s*true\)/,
     );
     assert.match(source, /requireAccountSession:\s*!activeShareContext/);
     assert.match(
@@ -280,6 +280,10 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
         ),
     ]);
     assert.match(source, /function deleteSelectedElements\(\)/);
+    assert.match(
+        source,
+        /bumpElementVersion\(element, \{ isDeleted: true \}\)/,
+    );
     assert.match(source, /getElementAnchorPoints,/);
     assert.match(source, /parseSavedFont, toFontFamilyValue/);
     assert.match(source, /function notifyTransientChange\(\)/);
@@ -302,6 +306,24 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
         canvasEventsSource,
         /canvasElement\.removeEventListener\(['"]keydown['"], onKeyDown\)/,
     );
+});
+
+test("collaborative scenes merge remote edits before saving", async () => {
+    const [appSource, canvasSource] = await Promise.all(
+        ["../ui/app/index.js", "../ui/whiteboard/canvas.js"].map(
+            (relativePath) =>
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+                ),
+        ),
+    );
+    assert.match(
+        appSource,
+        /canvas\.applyElements\(message\.payload\.elements, \{\s*replace: false/s,
+    );
+    assert.match(appSource, /const mergedElements = canvas\.getElements\(\)/);
+    assert.match(appSource, /persistChanges\(mergedElements\)/);
+    assert.match(canvasSource, /element\.isDeleted/);
 });
 
 test("nextcloud whiteboard image paste saves and selects resizable image objects", async () => {
@@ -431,13 +453,19 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
     );
     assert.match(appSource, /function canRenameActiveBoard\(\)/);
     assert.match(appSource, /function emitBoardRenamed\(title\)/);
-    assert.match(appSource, /function syncBoardUrl\(boardId\)/);
+    const navigationSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/reuse/board-navigation.js", import.meta.url),
+            "utf8",
+        ),
+    );
+    assert.match(navigationSource, /function syncBoardUrl\(/);
     assert.match(
-        appSource,
+        navigationSource,
         /searchParams\.set\(['"]instantCanvas['"], ['"]1['"]\)/,
     );
     assert.match(
-        appSource,
+        navigationSource,
         /window\.history\.replaceState\(null, ['"]['"], nextUrl\)/,
     );
     assert.match(elementsSource, /ensureVisibleStrokeColor/);
@@ -477,7 +505,167 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
     assert.doesNotMatch(realtimeSource, /document\.head/);
     assert.match(
         appSource,
-        /const mountedComposer = createPageComposer[\s\S]*signal\?\.addEventListener\([\s\S]*mountedComposer\.destroy\(\)/,
+        /const mountedComposer = createPageComposer[\s\S]*mountedComposer\.destroy\(\)[\s\S]*signal\?\.addEventListener\(/,
     );
     assert.match(appSource, /if \(signal\?\.aborted\) return/);
+});
+
+test("whiteboard navbar registers the disposable canvas UI gateway", async () => {
+    const [navbarSource, gatewaySource, apiSource, providerSource] =
+        await Promise.all(
+            [
+                "../ui/navbar.js",
+                "../ui/reuse/whiteboard-ui-gateway.js",
+                "../api/index.js",
+                "../api/reuse/ui-provider.js",
+            ].map((relativePath) =>
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+                ),
+            ),
+        );
+    assert.match(navbarSource, /whiteboard-ui-gateway\.js/);
+    assert.match(
+        apiSource + providerSource,
+        /providesCapabilities: \["whiteboard:uiGateway"\]/,
+    );
+    assert.match(
+        providerSource,
+        /registerCapabilityProvider\?\.\(\{[\s\S]*scriptUrl: GATEWAY_SCRIPT/,
+    );
+    assert.match(providerSource, /whiteboard-ui-gateway\.js/);
+    assert.match(
+        gatewaySource,
+        /const capabilityName = "whiteboard:uiGateway"/,
+    );
+    assert.match(gatewaySource, /async createDisposableCanvas\(\{/);
+    assert.match(gatewaySource, /participantHandles/);
+    assert.match(gatewaySource, /return \{ whiteboardId \}/);
+    assert.match(
+        gatewaySource,
+        /uiCtx\.capabilities\.contribute\(capabilityName, gateway\)/,
+    );
+    assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
+});
+
+test("whiteboard component mounts the disposable canvas from focus state", async () => {
+    const [appSource, navigationSource] = await Promise.all(
+        ["../ui/app/index.js", "../ui/reuse/board-navigation.js"].map((path) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(path, import.meta.url), "utf8"),
+            ),
+        ),
+    );
+    assert.match(appSource, /navigationAllowed: allowNavigation = true/);
+    assert.match(
+        appSource,
+        /const componentFocusState = focusState\?\.context \?\? focusState \?\? null/,
+    );
+    assert.match(
+        appSource,
+        /String\(componentFocusState\?\.whiteboardId \?\? ""\)\.trim\(\)/,
+    );
+    assert.match(
+        appSource,
+        /const embeddedComponentMode = Boolean\(componentFocusState\)/,
+    );
+    assert.match(
+        appSource,
+        /showNavbar:\s*!embeddedComponentMode[\s\S]*showTopbar:\s*!embeddedComponentMode[\s\S]*showFooter:\s*!embeddedComponentMode/,
+    );
+    assert.match(appSource, /await openBoard\(activeBoard\)/);
+    assert.match(
+        appSource,
+        /hostNavigationAllowed = allowNavigation && !embeddedComponentMode/,
+    );
+    assert.match(
+        navigationSource,
+        /if \(!hostNavigationAllowed \|\| shareContext \|\| !boardId\) return/,
+    );
+    assert.match(appSource, /return \{ destroy \}/);
+    assert.match(appSource, /if \(destroyed\) return/);
+    assert.match(
+        appSource,
+        /signal\?\.removeEventListener\("abort", destroy\)/,
+    );
+    assert.match(appSource, /if \(composer !== mountedComposer\) return/);
+    assert.match(
+        appSource,
+        /if \(pageMountRoot === root\) pageMountRoot = null/,
+    );
+    assert.match(appSource, /getPreparedDisposableCanvasId\(\{/);
+    assert.match(appSource, /allowLatest: embeddedComponentMode/);
+});
+
+test("whiteboard gateway remembers prepared disposable canvases for component mounts", async () => {
+    const gatewaySource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/reuse/whiteboard-ui-gateway.js", import.meta.url),
+            "utf8",
+        ),
+    );
+    assert.match(gatewaySource, /const preparedCanvasIds = new Map\(\)/);
+    assert.match(gatewaySource, /preparedCanvasIds\.set\(/);
+    assert.match(gatewaySource, /latestPreparedCanvasId = whiteboardId/);
+    assert.match(
+        gatewaySource,
+        /export function getPreparedDisposableCanvasId/,
+    );
+});
+
+test("whiteboard direct entry mounts only on declared whiteboard routes", async () => {
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+    );
+    assert.match(
+        appSource,
+        /const DIRECT_WHITEBOARD_PATHS = new Set\(\["\/whiteboard", "\/whiteboards"\]\)/,
+    );
+    assert.match(
+        appSource,
+        /DIRECT_WHITEBOARD_PATHS\.has\(window\.location\.pathname\)[\s\S]*await mountWhenDirect\(mount\)/,
+    );
+    assert.doesNotMatch(appSource, /^await mountWhenDirect\(mount\);$/m);
+});
+
+test("whiteboard toolbar wraps tools and keeps disposable save controls visible", async () => {
+    const [appSource, renderSource, stylesSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/app/render.js",
+            "../ui/styles/whiteboards.css",
+        ].map((relativePath) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+            ),
+        ),
+    );
+    assert.match(renderSource, /class="whiteboard-toolbar-tools"/);
+    assert.match(
+        stylesSource,
+        /\.whiteboard-toolbar-tools\s*\{[^}]*flex-wrap: wrap/s,
+    );
+    assert.match(
+        stylesSource,
+        /\.whiteboard-toolbar\s*\{[^}]*grid-template-columns: minmax\(0, 1fr\) auto/s,
+    );
+    assert.doesNotMatch(
+        stylesSource,
+        /\.whiteboard-toolbar-tools\s*\{[^}]*overflow-x: auto/s,
+    );
+    assert.match(stylesSource, /@container \(max-width: 44rem\)/);
+    assert.match(
+        appSource,
+        /function bindDisposableSaveButton\(session, canvas\)/,
+    );
+    assert.match(appSource, /setDisposableSaveDirty\(session, true\)/);
+    assert.match(
+        appSource,
+        /saveButton\.dataset\.dirty = String\(!session\.saved\)/,
+    );
+    assert.match(renderSource, /data-dirty="\$\{String\(!saved\)\}"/);
+    assert.match(
+        renderSource,
+        /\$\{disposable \? "" : `<span id="whiteboard-share-slot"/,
+    );
 });

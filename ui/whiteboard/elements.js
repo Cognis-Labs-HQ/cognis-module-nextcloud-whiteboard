@@ -23,6 +23,19 @@ export function bumpElementVersion(element, patch = {}) {
     };
 }
 
+export function bumpElementVersionPast(element, comparison, patch = {}) {
+    return bumpElementVersion(
+        {
+            ...element,
+            version: Math.max(
+                Number(element?.version) || 0,
+                Number(comparison?.version) || 0,
+            ),
+        },
+        patch,
+    );
+}
+
 export function buildFreedrawElement(
     points,
     strokeColor = "auto",

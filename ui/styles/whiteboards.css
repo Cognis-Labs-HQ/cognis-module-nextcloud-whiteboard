@@ -65,6 +65,7 @@
 }
 
 .whiteboard-canvas-wrap {
+    container-type: inline-size;
     display: grid;
     grid-template-rows: auto 1fr;
     height: 100%;
@@ -75,16 +76,28 @@
     align-items: center;
     background: var(--surface, #ffffff);
     border-bottom: 1px solid var(--border, #d8dee9);
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 0.5rem 0.75rem;
+}
+
+.whiteboard-canvas-wrap .whiteboard-toolbar-tools {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
+    min-width: 0;
+    overflow: visible;
 }
 
 .whiteboard-canvas-wrap .whiteboard-toolbar-group {
     align-items: center;
     display: flex;
     gap: 0.45rem;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    min-width: 0;
 }
 
 .whiteboard-canvas-wrap .whiteboard-toolbar-group[hidden] {
@@ -238,6 +251,99 @@
     width: 1rem;
 }
 
+.whiteboard-canvas-wrap .whiteboard-save-state {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.4rem;
+    background: var(--surface, #ffffff);
+    flex: 0 0 auto;
+    margin-left: auto;
+    align-self: start;
+}
+
+.whiteboard-canvas-wrap .whiteboard-save-copy[data-dirty="true"] {
+    border-color: var(--warning, #c47900);
+    box-shadow: 0 0 0 2px
+        color-mix(in srgb, var(--warning, #c47900) 25%, transparent);
+}
+
+.whiteboard-canvas-wrap .whiteboard-save-copy {
+    flex: 0 0 auto;
+    min-height: 2.5rem;
+    white-space: nowrap;
+}
+
+@container (max-width: 44rem) {
+    .whiteboard-canvas-wrap .whiteboard-toolbar {
+        padding-inline: 0.4rem;
+    }
+
+    .whiteboard-canvas-wrap .whiteboard-tool {
+        padding-inline: 0.55rem;
+    }
+
+    .whiteboard-canvas-wrap .whiteboard-new-tool span {
+        display: none;
+    }
+}
+
+.whiteboard-canvas-wrap .whiteboard-saved-pill {
+    background: var(--success, #2d9e5c);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 0.75rem;
+    opacity: 0;
+    padding: 0.2rem 0.55rem;
+    transform: translateX(0.75rem) scale(0.8);
+}
+
+.whiteboard-canvas-wrap
+    .whiteboard-save-state:has(.whiteboard-save-confirmed)
+    .whiteboard-saved-pill {
+    animation: whiteboard-saved-pill 1.4s ease both;
+}
+
+.whiteboard-canvas-wrap .whiteboard-save-confirmed {
+    animation: whiteboard-saved-tick 1.4s ease;
+}
+
+.whiteboard-canvas-wrap .whiteboard-sync-status[data-status="synced"]::after {
+    color: #fff;
+    content: "✓";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 0.9rem;
+    text-align: center;
+}
+
+@keyframes whiteboard-saved-pill {
+    20%,
+    65% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0.75rem) scale(0.8);
+    }
+}
+
+@keyframes whiteboard-saved-tick {
+    25% {
+        transform: scale(1.45);
+    }
+    50% {
+        transform: scale(1);
+    }
+    65% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .whiteboard-canvas-wrap .whiteboard-sync-status[data-status="synced"] {
     background: var(--success, #2d9e5c);
 }
@@ -262,6 +368,15 @@
     width: 100%;
 }
 
+.whiteboard-canvas-wrap
+    .whiteboard-start-panel:has(.whiteboard-overlay-board-list[data-count="3"]),
+.whiteboard-canvas-wrap
+    .whiteboard-start-panel:has(
+        .whiteboard-overlay-board-list[data-count="4"]
+    ) {
+    max-height: min(38rem, 90%);
+}
+
 .whiteboard-canvas-wrap .whiteboard-start-actions {
     display: flex;
     flex-wrap: wrap;
@@ -274,8 +389,15 @@
     display: grid;
     gap: 0.5rem;
     max-height: 14rem;
-    overflow: auto;
+    overflow-y: visible;
     padding-top: 0.75rem;
+}
+
+.whiteboard-canvas-wrap
+    .whiteboard-overlay-board-list[data-count]:not([data-count="0"]):not(
+        [data-count="1"]
+    ):not([data-count="2"]):not([data-count="3"]):not([data-count="4"]) {
+    overflow-y: auto;
 }
 
 .whiteboard-canvas-wrap .whiteboard-overlay-board {

@@ -109,4 +109,7 @@
   <string name="module.nextcloud_whiteboard.new">New</string>
   <string name="module.nextcloud_whiteboard.tag_whiteboard">Whiteboard</string>
   <string name="module.nextcloud_whiteboard.tag_collaboration">Collaboration</string>
+  <string name="module.nextcloud_whiteboard.saved">Saved</string>
+  <string name="module.nextcloud_whiteboard.save_canvas">Save</string>
+  <string name="module.nextcloud_whiteboard.status_unsaved">Not saved.</string>
 </resources>

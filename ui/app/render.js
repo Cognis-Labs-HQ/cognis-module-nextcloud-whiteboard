@@ -11,6 +11,8 @@ export function renderCanvasElement({
     syncStatusMessage,
     translate,
     integrationCanvasMode = false,
+    disposable = false,
+    saved = false,
 }) {
     const hasActiveBoard = Boolean(activeBoard);
     const overlayHidden = hasActiveBoard && preflightStatus === "passed";
@@ -29,6 +31,7 @@ export function renderCanvasElement({
     return `
     <div class="whiteboard-canvas-wrap">
       <div id="whiteboard-toolbar" class="whiteboard-toolbar" role="toolbar" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.toolbar_label"))}">
+        <div class="whiteboard-toolbar-tools">
         <div class="whiteboard-toolbar-group">
           ${integrationCanvasMode ? "" : `<button type="button" id="whiteboard-new" class="whiteboard-tool whiteboard-new-tool" title="${escapeHtml(translate("module.nextcloud_whiteboard.new_board"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.new_board"))}">＋ <span>${escapeHtml(translate("module.nextcloud_whiteboard.new"))}</span></button>`}
           <button type="button" id="whiteboard-history" class="whiteboard-tool" title="${escapeHtml(translate("module.nextcloud_whiteboard.history_title"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.history_title"))}">↺</button>
@@ -58,19 +61,20 @@ export function renderCanvasElement({
           </select>
         </div>
         <div class="whiteboard-toolbar-group" ${hasActiveBoard ? "" : "hidden"}>
-          <span id="whiteboard-share-slot"></span>
+          ${disposable ? "" : `<span id="whiteboard-share-slot"></span>`}
           <a href="#" id="whiteboard-clear" class="whiteboard-tool btn-cancel" role="button" title="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}">×</a>
         </div>
         ${integrationCanvasMode ? "" : `<span id="whiteboard-board-title" class="whiteboard-board-title" title="${escapeHtml(canRenameActiveBoard() ? translate("module.nextcloud_whiteboard.rename_hint") : "")}">${escapeHtml(activeSession?.title ?? activeBoard?.title ?? "")}</span>`}
-        <span id="whiteboard-sync-status" class="whiteboard-sync-status" data-status="${escapeHtml(syncStatus)}" title="${escapeHtml(syncStatusMessage || translate("module.nextcloud_whiteboard.status_idle"))}"></span>
         <div id="page-presence-section" class="whiteboard-toolbar-group whiteboard-presence" aria-live="polite"></div>
+        </div>
+        <span class="whiteboard-save-state"><span id="whiteboard-saved-pill" class="whiteboard-saved-pill">${escapeHtml(translate("module.nextcloud_whiteboard.saved"))}</span>${disposable ? `<button type="button" id="whiteboard-save-copy" class="whiteboard-save-copy" data-dirty="${String(!saved)}">${escapeHtml(translate("module.nextcloud_whiteboard.save_canvas"))}</button>` : ""}<span id="whiteboard-sync-status" class="whiteboard-sync-status" data-status="${escapeHtml(syncStatus)}" title="${escapeHtml(syncStatusMessage || translate("module.nextcloud_whiteboard.status_idle"))}"></span></span>
       </div>
       <div class="whiteboard-canvas-stage">
         <canvas id="whiteboard-canvas" tabindex="0" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.canvas_label"))}"></canvas>
         <div id="whiteboard-canvas-overlay" class="whiteboard-canvas-overlay" ${overlayHidden ? "hidden" : ""} aria-live="polite">
           <div class="whiteboard-start-panel">
             <p class="whiteboard-overlay-message">${escapeHtml(overlayMessage)}</p>
-            ${hasActiveBoard ? "" : `<div class="whiteboard-start-actions">${integrationCanvasMode ? "" : `<button type="button" id="whiteboard-start-new">${escapeHtml(translate("module.nextcloud_whiteboard.new_board"))}</button>`}<button type="button" id="whiteboard-start-history">${escapeHtml(translate("module.nextcloud_whiteboard.history_title"))}</button></div><div class="whiteboard-overlay-board-list">${boardList || `<p>${escapeHtml(translate("module.nextcloud_whiteboard.empty"))}</p>`}</div>`}
+            ${hasActiveBoard ? "" : `<div class="whiteboard-start-actions">${integrationCanvasMode ? "" : `<button type="button" id="whiteboard-start-new">${escapeHtml(translate("module.nextcloud_whiteboard.new_board"))}</button>`}<button type="button" id="whiteboard-start-history">${escapeHtml(translate("module.nextcloud_whiteboard.history_title"))}</button></div><div class="whiteboard-overlay-board-list" data-count="${boards.length}">${boardList || `<p>${escapeHtml(translate("module.nextcloud_whiteboard.empty"))}</p>`}</div>`}
           </div>
         </div>
       </div>

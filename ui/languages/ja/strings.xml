@@ -109,4 +109,7 @@
   <string name="module.nextcloud_whiteboard.new">新規</string>
   <string name="module.nextcloud_whiteboard.tag_whiteboard">ホワイトボード</string>
   <string name="module.nextcloud_whiteboard.tag_collaboration">コラボレーション</string>
+  <string name="module.nextcloud_whiteboard.saved">保存済み</string>
+  <string name="module.nextcloud_whiteboard.save_canvas">保存</string>
+  <string name="module.nextcloud_whiteboard.status_unsaved">未保存です。</string>
 </resources>

@@ -10,6 +10,7 @@ import {
     normalizeHandleKey,
     normalizeHandleKeys,
 } from "./reuse/normalize-handle.js";
+import { mergeElementsSnapshots } from "./reuse/elements-snapshot.js";
 
 function normalizeSelectionElementIds(selection) {
     return Array.isArray(selection?.elementIds)
@@ -118,6 +119,12 @@ export class NextcloudWhiteboardStore {
                 },
                 { name: "created_by", type: "text", notNull: true },
                 {
+                    name: "disposable",
+                    type: "integer",
+                    notNull: true,
+                    default: 0,
+                },
+                {
                     name: "created_at",
                     type: "timestamp",
                     notNull: true,
@@ -187,6 +194,16 @@ export class NextcloudWhiteboardStore {
                 },
             ],
         });
+        await this.db.ensureTable({
+            name: "nextcloud_whiteboard_user_copies",
+            columns: [
+                { name: "whiteboard_id", type: "text", notNull: true },
+                { name: "username", type: "text", notNull: true },
+                { name: "elements_json", type: "text", notNull: true },
+                { name: "saved_at", type: "timestamp", notNull: true },
+            ],
+            primaryKey: ["whiteboard_id", "username"],
+        });
     }
 
     async getConfig() {
@@ -255,6 +272,7 @@ export class NextcloudWhiteboardStore {
         for (const table of [
             "nextcloud_whiteboard_presence",
             "nextcloud_whiteboard_snapshots",
+            "nextcloud_whiteboard_user_copies",
             "nextcloud_whiteboard_access",
             "nextcloud_whiteboards",
             "nextcloud_whiteboard_config",
@@ -263,7 +281,13 @@ export class NextcloudWhiteboardStore {
         }
     }
 
-    async createWhiteboard({ title, createdBy, participants, externalPath }) {
+    async createWhiteboard({
+        title,
+        createdBy,
+        participants,
+        externalPath,
+        disposable = false,
+    }) {
         const id = randomUUID();
         const normalizedCreator = normalizeHandleKey(createdBy);
         const normalizedParticipants = normalizeHandleKeys([
@@ -285,6 +309,7 @@ export class NextcloudWhiteboardStore {
                     external_path: resolvedPath,
                     access_token: accessToken,
                     created_by: normalizedCreator,
+                    disposable: disposable ? 1 : 0,
                     created_at: now,
                     updated_at: now,
                 },
@@ -314,6 +339,9 @@ export class NextcloudWhiteboardStore {
                 });
             }
         });
+        if (!disposable) {
+            await this.saveUserCopies(id, [], normalizedParticipants);
+        }
         return this.getWhiteboardById(id);
     }
 
@@ -322,6 +350,21 @@ export class NextcloudWhiteboardStore {
             option: "SELECT",
             table: "nextcloud_whiteboards",
             where: [{ column: "id", value: String(id ?? "") }],
+            limit: 1,
+        });
+        return this.mapBoard(result.rows?.[0]);
+    }
+
+    async getWhiteboardByExternalPath(externalPath) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboards",
+            where: [
+                {
+                    column: "external_path",
+                    value: normalizeLeadingSlashPath(externalPath),
+                },
+            ],
             limit: 1,
         });
         return this.mapBoard(result.rows?.[0]);
@@ -352,7 +395,11 @@ export class NextcloudWhiteboardStore {
         const boards = [];
         for (const row of access.rows ?? []) {
             const board = await this.getWhiteboardById(row.whiteboard_id);
-            if (board)
+            if (
+                board &&
+                (!board.disposable ||
+                    (await this.hasUserCopy(board.id, normalizedUsername)))
+            )
                 boards.push({ ...board, role: String(row.role ?? "viewer") });
         }
         return boards.sort((left, right) =>
@@ -477,8 +524,8 @@ export class NextcloudWhiteboardStore {
         }));
     }
 
-    async getElementsSnapshot(id) {
-        const result = await this.db.executeCommand({
+    async getElementsSnapshot(id, executor = this.db) {
+        const result = await executor.executeCommand({
             option: "SELECT",
             table: "nextcloud_whiteboard_snapshots",
             where: [{ column: "whiteboard_id", value: String(id ?? "") }],
@@ -494,10 +541,10 @@ export class NextcloudWhiteboardStore {
         }
     }
 
-    async saveElementsSnapshot(id, elements) {
+    async saveElementsSnapshot(id, elements, executor = this.db) {
         const safeElements = Array.isArray(elements) ? elements : [];
         const updatedAt = new Date().toISOString();
-        await this.db.executeCommand({
+        await executor.executeCommand({
             option: "INSERT",
             table: "nextcloud_whiteboard_snapshots",
             values: {
@@ -514,13 +561,111 @@ export class NextcloudWhiteboardStore {
                 },
             },
         });
-        await this.db.executeCommand({
+        await executor.executeCommand({
             option: "UPDATE",
             table: "nextcloud_whiteboards",
             set: { updated_at: updatedAt },
             where: [{ column: "id", value: String(id ?? "") }],
         });
         return { elements: safeElements, updatedAt };
+    }
+
+    async saveMergedElementsSnapshot(id, elements) {
+        let saved;
+        await this.db.transaction(async (executor) => {
+            const currentElements = await this.getElementsSnapshot(
+                id,
+                executor,
+            );
+            saved = await this.saveElementsSnapshot(
+                id,
+                mergeElementsSnapshots(currentElements, elements),
+                executor,
+            );
+        });
+        return saved;
+    }
+
+    async saveUserCopies(id, elements, usernames) {
+        const safeElements = Array.isArray(elements) ? elements : [];
+        const savedAt = new Date().toISOString();
+        for (const username of normalizeHandleKeys(usernames)) {
+            await this.db.executeCommand({
+                option: "INSERT",
+                table: "nextcloud_whiteboard_user_copies",
+                values: {
+                    whiteboard_id: String(id ?? ""),
+                    username,
+                    elements_json: JSON.stringify(safeElements),
+                    saved_at: savedAt,
+                },
+                conflict: {
+                    action: "update",
+                    target: ["whiteboard_id", "username"],
+                    update: {
+                        elements_json: JSON.stringify(safeElements),
+                        saved_at: savedAt,
+                    },
+                },
+            });
+        }
+        return { savedAt };
+    }
+
+    async listUserCopyOwners(id) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboard_user_copies",
+            columns: ["username"],
+            where: [{ column: "whiteboard_id", value: String(id ?? "") }],
+        });
+        return normalizeHandleKeys(
+            (result.rows ?? []).map((row) => row.username),
+        );
+    }
+
+    async hasUserCopy(id, username) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboard_user_copies",
+            where: [
+                { column: "whiteboard_id", value: String(id ?? "") },
+                { column: "username", value: normalizeHandleKey(username) },
+            ],
+            limit: 1,
+        });
+        return Boolean(result.rows?.[0]);
+    }
+
+    async getUserCopy(id, username) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboard_user_copies",
+            where: [
+                { column: "whiteboard_id", value: String(id ?? "") },
+                { column: "username", value: normalizeHandleKey(username) },
+            ],
+            limit: 1,
+        });
+        const raw = result.rows?.[0]?.elements_json;
+        if (!raw) return [];
+        try {
+            const parsed = JSON.parse(String(raw));
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
+    }
+
+    async deleteUserCopy(id, username) {
+        await this.db.executeCommand({
+            option: "DELETE",
+            table: "nextcloud_whiteboard_user_copies",
+            where: [
+                { column: "whiteboard_id", value: String(id ?? "") },
+                { column: "username", value: normalizeHandleKey(username) },
+            ],
+        });
     }
 
     mintSessionToken(config, board, user) {
@@ -548,6 +693,7 @@ export class NextcloudWhiteboardStore {
             externalPath: String(row.external_path),
             accessToken: String(row.access_token),
             createdBy: String(row.created_by),
+            disposable: Number(row.disposable ?? 0) === 1,
             createdAt: String(row.created_at),
             updatedAt: String(row.updated_at),
         };

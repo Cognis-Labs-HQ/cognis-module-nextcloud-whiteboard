@@ -762,6 +762,95 @@ test("nextcloud whiteboard elements persist through session reload", async () =>
     assert.deepEqual(sessionRes.json().data.elements, elements);
 });
 
+test("saved shared canvases reopen from one synchronized snapshot", async () => {
+    const db = createMemoryDb();
+    const store = new NextcloudWhiteboardStore({ db });
+    await store.ensureSchema();
+    await store.saveConfig({
+        serverUrl: "https://whiteboard.example.test",
+        apiKey: "session-token-secret-at-least-16-chars",
+    });
+    const board = await store.createWhiteboard({
+        title: "Meeting notes",
+        createdBy: "alice",
+        participants: ["bob"],
+        disposable: true,
+    });
+    const router = createRouterCapture();
+    registerApiRoutes(router, {
+        getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
+            if (key === "db:executor") return db;
+            if (key === "social:profileStore") {
+                return {
+                    async getProfile(accountId) {
+                        return { handle: accountId };
+                    },
+                };
+            }
+            if (key === "logging:log") return () => {};
+            return undefined;
+        },
+    });
+    const aliceToken = issueAccessToken("alice", "user", 60);
+    const bobToken = issueAccessToken("bob", "user", 60);
+    const aliceElements = [{ id: "alice-shape", version: 1 }];
+    const bobElements = [{ id: "bob-shape", version: 1 }];
+    const sharedElements = [
+        { id: "alice-shape", version: 1 },
+        { id: "bob-shape", version: 1 },
+    ];
+    const save = async (token, elements) => {
+        const response = createJsonResponse();
+        await router.handler(
+            "POST",
+            "/api/v1/modules/nextcloud-whiteboard/whiteboards/elements",
+        )(
+            {
+                url: "/api/v1/modules/nextcloud-whiteboard/whiteboards/elements",
+                headers: { authorization: `Bearer ${token}` },
+                async *[Symbol.asyncIterator]() {
+                    yield Buffer.from(
+                        JSON.stringify({
+                            id: board.id,
+                            elements,
+                            explicitSave: true,
+                        }),
+                    );
+                },
+            },
+            response,
+        );
+        assert.equal(response.statusCode, 200);
+    };
+    const open = async (token) => {
+        const response = createJsonResponse();
+        await router.handler(
+            "GET",
+            "/api/v1/modules/nextcloud-whiteboard/whiteboards/session",
+        )(
+            {
+                url: `/api/v1/modules/nextcloud-whiteboard/whiteboards/session?id=${board.id}`,
+                headers: { authorization: `Bearer ${token}` },
+            },
+            response,
+        );
+        assert.equal(response.statusCode, 200);
+        return response.json().data;
+    };
+
+    await save(aliceToken, aliceElements);
+    await save(bobToken, bobElements);
+
+    assert.deepEqual((await open(aliceToken)).elements, sharedElements);
+    assert.deepEqual((await open(bobToken)).elements, sharedElements);
+    assert.deepEqual(
+        await store.getUserCopy(board.id, "alice"),
+        sharedElements,
+    );
+    assert.deepEqual(await store.getUserCopy(board.id, "bob"), sharedElements);
+});
+
 test("nextcloud whiteboard initializes runtime-owned resources once across route refreshes", () => {
     const source = readFileSync(
         new URL("../api/index.js", import.meta.url),

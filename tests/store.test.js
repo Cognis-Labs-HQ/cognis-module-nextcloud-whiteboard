@@ -93,6 +93,49 @@ function createMemoryDb() {
     return db;
 }
 
+test("merged snapshot reads and writes through one transaction", async () => {
+    const commands = [];
+    const executor = {
+        async executeCommand(command) {
+            commands.push(command);
+            if (command.option === "SELECT") {
+                return {
+                    rows: [
+                        {
+                            elements_json: JSON.stringify([
+                                { id: "existing", version: 1 },
+                            ]),
+                        },
+                    ],
+                };
+            }
+            return { rows: [] };
+        },
+    };
+    const db = {
+        async executeCommand() {
+            throw new Error("snapshot command escaped transaction");
+        },
+        async transaction(callback) {
+            await callback(executor);
+        },
+    };
+    const store = new NextcloudWhiteboardStore({ db });
+
+    const saved = await store.saveMergedElementsSnapshot("board", [
+        { id: "incoming", version: 1 },
+    ]);
+
+    assert.deepEqual(
+        saved.elements.map((element) => element.id),
+        ["existing", "incoming"],
+    );
+    assert.deepEqual(
+        commands.map((command) => command.option),
+        ["SELECT", "INSERT", "UPDATE"],
+    );
+});
+
 test("nextcloud whiteboard store persists normalized configuration", async () => {
     const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
     await store.ensureSchema();

@@ -55,3 +55,7 @@ Bilah alat kanvas kini menggulir alat gambar dalam jendela komponen sempit sambi
 ## Bilah alat terbungkus dan kanvas sekali pakai privat
 
 Bilah alat ringkas kini membungkus kontrol ke baris yang tersedia alih-alih menggulir secara horizontal. Kanvas sekali pakai langsung menampilkan Simpan, mempertahankannya saat ada perubahan, dan menyembunyikan kontrol berbagi.
+
+## Satu kanvas tersinkronisasi untuk setiap anggota yang menyimpan
+
+Penyimpanan manual dan otomatis kini menyimpan kanvas kolaboratif lengkap sebagai cuplikan utama. Setiap orang yang membuka kembali kanvas bersama menerima konten terkini yang sama, sedangkan penyimpanan kanvas sekali pakai hanya memperbarui salinan anggota yang telah memilih untuk menyimpan.

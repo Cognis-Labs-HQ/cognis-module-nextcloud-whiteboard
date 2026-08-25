@@ -40,6 +40,7 @@ import {
     renderWhiteboardPresenceEntry,
 } from "./presence.js";
 import { getPreparedDisposableCanvasId } from "../reuse/whiteboard-ui-gateway.js";
+import { applySavedElements } from "../reuse/saved-elements.js";
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
@@ -88,7 +89,6 @@ const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
     getSavedElements: () => savedElements,
     translate: translateModuleString,
 });
-
 async function loadBoards() {
     boards = await fetchWhiteboardList();
 }
@@ -177,9 +177,12 @@ function bindDisposableSaveButton(session, canvas) {
                 "syncing",
                 "module.nextcloud_whiteboard.status_syncing",
             );
-            await saveWhiteboardElements(session.roomId, canvas.getElements(), {
-                explicitSave: true,
-            });
+            const saved = await saveWhiteboardElements(
+                session.roomId,
+                canvas.getElements(),
+                { explicitSave: true },
+            );
+            savedElements = applySavedElements(canvas, saved);
             session.saved = true;
             setDisposableSaveDirty(session, false);
             setSyncStatus(
@@ -224,7 +227,8 @@ function connectSocket(io, session, canvas) {
     const persistChanges = debounce(async (elements) => {
         if (session.disposable) return;
         try {
-            await saveWhiteboardElements(roomId, elements);
+            const saved = await saveWhiteboardElements(roomId, elements);
+            savedElements = applySavedElements(canvas, saved);
             setSyncStatus(
                 "synced",
                 "module.nextcloud_whiteboard.status_synced",
@@ -336,11 +340,15 @@ function connectSocket(io, session, canvas) {
                     message.type === SYNC_MESSAGE_SCENE_UPDATE) &&
                 Array.isArray(message.payload?.elements)
             ) {
-                savedElements = message.payload.elements;
                 canvas.applyElements(message.payload.elements, {
-                    replace: true,
+                    replace: false,
                 });
-                if (canWrite) persistChanges(message.payload.elements);
+                const mergedElements = canvas.getElements();
+                savedElements = mergedElements;
+                if (message.type === SYNC_MESSAGE_SCENE_UPDATE) {
+                    setDisposableSaveDirty(session, true);
+                }
+                if (canWrite) persistChanges(mergedElements);
             }
         } catch (error) {
             console.warn(
@@ -525,7 +533,6 @@ async function bindShareButton(toolbar) {
     });
     shareControlDispose = () => mounted?.destroy?.();
 }
-
 function openSharePopup() {
     return openWhiteboardSharePopup({
         board: activeBoard,
@@ -535,7 +542,6 @@ function openSharePopup() {
         translate: translateModuleString,
     });
 }
-
 async function openHistoryPopup() {
     try {
         await loadBoards();
@@ -786,7 +792,6 @@ async function openBoard(board) {
     }
     setOverlayVisible(pageMountRoot, false);
 }
-
 function renderCanvasElement() {
     const syncState = getSyncStatus();
     return renderWhiteboardCanvasElement({
@@ -895,7 +900,6 @@ export async function mount(
         );
     }
     if (signal?.aborted) return;
-
     const initialBoardId =
         String(componentFocusState?.whiteboardId ?? "").trim() ||
         getPreparedDisposableCanvasId({
@@ -913,7 +917,6 @@ export async function mount(
             ),
         };
     }
-
     const mountedComposer = createPageComposer(root, {
         allowCustomization: false,
         elements: buildElements(),

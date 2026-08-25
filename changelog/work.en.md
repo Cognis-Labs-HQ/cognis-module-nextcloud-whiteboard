@@ -55,3 +55,7 @@ The canvas toolbar now scrolls its drawing tools in narrow component windows whi
 ## Wrapped toolbar and private disposable canvases
 
 Compact toolbars now wrap controls into available rows instead of scrolling horizontally. Disposable canvases render Save immediately, keep it visible while dirty, and omit sharing controls.
+
+## One synchronized canvas for every saved member
+
+Manual and automatic saves now store the complete collaborative canvas as its canonical snapshot. Everyone reopening a shared canvas receives that same current content, while disposable saves update only the copies of members who have chosen to save.

@@ -480,9 +480,7 @@ export function registerApiRoutes(router, ctx) {
                 whiteboardId: whiteboard.id,
                 username,
             });
-            const elements = whiteboard.disposable
-                ? await store.getUserCopy(whiteboard.id, username)
-                : await store.getElementsSnapshot(whiteboard.id);
+            const elements = await store.getElementsSnapshot(whiteboard.id);
             const saved = await store.hasUserCopy(whiteboard.id, username);
             sendJson(res, 200, {
                 data: {
@@ -537,21 +535,19 @@ export function registerApiRoutes(router, ctx) {
                 );
                 return;
             }
-            const saved = whiteboard.disposable
-                ? {
-                      elements: body.elements,
-                      updatedAt: new Date().toISOString(),
-                  }
-                : await store.saveElementsSnapshot(
-                      whiteboard.id,
-                      body.elements,
-                  );
+            const saved = await store.saveMergedElementsSnapshot(
+                whiteboard.id,
+                body.elements,
+            );
             const copyOwners = whiteboard.disposable
-                ? [access.username]
+                ? [
+                      ...(await store.listUserCopyOwners(whiteboard.id)),
+                      access.username,
+                  ]
                 : await store.listParticipants(whiteboard.id);
             await store.saveUserCopies(
                 whiteboard.id,
-                body.elements,
+                saved.elements,
                 copyOwners,
             );
             sendJson(res, 200, { data: saved });

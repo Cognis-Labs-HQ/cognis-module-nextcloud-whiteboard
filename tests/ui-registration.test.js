@@ -280,6 +280,10 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
         ),
     ]);
     assert.match(source, /function deleteSelectedElements\(\)/);
+    assert.match(
+        source,
+        /bumpElementVersion\(element, \{ isDeleted: true \}\)/,
+    );
     assert.match(source, /getElementAnchorPoints,/);
     assert.match(source, /parseSavedFont, toFontFamilyValue/);
     assert.match(source, /function notifyTransientChange\(\)/);
@@ -302,6 +306,24 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
         canvasEventsSource,
         /canvasElement\.removeEventListener\(['"]keydown['"], onKeyDown\)/,
     );
+});
+
+test("collaborative scenes merge remote edits before saving", async () => {
+    const [appSource, canvasSource] = await Promise.all(
+        ["../ui/app/index.js", "../ui/whiteboard/canvas.js"].map(
+            (relativePath) =>
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+                ),
+        ),
+    );
+    assert.match(
+        appSource,
+        /canvas\.applyElements\(message\.payload\.elements, \{\s*replace: false/s,
+    );
+    assert.match(appSource, /const mergedElements = canvas\.getElements\(\)/);
+    assert.match(appSource, /persistChanges\(mergedElements\)/);
+    assert.match(canvasSource, /element\.isDeleted/);
 });
 
 test("nextcloud whiteboard image paste saves and selects resizable image objects", async () => {

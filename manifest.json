@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.50",
+    "version": "2.3.51",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -159,11 +159,15 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "dfb580e7c4f5ceaf899326111d4e73bcb7d5aca5ed619a5485b6f97d4ac82fb7"
+            "sha256": "b4dfdb9a714a7ea033105489b3c272c8b20fb7f40b03ef8c6ba2674ba5d508c6"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
             "sha256": "5cf6535f3c3656217d47aa0d942629f03da039b0be1e5f63a7454ba3c2a7caf6"
+        },
+        {
+            "path": "api/reuse/elements-snapshot.js",
+            "sha256": "b5284d1cd3acf4ac8b0f94db1d6e06a4cda3e00944c0bd37dec8fd8e89495c9a"
         },
         {
             "path": "api/reuse/flow-helpers.js",
@@ -207,7 +211,7 @@
         },
         {
             "path": "api/store.js",
-            "sha256": "c78b67f17f6e36e82f0d704576e0be77917c3bd36e02fa8adc8082cbc661b229"
+            "sha256": "439fdfaeef03b6e5d66b51d087a7a21f80547d67ff01fb85189b5093c72836cd"
         },
         {
             "path": "assets/banner.png",
@@ -243,11 +247,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "e0a927778060ed06db895b1226e5d9850f69ce78986e796ce4de886595ca5734"
+            "sha256": "75cd00078dfc63ea6a2f6c2756edfb8afc2e9c5772c0a57f42c03f2a87e4daee"
         },
         {
             "path": "package.json",
-            "sha256": "2a31c2f0a4089428a7208cd94525115dfb24267fe0fe41ea3320f2e86c0fd272"
+            "sha256": "4113d51965d505b933e1e613bdaeb072a005082e8b5303fabfed10ee1fa50aa4"
         },
         {
             "path": "routes.json",
@@ -271,11 +275,15 @@
         },
         {
             "path": "tests/api-routes.test.js",
-            "sha256": "1840fc8ef81932b41d02da2d3fd0cb76cde5de14fa3ec685fcb7cae4a3cf3fdc"
+            "sha256": "4cd57541d565fe8662fbeb24142a7028fcd92b51749b5b9e6619e3657cde4545"
         },
         {
             "path": "tests/documentation-convention.test.js",
             "sha256": "4b8db59e7d7ec21e6cac9f623ffd1f66f2374295eb97cb6828b4985cff7acd40"
+        },
+        {
+            "path": "tests/elements-snapshot.test.js",
+            "sha256": "ce94b084d77ee62a9e019c2537c36d6dd4ea8c04f1029224171933914cf28698"
         },
         {
             "path": "tests/language-keys.test.js",
@@ -311,7 +319,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "124b68546aeffd68dce417f5efd51e9345eff8c610de46480a6d9eb2b7d72de3"
+            "sha256": "5e522795b0da95811c5174d1d60c9572294537cf6da4da1a426511b7a0004cc9"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -339,7 +347,7 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "4f5c003a7225a8dc5f4b408830131aace63a6999a56e66094457dfdb4916704a"
+            "sha256": "d97ccffed2b13aeb5c26b8acccae6cbcb4526abaad8460ce2d2d10620a4126d2"
         },
         {
             "path": "ui/app/overlay.js",
@@ -394,6 +402,10 @@
             "sha256": "3db5561755ba13b0af48d6870714b56fd8797547eec426053f02dc8c7213046f"
         },
         {
+            "path": "ui/reuse/saved-elements.js",
+            "sha256": "802b0731640275a827ad3d7159f6718aa7cf6f5bb6939f0008f43ab031436092"
+        },
+        {
             "path": "ui/reuse/whiteboard-ui-gateway.js",
             "sha256": "f66acfd6d1cd769d0caf6ae15dd0e8b1e9aa5e81ab02e43deb8a9887f2c74f20"
         },
@@ -407,7 +419,7 @@
         },
         {
             "path": "ui/whiteboard/canvas.js",
-            "sha256": "b2d10b04eac7ca597fb0640de841550d17bf5b6e24e68820f0ec979baa1db47c"
+            "sha256": "0eccad54b19242fce63f322dce72ff7e4eddfe0d01abae18d2540d5896b8ee94"
         },
         {
             "path": "ui/whiteboard/clipboard-images.js",

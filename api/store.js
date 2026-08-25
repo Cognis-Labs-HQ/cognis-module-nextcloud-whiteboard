@@ -10,6 +10,7 @@ import {
     normalizeHandleKey,
     normalizeHandleKeys,
 } from "./reuse/normalize-handle.js";
+import { mergeElementsSnapshots } from "./reuse/elements-snapshot.js";
 
 function normalizeSelectionElementIds(selection) {
     return Array.isArray(selection?.elementIds)
@@ -569,6 +570,14 @@ export class NextcloudWhiteboardStore {
         return { elements: safeElements, updatedAt };
     }
 
+    async saveMergedElementsSnapshot(id, elements) {
+        const currentElements = await this.getElementsSnapshot(id);
+        return this.saveElementsSnapshot(
+            id,
+            mergeElementsSnapshots(currentElements, elements),
+        );
+    }
+
     async saveUserCopies(id, elements, usernames) {
         const safeElements = Array.isArray(elements) ? elements : [];
         const savedAt = new Date().toISOString();
@@ -593,6 +602,18 @@ export class NextcloudWhiteboardStore {
             });
         }
         return { savedAt };
+    }
+
+    async listUserCopyOwners(id) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboard_user_copies",
+            columns: ["username"],
+            where: [{ column: "whiteboard_id", value: String(id ?? "") }],
+        });
+        return normalizeHandleKeys(
+            (result.rows ?? []).map((row) => row.username),
+        );
     }
 
     async hasUserCopy(id, username) {

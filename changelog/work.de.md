@@ -55,3 +55,7 @@ Die Leinwand-Werkzeugleiste scrollt Zeichenwerkzeuge nun in schmalen Komponenten
 ## Umgebrochene Werkzeugleiste und private temporäre Leinwände
 
 Kompakte Werkzeugleisten brechen Bedienelemente nun in verfügbare Zeilen um, statt horizontal zu scrollen. Temporäre Leinwände zeigen Speichern sofort an, halten die Schaltfläche bei Änderungen sichtbar und blenden Freigabesteuerungen aus.
+
+## Eine synchronisierte Leinwand für jedes speichernde Mitglied
+
+Manuelles und automatisches Speichern legt nun die vollständige gemeinschaftliche Leinwand als maßgeblichen Stand ab. Beim erneuten Öffnen einer geteilten Leinwand erhalten alle denselben aktuellen Inhalt, während bei Wegwerf-Leinwänden nur die Kopien der Mitglieder aktualisiert werden, die sich für das Speichern entschieden haben.

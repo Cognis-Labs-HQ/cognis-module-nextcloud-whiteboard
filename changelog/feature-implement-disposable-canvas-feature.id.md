@@ -66,4 +66,4 @@ Penyimpanan serentak kini dijalankan secara berurutan agar perubahan seorang pes
 
 ## Modul aplikasi yang mudah dipelihara
 
-Navigasi Whiteboard dan pemeriksaan awal koneksi kini berada dalam modul terfokus sehingga entri utama aplikasi tetap mudah dibaca tanpa memadatkan atau menghapus spasi yang bermakna.
+Navigasi Whiteboard dan pemeriksaan awal koneksi kini berada dalam modul terfokus. Entri utama aplikasi mempertahankan baris kosong yang jelas di antara setiap fungsi tingkat atas dan tetap mudah dibaca tanpa format yang dipadatkan.

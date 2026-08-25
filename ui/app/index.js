@@ -100,9 +100,11 @@ const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
     getSavedElements: () => savedElements,
     translate: translateModuleString,
 });
+
 async function loadBoards() {
     boards = await fetchWhiteboardList();
 }
+
 function teardownCanvas() {
     shareControlDispose?.();
     shareControlDispose = null;
@@ -133,11 +135,13 @@ function teardownCanvas() {
     runtimeDispose?.();
     runtimeDispose = null;
 }
+
 function canRenameActiveBoard() {
     return Boolean(
         !integrationCanvasMode && activeSession?.canRename && activeBoard?.id,
     );
 }
+
 function applyBoardTitle(title) {
     const normalizedTitle = String(title ?? "").trim();
     if (!normalizedTitle) return;
@@ -151,6 +155,7 @@ function applyBoardTitle(title) {
         titleEl.textContent = normalizedTitle;
     }
 }
+
 function emitBoardRenamed(title) {
     if (!socketInstance?.connected || !activeSession?.roomId) return;
     socketInstance.emit(
@@ -160,6 +165,7 @@ function emitBoardRenamed(title) {
         [],
     );
 }
+
 function setDisposableSaveDirty(session, dirty) {
     if (!session?.disposable) return;
     const saveButton = withinMount("#whiteboard-save-copy");
@@ -167,6 +173,7 @@ function setDisposableSaveDirty(session, dirty) {
     saveButton.dataset.dirty = String(dirty);
     saveButton.hidden = false;
 }
+
 function bindDisposableSaveButton(session, canvas) {
     if (!session?.disposable) return;
     const statusBox = withinMount("#whiteboard-sync-status");
@@ -210,6 +217,7 @@ function bindDisposableSaveButton(session, canvas) {
         }
     });
 }
+
 function connectSocket(io, session, canvas) {
     const { serverUrl, roomId, token } = session;
     const canWrite = session.canWrite === true;
@@ -370,6 +378,7 @@ function connectSocket(io, session, canvas) {
     });
     return socket;
 }
+
 async function createAndOpenBoard() {
     const passed = await runPreflightCheck();
     if (!passed) return;
@@ -391,6 +400,7 @@ async function createAndOpenBoard() {
     );
     await openBoard(spawnResult.whiteboard);
 }
+
 function bindCanvasToolbar(canvas) {
     const toolbar = withinMount("#whiteboard-toolbar");
     if (!toolbar || toolbar.dataset.bound === "true") return;
@@ -532,6 +542,7 @@ function bindCanvasToolbar(canvas) {
         },
     );
 }
+
 async function bindShareButton(toolbar) {
     const slot = toolbar.querySelector("#whiteboard-share-slot");
     if (!(slot instanceof HTMLElement) || !activeBoard?.id) return;
@@ -544,6 +555,7 @@ async function bindShareButton(toolbar) {
     });
     shareControlDispose = () => mounted?.destroy?.();
 }
+
 function openSharePopup() {
     return openWhiteboardSharePopup({
         board: activeBoard,
@@ -553,6 +565,7 @@ function openSharePopup() {
         translate: translateModuleString,
     });
 }
+
 async function openHistoryPopup() {
     try {
         await loadBoards();
@@ -570,6 +583,7 @@ async function openHistoryPopup() {
         translate: translateModuleString,
     });
 }
+
 async function renameActiveBoard() {
     if (!activeBoard || !canRenameActiveBoard()) return;
     const titleEl = withinMount("#whiteboard-board-title");
@@ -636,9 +650,11 @@ async function renameActiveBoard() {
     titleEl.addEventListener("blur", finish);
     titleEl.addEventListener("keydown", onKeydown);
 }
+
 async function runPreflightCheck() {
     return preflightController.run();
 }
+
 async function openBoard(board) {
     activeBoard = board;
     syncBoardUrl({
@@ -718,6 +734,7 @@ async function openBoard(board) {
     }
     setOverlayVisible(pageMountRoot, false);
 }
+
 function renderCanvasElement() {
     const syncState = getSyncStatus();
     return renderWhiteboardCanvasElement({
@@ -734,6 +751,7 @@ function renderCanvasElement() {
         saved: activeSession?.saved === true,
     });
 }
+
 function onCanvasRender() {
     withinMount("#whiteboard-start-new")?.addEventListener(
         "click",
@@ -768,6 +786,7 @@ function onCanvasRender() {
     });
     bindCanvasToolbar(canvasInstance);
 }
+
 function buildElements() {
     return [
         {
@@ -783,6 +802,7 @@ function buildElements() {
         },
     ];
 }
+
 export async function mount(
     root,
     {

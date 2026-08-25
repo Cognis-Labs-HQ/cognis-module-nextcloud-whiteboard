@@ -66,4 +66,4 @@ Concurrent saves are now serialized so one participant cannot overwrite another 
 
 ## Maintainable application modules
 
-Whiteboard navigation and connection preflight behavior now live in focused modules, keeping the main application entry readable without compressing or removing meaningful whitespace.
+Whiteboard navigation and connection preflight behavior now live in focused modules. The main application entry preserves clear blank lines between every top-level function and remains readable without compressed formatting.

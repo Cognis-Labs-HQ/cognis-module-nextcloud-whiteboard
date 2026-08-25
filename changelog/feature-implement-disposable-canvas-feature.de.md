@@ -66,4 +66,4 @@ Gleichzeitige Speichervorgänge werden nun nacheinander ausgeführt, damit Ände
 
 ## Wartbare Anwendungsmodule
 
-Whiteboard-Navigation und Verbindungsprüfung befinden sich nun in gezielten Modulen. Dadurch bleibt der Haupteinstieg der Anwendung lesbar, ohne sinnvolle Abstände zu komprimieren oder zu entfernen.
+Whiteboard-Navigation und Verbindungsprüfung befinden sich nun in gezielten Modulen. Der Haupteinstieg der Anwendung behält klare Leerzeilen zwischen allen Funktionen auf oberster Ebene und bleibt ohne komprimierte Formatierung lesbar.

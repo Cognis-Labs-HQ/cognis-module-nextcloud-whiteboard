@@ -51,3 +51,7 @@ Der Whiteboard-Browsereinstieg führt eine automatische direkte Einbindung nun n
 ## Kompakte Leinwand-Werkzeugleiste
 
 Die Leinwand-Werkzeugleiste scrollt Zeichenwerkzeuge nun in schmalen Komponentenfenstern und hält den Speicherstatus sichtbar; Änderungen an temporären Leinwänden zeigen bis zum Speichern stets eine hervorgehobene Speichern-Schaltfläche.
+
+## Umgebrochene Werkzeugleiste und private temporäre Leinwände
+
+Kompakte Werkzeugleisten brechen Bedienelemente nun in verfügbare Zeilen um, statt horizontal zu scrollen. Temporäre Leinwände zeigen Speichern sofort an, halten die Schaltfläche bei Änderungen sichtbar und blenden Freigabesteuerungen aus.

@@ -51,3 +51,7 @@ The Whiteboard browser entry now performs an automatic direct mount only on /whi
 ## Compact canvas toolbar
 
 The canvas toolbar now scrolls its drawing tools in narrow component windows while pinning save state in view, and disposable changes always reveal a highlighted Save button until stored.
+
+## Wrapped toolbar and private disposable canvases
+
+Compact toolbars now wrap controls into available rows instead of scrolling horizontally. Disposable canvases render Save immediately, keep it visible while dirty, and omit sharing controls.

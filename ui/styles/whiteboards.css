@@ -76,28 +76,28 @@
     align-items: center;
     background: var(--surface, #ffffff);
     border-bottom: 1px solid var(--border, #d8dee9);
-    display: flex;
-    flex-wrap: nowrap;
+    display: grid;
     gap: 0.5rem;
+    grid-template-columns: minmax(0, 1fr) auto;
     padding: 0.5rem 0.75rem;
 }
 
-.whiteboard-canvas-wrap .whiteboard-toolbar-scroll {
+.whiteboard-canvas-wrap .whiteboard-toolbar-tools {
     align-items: center;
     display: flex;
-    flex: 1 1 auto;
+    flex-wrap: wrap;
     gap: 0.5rem;
     min-width: 0;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scrollbar-width: thin;
+    overflow: visible;
 }
 
 .whiteboard-canvas-wrap .whiteboard-toolbar-group {
     align-items: center;
     display: flex;
     gap: 0.45rem;
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    min-width: 0;
 }
 
 .whiteboard-canvas-wrap .whiteboard-toolbar-group[hidden] {
@@ -258,9 +258,7 @@
     background: var(--surface, #ffffff);
     flex: 0 0 auto;
     margin-left: auto;
-    position: sticky;
-    right: 0;
-    z-index: 1;
+    align-self: start;
 }
 
 .whiteboard-canvas-wrap .whiteboard-save-copy[data-dirty="true"] {

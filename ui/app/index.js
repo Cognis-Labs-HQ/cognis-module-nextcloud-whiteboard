@@ -59,6 +59,7 @@ let preflightStatus = "idle";
 let lastConnectionToast = "";
 let imageUploadMaxBytes = 1048576;
 let integrationCanvasMode = false;
+let disposableCanvasMode = false;
 let hostNavigationAllowed = true;
 /** @type {Element | null} */
 let pageMountRoot = null;
@@ -798,7 +799,8 @@ function renderCanvasElement() {
         syncStatusMessage: syncState.message,
         translate: translateModuleString,
         integrationCanvasMode,
-        disposable: activeSession?.disposable === true,
+        disposable: disposableCanvasMode || activeSession?.disposable === true,
+        saved: activeSession?.saved === true,
     });
 }
 function onCanvasRender() {
@@ -883,6 +885,7 @@ export async function mount(
         Boolean(shareContext?.page?.instantCanvas) ||
         new URLSearchParams(window.location.search).get("instantCanvas") ===
             "1";
+    disposableCanvasMode = Boolean(componentFocusState?.disposable);
     if (!activeShareContext) {
         await loadBoards().catch((error) =>
             reportClientError(
@@ -968,6 +971,7 @@ export async function mount(
         savedElements = [];
         preflightStatus = "idle";
         integrationCanvasMode = false;
+        disposableCanvasMode = false;
         hostNavigationAllowed = true;
         if (pageMountRoot === root) pageMountRoot = null;
     };

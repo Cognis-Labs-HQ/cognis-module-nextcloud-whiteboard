@@ -51,3 +51,7 @@ Entri peramban Whiteboard kini melakukan mount langsung otomatis hanya pada /whi
 ## Bilah alat kanvas ringkas
 
 Bilah alat kanvas kini menggulir alat gambar dalam jendela komponen sempit sambil mempertahankan status simpan terlihat, dan perubahan kanvas sekali pakai selalu menampilkan tombol Simpan yang disorot hingga tersimpan.
+
+## Bilah alat terbungkus dan kanvas sekali pakai privat
+
+Bilah alat ringkas kini membungkus kontrol ke baris yang tersedia alih-alih menggulir secara horizontal. Kanvas sekali pakai langsung menampilkan Simpan, mempertahankannya saat ada perubahan, dan menyembunyikan kontrol berbagi.

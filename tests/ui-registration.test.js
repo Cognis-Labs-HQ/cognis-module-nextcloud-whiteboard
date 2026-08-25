@@ -596,7 +596,7 @@ test("whiteboard direct entry mounts only on declared whiteboard routes", async 
     assert.doesNotMatch(appSource, /^await mountWhenDirect\(mount\);$/m);
 });
 
-test("whiteboard toolbar keeps disposable save controls visible in compact windows", async () => {
+test("whiteboard toolbar wraps tools and keeps disposable save controls visible", async () => {
     const [appSource, renderSource, stylesSource] = await Promise.all(
         [
             "../ui/app/index.js",
@@ -608,14 +608,18 @@ test("whiteboard toolbar keeps disposable save controls visible in compact windo
             ),
         ),
     );
-    assert.match(renderSource, /class="whiteboard-toolbar-scroll"/);
+    assert.match(renderSource, /class="whiteboard-toolbar-tools"/);
     assert.match(
         stylesSource,
-        /\.whiteboard-toolbar-scroll\s*\{[^}]*overflow-x: auto/s,
+        /\.whiteboard-toolbar-tools\s*\{[^}]*flex-wrap: wrap/s,
     );
     assert.match(
         stylesSource,
-        /\.whiteboard-save-state\s*\{[^}]*position: sticky/s,
+        /\.whiteboard-toolbar\s*\{[^}]*grid-template-columns: minmax\(0, 1fr\) auto/s,
+    );
+    assert.doesNotMatch(
+        stylesSource,
+        /\.whiteboard-toolbar-tools\s*\{[^}]*overflow-x: auto/s,
     );
     assert.match(stylesSource, /@container \(max-width: 44rem\)/);
     assert.match(
@@ -626,5 +630,10 @@ test("whiteboard toolbar keeps disposable save controls visible in compact windo
     assert.match(
         appSource,
         /saveButton\.dataset\.dirty = String\(!session\.saved\)/,
+    );
+    assert.match(renderSource, /data-dirty="\$\{String\(!saved\)\}"/);
+    assert.match(
+        renderSource,
+        /\$\{disposable \? "" : `<span id="whiteboard-share-slot"/,
     );
 });

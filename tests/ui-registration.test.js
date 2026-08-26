@@ -614,7 +614,7 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     );
     assert.match(
         appSource,
-        /embeddedComponentMode = Boolean\(componentFocusState\)/,
+        /embeddedComponentMode =\s*allowNavigation === false \|\| Boolean\(componentFocusState\)/,
     );
     assert.match(appSource, /showShare:\s*!embeddedComponentMode/);
     assert.match(

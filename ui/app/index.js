@@ -828,7 +828,8 @@ export async function mount(
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
     const componentFocusState = focusState?.context ?? focusState ?? null;
-    embeddedComponentMode = Boolean(componentFocusState);
+    embeddedComponentMode =
+        allowNavigation === false || Boolean(componentFocusState);
     hostNavigationAllowed = allowNavigation && !embeddedComponentMode;
     integrationCanvasMode =
         Boolean(

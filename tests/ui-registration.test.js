@@ -386,6 +386,24 @@ test("collaborative scenes merge remote edits before saving", async () => {
     assert.match(canvasSource, /element\.isDeleted/);
 });
 
+test("joining collaborators request a scene from peers after reconnecting", async () => {
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+    );
+    assert.match(
+        appSource,
+        /const SYNC_MESSAGE_SCENE_REQUEST = "SCENE_REQUEST"/,
+    );
+    assert.match(
+        appSource,
+        /socket\.on\("room-user-change",[\s\S]*requestScene\(\)/,
+    );
+    assert.match(
+        appSource,
+        /message\.type === SYNC_MESSAGE_SCENE_REQUEST[\s\S]*emitChanges\(canvas\.getElements\(\), SYNC_MESSAGE_SCENE_INIT\)/,
+    );
+});
+
 test("nextcloud whiteboard image paste saves and selects resizable image objects", async () => {
     const [canvasSource, clipboardSource, canvasEventsSource, elementsSource] =
         await Promise.all([

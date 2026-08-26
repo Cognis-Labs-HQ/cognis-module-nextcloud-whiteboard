@@ -11,3 +11,7 @@ Cursor-Aktualisierungen erscheinen jetzt nahezu in Echtzeit, während begrenzte 
 ## Unfertige Objekte bleiben sichtbar
 
 Mitwirkende können Text jetzt bereits während der Eingabe sowie Formen während des Zeichnens sehen.
+
+## Koordinaten bleiben bei schnellen Bearbeitungen ausgerichtet
+
+Die Größenanpassung der Zeichenfläche schreibt gemeinsam genutzte Objektkoordinaten nicht mehr um. Dadurch sammeln sich bei schnellen gleichzeitigen Änderungen keine unterschiedlichen Versätze an.

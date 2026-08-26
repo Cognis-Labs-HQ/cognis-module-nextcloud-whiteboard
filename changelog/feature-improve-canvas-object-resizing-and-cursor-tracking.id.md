@@ -11,3 +11,7 @@ Pembaruan kursor kini tampil hampir seketika, sementara pembatasan terukur dan p
 ## Objek yang belum selesai tetap terlihat
 
 Kolaborator kini dapat melihat teks saat masih diketik serta bentuk saat masih digambar.
+
+## Koordinat tetap selaras selama pengeditan cepat
+
+Penyesuaian ukuran kanvas tidak lagi menulis ulang koordinat objek bersama, sehingga kolaborator tidak mengumpulkan pergeseran yang berbeda selama perubahan serentak yang cepat.

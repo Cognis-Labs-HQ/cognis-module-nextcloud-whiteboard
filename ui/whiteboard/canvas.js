@@ -91,31 +91,14 @@ export function createWhiteboardCanvas(
     }
 
     function resizeCanvas() {
-        if (!isDrawing) updateCanvasOverflow();
+        if (!isDrawing) updateCanvasSize();
         scheduleRender();
     }
 
-    function updateCanvasOverflow() {
+    function updateCanvasSize() {
         const parent = canvasElement.parentElement;
         const rect = parent?.getBoundingClientRect();
         if (!rect) return;
-        const overflowPadding = 48;
-        let bounds = elements.map(getElementBounds);
-        const minX = Math.min(0, ...bounds.map((item) => item.x));
-        const minY = Math.min(0, ...bounds.map((item) => item.y));
-        if (minX < 0 || minY < 0) {
-            const dx = minX < 0 ? Math.abs(minX) + overflowPadding : 0;
-            const dy = minY < 0 ? Math.abs(minY) + overflowPadding : 0;
-            elements = elements.map((element) =>
-                bumpElementVersion(element, {
-                    x: element.x + dx,
-                    y: element.y + dy,
-                }),
-            );
-            bounds = elements.map(getElementBounds);
-            viewportOffsetX += dx;
-            viewportOffsetY += dy;
-        }
         const width = Math.ceil(rect.width);
         const height = Math.ceil(rect.height);
         if (canvasElement.width !== width) canvasElement.width = width;
@@ -293,7 +276,7 @@ export function createWhiteboardCanvas(
                     }),
                 ),
         ];
-        updateCanvasOverflow();
+        updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
         notifySelection();
@@ -305,7 +288,7 @@ export function createWhiteboardCanvas(
             pushHistoryEntry(before, cloneElements(nextElements));
         }
         elements = nextElements;
-        updateCanvasOverflow();
+        updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
     }
@@ -319,7 +302,7 @@ export function createWhiteboardCanvas(
 
     function restoreElements(snapshot) {
         elements = cloneElements(snapshot);
-        updateCanvasOverflow();
+        updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
         notifySelection();
@@ -720,7 +703,7 @@ export function createWhiteboardCanvas(
                     historySnapshot ?? cloneElements(),
                     cloneElements(),
                 );
-                updateCanvasOverflow();
+                updateCanvasSize();
                 changeCallback?.([...elements]);
             }
         } else if (activeTool === "eraser") {
@@ -888,7 +871,7 @@ export function createWhiteboardCanvas(
         applyElements(remoteElements, { replace = false } = {}) {
             if (replace) {
                 elements = cloneElements(remoteElements);
-                updateCanvasOverflow();
+                updateCanvasSize();
                 selectedElementIds = new Set(
                     [...selectedElementIds].filter((id) =>
                         elements.some((element) => element.id === id),
@@ -930,7 +913,7 @@ export function createWhiteboardCanvas(
                 }
             }
             elements = [...localById.values()];
-            updateCanvasOverflow();
+            updateCanvasSize();
             const currentIds = new Set(elements.map((element) => element.id));
             selectedElementIds = new Set(
                 [...selectedElementIds].filter((id) => currentIds.has(id)),

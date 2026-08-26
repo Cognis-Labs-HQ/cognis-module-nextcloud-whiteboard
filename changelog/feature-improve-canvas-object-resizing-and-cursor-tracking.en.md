@@ -11,3 +11,7 @@ Cursor updates now appear near real time while bounded throttling and batched pr
 ## In-progress objects stay visible
 
 Collaborators can now see text while it is still being entered, as well as shapes while they are being drawn.
+
+## Coordinates remain aligned during rapid edits
+
+Canvas sizing no longer rewrites shared object coordinates, preventing collaborators from accumulating different offsets during fast concurrent changes.

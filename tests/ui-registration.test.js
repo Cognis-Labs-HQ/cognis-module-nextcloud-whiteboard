@@ -601,7 +601,7 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
     assert.match(appSource, /if \(signal\?\.aborted\) return/);
 });
 
-test("whiteboard navbar registers the disposable canvas UI gateway", async () => {
+test("whiteboard navbar registers the canvas UI gateway", async () => {
     const [navbarSource, gatewaySource, apiSource, providerSource] =
         await Promise.all(
             [
@@ -630,7 +630,10 @@ test("whiteboard navbar registers the disposable canvas UI gateway", async () =>
         /const capabilityName = "whiteboard:uiGateway"/,
     );
     assert.match(gatewaySource, /async createDisposableCanvas\(\{/);
+    assert.match(gatewaySource, /async createCanvas\(\{/);
     assert.match(gatewaySource, /participantHandles/);
+    assert.match(gatewaySource, /participants: participantHandles/);
+    assert.match(gatewaySource, /"Canvas could not be created\."/);
     assert.match(gatewaySource, /return \{ whiteboardId \}/);
     assert.match(
         gatewaySource,

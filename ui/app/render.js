@@ -12,6 +12,7 @@ export function renderCanvasElement({
     translate,
     integrationCanvasMode = false,
     disposable = false,
+    showShare = true,
     saved = false,
 }) {
     const hasActiveBoard = Boolean(activeBoard);
@@ -61,7 +62,7 @@ export function renderCanvasElement({
           </select>
         </div>
         <div class="whiteboard-toolbar-group" ${hasActiveBoard ? "" : "hidden"}>
-          ${disposable ? "" : `<span id="whiteboard-share-slot"></span>`}
+          ${disposable || !showShare ? "" : `<span id="whiteboard-share-slot"></span>`}
           <a href="#" id="whiteboard-clear" class="whiteboard-tool btn-cancel" role="button" title="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}">×</a>
         </div>
         ${integrationCanvasMode ? "" : `<span id="whiteboard-board-title" class="whiteboard-board-title" title="${escapeHtml(canRenameActiveBoard() ? translate("module.nextcloud_whiteboard.rename_hint") : "")}">${escapeHtml(activeSession?.title ?? activeBoard?.title ?? "")}</span>`}

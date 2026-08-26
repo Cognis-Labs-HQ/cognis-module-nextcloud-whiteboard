@@ -226,7 +226,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         /requireAccountSession:\s*!activeShareContext,\s*signal/,
     );
     assert.match(source, /pageManifest:\s*\{/);
-    assert.match(source, /pointerTracking:\s*true/);
+    assert.match(source, /pointerTracking:\s*!embeddedComponentMode/);
     assert.match(
         source,
         /const canvasElement = withinMount\(['"]#whiteboard-canvas['"]\);/,
@@ -592,8 +592,12 @@ test("whiteboard navbar registers the disposable canvas UI gateway", async () =>
 });
 
 test("whiteboard component mounts the disposable canvas from focus state", async () => {
-    const [appSource, navigationSource] = await Promise.all(
-        ["../ui/app/index.js", "../ui/reuse/board-navigation.js"].map((path) =>
+    const [appSource, navigationSource, renderSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/reuse/board-navigation.js",
+            "../ui/app/render.js",
+        ].map((path) =>
             import("node:fs/promises").then((fs) =>
                 fs.readFile(new URL(path, import.meta.url), "utf8"),
             ),
@@ -610,7 +614,12 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     );
     assert.match(
         appSource,
-        /const embeddedComponentMode = Boolean\(componentFocusState\)/,
+        /embeddedComponentMode = Boolean\(componentFocusState\)/,
+    );
+    assert.match(appSource, /showShare:\s*!embeddedComponentMode/);
+    assert.match(
+        renderSource,
+        /disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
     );
     assert.match(
         appSource,
@@ -709,6 +718,6 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     assert.match(renderSource, /data-dirty="\$\{String\(!saved\)\}"/);
     assert.match(
         renderSource,
-        /\$\{disposable \? "" : `<span id="whiteboard-share-slot"/,
+        /\$\{disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
     );
 });

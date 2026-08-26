@@ -62,6 +62,7 @@ let lastConnectionToast = "";
 let imageUploadMaxBytes = 1048576;
 let integrationCanvasMode = false;
 let disposableCanvasMode = false;
+let embeddedComponentMode = false;
 let hostNavigationAllowed = true;
 /** @type {Element | null} */
 let pageMountRoot = null;
@@ -748,6 +749,7 @@ function renderCanvasElement() {
         translate: translateModuleString,
         integrationCanvasMode,
         disposable: disposableCanvasMode || activeSession?.disposable === true,
+        showShare: !embeddedComponentMode,
         saved: activeSession?.saved === true,
     });
 }
@@ -826,7 +828,7 @@ export async function mount(
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
     const componentFocusState = focusState?.context ?? focusState ?? null;
-    const embeddedComponentMode = Boolean(componentFocusState);
+    embeddedComponentMode = Boolean(componentFocusState);
     hostNavigationAllowed = allowNavigation && !embeddedComponentMode;
     integrationCanvasMode =
         Boolean(
@@ -887,7 +889,7 @@ export async function mount(
         },
         pageManifest: {
             features: {
-                pointerTracking: true,
+                pointerTracking: !embeddedComponentMode,
             },
         },
         i18n,
@@ -923,6 +925,7 @@ export async function mount(
         preflightController.setStatus("idle");
         integrationCanvasMode = false;
         disposableCanvasMode = false;
+        embeddedComponentMode = false;
         hostNavigationAllowed = true;
         if (pageMountRoot === root) pageMountRoot = null;
     };

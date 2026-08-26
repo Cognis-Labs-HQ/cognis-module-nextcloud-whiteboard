@@ -353,6 +353,32 @@ export function getElementBounds(element) {
     };
 }
 
+export function scaleElementToBounds(element, nextBounds) {
+    const originalBounds = getElementBounds(element);
+    const scaleX = nextBounds.width / Math.max(1, originalBounds.width);
+    const scaleY = nextBounds.height / Math.max(1, originalBounds.height);
+    const patch = {
+        x: nextBounds.x,
+        y: nextBounds.y,
+        width: Math.max(1, nextBounds.width),
+        height: Math.max(1, nextBounds.height),
+    };
+    if (Array.isArray(element.points)) {
+        patch.points = element.points.map(([pointX, pointY]) => {
+            const scaledX = (element.x + pointX - originalBounds.x) * scaleX;
+            const scaledY = (element.y + pointY - originalBounds.y) * scaleY;
+            return [
+                nextBounds.flipX ? nextBounds.width - scaledX : scaledX,
+                nextBounds.flipY ? nextBounds.height - scaledY : scaledY,
+            ];
+        });
+    } else {
+        patch.flipX = Boolean(element.flipX) !== Boolean(nextBounds.flipX);
+        patch.flipY = Boolean(element.flipY) !== Boolean(nextBounds.flipY);
+    }
+    return bumpElementVersion(element, patch);
+}
+
 export function boxContains(container, item) {
     return (
         item.x >= container.x &&
@@ -588,6 +614,16 @@ function renderLine(context, element) {
 
 export function renderElement(context, element) {
     if (element.isDeleted) return;
+    const shouldMirror =
+        !Array.isArray(element.points) && (element.flipX || element.flipY);
+    if (shouldMirror) {
+        context.save();
+        context.translate(
+            element.flipX ? element.x * 2 + element.width : 0,
+            element.flipY ? element.y * 2 + element.height : 0,
+        );
+        context.scale(element.flipX ? -1 : 1, element.flipY ? -1 : 1);
+    }
     switch (element.type) {
         case "freedraw":
             renderFreedraw(context, element);
@@ -614,4 +650,5 @@ export function renderElement(context, element) {
         default:
             break;
     }
+    if (shouldMirror) context.restore();
 }

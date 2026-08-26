@@ -10,6 +10,7 @@ import {
     getElementAnchorPoints,
     elementContainsPoint,
     isStrokeWidthApplicable,
+    scaleElementToBounds,
 } from "./elements.js";
 import { renderWhiteboardScene } from "./render-scene.js";
 import { parseSavedFont, toFontFamilyValue } from "../reuse/font-resources.js";
@@ -322,25 +323,6 @@ export function createWhiteboardCanvas(
         return true;
     }
 
-    function scaleElementToBounds(element, nextBounds) {
-        const originalBounds = getElementBounds(element);
-        const scaleX = nextBounds.width / Math.max(1, originalBounds.width);
-        const scaleY = nextBounds.height / Math.max(1, originalBounds.height);
-        const patch = {
-            x: nextBounds.x,
-            y: nextBounds.y,
-            width: Math.max(1, nextBounds.width),
-            height: Math.max(1, nextBounds.height),
-        };
-        if (Array.isArray(element.points)) {
-            patch.points = element.points.map(([px, py]) => [
-                (element.x + px - originalBounds.x) * scaleX,
-                (element.y + py - originalBounds.y) * scaleY,
-            ]);
-        }
-        return bumpElementVersion(element, patch);
-    }
-
     function updateEraserSelection(endPoint) {
         if (!dragStartPoint) return;
         const box = buildDragBox(dragStartPoint, endPoint);
@@ -443,6 +425,13 @@ export function createWhiteboardCanvas(
         selectOnlyElement,
         setTextFormatMenu: (nextMenu) => {
             textFormatMenu = nextMenu;
+        },
+        updateTransientElement: (elementId, patch) => {
+            elements = elements.map((item) =>
+                item.id === elementId ? bumpElementVersion(item, patch) : item,
+            );
+            scheduleRender();
+            notifyTransientChange();
         },
     });
 
@@ -671,6 +660,8 @@ export function createWhiteboardCanvas(
                         y: Math.min(nextY, nextBottom),
                         width: Math.max(1, Math.abs(nextRight - nextX)),
                         height: Math.max(1, Math.abs(nextBottom - nextY)),
+                        flipX: nextRight < nextX,
+                        flipY: nextBottom < nextY,
                     });
                 });
                 scheduleRender();

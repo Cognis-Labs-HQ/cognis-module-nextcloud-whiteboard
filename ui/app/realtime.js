@@ -10,8 +10,12 @@ export function throttleLatest(callback, delay) {
     let timer = null;
     let lastArgs = null;
     return (...args) => {
-        lastArgs = args;
-        if (timer) return;
+        if (!timer) {
+            callback(...args);
+        } else {
+            lastArgs = args;
+            return;
+        }
         timer = setTimeout(() => {
             timer = null;
             if (lastArgs) {

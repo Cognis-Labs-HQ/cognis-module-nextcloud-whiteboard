@@ -1,10 +1,4 @@
-import { applyDocumentTitle, createI18n } from "/static/reuse/i18n.js";
-import { createPageComposer } from "/static/reuse/page-composer/index.js";
-import { mountWhenDirect } from "/static/reuse/page-entry.js";
-import { registerSearchIndex } from "/static/reuse/search-util/popup.js";
-import { showToast } from "/static/reuse/toast.js";
-import { uiCtx } from "/static/reuse/ui-ctx.js";
-import { escapeHtml } from "/static/reuse/escape-html.js";
+import { reuse, uiCtx } from "../reuse/host-resources.js";
 import { createWhiteboardCanvas } from "../whiteboard/canvas.js";
 import { confirmClearCanvas } from "./clear-canvas.js";
 import { createWhiteboardSearchCollector } from "./search-index.js";
@@ -40,9 +34,25 @@ import {
     renderWhiteboardPresenceEntry,
 } from "./presence.js";
 import { getPreparedDisposableCanvasId } from "../reuse/whiteboard-ui-gateway.js";
-import { applySavedElements } from "../reuse/saved-elements.js";
 import { syncBoardUrl } from "../reuse/board-navigation.js";
 import { createWhiteboardPreflightController } from "./preflight.js";
+
+const [
+    { applyDocumentTitle, createI18n },
+    { createPageComposer },
+    { mountWhenDirect },
+    { registerSearchIndex },
+    { showToast },
+    { escapeHtml },
+] = await Promise.all([
+    reuse.importModule("i18n.js"),
+    reuse.importModule("page-composer/index.js"),
+    reuse.importModule("page-entry.js"),
+    reuse.importModule("search-util/popup.js"),
+    reuse.importModule("toast.js"),
+    reuse.importModule("escape-html.js"),
+]);
+await reuse.loadStylesheets(["page-sections.css"]);
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
@@ -62,6 +72,7 @@ let lastConnectionToast = "";
 let imageUploadMaxBytes = 1048576;
 let integrationCanvasMode = false;
 let disposableCanvasMode = false;
+let embeddedComponentMode = false;
 let hostNavigationAllowed = true;
 /** @type {Element | null} */
 let pageMountRoot = null;
@@ -200,7 +211,10 @@ function bindDisposableSaveButton(session, canvas) {
                 canvas.getElements(),
                 { explicitSave: true },
             );
-            savedElements = applySavedElements(canvas, saved);
+            if (Array.isArray(saved?.elements)) {
+                canvas.applyElements(saved.elements);
+            }
+            savedElements = canvas.getElements();
             session.saved = true;
             setDisposableSaveDirty(session, false);
             setSyncStatus(
@@ -247,7 +261,10 @@ function connectSocket(io, session, canvas) {
         if (session.disposable) return;
         try {
             const saved = await saveWhiteboardElements(roomId, elements);
-            savedElements = applySavedElements(canvas, saved);
+            if (Array.isArray(saved?.elements)) {
+                canvas.applyElements(saved.elements);
+            }
+            savedElements = canvas.getElements();
             setSyncStatus(
                 "synced",
                 "module.nextcloud_whiteboard.status_synced",
@@ -748,6 +765,8 @@ function renderCanvasElement() {
         translate: translateModuleString,
         integrationCanvasMode,
         disposable: disposableCanvasMode || activeSession?.disposable === true,
+        embedded: embeddedComponentMode,
+        showShare: !embeddedComponentMode,
         saved: activeSession?.saved === true,
     });
 }
@@ -810,6 +829,7 @@ export async function mount(
         shareContext,
         focusState,
         navigationAllowed: allowNavigation = true,
+        layout: mountLayout,
     } = {},
 ) {
     if (!(root instanceof Element)) {
@@ -826,7 +846,10 @@ export async function mount(
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
     const componentFocusState = focusState?.context ?? focusState ?? null;
-    const embeddedComponentMode = Boolean(componentFocusState);
+    embeddedComponentMode =
+        mountLayout?.fillParent === true ||
+        allowNavigation === false ||
+        Boolean(componentFocusState);
     hostNavigationAllowed = allowNavigation && !embeddedComponentMode;
     integrationCanvasMode =
         Boolean(
@@ -865,7 +888,9 @@ export async function mount(
     }
     const mountedComposer = createPageComposer(root, {
         allowCustomization: false,
+        contentScrolling: false,
         elements: buildElements(),
+        frameless: true,
         preferenceKey: "nextcloud-whiteboard-layout",
         persistLayoutPreferences: false,
         presenceTracker: {
@@ -921,6 +946,7 @@ export async function mount(
         preflightController.setStatus("idle");
         integrationCanvasMode = false;
         disposableCanvasMode = false;
+        embeddedComponentMode = false;
         hostNavigationAllowed = true;
         if (pageMountRoot === root) pageMountRoot = null;
     };

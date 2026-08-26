@@ -24,6 +24,7 @@ test("module manifest requires the profile adapter and share gateway", () => {
 
 test("module manifest requires the Cognis authentication gateway", () => {
     assert.ok(manifest.requiresCapabilities.includes("auth:requireAuth"));
+    assert.ok(manifest.requiresCapabilities.includes("ui:reuse"));
 });
 
 test("module manifest excludes changelog entries from packaged hashes", () => {

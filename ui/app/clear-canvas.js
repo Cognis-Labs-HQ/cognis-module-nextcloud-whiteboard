@@ -1,5 +1,9 @@
-import { escapeHtml } from "/static/reuse/escape-html.js";
-import { openPopup } from "/static/reuse/popup.js";
+import { reuse } from "../reuse/host-resources.js";
+
+const [{ escapeHtml }, { openPopup }] = await Promise.all([
+    reuse.importModule("escape-html.js"),
+    reuse.importModule("popup.js"),
+]);
 
 export async function confirmClearCanvas(translate) {
     return (

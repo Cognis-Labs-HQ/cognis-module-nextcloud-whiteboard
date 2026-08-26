@@ -50,7 +50,6 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
         );
         assert.deepEqual(route.stylesheets, [
             "/static/styles/page-builder.css",
-            "/static/styles/reuse/page-sections.css",
             "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
         ]);
     }
@@ -99,6 +98,27 @@ test("nextcloud whiteboard disables page layout editing", async () => {
         fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(appSource, /allowCustomization:\s*false/);
+    assert.match(appSource, /contentScrolling:\s*false/);
+    assert.match(appSource, /frameless:\s*true/);
+});
+
+test("nextcloud whiteboard canvas fills its widget without stage scrolling", async () => {
+    const styles = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/styles/whiteboards.css", import.meta.url),
+            "utf8",
+        ),
+    );
+    const wrap = styles.match(/\.whiteboard-canvas-wrap\s*\{([^}]*)\}/)?.[1];
+    const stage = styles.match(
+        /\.whiteboard-canvas-wrap \.whiteboard-canvas-stage\s*\{([^}]*)\}/,
+    )?.[1];
+
+    assert.match(wrap ?? "", /height:\s*100%/);
+    assert.match(wrap ?? "", /width:\s*100%/);
+    assert.match(wrap ?? "", /min-height:\s*0/);
+    assert.match(stage ?? "", /min-height:\s*0/);
+    assert.doesNotMatch(stage ?? "", /overflow:\s*auto/);
 });
 
 test("direct-account SPA shares mount the full Whiteboard page", async () => {
@@ -571,8 +591,12 @@ test("whiteboard navbar registers the disposable canvas UI gateway", async () =>
 });
 
 test("whiteboard component mounts the disposable canvas from focus state", async () => {
-    const [appSource, navigationSource] = await Promise.all(
-        ["../ui/app/index.js", "../ui/reuse/board-navigation.js"].map((path) =>
+    const [appSource, navigationSource, renderSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/reuse/board-navigation.js",
+            "../ui/app/render.js",
+        ].map((path) =>
             import("node:fs/promises").then((fs) =>
                 fs.readFile(new URL(path, import.meta.url), "utf8"),
             ),
@@ -589,7 +613,17 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     );
     assert.match(
         appSource,
-        /const embeddedComponentMode = Boolean\(componentFocusState\)/,
+        /embeddedComponentMode =\s*mountLayout\?\.fillParent === true \|\|\s*allowNavigation === false \|\|\s*Boolean\(componentFocusState\)/,
+    );
+    assert.match(appSource, /showShare:\s*!embeddedComponentMode/);
+    assert.match(appSource, /embedded:\s*embeddedComponentMode/);
+    assert.match(
+        renderSource,
+        /disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
+    );
+    assert.match(
+        renderSource,
+        /whiteboard-canvas-wrap\$\{embedded \? " whiteboard-canvas-wrap--embedded" : ""\}/,
     );
     assert.match(
         appSource,
@@ -688,6 +722,49 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     assert.match(renderSource, /data-dirty="\$\{String\(!saved\)\}"/);
     assert.match(
         renderSource,
-        /\$\{disposable \? "" : `<span id="whiteboard-share-slot"/,
+        /\$\{disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
+    );
+});
+
+test("whiteboard obtains shared UI resources through the host capability", async () => {
+    const [resourcesSource, appSource, shellSource] = await Promise.all(
+        [
+            "../ui/reuse/host-resources.js",
+            "../ui/app/index.js",
+            "../ui/index.html",
+        ].map((path) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(path, import.meta.url), "utf8"),
+            ),
+        ),
+    );
+
+    assert.match(resourcesSource, /capabilities\.get\("ui:reuse"\)/);
+    assert.match(
+        appSource,
+        /reuse\.importModule\("page-composer\/index\.js"\)/,
+    );
+    assert.match(
+        appSource,
+        /reuse\.loadStylesheets\(\["page-sections\.css"\]\)/,
+    );
+    assert.doesNotMatch(shellSource, /styles\/reuse\/page-sections\.css/);
+});
+
+test("component whiteboards clamp the canvas grid to their parent height", async () => {
+    const stylesSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/styles/whiteboards.css", import.meta.url),
+            "utf8",
+        ),
+    );
+
+    assert.match(
+        stylesSource,
+        /\.whiteboard-canvas-wrap\s*\{[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\);/s,
+    );
+    assert.match(
+        stylesSource,
+        /\.whiteboard-canvas-wrap--embedded\s*\{[^}]*max-height:\s*100%;/s,
     );
 });

@@ -2,7 +2,7 @@ import {
     loadFontsCatalog,
     parseSavedFont,
     toFontFamilyValue,
-} from "/static/reuse/font-prefs.js";
+} from "../reuse/font-resources.js";
 
 export function createWhiteboardTextTools({
     canvasElement,

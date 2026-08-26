@@ -55,6 +55,17 @@ test("module source does not import Cognis component internals", () => {
     assert.deepEqual(violations, []);
 });
 
+test("browser code obtains reusable host resources through ui:reuse", () => {
+    const directImports = sourceFiles()
+        .filter((path) => path.includes("/ui/") && path.endsWith(".js"))
+        .filter((path) =>
+            /from ["']\/static\/reuse\//.test(readFileSync(path, "utf8")),
+        )
+        .map((path) => relative(ROOT, path));
+
+    assert.deepEqual(directImports, ["ui/reuse/host-resources.js"]);
+});
+
 test("CSS source contains no comments", () => {
     const violations = sourceFiles()
         .filter((path) => path.endsWith(".css"))

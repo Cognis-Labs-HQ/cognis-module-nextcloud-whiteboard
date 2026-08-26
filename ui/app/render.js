@@ -1,5 +1,9 @@
-import { formatDateTime } from "/static/reuse/timestamp.js";
-import { escapeHtml } from "/static/reuse/escape-html.js";
+import { reuse } from "../reuse/host-resources.js";
+
+const [{ formatDateTime }, { escapeHtml }] = await Promise.all([
+    reuse.importModule("timestamp.js"),
+    reuse.importModule("escape-html.js"),
+]);
 
 export function renderCanvasElement({
     activeBoard,
@@ -12,6 +16,8 @@ export function renderCanvasElement({
     translate,
     integrationCanvasMode = false,
     disposable = false,
+    embedded = false,
+    showShare = true,
     saved = false,
 }) {
     const hasActiveBoard = Boolean(activeBoard);
@@ -29,7 +35,7 @@ export function renderCanvasElement({
         `<button type="button" data-tool="${tool}" class="whiteboard-tool${tool === "select" ? " active" : ""}" title="${escapeHtml(translate(labelKey))}" aria-label="${escapeHtml(translate(labelKey))}">${icon}</button>`;
 
     return `
-    <div class="whiteboard-canvas-wrap">
+    <div class="whiteboard-canvas-wrap${embedded ? " whiteboard-canvas-wrap--embedded" : ""}">
       <div id="whiteboard-toolbar" class="whiteboard-toolbar" role="toolbar" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.toolbar_label"))}">
         <div class="whiteboard-toolbar-tools">
         <div class="whiteboard-toolbar-group">
@@ -61,7 +67,7 @@ export function renderCanvasElement({
           </select>
         </div>
         <div class="whiteboard-toolbar-group" ${hasActiveBoard ? "" : "hidden"}>
-          ${disposable ? "" : `<span id="whiteboard-share-slot"></span>`}
+          ${disposable || !showShare ? "" : `<span id="whiteboard-share-slot"></span>`}
           <a href="#" id="whiteboard-clear" class="whiteboard-tool btn-cancel" role="button" title="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.clear_board"))}">×</a>
         </div>
         ${integrationCanvasMode ? "" : `<span id="whiteboard-board-title" class="whiteboard-board-title" title="${escapeHtml(canRenameActiveBoard() ? translate("module.nextcloud_whiteboard.rename_hint") : "")}">${escapeHtml(activeSession?.title ?? activeBoard?.title ?? "")}</span>`}

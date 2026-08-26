@@ -15,3 +15,7 @@ Mitwirkende können Text jetzt bereits während der Eingabe sowie Formen währen
 ## Koordinaten bleiben bei schnellen Bearbeitungen ausgerichtet
 
 Die Größenanpassung der Zeichenfläche schreibt gemeinsam genutzte Objektkoordinaten nicht mehr um. Dadurch sammeln sich bei schnellen gleichzeitigen Änderungen keine unterschiedlichen Versätze an.
+
+## Standard-Zeichenflächen stellen ihren Rahmen wieder her
+
+Beim Öffnen eines normalen Whiteboards wird die randlose und rahmenlose Komponentendarstellung jetzt ausdrücklich deaktiviert. Dadurch wird ein von einer vorherigen Besprechung verbliebener Layoutzustand ersetzt.

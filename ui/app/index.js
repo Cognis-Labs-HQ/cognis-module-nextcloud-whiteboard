@@ -888,9 +888,10 @@ export async function mount(
     }
     const mountedComposer = createPageComposer(root, {
         allowCustomization: false,
+        borderless: embeddedComponentMode,
         contentScrolling: false,
         elements: buildElements(),
-        frameless: true,
+        frameless: embeddedComponentMode,
         preferenceKey: "nextcloud-whiteboard-layout",
         persistLayoutPreferences: false,
         presenceTracker: {

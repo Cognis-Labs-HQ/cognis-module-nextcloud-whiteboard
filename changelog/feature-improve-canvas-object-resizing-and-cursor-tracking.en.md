@@ -15,3 +15,7 @@ Collaborators can now see text while it is still being entered, as well as shape
 ## Coordinates remain aligned during rapid edits
 
 Canvas sizing no longer rewrites shared object coordinates, preventing collaborators from accumulating different offsets during fast concurrent changes.
+
+## Standard canvases restore their border
+
+Opening a normal whiteboard now explicitly disables borderless and frameless component presentation, replacing any layout state left by a previous meeting.

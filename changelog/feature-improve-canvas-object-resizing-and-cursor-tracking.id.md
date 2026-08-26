@@ -15,3 +15,7 @@ Kolaborator kini dapat melihat teks saat masih diketik serta bentuk saat masih d
 ## Koordinat tetap selaras selama pengeditan cepat
 
 Penyesuaian ukuran kanvas tidak lagi menulis ulang koordinat objek bersama, sehingga kolaborator tidak mengumpulkan pergeseran yang berbeda selama perubahan serentak yang cepat.
+
+## Kanvas standar memulihkan bingkainya
+
+Membuka papan tulis normal kini secara tegas menonaktifkan tampilan komponen tanpa batas dan tanpa bingkai, menggantikan status tata letak yang tersisa dari rapat sebelumnya.

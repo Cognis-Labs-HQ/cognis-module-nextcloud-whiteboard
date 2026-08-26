@@ -99,7 +99,8 @@ test("nextcloud whiteboard disables page layout editing", async () => {
     );
     assert.match(appSource, /allowCustomization:\s*false/);
     assert.match(appSource, /contentScrolling:\s*false/);
-    assert.match(appSource, /frameless:\s*true/);
+    assert.match(appSource, /borderless:\s*embeddedComponentMode/);
+    assert.match(appSource, /frameless:\s*embeddedComponentMode/);
 });
 
 test("nextcloud whiteboard canvas fills its widget without stage scrolling", async () => {

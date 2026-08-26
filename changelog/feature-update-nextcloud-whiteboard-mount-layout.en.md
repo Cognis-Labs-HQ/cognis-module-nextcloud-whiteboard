@@ -10,7 +10,7 @@ The canvas stage no longer creates its own automatic scroll area, keeping drawin
 
 ## Refine component windows
 
-Component-mounted whiteboards retain collaborative pointer tracking while omitting the Share button. Fill-parent mounts are constrained to the component height to prevent vertical overflow, while sharing controls remain on the full Whiteboard page.
+Component-mounted whiteboards retain collaborative pointer tracking while omitting the Share button. Their canvas grid is clamped to the parent height and assigns only the remaining space below the toolbar to the canvas, preventing vertical overflow while sharing controls remain on the full Whiteboard page.
 
 ## Use host-owned reusable resources
 

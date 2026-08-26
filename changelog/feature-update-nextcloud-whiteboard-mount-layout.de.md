@@ -10,7 +10,7 @@ Die Zeichenflächenebene erzeugt keinen eigenen automatischen Scrollbereich mehr
 
 ## Komponentenfenster verfeinern
 
-In Komponenten eingebundene Whiteboards behalten die kollaborative Zeigerverfolgung bei, zeigen aber keine Teilen-Schaltfläche. Einbettungen, die das Elternelement ausfüllen, werden auf die Komponentenhöhe begrenzt, um vertikalen Überlauf zu verhindern; Freigabesteuerungen bleiben der vollständigen Whiteboard-Seite vorbehalten.
+In Komponenten eingebundene Whiteboards behalten die kollaborative Zeigerverfolgung bei, zeigen aber keine Teilen-Schaltfläche. Ihr Zeichenflächenraster wird auf die Höhe des Elternelements begrenzt und weist der Zeichenfläche nur den unterhalb der Werkzeugleiste verbleibenden Platz zu. So wird vertikaler Überlauf verhindert, während Freigabesteuerungen der vollständigen Whiteboard-Seite vorbehalten bleiben.
 
 ## Wiederverwendbare Ressourcen des Hosts verwenden
 

@@ -765,6 +765,7 @@ function renderCanvasElement() {
         translate: translateModuleString,
         integrationCanvasMode,
         disposable: disposableCanvasMode || activeSession?.disposable === true,
+        embedded: embeddedComponentMode,
         showShare: !embeddedComponentMode,
         saved: activeSession?.saved === true,
     });

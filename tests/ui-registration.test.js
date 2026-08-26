@@ -616,9 +616,14 @@ test("whiteboard component mounts the disposable canvas from focus state", async
         /embeddedComponentMode =\s*mountLayout\?\.fillParent === true \|\|\s*allowNavigation === false \|\|\s*Boolean\(componentFocusState\)/,
     );
     assert.match(appSource, /showShare:\s*!embeddedComponentMode/);
+    assert.match(appSource, /embedded:\s*embeddedComponentMode/);
     assert.match(
         renderSource,
         /disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
+    );
+    assert.match(
+        renderSource,
+        /whiteboard-canvas-wrap\$\{embedded \? " whiteboard-canvas-wrap--embedded" : ""\}/,
     );
     assert.match(
         appSource,
@@ -744,4 +749,22 @@ test("whiteboard obtains shared UI resources through the host capability", async
         /reuse\.loadStylesheets\(\["page-sections\.css"\]\)/,
     );
     assert.doesNotMatch(shellSource, /styles\/reuse\/page-sections\.css/);
+});
+
+test("component whiteboards clamp the canvas grid to their parent height", async () => {
+    const stylesSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/styles/whiteboards.css", import.meta.url),
+            "utf8",
+        ),
+    );
+
+    assert.match(
+        stylesSource,
+        /\.whiteboard-canvas-wrap\s*\{[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\);/s,
+    );
+    assert.match(
+        stylesSource,
+        /\.whiteboard-canvas-wrap--embedded\s*\{[^}]*max-height:\s*100%;/s,
+    );
 });

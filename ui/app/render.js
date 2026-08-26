@@ -16,6 +16,7 @@ export function renderCanvasElement({
     translate,
     integrationCanvasMode = false,
     disposable = false,
+    embedded = false,
     showShare = true,
     saved = false,
 }) {
@@ -34,7 +35,7 @@ export function renderCanvasElement({
         `<button type="button" data-tool="${tool}" class="whiteboard-tool${tool === "select" ? " active" : ""}" title="${escapeHtml(translate(labelKey))}" aria-label="${escapeHtml(translate(labelKey))}">${icon}</button>`;
 
     return `
-    <div class="whiteboard-canvas-wrap">
+    <div class="whiteboard-canvas-wrap${embedded ? " whiteboard-canvas-wrap--embedded" : ""}">
       <div id="whiteboard-toolbar" class="whiteboard-toolbar" role="toolbar" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.toolbar_label"))}">
         <div class="whiteboard-toolbar-tools">
         <div class="whiteboard-toolbar-group">

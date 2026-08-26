@@ -10,7 +10,7 @@ Area kanvas tidak lagi membuat area gulir otomatis sendiri sehingga interaksi me
 
 ## Sempurnakan jendela komponen
 
-Whiteboard yang dipasang sebagai komponen tetap menyediakan pelacakan penunjuk kolaboratif, tetapi tidak menampilkan tombol Bagikan. Pemasangan yang memenuhi induk dibatasi pada tinggi komponen untuk mencegah luapan vertikal, sedangkan kontrol berbagi tetap berada di halaman Whiteboard lengkap.
+Whiteboard yang dipasang sebagai komponen tetap menyediakan pelacakan penunjuk kolaboratif, tetapi tidak menampilkan tombol Bagikan. Kisi kanvas dibatasi pada tinggi induk dan hanya memberikan ruang yang tersisa di bawah bilah alat kepada kanvas. Hal ini mencegah luapan vertikal, sedangkan kontrol berbagi tetap berada di halaman Whiteboard lengkap.
 
 ## Gunakan sumber daya pakai ulang milik host
 

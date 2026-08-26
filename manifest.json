@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.72",
+    "version": "2.3.73",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -248,11 +248,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "7a222da7cf62601cc09f85beee9f8e550a9a0ebf3bab7a38f3cee46f038c56eb"
+            "sha256": "6b460fd527a4cdf10ea4361028ea0a27e4939f4bfce7a53ff4fef37f39e82996"
         },
         {
             "path": "package.json",
-            "sha256": "42ad61c35351fce53238304fe3165938284aa80305492e5e0d0906319dcefba6"
+            "sha256": "fea6bb3f7bcd50b8b22ae86c8c37a063f43d624c6925567b03ac90ebc4417680"
         },
         {
             "path": "routes.json",
@@ -324,7 +324,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "99c4acec3692fbf95523b6693e3f02d2ccb507dab621ab19a58fef1767cbe6ff"
+            "sha256": "6f29d00ae7312691a3407f68d661c24994356bb802694cda062639e7aec23434"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -352,7 +352,7 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "71faef0c651c80808d076411926db21a5d0a9e90898731be2b27f5ee05cc616c"
+            "sha256": "0daeba9171549ff05b3c1af277af401862c75b43a6c0b469df81d8f8ed56580d"
         },
         {
             "path": "ui/app/overlay.js",

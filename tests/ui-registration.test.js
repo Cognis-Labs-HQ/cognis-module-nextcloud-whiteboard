@@ -400,8 +400,21 @@ test("joining collaborators request a scene from peers after reconnecting", asyn
     );
     assert.match(
         appSource,
-        /message\.type === SYNC_MESSAGE_SCENE_REQUEST[\s\S]*emitChanges\(canvas\.getElements\(\), SYNC_MESSAGE_SCENE_INIT\)/,
+        /message\.type === SYNC_MESSAGE_SCENE_REQUEST[\s\S]*emitSceneSnapshot\(\)/,
     );
+    assert.match(
+        appSource,
+        /socket\.on\("user-joined",[\s\S]*if \(joinedRoom\) emitSceneSnapshot\(\)/,
+    );
+    assert.match(
+        appSource,
+        /message\.type === SYNC_MESSAGE_SCENE_UPDATE[\s\S]*emitSceneSnapshot\(\)/,
+    );
+    const snapshotSource = appSource.slice(
+        appSource.indexOf("const emitSceneSnapshot"),
+        appSource.indexOf("const requestScene"),
+    );
+    assert.doesNotMatch(snapshotSource, /canWrite/);
 });
 
 test("nextcloud whiteboard image paste saves and selects resizable image objects", async () => {

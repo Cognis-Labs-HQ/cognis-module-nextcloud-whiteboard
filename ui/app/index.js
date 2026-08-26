@@ -258,6 +258,15 @@ function connectSocket(io, session, canvas) {
         );
     let joinedRoom = false;
     let isDedicatedSyncer = false;
+    const emitSceneSnapshot = () => {
+        if (!socket.connected || !joinedRoom) return;
+        socket.emit(
+            "server-broadcast",
+            roomId,
+            encodeSceneMessage(SYNC_MESSAGE_SCENE_INIT, canvas.getElements()),
+            [],
+        );
+    };
     const requestScene = () => {
         if (!socket.connected || !joinedRoom) return;
         socket.emit(
@@ -346,14 +355,13 @@ function connectSocket(io, session, canvas) {
                 ? "module.nextcloud_whiteboard.status_unsaved"
                 : "module.nextcloud_whiteboard.status_synced",
         );
-        if (isDedicatedSyncer)
-            emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
+        if (isDedicatedSyncer) emitSceneSnapshot();
         requestScene();
     });
     socket.on("sync-designate", ({ isSyncer } = {}) => {
         isDedicatedSyncer = Boolean(isSyncer);
         if (joinedRoom && isDedicatedSyncer) {
-            emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
+            emitSceneSnapshot();
         } else if (joinedRoom) {
             setSyncStatus(
                 session.disposable && !session.saved ? "idle" : "synced",
@@ -364,8 +372,7 @@ function connectSocket(io, session, canvas) {
         }
     });
     socket.on("user-joined", () => {
-        if (joinedRoom && isDedicatedSyncer)
-            emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
+        if (joinedRoom) emitSceneSnapshot();
     });
     socket.on("connect_error", (error) => {
         const message = buildConnectionErrorMessage(error, serverUrl);
@@ -383,7 +390,7 @@ function connectSocket(io, session, canvas) {
                 return;
             }
             if (message.type === SYNC_MESSAGE_SCENE_REQUEST) {
-                emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
+                emitSceneSnapshot();
                 return;
             }
             if (
@@ -398,6 +405,7 @@ function connectSocket(io, session, canvas) {
                 savedElements = mergedElements;
                 if (message.type === SYNC_MESSAGE_SCENE_UPDATE) {
                     setDisposableSaveDirty(session, true);
+                    emitSceneSnapshot();
                 }
                 if (canWrite) persistChanges(mergedElements);
             }

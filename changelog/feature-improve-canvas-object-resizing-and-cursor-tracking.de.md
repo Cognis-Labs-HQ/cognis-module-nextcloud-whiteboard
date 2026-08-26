@@ -19,3 +19,7 @@ Die Größenanpassung der Zeichenfläche schreibt gemeinsam genutzte Objektkoord
 ## Standard-Zeichenflächen stellen ihren Rahmen wieder her
 
 Beim Öffnen eines normalen Whiteboards wird die randlose und rahmenlose Komponentendarstellung jetzt ausdrücklich deaktiviert. Dadurch wird ein von einer vorherigen Besprechung verbliebener Layoutzustand ersetzt.
+
+## Komponentenfenster verändern die Seitenhülle nicht mehr
+
+Whiteboard-Komponentenfenster lassen den randlosen Modus der Seitenkomposition jetzt deaktiviert und überlassen die Rahmung ihrem Hostfenster. Dadurch kann die Besprechungsdarstellung bei einer SPA-Navigation nicht auf eine andere Seite übertragen werden.

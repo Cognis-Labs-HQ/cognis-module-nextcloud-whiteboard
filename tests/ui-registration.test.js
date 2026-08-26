@@ -99,7 +99,8 @@ test("nextcloud whiteboard disables page layout editing", async () => {
     );
     assert.match(appSource, /allowCustomization:\s*false/);
     assert.match(appSource, /contentScrolling:\s*false/);
-    assert.match(appSource, /borderless:\s*embeddedComponentMode/);
+    assert.match(appSource, /borderless:\s*false/);
+    assert.doesNotMatch(appSource, /borderless:\s*embeddedComponentMode/);
     assert.match(appSource, /frameless:\s*embeddedComponentMode/);
 });
 

@@ -19,3 +19,7 @@ Penyesuaian ukuran kanvas tidak lagi menulis ulang koordinat objek bersama, sehi
 ## Kanvas standar memulihkan bingkainya
 
 Membuka papan tulis normal kini secara tegas menonaktifkan tampilan komponen tanpa batas dan tanpa bingkai, menggantikan status tata letak yang tersisa dari rapat sebelumnya.
+
+## Jendela komponen tidak lagi mengubah kerangka halaman
+
+Jendela komponen papan tulis kini membiarkan mode kerangka halaman tanpa batas tetap nonaktif dan menyerahkan pembingkaian kepada jendela host, sehingga navigasi SPA tidak membawa tampilan rapat ke halaman lain.

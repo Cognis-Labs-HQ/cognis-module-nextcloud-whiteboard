@@ -888,7 +888,7 @@ export async function mount(
     }
     const mountedComposer = createPageComposer(root, {
         allowCustomization: false,
-        borderless: embeddedComponentMode,
+        borderless: false,
         contentScrolling: false,
         elements: buildElements(),
         frameless: embeddedComponentMode,

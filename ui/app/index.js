@@ -57,6 +57,7 @@ const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
 const SYNC_MESSAGE_SCENE_UPDATE = "SCENE_UPDATE";
+const SYNC_MESSAGE_SCENE_REQUEST = "SCENE_REQUEST";
 const SYNC_MESSAGE_BOARD_RENAMED = "BOARD_RENAMED";
 const DIRECT_WHITEBOARD_PATHS = new Set(["/whiteboard", "/whiteboards"]);
 let i18n = null;
@@ -257,6 +258,24 @@ function connectSocket(io, session, canvas) {
         );
     let joinedRoom = false;
     let isDedicatedSyncer = false;
+    const emitSceneSnapshot = () => {
+        if (!socket.connected || !joinedRoom) return;
+        socket.emit(
+            "server-broadcast",
+            roomId,
+            encodeSceneMessage(SYNC_MESSAGE_SCENE_INIT, canvas.getElements()),
+            [],
+        );
+    };
+    const requestScene = () => {
+        if (!socket.connected || !joinedRoom) return;
+        socket.emit(
+            "server-broadcast",
+            roomId,
+            encodeSyncMessage(SYNC_MESSAGE_SCENE_REQUEST),
+            [],
+        );
+    };
     const persistChanges = debounce(async (elements) => {
         if (session.disposable) return;
         try {
@@ -336,13 +355,13 @@ function connectSocket(io, session, canvas) {
                 ? "module.nextcloud_whiteboard.status_unsaved"
                 : "module.nextcloud_whiteboard.status_synced",
         );
-        if (isDedicatedSyncer)
-            emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
+        if (isDedicatedSyncer) emitSceneSnapshot();
+        requestScene();
     });
     socket.on("sync-designate", ({ isSyncer } = {}) => {
         isDedicatedSyncer = Boolean(isSyncer);
         if (joinedRoom && isDedicatedSyncer) {
-            emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
+            emitSceneSnapshot();
         } else if (joinedRoom) {
             setSyncStatus(
                 session.disposable && !session.saved ? "idle" : "synced",
@@ -353,8 +372,7 @@ function connectSocket(io, session, canvas) {
         }
     });
     socket.on("user-joined", () => {
-        if (joinedRoom && isDedicatedSyncer)
-            emitChanges(canvas.getElements(), SYNC_MESSAGE_SCENE_INIT);
+        if (joinedRoom) emitSceneSnapshot();
     });
     socket.on("connect_error", (error) => {
         const message = buildConnectionErrorMessage(error, serverUrl);
@@ -371,6 +389,10 @@ function connectSocket(io, session, canvas) {
                 applyBoardTitle(message.payload?.title);
                 return;
             }
+            if (message.type === SYNC_MESSAGE_SCENE_REQUEST) {
+                emitSceneSnapshot();
+                return;
+            }
             if (
                 (message.type === SYNC_MESSAGE_SCENE_INIT ||
                     message.type === SYNC_MESSAGE_SCENE_UPDATE) &&
@@ -383,6 +405,7 @@ function connectSocket(io, session, canvas) {
                 savedElements = mergedElements;
                 if (message.type === SYNC_MESSAGE_SCENE_UPDATE) {
                     setDisposableSaveDirty(session, true);
+                    emitSceneSnapshot();
                 }
                 if (canWrite) persistChanges(mergedElements);
             }

@@ -226,7 +226,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         /requireAccountSession:\s*!activeShareContext,\s*signal/,
     );
     assert.match(source, /pageManifest:\s*\{/);
-    assert.match(source, /pointerTracking:\s*!embeddedComponentMode/);
+    assert.match(source, /pointerTracking:\s*true/);
     assert.match(
         source,
         /const canvasElement = withinMount\(['"]#whiteboard-canvas['"]\);/,
@@ -614,7 +614,12 @@ test("whiteboard component mounts the disposable canvas from focus state", async
     );
     assert.match(
         appSource,
-        /embeddedComponentMode =\s*allowNavigation === false \|\| Boolean\(componentFocusState\)/,
+        /embeddedComponentMode =\s*mountLayout\?\.fillParent === true \|\|\s*allowNavigation === false \|\|\s*Boolean\(componentFocusState\)/,
+    );
+    assert.match(appSource, /nextcloud-whiteboard-fill-mount/);
+    assert.match(
+        appSource,
+        /root\.classList\.remove\("nextcloud-whiteboard-fill-mount"\)/,
     );
     assert.match(appSource, /showShare:\s*!embeddedComponentMode/);
     assert.match(
@@ -719,5 +724,19 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     assert.match(
         renderSource,
         /\$\{disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
+    );
+});
+
+test("whiteboard fill mounts contain their own vertical overflow", async () => {
+    const stylesSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/styles/whiteboards.css", import.meta.url),
+            "utf8",
+        ),
+    );
+
+    assert.match(
+        stylesSource,
+        /\.nextcloud-whiteboard-fill-mount\s*\{[^}]*height:\s*100%;[^}]*min-height:\s*0;[^}]*overflow:\s*hidden;/s,
     );
 });

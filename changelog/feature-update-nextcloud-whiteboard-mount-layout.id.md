@@ -8,6 +8,6 @@ Nextcloud Whiteboard kini menggunakan tata letak page composer tanpa bingkai den
 
 Area kanvas tidak lagi membuat area gulir otomatis sendiri sehingga interaksi menggambar tetap sejajar dengan widget yang terlihat.
 
-## Sederhanakan jendela komponen
+## Sempurnakan jendela komponen
 
-Whiteboard yang dipasang sebagai komponen tidak lagi menampilkan pengalih penunjuk host atau tombol Bagikan. Hal ini mencegah kontrol penunjuk menimbulkan luapan vertikal dan mempertahankan kontrol berbagi pada halaman Whiteboard lengkap.
+Whiteboard yang dipasang sebagai komponen tetap menyediakan pelacakan penunjuk kolaboratif, tetapi tidak menampilkan tombol Bagikan. Pemasangan yang memenuhi induk dibatasi pada tinggi komponen untuk mencegah luapan vertikal, sedangkan kontrol berbagi tetap berada di halaman Whiteboard lengkap.

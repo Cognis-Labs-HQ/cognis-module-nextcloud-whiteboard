@@ -12,6 +12,13 @@
     gap: 0.35rem;
 }
 
+.nextcloud-whiteboard-fill-mount {
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
 .whiteboard-canvas-wrap .whiteboard-boards-panel {
     display: grid;
     gap: 1rem;

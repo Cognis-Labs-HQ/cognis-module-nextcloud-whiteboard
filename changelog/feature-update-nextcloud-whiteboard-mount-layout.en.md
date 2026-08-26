@@ -8,6 +8,6 @@ Nextcloud Whiteboard now uses the frameless, fixed-height page-composer layout s
 
 The canvas stage no longer creates its own automatic scroll area, keeping drawing interactions aligned with the visible widget.
 
-## Simplify component windows
+## Refine component windows
 
-Component-mounted whiteboards no longer show the host pointer switcher or Share button, preventing the pointer control from introducing vertical overflow and keeping sharing controls on the full Whiteboard page.
+Component-mounted whiteboards retain collaborative pointer tracking while omitting the Share button. Fill-parent mounts are constrained to the component height to prevent vertical overflow, while sharing controls remain on the full Whiteboard page.

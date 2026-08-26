@@ -8,6 +8,6 @@ Nextcloud Whiteboard verwendet nun das randlose Page-Composer-Layout mit fester 
 
 Die Zeichenflächenebene erzeugt keinen eigenen automatischen Scrollbereich mehr, sodass Zeicheninteraktionen am sichtbaren Widget ausgerichtet bleiben.
 
-## Komponentenfenster vereinfachen
+## Komponentenfenster verfeinern
 
-In Komponenten eingebundene Whiteboards zeigen weder den Zeigerumschalter des Hosts noch die Teilen-Schaltfläche. Dadurch verursacht die Zeigersteuerung keinen vertikalen Überlauf mehr und die Freigabesteuerung bleibt der vollständigen Whiteboard-Seite vorbehalten.
+In Komponenten eingebundene Whiteboards behalten die kollaborative Zeigerverfolgung bei, zeigen aber keine Teilen-Schaltfläche. Einbettungen, die das Elternelement ausfüllen, werden auf die Komponentenhöhe begrenzt, um vertikalen Überlauf zu verhindern; Freigabesteuerungen bleiben der vollständigen Whiteboard-Seite vorbehalten.

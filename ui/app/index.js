@@ -812,6 +812,7 @@ export async function mount(
         shareContext,
         focusState,
         navigationAllowed: allowNavigation = true,
+        layout: mountLayout,
     } = {},
 ) {
     if (!(root instanceof Element)) {
@@ -829,7 +830,13 @@ export async function mount(
         shareContext?.directAccess === true ? null : (shareContext ?? null);
     const componentFocusState = focusState?.context ?? focusState ?? null;
     embeddedComponentMode =
-        allowNavigation === false || Boolean(componentFocusState);
+        mountLayout?.fillParent === true ||
+        allowNavigation === false ||
+        Boolean(componentFocusState);
+    root.classList.toggle(
+        "nextcloud-whiteboard-fill-mount",
+        mountLayout?.fillParent === true,
+    );
     hostNavigationAllowed = allowNavigation && !embeddedComponentMode;
     integrationCanvasMode =
         Boolean(
@@ -890,7 +897,7 @@ export async function mount(
         },
         pageManifest: {
             features: {
-                pointerTracking: !embeddedComponentMode,
+                pointerTracking: true,
             },
         },
         i18n,
@@ -928,6 +935,7 @@ export async function mount(
         disposableCanvasMode = false;
         embeddedComponentMode = false;
         hostNavigationAllowed = true;
+        root.classList.remove("nextcloud-whiteboard-fill-mount");
         if (pageMountRoot === root) pageMountRoot = null;
     };
     signal?.addEventListener("abort", destroy, { once: true });

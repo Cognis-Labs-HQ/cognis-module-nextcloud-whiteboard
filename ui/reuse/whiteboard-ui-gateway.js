@@ -2,7 +2,7 @@ import { reuse, uiCtx } from "./host-resources.js";
 
 const { apiFetch } = await reuse.importModule("api-client.js");
 
-const CREATE_DISPOSABLE_URL =
+const CREATE_CANVAS_URL =
     "/api/v1/modules/nextcloud-whiteboard/whiteboards/spawn";
 
 const capabilityName = "whiteboard:uiGateway";
@@ -24,41 +24,57 @@ export function getPreparedDisposableCanvasId({
     );
 }
 
+async function createCanvasRequest(body, failureMessage) {
+    const response = await apiFetch(CREATE_CANVAS_URL, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(payload?.error?.message ?? failureMessage);
+    }
+    const whiteboardId = String(payload?.data?.whiteboard?.id ?? "").trim();
+    if (!whiteboardId) {
+        throw new Error("Canvas response was invalid.");
+    }
+    return { whiteboardId };
+}
+
 const gateway = {
+    async createCanvas({ title, participantHandles } = {}) {
+        return createCanvasRequest(
+            {
+                title,
+                participants: participantHandles,
+            },
+            "Canvas could not be created.",
+        );
+    },
+
     async createDisposableCanvas({
         resourceType,
         resourceId,
         title,
         participantHandles,
-    }) {
-        const response = await apiFetch(CREATE_DISPOSABLE_URL, {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({
+    } = {}) {
+        const result = await createCanvasRequest(
+            {
                 resourceType,
                 resourceId,
                 title,
                 participants: participantHandles,
                 disposable: true,
-            }),
-        });
-        const payload = await response.json().catch(() => ({}));
-        if (!response.ok) {
-            throw new Error(
-                payload?.error?.message ??
-                    "Disposable canvas could not be created.",
-            );
-        }
-        const whiteboardId = String(payload?.data?.whiteboard?.id ?? "").trim();
-        if (!whiteboardId) {
-            throw new Error("Disposable canvas response was invalid.");
-        }
+            },
+            "Disposable canvas could not be created.",
+        );
+        const { whiteboardId } = result;
         preparedCanvasIds.set(
             resourceKey(resourceType, resourceId),
             whiteboardId,
         );
         latestPreparedCanvasId = whiteboardId;
-        return { whiteboardId };
+        return result;
     },
 };
 

@@ -865,7 +865,9 @@ export async function mount(
     }
     const mountedComposer = createPageComposer(root, {
         allowCustomization: false,
+        contentScrolling: false,
         elements: buildElements(),
+        frameless: true,
         preferenceKey: "nextcloud-whiteboard-layout",
         persistLayoutPreferences: false,
         presenceTracker: {

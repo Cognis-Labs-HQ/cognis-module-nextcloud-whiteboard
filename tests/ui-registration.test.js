@@ -99,6 +99,27 @@ test("nextcloud whiteboard disables page layout editing", async () => {
         fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(appSource, /allowCustomization:\s*false/);
+    assert.match(appSource, /contentScrolling:\s*false/);
+    assert.match(appSource, /frameless:\s*true/);
+});
+
+test("nextcloud whiteboard canvas fills its widget without stage scrolling", async () => {
+    const styles = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/styles/whiteboards.css", import.meta.url),
+            "utf8",
+        ),
+    );
+    const wrap = styles.match(/\.whiteboard-canvas-wrap\s*\{([^}]*)\}/)?.[1];
+    const stage = styles.match(
+        /\.whiteboard-canvas-wrap \.whiteboard-canvas-stage\s*\{([^}]*)\}/,
+    )?.[1];
+
+    assert.match(wrap ?? "", /height:\s*100%/);
+    assert.match(wrap ?? "", /width:\s*100%/);
+    assert.match(wrap ?? "", /min-height:\s*0/);
+    assert.match(stage ?? "", /min-height:\s*0/);
+    assert.doesNotMatch(stage ?? "", /overflow:\s*auto/);
 });
 
 test("direct-account SPA shares mount the full Whiteboard page", async () => {

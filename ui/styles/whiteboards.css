@@ -69,7 +69,9 @@
     display: grid;
     grid-template-rows: auto 1fr;
     height: 100%;
+    min-height: 0;
     overflow: hidden;
+    width: 100%;
 }
 
 .whiteboard-canvas-wrap .whiteboard-toolbar {
@@ -179,8 +181,7 @@
 
 .whiteboard-canvas-wrap .whiteboard-canvas-stage {
     overflow: hidden;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    min-height: 0;
     position: relative;
     --whiteboard-canvas-bg: color-mix(
         in srgb,
@@ -193,7 +194,6 @@
     --whiteboard-selection-local: #22c55e;
     --whiteboard-selection-erase: #ef4444;
     --whiteboard-selection-label: #ffffff;
-    overflow: auto;
 }
 
 .whiteboard-canvas-wrap #whiteboard-canvas {

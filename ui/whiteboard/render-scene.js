@@ -1,7 +1,5 @@
 import {
     buildDragBox,
-    buildFreedrawElement,
-    buildShapeElement,
     drawAnchor,
     getElementAnchorPoints,
     getElementBounds,
@@ -15,14 +13,13 @@ export function renderWhiteboardScene({
     currentPoints,
     dragSelectBox,
     dragStartPoint,
+    draftElement,
     elements,
     eraserSelectionIds,
     isDrawing,
     remoteSelections,
     selectedElementId,
     selectedElementIds,
-    strokeColor,
-    strokeWidth,
     viewportOffsetX,
     viewportOffsetY,
 }) {
@@ -55,10 +52,9 @@ export function renderWhiteboardScene({
         activeTool,
         context,
         currentPoints,
+        draftElement,
         dragStartPoint,
         isDrawing,
-        strokeColor,
-        strokeWidth,
         viewportOffsetX,
         viewportOffsetY,
     });
@@ -149,22 +145,16 @@ function renderActiveToolPreview({
     activeTool,
     context,
     currentPoints,
+    draftElement,
     dragStartPoint,
     isDrawing,
-    strokeColor,
-    strokeWidth,
     viewportOffsetX,
     viewportOffsetY,
 }) {
     context.save();
     context.translate(-viewportOffsetX, -viewportOffsetY);
-    if (isDrawing && currentPoints.length >= 2 && activeTool === "pen") {
-        const previewElement = buildFreedrawElement(
-            currentPoints,
-            strokeColor,
-            strokeWidth,
-        );
-        if (previewElement) renderElement(context, previewElement);
+    if (isDrawing && draftElement) {
+        renderElement(context, draftElement);
     } else if (
         isDrawing &&
         dragStartPoint &&
@@ -177,24 +167,6 @@ function renderActiveToolPreview({
         context.strokeStyle = "#c0392b";
         context.strokeRect(box.x, box.y, box.width, box.height);
         context.restore();
-    } else if (
-        isDrawing &&
-        dragStartPoint &&
-        currentPoints.length >= 1 &&
-        ["rectangle", "diamond", "ellipse", "line", "arrow"].includes(
-            activeTool,
-        )
-    ) {
-        renderElement(
-            context,
-            buildShapeElement(
-                activeTool,
-                dragStartPoint,
-                currentPoints.at(-1),
-                strokeColor,
-                strokeWidth,
-            ),
-        );
     }
     context.restore();
 }

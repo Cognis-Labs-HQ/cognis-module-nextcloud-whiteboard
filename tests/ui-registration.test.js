@@ -99,7 +99,9 @@ test("nextcloud whiteboard disables page layout editing", async () => {
     );
     assert.match(appSource, /allowCustomization:\s*false/);
     assert.match(appSource, /contentScrolling:\s*false/);
-    assert.match(appSource, /frameless:\s*true/);
+    assert.match(appSource, /borderless:\s*false/);
+    assert.doesNotMatch(appSource, /borderless:\s*embeddedComponentMode/);
+    assert.match(appSource, /frameless:\s*embeddedComponentMode/);
 });
 
 test("nextcloud whiteboard canvas fills its widget without stage scrolling", async () => {
@@ -262,6 +264,22 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         /class="whiteboard-toolbar-group whiteboard-presence" aria-live="polite"/,
     );
     assert.match(realtimeSource, /function throttleLatest\(callback, delay\)/);
+    assert.match(realtimeSource, /callback\(\.\.\.args\)/);
+    assert.match(source, /pointerThrottleMs:\s*50/);
+    assert.match(source, /refreshIntervalMs:\s*250/);
+    assert.match(textToolsSource, /addEventListener\(["']input["']/);
+    assert.match(canvasSource, /flipX:\s*nextRight < nextX/);
+    assert.match(canvasSource, /flipY:\s*nextBottom < nextY/);
+    assert.match(canvasSource, /function updateDraftElement\(nextElement\)/);
+    assert.match(canvasSource, /\[\.\.\.elements, draftElement\]/);
+    assert.match(canvasSource, /preserveDraftIdentity/);
+    assert.match(canvasSource, /isTransient:\s*false/);
+    assert.match(canvasSource, /function updateCanvasSize\(\)/);
+    assert.doesNotMatch(canvasSource, /viewportOffsetX \+=/);
+    assert.doesNotMatch(
+        canvasSource,
+        /elements = elements\.map\(\(element\) =>\s*bumpElementVersion\(element, \{\s*x: element\.x \+ dx/s,
+    );
     assert.match(source, /function updateHistoryControls\(\)/);
     assert.match(source, /whiteboard-toolbar-group\[hidden\]/);
     assert.match(source, /insertAdjacentHTML\(\s*['"]afterend['"]/);

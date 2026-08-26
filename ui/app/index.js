@@ -888,13 +888,16 @@ export async function mount(
     }
     const mountedComposer = createPageComposer(root, {
         allowCustomization: false,
+        borderless: false,
         contentScrolling: false,
         elements: buildElements(),
-        frameless: true,
+        frameless: embeddedComponentMode,
         preferenceKey: "nextcloud-whiteboard-layout",
         persistLayoutPreferences: false,
         presenceTracker: {
             endpoint: `${API_BASE}/whiteboards/presence`,
+            pointerThrottleMs: 50,
+            refreshIntervalMs: 250,
             pageId: () => activeBoard?.id ?? "",
             storageKey: "nextcloud_whiteboard_presence_session",
             getSelectionPayload: () => getSelectionPayload(canvasInstance),

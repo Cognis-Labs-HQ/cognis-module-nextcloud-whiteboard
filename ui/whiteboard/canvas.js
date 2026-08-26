@@ -1,8 +1,6 @@
 import {
     boxContainsElementContent,
     buildDragBox,
-    buildFreedrawElement,
-    buildShapeElement,
     buildTextElement,
     bumpElementVersion,
     bumpElementVersionPast,
@@ -10,12 +8,14 @@ import {
     getElementAnchorPoints,
     elementContainsPoint,
     isStrokeWidthApplicable,
+    scaleElementToBounds,
 } from "./elements.js";
 import { renderWhiteboardScene } from "./render-scene.js";
 import { parseSavedFont, toFontFamilyValue } from "../reuse/font-resources.js";
 import { createWhiteboardTextTools } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
+import * as drafts from "./reuse/draft-elements.js";
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},
@@ -23,6 +23,7 @@ export function createWhiteboardCanvas(
     const context = canvasElement.getContext("2d");
     let elements = [];
     let currentPoints = [];
+    let draftElement = null;
     let isDrawing = false;
     let strokeColor = "auto";
     let strokeWidth = 4;
@@ -53,7 +54,6 @@ export function createWhiteboardCanvas(
     let remoteSelections = new Map();
     let keepToolActive = false;
     if (readOnly) canvasElement.style.cursor = "pointer";
-
     function scheduleRender() {
         if (pendingRender) return;
         pendingRender = true;
@@ -71,14 +71,13 @@ export function createWhiteboardCanvas(
             currentPoints,
             dragSelectBox,
             dragStartPoint,
+            draftElement,
             elements,
             eraserSelectionIds,
             isDrawing,
             remoteSelections,
             selectedElementId,
             selectedElementIds,
-            strokeColor,
-            strokeWidth,
             viewportOffsetX,
             viewportOffsetY,
         });
@@ -92,31 +91,14 @@ export function createWhiteboardCanvas(
     }
 
     function resizeCanvas() {
-        if (!isDrawing) updateCanvasOverflow();
+        if (!isDrawing) updateCanvasSize();
         scheduleRender();
     }
 
-    function updateCanvasOverflow() {
+    function updateCanvasSize() {
         const parent = canvasElement.parentElement;
         const rect = parent?.getBoundingClientRect();
         if (!rect) return;
-        const overflowPadding = 48;
-        let bounds = elements.map(getElementBounds);
-        const minX = Math.min(0, ...bounds.map((item) => item.x));
-        const minY = Math.min(0, ...bounds.map((item) => item.y));
-        if (minX < 0 || minY < 0) {
-            const dx = minX < 0 ? Math.abs(minX) + overflowPadding : 0;
-            const dy = minY < 0 ? Math.abs(minY) + overflowPadding : 0;
-            elements = elements.map((element) =>
-                bumpElementVersion(element, {
-                    x: element.x + dx,
-                    y: element.y + dy,
-                }),
-            );
-            bounds = elements.map(getElementBounds);
-            viewportOffsetX += dx;
-            viewportOffsetY += dy;
-        }
         const width = Math.ceil(rect.width);
         const height = Math.ceil(rect.height);
         if (canvasElement.width !== width) canvasElement.width = width;
@@ -209,7 +191,29 @@ export function createWhiteboardCanvas(
     }
 
     function notifyTransientChange() {
-        changeCallback?.([...elements], { transient: true });
+        changeCallback?.(
+            draftElement ? [...elements, draftElement] : [...elements],
+            { transient: true },
+        );
+    }
+
+    function updateDraftElement(nextElement) {
+        if (!nextElement) return;
+        draftElement = drafts.preserveDraftIdentity(draftElement, nextElement);
+        scheduleRender();
+        notifyTransientChange();
+    }
+
+    function updateDrawingDraft() {
+        updateDraftElement(
+            drafts.createDrawingDraft({
+                activeTool,
+                currentPoints,
+                dragStartPoint,
+                strokeColor,
+                strokeWidth,
+            }),
+        );
     }
 
     function createHistoryEntry(beforeSnapshot, afterSnapshot) {
@@ -272,7 +276,7 @@ export function createWhiteboardCanvas(
                     }),
                 ),
         ];
-        updateCanvasOverflow();
+        updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
         notifySelection();
@@ -284,7 +288,7 @@ export function createWhiteboardCanvas(
             pushHistoryEntry(before, cloneElements(nextElements));
         }
         elements = nextElements;
-        updateCanvasOverflow();
+        updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
     }
@@ -298,7 +302,7 @@ export function createWhiteboardCanvas(
 
     function restoreElements(snapshot) {
         elements = cloneElements(snapshot);
-        updateCanvasOverflow();
+        updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
         notifySelection();
@@ -320,25 +324,6 @@ export function createWhiteboardCanvas(
         applyHistorySnapshot(entry.after, entry.changedIds);
         notifyHistoryChange();
         return true;
-    }
-
-    function scaleElementToBounds(element, nextBounds) {
-        const originalBounds = getElementBounds(element);
-        const scaleX = nextBounds.width / Math.max(1, originalBounds.width);
-        const scaleY = nextBounds.height / Math.max(1, originalBounds.height);
-        const patch = {
-            x: nextBounds.x,
-            y: nextBounds.y,
-            width: Math.max(1, nextBounds.width),
-            height: Math.max(1, nextBounds.height),
-        };
-        if (Array.isArray(element.points)) {
-            patch.points = element.points.map(([px, py]) => [
-                (element.x + px - originalBounds.x) * scaleX,
-                (element.y + py - originalBounds.y) * scaleY,
-            ]);
-        }
-        return bumpElementVersion(element, patch);
     }
 
     function updateEraserSelection(endPoint) {
@@ -443,6 +428,13 @@ export function createWhiteboardCanvas(
         selectOnlyElement,
         setTextFormatMenu: (nextMenu) => {
             textFormatMenu = nextMenu;
+        },
+        updateTransientElement: (elementId, patch) => {
+            elements = elements.map((item) =>
+                item.id === elementId ? bumpElementVersion(item, patch) : item,
+            );
+            scheduleRender();
+            notifyTransientChange();
         },
     });
 
@@ -549,6 +541,7 @@ export function createWhiteboardCanvas(
             return;
         }
         currentPoints = [[x, y]];
+        updateDrawingDraft();
         scheduleRender();
     }
 
@@ -671,6 +664,8 @@ export function createWhiteboardCanvas(
                         y: Math.min(nextY, nextBottom),
                         width: Math.max(1, Math.abs(nextRight - nextX)),
                         height: Math.max(1, Math.abs(nextBottom - nextY)),
+                        flipX: nextRight < nextX,
+                        flipY: nextBottom < nextY,
                     });
                 });
                 scheduleRender();
@@ -685,7 +680,7 @@ export function createWhiteboardCanvas(
             return;
         }
         currentPoints.push([x, y]);
-        scheduleRender();
+        updateDrawingDraft();
     }
 
     function onPointerUp(event) {
@@ -708,7 +703,7 @@ export function createWhiteboardCanvas(
                     historySnapshot ?? cloneElements(),
                     cloneElements(),
                 );
-                updateCanvasOverflow();
+                updateCanvasSize();
                 changeCallback?.([...elements]);
             }
         } else if (activeTool === "eraser") {
@@ -724,31 +719,20 @@ export function createWhiteboardCanvas(
                 selectedElementId = null;
                 notifySelection();
             }
-        } else if (activeTool === "pen" && currentPoints.length >= 2) {
-            const element = buildFreedrawElement(
-                currentPoints,
-                strokeColor,
-                strokeWidth,
-            );
-            if (element) commitCreatedElement(element);
         } else if (
-            ["rectangle", "diamond", "ellipse", "line", "arrow"].includes(
+            drafts.canFinalizeDrawing({
                 activeTool,
-            ) &&
-            dragStartPoint &&
-            currentPoints.length >= 1
+                currentPoints,
+                dragStartPoint,
+                draftElement,
+            })
         ) {
             commitCreatedElement(
-                buildShapeElement(
-                    activeTool,
-                    dragStartPoint,
-                    currentPoints.at(-1),
-                    strokeColor,
-                    strokeWidth,
-                ),
+                bumpElementVersion(draftElement, { isTransient: false }),
             );
         }
         currentPoints = [];
+        draftElement = null;
         dragStartPoint = null;
         originalElement = null;
         originalSelection = new Map();
@@ -887,7 +871,7 @@ export function createWhiteboardCanvas(
         applyElements(remoteElements, { replace = false } = {}) {
             if (replace) {
                 elements = cloneElements(remoteElements);
-                updateCanvasOverflow();
+                updateCanvasSize();
                 selectedElementIds = new Set(
                     [...selectedElementIds].filter((id) =>
                         elements.some((element) => element.id === id),
@@ -929,7 +913,7 @@ export function createWhiteboardCanvas(
                 }
             }
             elements = [...localById.values()];
-            updateCanvasOverflow();
+            updateCanvasSize();
             const currentIds = new Set(elements.map((element) => element.id));
             selectedElementIds = new Set(
                 [...selectedElementIds].filter((id) => currentIds.has(id)),

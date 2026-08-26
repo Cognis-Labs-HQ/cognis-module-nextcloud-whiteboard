@@ -14,6 +14,7 @@ export function createWhiteboardTextTools({
     positionTextOverlay,
     selectOnlyElement,
     setTextFormatMenu,
+    updateTransientElement,
 }) {
     let fontCatalogPromise = null;
 
@@ -129,6 +130,9 @@ export function createWhiteboardTextTools({
         parent.appendChild(editor);
         editor.focus();
         editor.select();
+        editor.addEventListener("input", () => {
+            updateTransientElement?.(element.id, { text: editor.value });
+        });
         let finished = false;
         const finish = () => {
             if (finished) return;

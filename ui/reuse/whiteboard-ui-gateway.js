@@ -1,5 +1,6 @@
-import { apiFetch } from "/static/reuse/api-client.js";
-import { uiCtx } from "/static/reuse/ui-ctx.js";
+import { reuse, uiCtx } from "./host-resources.js";
+
+const { apiFetch } = await reuse.importModule("api-client.js");
 
 const CREATE_DISPOSABLE_URL =
     "/api/v1/modules/nextcloud-whiteboard/whiteboards/spawn";

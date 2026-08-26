@@ -50,7 +50,6 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
         );
         assert.deepEqual(route.stylesheets, [
             "/static/styles/page-builder.css",
-            "/static/styles/reuse/page-sections.css",
             "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
         ]);
     }
@@ -616,11 +615,6 @@ test("whiteboard component mounts the disposable canvas from focus state", async
         appSource,
         /embeddedComponentMode =\s*mountLayout\?\.fillParent === true \|\|\s*allowNavigation === false \|\|\s*Boolean\(componentFocusState\)/,
     );
-    assert.match(appSource, /nextcloud-whiteboard-fill-mount/);
-    assert.match(
-        appSource,
-        /root\.classList\.remove\("nextcloud-whiteboard-fill-mount"\)/,
-    );
     assert.match(appSource, /showShare:\s*!embeddedComponentMode/);
     assert.match(
         renderSource,
@@ -727,16 +721,27 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     );
 });
 
-test("whiteboard fill mounts contain their own vertical overflow", async () => {
-    const stylesSource = await import("node:fs/promises").then((fs) =>
-        fs.readFile(
-            new URL("../ui/styles/whiteboards.css", import.meta.url),
-            "utf8",
+test("whiteboard obtains shared UI resources through the host capability", async () => {
+    const [resourcesSource, appSource, shellSource] = await Promise.all(
+        [
+            "../ui/reuse/host-resources.js",
+            "../ui/app/index.js",
+            "../ui/index.html",
+        ].map((path) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(path, import.meta.url), "utf8"),
+            ),
         ),
     );
 
+    assert.match(resourcesSource, /capabilities\.get\("ui:reuse"\)/);
     assert.match(
-        stylesSource,
-        /\.nextcloud-whiteboard-fill-mount\s*\{[^}]*height:\s*100%;[^}]*min-height:\s*0;[^}]*overflow:\s*hidden;/s,
+        appSource,
+        /reuse\.importModule\("page-composer\/index\.js"\)/,
     );
+    assert.match(
+        appSource,
+        /reuse\.loadStylesheets\(\["page-sections\.css"\]\)/,
+    );
+    assert.doesNotMatch(shellSource, /styles\/reuse\/page-sections\.css/);
 });

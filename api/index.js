@@ -20,7 +20,6 @@ const initializedRuntimeContexts = new WeakSet();
 const MODULE_ID = "nextcloud-whiteboard";
 const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
-    "/static/styles/reuse/page-sections.css",
     "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
 ];
 

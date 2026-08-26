@@ -11,3 +11,7 @@ Die Zeichenflächenebene erzeugt keinen eigenen automatischen Scrollbereich mehr
 ## Komponentenfenster verfeinern
 
 In Komponenten eingebundene Whiteboards behalten die kollaborative Zeigerverfolgung bei, zeigen aber keine Teilen-Schaltfläche. Einbettungen, die das Elternelement ausfüllen, werden auf die Komponentenhöhe begrenzt, um vertikalen Überlauf zu verhindern; Freigabesteuerungen bleiben der vollständigen Whiteboard-Seite vorbehalten.
+
+## Wiederverwendbare Ressourcen des Hosts verwenden
+
+Der Whiteboard-Browsercode bezieht gemeinsame Hilfsfunktionen und Styles nun über die Fähigkeit `ui:reuse`. Veraltetes Modul-CSS und eine redundante Kapselung gespeicherter Elemente wurden entfernt, sodass Cognis alleiniger Eigentümer des wiederverwendbaren UI-Verhaltens bleibt.

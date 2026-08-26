@@ -1,5 +1,9 @@
-import { createI18n } from "/static/reuse/i18n.js";
-import { openModuleSettingsPopup } from "/static/reuse/module-settings-popup.js";
+import { reuse } from "./reuse/host-resources.js";
+
+const [{ createI18n }, { openModuleSettingsPopup }] = await Promise.all([
+    reuse.importModule("i18n.js"),
+    reuse.importModule("module-settings-popup.js"),
+]);
 
 const API_BASE = "/api/v1/modules/nextcloud-whiteboard";
 

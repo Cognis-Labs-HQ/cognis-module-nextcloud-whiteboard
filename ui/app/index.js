@@ -1,10 +1,4 @@
-import { applyDocumentTitle, createI18n } from "/static/reuse/i18n.js";
-import { createPageComposer } from "/static/reuse/page-composer/index.js";
-import { mountWhenDirect } from "/static/reuse/page-entry.js";
-import { registerSearchIndex } from "/static/reuse/search-util/popup.js";
-import { showToast } from "/static/reuse/toast.js";
-import { uiCtx } from "/static/reuse/ui-ctx.js";
-import { escapeHtml } from "/static/reuse/escape-html.js";
+import { reuse, uiCtx } from "../reuse/host-resources.js";
 import { createWhiteboardCanvas } from "../whiteboard/canvas.js";
 import { confirmClearCanvas } from "./clear-canvas.js";
 import { createWhiteboardSearchCollector } from "./search-index.js";
@@ -40,9 +34,25 @@ import {
     renderWhiteboardPresenceEntry,
 } from "./presence.js";
 import { getPreparedDisposableCanvasId } from "../reuse/whiteboard-ui-gateway.js";
-import { applySavedElements } from "../reuse/saved-elements.js";
 import { syncBoardUrl } from "../reuse/board-navigation.js";
 import { createWhiteboardPreflightController } from "./preflight.js";
+
+const [
+    { applyDocumentTitle, createI18n },
+    { createPageComposer },
+    { mountWhenDirect },
+    { registerSearchIndex },
+    { showToast },
+    { escapeHtml },
+] = await Promise.all([
+    reuse.importModule("i18n.js"),
+    reuse.importModule("page-composer/index.js"),
+    reuse.importModule("page-entry.js"),
+    reuse.importModule("search-util/popup.js"),
+    reuse.importModule("toast.js"),
+    reuse.importModule("escape-html.js"),
+]);
+await reuse.loadStylesheets(["page-sections.css"]);
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
@@ -201,7 +211,10 @@ function bindDisposableSaveButton(session, canvas) {
                 canvas.getElements(),
                 { explicitSave: true },
             );
-            savedElements = applySavedElements(canvas, saved);
+            if (Array.isArray(saved?.elements)) {
+                canvas.applyElements(saved.elements);
+            }
+            savedElements = canvas.getElements();
             session.saved = true;
             setDisposableSaveDirty(session, false);
             setSyncStatus(
@@ -248,7 +261,10 @@ function connectSocket(io, session, canvas) {
         if (session.disposable) return;
         try {
             const saved = await saveWhiteboardElements(roomId, elements);
-            savedElements = applySavedElements(canvas, saved);
+            if (Array.isArray(saved?.elements)) {
+                canvas.applyElements(saved.elements);
+            }
+            savedElements = canvas.getElements();
             setSyncStatus(
                 "synced",
                 "module.nextcloud_whiteboard.status_synced",
@@ -833,10 +849,6 @@ export async function mount(
         mountLayout?.fillParent === true ||
         allowNavigation === false ||
         Boolean(componentFocusState);
-    root.classList.toggle(
-        "nextcloud-whiteboard-fill-mount",
-        mountLayout?.fillParent === true,
-    );
     hostNavigationAllowed = allowNavigation && !embeddedComponentMode;
     integrationCanvasMode =
         Boolean(
@@ -935,7 +947,6 @@ export async function mount(
         disposableCanvasMode = false;
         embeddedComponentMode = false;
         hostNavigationAllowed = true;
-        root.classList.remove("nextcloud-whiteboard-fill-mount");
         if (pageMountRoot === root) pageMountRoot = null;
     };
     signal?.addEventListener("abort", destroy, { once: true });

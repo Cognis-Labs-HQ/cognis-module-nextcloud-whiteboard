@@ -11,3 +11,7 @@ The canvas stage no longer creates its own automatic scroll area, keeping drawin
 ## Refine component windows
 
 Component-mounted whiteboards retain collaborative pointer tracking while omitting the Share button. Fill-parent mounts are constrained to the component height to prevent vertical overflow, while sharing controls remain on the full Whiteboard page.
+
+## Use host-owned reusable resources
+
+Whiteboard browser code now obtains shared utilities and styles through the `ui:reuse` capability. Obsolete module CSS and a redundant saved-elements wrapper were removed so Cognis remains the single owner of reusable UI behavior.

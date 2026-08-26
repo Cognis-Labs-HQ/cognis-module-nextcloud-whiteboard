@@ -1,4 +1,6 @@
-import { formatDateTime } from "/static/reuse/timestamp.js";
+import { reuse } from "../reuse/host-resources.js";
+
+const { formatDateTime } = await reuse.importModule("timestamp.js");
 
 export async function openWhiteboardHistoryPopup({
     boards,

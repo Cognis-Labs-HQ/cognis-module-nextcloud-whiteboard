@@ -1,5 +1,9 @@
-import { apiFetch } from "/static/reuse/api-client.js";
-import { registerSearchIndex } from "/static/reuse/search-util/popup.js";
+import { reuse } from "./reuse/host-resources.js";
+
+const [{ apiFetch }, { registerSearchIndex }] = await Promise.all([
+    reuse.importModule("api-client.js"),
+    reuse.importModule("search-util/popup.js"),
+]);
 import "./reuse/whiteboard-ui-gateway.js";
 
 const WHITEBOARD_API_BASE = "/api/v1/modules/nextcloud-whiteboard";

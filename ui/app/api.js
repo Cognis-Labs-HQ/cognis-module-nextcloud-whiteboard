@@ -1,4 +1,6 @@
-import { apiFetch } from "/static/reuse/api-client.js";
+import { reuse } from "../reuse/host-resources.js";
+
+const { apiFetch } = await reuse.importModule("api-client.js");
 
 const API_BASE = "/api/v1/modules/nextcloud-whiteboard";
 const BOARD_NUMBER_MAX = 1000000;

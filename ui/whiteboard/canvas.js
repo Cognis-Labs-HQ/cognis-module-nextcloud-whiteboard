@@ -12,11 +12,10 @@ import {
     isStrokeWidthApplicable,
 } from "./elements.js";
 import { renderWhiteboardScene } from "./render-scene.js";
-import { parseSavedFont, toFontFamilyValue } from "/static/reuse/font-prefs.js";
+import { parseSavedFont, toFontFamilyValue } from "../reuse/font-resources.js";
 import { createWhiteboardTextTools } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
-
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},

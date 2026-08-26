@@ -1,5 +1,9 @@
-import { formatDateTime } from "/static/reuse/timestamp.js";
-import { escapeHtml } from "/static/reuse/escape-html.js";
+import { reuse } from "../reuse/host-resources.js";
+
+const [{ formatDateTime }, { escapeHtml }] = await Promise.all([
+    reuse.importModule("timestamp.js"),
+    reuse.importModule("escape-html.js"),
+]);
 
 export function renderCanvasElement({
     activeBoard,

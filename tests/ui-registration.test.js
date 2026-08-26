@@ -308,6 +308,28 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
     );
 });
 
+test("drawing starts before canvas focus can move the viewport", async () => {
+    const source = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/whiteboard/canvas.js", import.meta.url),
+            "utf8",
+        ),
+    );
+    const pointerDownSource = source.slice(
+        source.indexOf("function onPointerDown(event)"),
+        source.indexOf("function onPointerMove(event)"),
+    );
+
+    assert.match(
+        pointerDownSource,
+        /canvasElement\.focus\(\{ preventScroll: true \}\)/,
+    );
+    assert.ok(
+        pointerDownSource.indexOf("getCanvasPoint(event)") <
+            pointerDownSource.indexOf("canvasElement.focus"),
+    );
+});
+
 test("collaborative scenes merge remote edits before saving", async () => {
     const [appSource, canvasSource] = await Promise.all(
         ["../ui/app/index.js", "../ui/whiteboard/canvas.js"].map(

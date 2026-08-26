@@ -471,15 +471,15 @@ export function createWhiteboardCanvas(
         }
         if (event.button !== 0) return;
         event.preventDefault();
+        const [x, y] = getCanvasPoint(event);
         canvasElement.setPointerCapture(event.pointerId);
-        canvasElement.focus();
+        canvasElement.focus({ preventScroll: true });
         isDrawing = true;
         if (activeTool !== "select" && selectedElementIds.size > 0) {
             selectedElementIds = new Set();
             selectedElementId = null;
             notifySelection();
         }
-        const [x, y] = getCanvasPoint(event);
         dragStartPoint = [x, y];
         historySnapshot = cloneElements();
         if (activeTool === "select") {

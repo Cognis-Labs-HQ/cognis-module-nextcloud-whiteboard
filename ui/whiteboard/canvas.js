@@ -1,8 +1,6 @@
 import {
     boxContainsElementContent,
     buildDragBox,
-    buildFreedrawElement,
-    buildShapeElement,
     buildTextElement,
     bumpElementVersion,
     bumpElementVersionPast,
@@ -17,6 +15,7 @@ import { parseSavedFont, toFontFamilyValue } from "../reuse/font-resources.js";
 import { createWhiteboardTextTools } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
+import * as drafts from "./reuse/draft-elements.js";
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},
@@ -24,6 +23,7 @@ export function createWhiteboardCanvas(
     const context = canvasElement.getContext("2d");
     let elements = [];
     let currentPoints = [];
+    let draftElement = null;
     let isDrawing = false;
     let strokeColor = "auto";
     let strokeWidth = 4;
@@ -54,7 +54,6 @@ export function createWhiteboardCanvas(
     let remoteSelections = new Map();
     let keepToolActive = false;
     if (readOnly) canvasElement.style.cursor = "pointer";
-
     function scheduleRender() {
         if (pendingRender) return;
         pendingRender = true;
@@ -72,14 +71,13 @@ export function createWhiteboardCanvas(
             currentPoints,
             dragSelectBox,
             dragStartPoint,
+            draftElement,
             elements,
             eraserSelectionIds,
             isDrawing,
             remoteSelections,
             selectedElementId,
             selectedElementIds,
-            strokeColor,
-            strokeWidth,
             viewportOffsetX,
             viewportOffsetY,
         });
@@ -210,7 +208,29 @@ export function createWhiteboardCanvas(
     }
 
     function notifyTransientChange() {
-        changeCallback?.([...elements], { transient: true });
+        changeCallback?.(
+            draftElement ? [...elements, draftElement] : [...elements],
+            { transient: true },
+        );
+    }
+
+    function updateDraftElement(nextElement) {
+        if (!nextElement) return;
+        draftElement = drafts.preserveDraftIdentity(draftElement, nextElement);
+        scheduleRender();
+        notifyTransientChange();
+    }
+
+    function updateDrawingDraft() {
+        updateDraftElement(
+            drafts.createDrawingDraft({
+                activeTool,
+                currentPoints,
+                dragStartPoint,
+                strokeColor,
+                strokeWidth,
+            }),
+        );
     }
 
     function createHistoryEntry(beforeSnapshot, afterSnapshot) {
@@ -538,6 +558,7 @@ export function createWhiteboardCanvas(
             return;
         }
         currentPoints = [[x, y]];
+        updateDrawingDraft();
         scheduleRender();
     }
 
@@ -676,7 +697,7 @@ export function createWhiteboardCanvas(
             return;
         }
         currentPoints.push([x, y]);
-        scheduleRender();
+        updateDrawingDraft();
     }
 
     function onPointerUp(event) {
@@ -715,31 +736,20 @@ export function createWhiteboardCanvas(
                 selectedElementId = null;
                 notifySelection();
             }
-        } else if (activeTool === "pen" && currentPoints.length >= 2) {
-            const element = buildFreedrawElement(
-                currentPoints,
-                strokeColor,
-                strokeWidth,
-            );
-            if (element) commitCreatedElement(element);
         } else if (
-            ["rectangle", "diamond", "ellipse", "line", "arrow"].includes(
+            drafts.canFinalizeDrawing({
                 activeTool,
-            ) &&
-            dragStartPoint &&
-            currentPoints.length >= 1
+                currentPoints,
+                dragStartPoint,
+                draftElement,
+            })
         ) {
             commitCreatedElement(
-                buildShapeElement(
-                    activeTool,
-                    dragStartPoint,
-                    currentPoints.at(-1),
-                    strokeColor,
-                    strokeWidth,
-                ),
+                bumpElementVersion(draftElement, { isTransient: false }),
             );
         }
         currentPoints = [];
+        draftElement = null;
         dragStartPoint = null;
         originalElement = null;
         originalSelection = new Map();

@@ -268,6 +268,10 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(textToolsSource, /addEventListener\(["']input["']/);
     assert.match(canvasSource, /flipX:\s*nextRight < nextX/);
     assert.match(canvasSource, /flipY:\s*nextBottom < nextY/);
+    assert.match(canvasSource, /function updateDraftElement\(nextElement\)/);
+    assert.match(canvasSource, /\[\.\.\.elements, draftElement\]/);
+    assert.match(canvasSource, /preserveDraftIdentity/);
+    assert.match(canvasSource, /isTransient:\s*false/);
     assert.match(source, /function updateHistoryControls\(\)/);
     assert.match(source, /whiteboard-toolbar-group\[hidden\]/);
     assert.match(source, /insertAdjacentHTML\(\s*['"]afterend['"]/);

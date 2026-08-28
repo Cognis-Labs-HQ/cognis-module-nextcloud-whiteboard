@@ -126,9 +126,11 @@ const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
     getSavedElements: () => savedElements,
     translate: translateModuleString,
 });
+
 async function loadBoards() {
     boards = await fetchWhiteboardList();
 }
+
 function teardownCanvas() {
     shareControlDispose?.();
     shareControlDispose = null;
@@ -159,11 +161,13 @@ function teardownCanvas() {
     runtimeDispose?.();
     runtimeDispose = null;
 }
+
 function canRenameActiveBoard() {
     return Boolean(
         !integrationCanvasMode && activeSession?.canRename && activeBoard?.id,
     );
 }
+
 function applyBoardTitle(title) {
     const normalizedTitle = String(title ?? "").trim();
     if (!normalizedTitle) return;
@@ -177,6 +181,7 @@ function applyBoardTitle(title) {
         titleEl.textContent = normalizedTitle;
     }
 }
+
 function emitBoardRenamed(title) {
     if (!socketInstance?.connected || !activeSession?.roomId) return;
     socketInstance.emit(

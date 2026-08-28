@@ -46,6 +46,10 @@ Das Verhalten der Zeichenflächen-Werkzeugleiste befindet sich nun in einem gezi
 
 Wenn andere Beteiligte ein bereits ausgewähltes Objekt bearbeiten, ersetzt die Live-Vorschau nun die dauerhafte Darstellung dieses Objekts. Die Zeichenfläche zeigt nicht mehr gleichzeitig den ausgewählten Ausgangszustand und die laufende Bearbeitung an.
 
+## Abschnittsabstände der Anwendung wiederherstellen
+
+Leerzeilen trennen wieder die Einrichtung der übergeordneten Zeichenflächen-Controller und Funktionen und bewahren so nach der jüngsten Umstrukturierung die etablierte lesbare Struktur.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -63,3 +67,5 @@ Wenn andere Beteiligte ein bereits ausgewähltes Objekt bearbeiten, ersetzt die 
 - [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
 
 - [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)
+
+- [4cfcaa0](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4cfcaa0911c15083d23d2ca3bfb286dc1ff7788d)

@@ -46,6 +46,10 @@ Canvas toolbar behavior now lives in a focused module, and remote-selection norm
 
 When another collaborator edits an object that is already selected, the live preview now replaces the stable rendering of that object. The canvas no longer draws both the selected starting state and the in-flight edit at the same time.
 
+## Restore application section spacing
+
+Blank lines once again separate the whiteboard application’s top-level controller setup and functions, preserving the established readable structure after the recent refactor.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -63,3 +67,5 @@ When another collaborator edits an object that is already selected, the live pre
 - [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
 
 - [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)
+
+- [4cfcaa0](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4cfcaa0911c15083d23d2ca3bfb286dc1ff7788d)

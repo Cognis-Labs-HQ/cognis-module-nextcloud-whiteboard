@@ -42,6 +42,10 @@ Pemindahan, pengubahan ukuran, dan penyuntingan teks langsung kini tetap berada 
 
 Saat kolaborator lain menyunting objek yang sudah dipilih, pratinjau langsung kini menggantikan render stabil objek tersebut. Kanvas tidak lagi menampilkan keadaan awal yang dipilih dan penyuntingan yang sedang berlangsung secara bersamaan.
 
+## Pulihkan jarak bagian aplikasi
+
+Baris kosong kembali memisahkan penyiapan pengontrol dan fungsi tingkat atas aplikasi papan tulis, sehingga struktur yang mudah dibaca tetap terjaga setelah refaktor terbaru.
+
 ## Komit
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -59,3 +63,5 @@ Saat kolaborator lain menyunting objek yang sudah dipilih, pratinjau langsung ki
 - [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
 
 - [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)
+
+- [4cfcaa0](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4cfcaa0911c15083d23d2ca3bfb286dc1ff7788d)

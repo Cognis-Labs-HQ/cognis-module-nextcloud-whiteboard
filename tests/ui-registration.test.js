@@ -137,6 +137,7 @@ test("direct-account SPA shares mount the full Whiteboard page", async () => {
 test("nextcloud whiteboard app loads module strings and omits inline status element", async () => {
     const [
         source,
+        toolbarSource,
         canvasSource,
         presenceSource,
         realtimeSource,
@@ -147,6 +148,12 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     ] = await Promise.all([
         import("node:fs/promises").then((fs) =>
             fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+        ),
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
+                new URL("../ui/app/canvas-toolbar.js", import.meta.url),
+                "utf8",
+            ),
         ),
         import("node:fs/promises").then((fs) =>
             fs.readFile(
@@ -281,14 +288,17 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         canvasSource,
         /elements = elements\.map\(\(element\) =>\s*bumpElementVersion\(element, \{\s*x: element\.x \+ dx/s,
     );
-    assert.match(source, /function updateHistoryControls\(\)/);
-    assert.match(source, /whiteboard-toolbar-group\[hidden\]/);
-    assert.match(source, /insertAdjacentHTML\(\s*['"]afterend['"]/);
+    assert.match(toolbarSource, /function updateHistoryControls\(\)/);
+    assert.match(toolbarSource, /whiteboard-toolbar-group\[hidden\]/);
+    assert.match(toolbarSource, /insertAdjacentHTML\(\s*['"]afterend['"]/);
     assert.match(
-        source,
+        toolbarSource,
         /canvas\.onHistoryChange\?\.\(updateHistoryControls\)/,
     );
-    assert.match(source, /redoButton\?\.addEventListener\(['"]click['"]/);
+    assert.match(
+        toolbarSource,
+        /redoButton\?\.addEventListener\(['"]click['"]/,
+    );
     assert.match(
         source,
         /if \(canWrite && meta\?\.transient !== true\) persistChanges\(elements\)/,
@@ -755,17 +765,19 @@ test("whiteboard direct entry mounts only on declared whiteboard routes", async 
 });
 
 test("whiteboard toolbar wraps tools and keeps disposable save controls visible", async () => {
-    const [appSource, renderSource, stylesSource] = await Promise.all(
-        [
-            "../ui/app/index.js",
-            "../ui/app/render.js",
-            "../ui/styles/whiteboards.css",
-        ].map((relativePath) =>
-            import("node:fs/promises").then((fs) =>
-                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+    const [appSource, disposableSaveSource, renderSource, stylesSource] =
+        await Promise.all(
+            [
+                "../ui/app/index.js",
+                "../ui/app/disposable-save.js",
+                "../ui/app/render.js",
+                "../ui/styles/whiteboards.css",
+            ].map((relativePath) =>
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+                ),
             ),
-        ),
-    );
+        );
     assert.match(renderSource, /class="whiteboard-toolbar-tools"/);
     assert.match(
         stylesSource,
@@ -789,12 +801,12 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
         /:has\(\.whiteboard-save-confirmed\)[^{]*\.whiteboard-saved-pill\s*\{[^}]*display: inline-block/s,
     );
     assert.match(
-        appSource,
+        disposableSaveSource,
         /function bindDisposableSaveButton\(session, canvas\)/,
     );
     assert.match(appSource, /setDisposableSaveDirty\(session, true\)/);
     assert.match(
-        appSource,
+        disposableSaveSource,
         /saveButton\.dataset\.dirty = String\(!session\.saved\)/,
     );
     assert.match(renderSource, /data-dirty="\$\{String\(!saved\)\}"/);

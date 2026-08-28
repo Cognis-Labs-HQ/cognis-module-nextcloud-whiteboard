@@ -16,6 +16,8 @@ import { createWhiteboardTextTools } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
 import * as drafts from "./reuse/draft-elements.js";
+import { buildRemoteSelections } from "./reuse/remote-selections.js";
+
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},
@@ -65,6 +67,7 @@ export function createWhiteboardCanvas(
             redraw();
         });
     }
+
     function redraw() {
         renderWhiteboardScene({
             activeTool,
@@ -84,16 +87,19 @@ export function createWhiteboardCanvas(
             viewportOffsetY,
         });
     }
+
     function cloneElements(items = elements) {
         return items.map((element) => ({
             ...element,
             points: element.points?.map((point) => [...point]),
         }));
     }
+
     function resizeCanvas() {
         if (!isDrawing) updateCanvasSize();
         scheduleRender();
     }
+
     function updateCanvasSize() {
         const parent = canvasElement.parentElement;
         const rect = parent?.getBoundingClientRect();
@@ -105,6 +111,7 @@ export function createWhiteboardCanvas(
         canvasElement.style.width = `${width}px`;
         canvasElement.style.height = `${height}px`;
     }
+
     function getCanvasPoint(event) {
         const rect = canvasElement.getBoundingClientRect();
         return [
@@ -148,20 +155,7 @@ export function createWhiteboardCanvas(
     }
 
     function setRemoteSelections(selections = []) {
-        const nextSelections = new Map();
-        for (const selection of selections) {
-            const color = String(selection?.color || "#5e81f4");
-            const label = String(selection?.label || "").trim();
-            const elementIds = Array.isArray(selection?.elementIds)
-                ? selection.elementIds
-                : [];
-            for (const elementId of elementIds) {
-                const normalizedId = String(elementId ?? "").trim();
-                if (!normalizedId) continue;
-                nextSelections.set(normalizedId, { color, label });
-            }
-        }
-        remoteSelections = nextSelections;
+        remoteSelections = buildRemoteSelections(selections);
         scheduleRender();
     }
 

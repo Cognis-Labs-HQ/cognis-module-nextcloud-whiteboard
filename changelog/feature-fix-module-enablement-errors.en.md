@@ -1,6 +1,6 @@
 # Reliable installation and pre-enablement configuration
 
-**Feature Branch:** work
+**Feature Branch:** feature-fix-module-enablement-errors
 
 ## Configuration is available before enablement
 
@@ -38,6 +38,10 @@ Drawing drafts are marked as transient collaboration updates and rendered in a s
 
 Live moves, resizes, and text edits now remain in the remote preview layer instead of entering the persistent scene. Abandoned drawing previews are cancelled when possible and expire automatically after a disconnected collaborator stops updating them.
 
+## Organize canvas application functions
+
+Canvas toolbar behavior now lives in a focused module, and remote-selection normalization is grouped in a reusable whiteboard layer instead of relying on oversized application files.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -51,3 +55,5 @@ Live moves, resizes, and text edits now remain in the remote preview layer inste
 - [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
 
 - [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
+
+- [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)

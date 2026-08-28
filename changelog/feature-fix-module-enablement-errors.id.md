@@ -1,6 +1,6 @@
 # Instalasi andal dan konfigurasi sebelum pengaktifan
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-fix-module-enablement-errors
 
 ## Konfigurasi tersedia sebelum pengaktifan
 
@@ -51,3 +51,5 @@ Pemindahan, pengubahan ukuran, dan penyuntingan teks langsung kini tetap berada 
 - [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
 
 - [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
+
+- [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)

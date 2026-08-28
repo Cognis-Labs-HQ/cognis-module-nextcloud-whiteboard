@@ -1,6 +1,6 @@
 # 信頼性の高いインストールと有効化前の設定
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-fix-module-enablement-errors
 
 ## 有効化前に設定可能
 
@@ -38,6 +38,10 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 
 移動中、サイズ変更中、テキスト編集中の内容は永続シーンに入らず、リモートプレビューレイヤーに留まるようになりました。放棄された描画プレビューは可能な場合に取り消され、共同編集者が切断して更新が止まると自動的に期限切れになります。
 
+## キャンバスアプリケーションの機能を整理
+
+キャンバスツールバーの動作を専用モジュールに移し、リモート選択の正規化を再利用可能なホワイトボード層にまとめ、大きすぎるアプリケーションファイルへの依存を解消しました。
+
 ## コミット
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -51,3 +55,5 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 - [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
 
 - [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
+
+- [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { lstat, readFile, readlink } from "node:fs/promises";
 import test from "node:test";
 
 const manifest = JSON.parse(
@@ -15,11 +15,13 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
     ]);
 });
 
-test("module manifest requires the profile adapter and share gateway", () => {
+test("module manifest separates core components from external modules", () => {
     assert.deepEqual(manifest.requires, [
         "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
         "0da92508-63fa-53ed-918c-e6f08692a382",
     ]);
+    assert.deepEqual(manifest.hardDependencies, []);
+    assert.deepEqual(manifest.softDependencies, []);
 });
 
 test("module manifest requires the Cognis authentication gateway", () => {
@@ -34,10 +36,19 @@ test("module manifest excludes changelog entries from packaged hashes", () => {
     );
 });
 
-test("module manifest excludes repository symlinks from packaged hashes", () => {
+test("module manifest excludes repository symlinks", () => {
     assert.equal(
         manifest.files.some(({ path }) => path === "AGENTS.md"),
         false,
+    );
+});
+
+test("contributor instructions remain linked to the canonical instructions", async () => {
+    const instructionsUrl = new URL("../AGENTS.md", import.meta.url);
+    assert.equal((await lstat(instructionsUrl)).isSymbolicLink(), true);
+    assert.equal(
+        await readlink(instructionsUrl),
+        ".github/copilot-instructions.md",
     );
 });
 

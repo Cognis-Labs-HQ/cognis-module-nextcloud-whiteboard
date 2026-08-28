@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { registerUi } from "../api/index.js";
 
@@ -136,6 +137,7 @@ test("direct-account SPA shares mount the full Whiteboard page", async () => {
 test("nextcloud whiteboard app loads module strings and omits inline status element", async () => {
     const [
         source,
+        toolbarSource,
         canvasSource,
         presenceSource,
         realtimeSource,
@@ -146,6 +148,12 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     ] = await Promise.all([
         import("node:fs/promises").then((fs) =>
             fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+        ),
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
+                new URL("../ui/app/canvas-toolbar.js", import.meta.url),
+                "utf8",
+            ),
         ),
         import("node:fs/promises").then((fs) =>
             fs.readFile(
@@ -280,14 +288,17 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         canvasSource,
         /elements = elements\.map\(\(element\) =>\s*bumpElementVersion\(element, \{\s*x: element\.x \+ dx/s,
     );
-    assert.match(source, /function updateHistoryControls\(\)/);
-    assert.match(source, /whiteboard-toolbar-group\[hidden\]/);
-    assert.match(source, /insertAdjacentHTML\(\s*['"]afterend['"]/);
+    assert.match(toolbarSource, /function updateHistoryControls\(\)/);
+    assert.match(toolbarSource, /whiteboard-toolbar-group\[hidden\]/);
+    assert.match(toolbarSource, /insertAdjacentHTML\(\s*['"]afterend['"]/);
     assert.match(
-        source,
+        toolbarSource,
         /canvas\.onHistoryChange\?\.\(updateHistoryControls\)/,
     );
-    assert.match(source, /redoButton\?\.addEventListener\(['"]click['"]/);
+    assert.match(
+        toolbarSource,
+        /redoButton\?\.addEventListener\(['"]click['"]/,
+    );
     assert.match(
         source,
         /if \(canWrite && meta\?\.transient !== true\) persistChanges\(elements\)/,
@@ -369,21 +380,42 @@ test("drawing starts before canvas focus can move the viewport", async () => {
 });
 
 test("collaborative scenes merge remote edits before saving", async () => {
-    const [appSource, canvasSource] = await Promise.all(
-        ["../ui/app/index.js", "../ui/whiteboard/canvas.js"].map(
-            (relativePath) =>
-                import("node:fs/promises").then((fs) =>
-                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
-                ),
+    const [appSource, canvasSource, sceneUpdatesSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/whiteboard/canvas.js",
+            "../ui/app/reuse/scene-updates.js",
+        ].map((relativePath) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+            ),
         ),
     );
+    assert.match(sceneUpdatesSource, /transient: transientUpdate/);
     assert.match(
-        appSource,
-        /canvas\.applyElements\(message\.payload\.elements, \{\s*replace: false/s,
+        sceneUpdatesSource,
+        /const mergedElements = canvas\.getElements\(\)/,
     );
-    assert.match(appSource, /const mergedElements = canvas\.getElements\(\)/);
-    assert.match(appSource, /persistChanges\(mergedElements\)/);
+    assert.match(sceneUpdatesSource, /persistChanges\(mergedElements\)/);
     assert.match(canvasSource, /element\.isDeleted/);
+    assert.match(canvasSource, /createRemoteDraftStore/);
+    assert.match(
+        canvasSource,
+        /elements: remoteDraftElements\.compose\(elements\)/,
+    );
+    assert.match(
+        canvasSource,
+        /stableRemoteElements = remoteElements\.filter\(/,
+    );
+    assert.match(
+        sceneUpdatesSource,
+        /const transientUpdate = message\.payload\.transient/,
+    );
+    assert.match(sceneUpdatesSource, /if \(canWrite && !transientUpdate\)/);
+    assert.doesNotMatch(
+        appSource,
+        /message\.type === SYNC_MESSAGE_SCENE_UPDATE[\s\S]{0,180}emitSceneSnapshot\(\)/,
+    );
 });
 
 test("joining collaborators request a scene from peers after reconnecting", async () => {
@@ -405,10 +437,6 @@ test("joining collaborators request a scene from peers after reconnecting", asyn
     assert.match(
         appSource,
         /socket\.on\("user-joined",[\s\S]*if \(joinedRoom\) emitSceneSnapshot\(\)/,
-    );
-    assert.match(
-        appSource,
-        /message\.type === SYNC_MESSAGE_SCENE_UPDATE[\s\S]*emitSceneSnapshot\(\)/,
     );
     const snapshotSource = appSource.slice(
         appSource.indexOf("const emitSceneSnapshot"),
@@ -737,17 +765,19 @@ test("whiteboard direct entry mounts only on declared whiteboard routes", async 
 });
 
 test("whiteboard toolbar wraps tools and keeps disposable save controls visible", async () => {
-    const [appSource, renderSource, stylesSource] = await Promise.all(
-        [
-            "../ui/app/index.js",
-            "../ui/app/render.js",
-            "../ui/styles/whiteboards.css",
-        ].map((relativePath) =>
-            import("node:fs/promises").then((fs) =>
-                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+    const [appSource, disposableSaveSource, renderSource, stylesSource] =
+        await Promise.all(
+            [
+                "../ui/app/index.js",
+                "../ui/app/disposable-save.js",
+                "../ui/app/render.js",
+                "../ui/styles/whiteboards.css",
+            ].map((relativePath) =>
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+                ),
             ),
-        ),
-    );
+        );
     assert.match(renderSource, /class="whiteboard-toolbar-tools"/);
     assert.match(
         stylesSource,
@@ -763,18 +793,38 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     );
     assert.match(stylesSource, /@container \(max-width: 44rem\)/);
     assert.match(
-        appSource,
+        stylesSource,
+        /\.whiteboard-saved-pill\s*\{[^}]*display: none/s,
+    );
+    assert.match(
+        stylesSource,
+        /:has\(\.whiteboard-save-confirmed\)[^{]*\.whiteboard-saved-pill\s*\{[^}]*display: inline-block/s,
+    );
+    assert.match(
+        disposableSaveSource,
         /function bindDisposableSaveButton\(session, canvas\)/,
     );
     assert.match(appSource, /setDisposableSaveDirty\(session, true\)/);
     assert.match(
-        appSource,
+        disposableSaveSource,
         /saveButton\.dataset\.dirty = String\(!session\.saved\)/,
     );
     assert.match(renderSource, /data-dirty="\$\{String\(!saved\)\}"/);
     assert.match(
         renderSource,
         /\$\{disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
+    );
+});
+
+test("canvas selection clicks do not report content changes", async () => {
+    const source = await readFile(
+        new URL("../ui/whiteboard/canvas.js", import.meta.url),
+        "utf8",
+    );
+    assert.match(source, /const didChange = pushHistoryEntry\(/);
+    assert.match(
+        source,
+        /if \(didChange\) changeCallback\?\.\(\[\.\.\.elements\]\)/,
     );
 });
 

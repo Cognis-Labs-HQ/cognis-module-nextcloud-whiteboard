@@ -16,12 +16,17 @@ import { createWhiteboardTextTools } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
 import * as drafts from "./reuse/draft-elements.js";
+import { buildRemoteSelections } from "./reuse/remote-selections.js";
+
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},
 ) {
     const context = canvasElement.getContext("2d");
     let elements = [];
+    const remoteDraftElements = drafts.createRemoteDraftStore({
+        onExpire: scheduleRender,
+    });
     let currentPoints = [];
     let draftElement = null;
     let isDrawing = false;
@@ -72,7 +77,7 @@ export function createWhiteboardCanvas(
             dragSelectBox,
             dragStartPoint,
             draftElement,
-            elements,
+            elements: remoteDraftElements.compose(elements),
             eraserSelectionIds,
             isDrawing,
             remoteSelections,
@@ -150,20 +155,7 @@ export function createWhiteboardCanvas(
     }
 
     function setRemoteSelections(selections = []) {
-        const nextSelections = new Map();
-        for (const selection of selections) {
-            const color = String(selection?.color || "#5e81f4");
-            const label = String(selection?.label || "").trim();
-            const elementIds = Array.isArray(selection?.elementIds)
-                ? selection.elementIds
-                : [];
-            for (const elementId of elementIds) {
-                const normalizedId = String(elementId ?? "").trim();
-                if (!normalizedId) continue;
-                nextSelections.set(normalizedId, { color, label });
-            }
-        }
-        remoteSelections = nextSelections;
+        remoteSelections = buildRemoteSelections(selections);
         scheduleRender();
     }
 
@@ -238,11 +230,12 @@ export function createWhiteboardCanvas(
 
     function pushHistoryEntry(beforeSnapshot, afterSnapshot) {
         const entry = createHistoryEntry(beforeSnapshot, afterSnapshot);
-        if (entry.changedIds.length === 0) return;
+        if (entry.changedIds.length === 0) return false;
         historyPast.push(entry);
         historyPast = historyPast.slice(-100);
         historyFuture = [];
         notifyHistoryChange();
+        return true;
     }
 
     function applyHistorySnapshot(snapshot, changedIds) {
@@ -699,12 +692,12 @@ export function createWhiteboardCanvas(
         isDrawing = false;
         if (activeTool === "select") {
             if (selectDragMode) {
-                pushHistoryEntry(
+                const didChange = pushHistoryEntry(
                     historySnapshot ?? cloneElements(),
                     cloneElements(),
                 );
                 updateCanvasSize();
-                changeCallback?.([...elements]);
+                if (didChange) changeCallback?.([...elements]);
             }
         } else if (activeTool === "eraser") {
             if (eraserSelectionIds.size > 0) {
@@ -731,6 +724,7 @@ export function createWhiteboardCanvas(
                 bumpElementVersion(draftElement, { isTransient: false }),
             );
         }
+        const abandonedDraft = draftElement?.id;
         currentPoints = [];
         draftElement = null;
         dragStartPoint = null;
@@ -742,6 +736,8 @@ export function createWhiteboardCanvas(
         dragSelectBox = null;
         selectDragMode = null;
         scheduleRender();
+        if (abandonedDraft && !elements.some(({ id }) => id === abandonedDraft))
+            notifyTransientChange();
     }
 
     function onDoubleClick(event) {
@@ -868,9 +864,24 @@ export function createWhiteboardCanvas(
         getViewportOffset() {
             return { x: viewportOffsetX, y: viewportOffsetY };
         },
-        applyElements(remoteElements, { replace = false } = {}) {
+        applyElements(
+            remoteElements,
+            { replace = false, transient = false } = {},
+        ) {
+            if (transient) {
+                remoteDraftElements.reconcile(remoteElements, elements);
+                scheduleRender();
+                return;
+            }
+            const stableRemoteElements = remoteElements.filter(
+                (element) => element?.isTransient !== true,
+            );
+            for (const element of stableRemoteElements) {
+                if (element?.id) remoteDraftElements.delete(element.id);
+            }
             if (replace) {
-                elements = cloneElements(remoteElements);
+                remoteDraftElements.clear();
+                elements = cloneElements(stableRemoteElements);
                 updateCanvasSize();
                 selectedElementIds = new Set(
                     [...selectedElementIds].filter((id) =>
@@ -889,7 +900,7 @@ export function createWhiteboardCanvas(
                 return;
             }
             const remoteById = new Map(
-                remoteElements.map((element) => [element.id, element]),
+                stableRemoteElements.map((element) => [element.id, element]),
             );
             const localById = new Map(
                 elements.map((element) => [element.id, element]),

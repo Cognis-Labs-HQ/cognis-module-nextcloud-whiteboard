@@ -44,6 +44,11 @@ export function createWhiteboardStatusController({
             statusBox.classList.remove("whiteboard-save-confirmed");
             void statusBox.offsetWidth;
             statusBox.classList.add("whiteboard-save-confirmed");
+            statusBox.addEventListener?.(
+                "animationend",
+                () => statusBox.classList.remove("whiteboard-save-confirmed"),
+                { once: true },
+            );
         }
     }
 

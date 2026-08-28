@@ -1,6 +1,7 @@
 import { reuse, uiCtx } from "../reuse/host-resources.js";
 import { createWhiteboardCanvas } from "../whiteboard/canvas.js";
-import { confirmClearCanvas } from "./clear-canvas.js";
+import { bindWhiteboardCanvasToolbar } from "./canvas-toolbar.js";
+import { createDisposableSaveControls } from "./disposable-save.js";
 import { createWhiteboardSearchCollector } from "./search-index.js";
 import { createWhiteboardStatusController } from "./status.js";
 import { openWhiteboardSharePopup } from "./share-popup.js";
@@ -26,6 +27,7 @@ import {
     loadSocketIo,
     throttleLatest,
 } from "./realtime.js";
+import { applyRemoteSceneUpdate } from "./reuse/scene-updates.js";
 import {
     applyRemotePresenceSelections,
     getPointerOffset,
@@ -106,6 +108,18 @@ const preflightController = createWhiteboardPreflightController({
     showToast,
     translate: translateModuleString,
 });
+const { bindDisposableSaveButton, setDisposableSaveDirty } =
+    createDisposableSaveControls({
+        escapeHtml,
+        onSaved: (elements) => {
+            savedElements = elements;
+        },
+        reportClientError,
+        saveWhiteboardElements,
+        setSyncStatus,
+        translate: translateModuleString,
+        withinMount,
+    });
 const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
     getActiveBoard: () => activeBoard,
     getBoards: () => boards,
@@ -178,61 +192,6 @@ function emitBoardRenamed(title) {
     );
 }
 
-function setDisposableSaveDirty(session, dirty) {
-    if (!session?.disposable) return;
-    const saveButton = withinMount("#whiteboard-save-copy");
-    if (!saveButton) return;
-    saveButton.dataset.dirty = String(dirty);
-    saveButton.hidden = false;
-}
-
-function bindDisposableSaveButton(session, canvas) {
-    if (!session?.disposable) return;
-    const statusBox = withinMount("#whiteboard-sync-status");
-    if (!statusBox) return;
-    if (!withinMount("#whiteboard-save-copy")) {
-        statusBox.insertAdjacentHTML(
-            "beforebegin",
-            `<button type="button" id="whiteboard-save-copy" class="whiteboard-save-copy" aria-label="${escapeHtml(translateModuleString("module.nextcloud_whiteboard.save_canvas"))}">${escapeHtml(translateModuleString("module.nextcloud_whiteboard.save_canvas"))}</button>`,
-        );
-    }
-    const saveButton = withinMount("#whiteboard-save-copy");
-    if (!saveButton || saveButton.dataset.bound === "true") return;
-    saveButton.dataset.bound = "true";
-    saveButton.dataset.dirty = String(!session.saved);
-    saveButton.addEventListener("click", async () => {
-        saveButton.disabled = true;
-        try {
-            setSyncStatus(
-                "syncing",
-                "module.nextcloud_whiteboard.status_syncing",
-            );
-            const saved = await saveWhiteboardElements(
-                session.roomId,
-                canvas.getElements(),
-                { explicitSave: true },
-            );
-            if (Array.isArray(saved?.elements)) {
-                canvas.applyElements(saved.elements);
-            }
-            savedElements = canvas.getElements();
-            session.saved = true;
-            setDisposableSaveDirty(session, false);
-            setSyncStatus(
-                "synced",
-                "module.nextcloud_whiteboard.status_synced",
-            );
-        } catch (error) {
-            reportClientError(
-                error,
-                "module.nextcloud_whiteboard.status_sync_failed",
-            );
-        } finally {
-            saveButton.disabled = false;
-        }
-    });
-}
-
 function connectSocket(io, session, canvas) {
     const { serverUrl, roomId, token } = session;
     const canWrite = session.canWrite === true;
@@ -296,7 +255,7 @@ function connectSocket(io, session, canvas) {
         }
     }, EMIT_DEBOUNCE_MS);
     const emitChanges = throttleLatest(
-        (elements, type = SYNC_MESSAGE_SCENE_INIT) => {
+        (elements, type = SYNC_MESSAGE_SCENE_INIT, transient = false) => {
             if (!canWrite) return;
             if (!socket.connected || !joinedRoom) {
                 setSyncStatus(
@@ -312,7 +271,7 @@ function connectSocket(io, session, canvas) {
             socket.emit(
                 "server-broadcast",
                 roomId,
-                encodeSceneMessage(type, elements),
+                encodeSceneMessage(type, elements, { transient }),
                 [],
             );
             if (session.disposable) {
@@ -338,7 +297,13 @@ function connectSocket(io, session, canvas) {
         composer?.refreshPresence?.();
         if (meta?.transient !== true) setDisposableSaveDirty(session, true);
         if (canWrite && meta?.transient !== true) persistChanges(elements);
-        if (canWrite) emitChanges(elements, SYNC_MESSAGE_SCENE_UPDATE);
+        if (canWrite) {
+            emitChanges(
+                elements,
+                SYNC_MESSAGE_SCENE_UPDATE,
+                meta?.transient === true,
+            );
+        }
     });
     socket.on("connect", () => {
         lastConnectionToast = "";
@@ -396,18 +361,16 @@ function connectSocket(io, session, canvas) {
             if (
                 (message.type === SYNC_MESSAGE_SCENE_INIT ||
                     message.type === SYNC_MESSAGE_SCENE_UPDATE) &&
-                Array.isArray(message.payload?.elements)
+                applyRemoteSceneUpdate({
+                    message,
+                    canvas,
+                    session,
+                    canWrite,
+                    persistChanges,
+                    setDisposableSaveDirty,
+                })
             ) {
-                canvas.applyElements(message.payload.elements, {
-                    replace: false,
-                });
-                const mergedElements = canvas.getElements();
-                savedElements = mergedElements;
-                if (message.type === SYNC_MESSAGE_SCENE_UPDATE) {
-                    setDisposableSaveDirty(session, true);
-                    emitSceneSnapshot();
-                }
-                if (canWrite) persistChanges(mergedElements);
+                savedElements = canvas.getElements();
             }
         } catch (error) {
             console.warn(
@@ -442,145 +405,22 @@ async function createAndOpenBoard() {
 }
 
 function bindCanvasToolbar(canvas) {
-    const toolbar = withinMount("#whiteboard-toolbar");
-    if (!toolbar || toolbar.dataset.bound === "true") return;
-    toolbar.dataset.bound = "true";
-    if (!withinMount("#whiteboard-tool-lock")) {
-        const historyButton = withinMount("#whiteboard-history");
-        historyButton?.insertAdjacentHTML(
-            "afterend",
-            `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translateModuleString("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translateModuleString("module.nextcloud_whiteboard.tool_lock"))}">🔒</button>`,
-        );
-    }
-    toolbar
-        .querySelectorAll(".whiteboard-toolbar-group[hidden]")
-        .forEach((element) => {
-            element.hidden = false;
-        });
-    const strokeTools = new Set([
-        "pen",
-        "rectangle",
-        "diamond",
-        "ellipse",
-        "line",
-        "arrow",
-    ]);
-    let selectedElement = null;
-    let activeTool = "select";
-    let keepToolActive = false;
-    function activateTool(tool) {
-        activeTool = tool;
-        toolbar.querySelectorAll("[data-tool]").forEach((btn) => {
-            btn.classList.toggle("active", btn.dataset.tool === tool);
-        });
-        updateStyleControls();
-    }
-    function selectedCanUseStrokeWidth() {
-        return Boolean(selectedElement?.strokeWidthApplicable);
-    }
-    function activeToolCanUseStrokeWidth() {
-        return strokeTools.has(activeTool);
-    }
-    function updateStyleControls() {
-        const strokeSelect = withinMount("#whiteboard-stroke-width");
-        if (strokeSelect) {
-            strokeSelect.disabled = !(
-                selectedCanUseStrokeWidth() || activeToolCanUseStrokeWidth()
-            );
-            if (selectedCanUseStrokeWidth()) {
-                strokeSelect.value = String(selectedElement.strokeWidth ?? 4);
-            }
-        }
-    }
-    const undoButton = withinMount("#whiteboard-undo");
-    const redoButton = withinMount("#whiteboard-redo");
-    function updateHistoryControls() {
-        if (undoButton) undoButton.disabled = !canvas.canUndo?.();
-        if (redoButton) redoButton.disabled = !canvas.canRedo?.();
-    }
-    toolbar.querySelectorAll("[data-tool]").forEach((button) => {
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const tool = button.dataset.tool;
-            activateTool(tool);
-            canvas.setTool(tool);
-        });
-    });
-    canvas.onToolChange?.((tool) => activateTool(tool));
-    canvas.onHistoryChange?.(updateHistoryControls);
-    const lockButton = withinMount("#whiteboard-tool-lock");
-    lockButton?.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        keepToolActive = !keepToolActive;
-        lockButton.classList.toggle("active", keepToolActive);
-        lockButton.setAttribute("aria-pressed", String(keepToolActive));
-        canvas.setKeepToolActive?.(keepToolActive);
-    });
-    withinMount("#whiteboard-new")?.addEventListener(
-        "click",
-        () => void createAndOpenBoard(),
-    );
-    withinMount("#whiteboard-history")?.addEventListener(
-        "click",
-        () => void openHistoryPopup(),
-    );
-    undoButton?.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        canvas.undo?.();
-        updateHistoryControls();
-    });
-    redoButton?.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        canvas.redo?.();
-        updateHistoryControls();
-    });
-    bindShareButton(toolbar);
-    if (canRenameActiveBoard()) {
-        withinMount("#whiteboard-board-title")?.addEventListener(
-            "dblclick",
-            () => void renameActiveBoard(),
-        );
-    }
-    const colorInput = withinMount("#whiteboard-color");
-    const themeStrokeColor = () =>
-        getComputedStyle(pageMountRoot).getPropertyValue("--text").trim() ||
-        "#111827";
-    if (colorInput) {
-        colorInput.value = themeStrokeColor();
-        canvas.setStrokeColor("auto");
-    }
-    colorInput?.addEventListener("input", () => {
-        canvas.setStrokeColor(colorInput.value);
-    });
-    const strokeSelect = withinMount("#whiteboard-stroke-width");
-    strokeSelect?.addEventListener("change", () => {
-        canvas.setStrokeWidth(strokeSelect.value);
-    });
-    canvas.onSelectionChange?.((element) => {
-        selectedElement = element;
-        if (colorInput && element?.strokeColor) {
-            colorInput.value =
-                element.strokeColor === "auto"
-                    ? themeStrokeColor()
-                    : element.strokeColor;
-        }
-        updateStyleControls();
-        composer?.refreshPresence?.();
-    });
-    updateStyleControls();
-    withinMount("#whiteboard-clear")?.addEventListener(
-        "click",
-        async (event) => {
-            event.preventDefault();
-            if (!(await confirmClearCanvas(translateModuleString))) return;
-            canvas.clearAll();
+    bindWhiteboardCanvasToolbar({
+        canvas,
+        canRename: canRenameActiveBoard,
+        escapeHtml,
+        mountRoot: pageMountRoot,
+        onBindShareButton: bindShareButton,
+        onClear: () => {
             savedElements = [];
         },
-    );
+        onCreateBoard: createAndOpenBoard,
+        onHistory: openHistoryPopup,
+        onRename: renameActiveBoard,
+        onSelectionChange: () => composer?.refreshPresence?.(),
+        translate: translateModuleString,
+        withinMount,
+    });
 }
 
 async function bindShareButton(toolbar) {

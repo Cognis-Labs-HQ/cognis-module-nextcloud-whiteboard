@@ -235,16 +235,19 @@
     background: var(--success, #2d9e5c);
     border-radius: 999px;
     color: #fff;
+    display: none;
     font-size: 0.75rem;
     opacity: 0;
     padding: 0.2rem 0.55rem;
     transform: translateX(0.75rem) scale(0.8);
+    white-space: nowrap;
 }
 
 .whiteboard-canvas-wrap
     .whiteboard-save-state:has(.whiteboard-save-confirmed)
     .whiteboard-saved-pill {
     animation: whiteboard-saved-pill 1.4s ease both;
+    display: inline-block;
 }
 
 .whiteboard-canvas-wrap .whiteboard-save-confirmed {

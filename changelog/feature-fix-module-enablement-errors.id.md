@@ -1,0 +1,67 @@
+# Instalasi andal dan konfigurasi sebelum pengaktifan
+
+**Cabang Fitur:** feature-fix-module-enablement-errors
+
+## Konfigurasi tersedia sebelum pengaktifan
+
+Nextcloud Whiteboard memisahkan komponen inti Cognis yang diperlukan dari dependensi modul eksternal agar Cognis dapat menerapkan aturan siklus hidup yang tepat untuk setiap jenis dependensi.
+
+## Inventaris integritas yang dapat diinstal
+
+Inventaris berkas paket kini mencakup berkas reguler yang dapat diinstal dan mengecualikan tautan khusus repositori yang tidak dapat diunduh oleh penginstal modul.
+
+## Pertahankan symlink petunjuk kontribusi
+
+Petunjuk kontribusi tetap ditautkan ke petunjuk repositori kanonis, sedangkan inventaris modul yang dapat diunduh sengaja mengecualikan tautan khusus repositori tersebut.
+
+## Instal tanpa meminta symlink repositori
+
+Manifes yang dapat diunduh kini mengecualikan symlink petunjuk kontribusi karena API berkas repositori tidak menyediakannya sebagai berkas modul yang dapat diinstal. Symlink tersebut tetap tidak berubah di repositori.
+
+## Selaraskan metadata dependensi dengan Cognis
+
+UUID komponen inti tetap berada di `requires`, sedangkan bidang baru `hardDependencies` dan `softDependencies` secara tegas menyatakan bahwa Nextcloud Whiteboard tidak memiliki dependensi instalasi modul eksternal.
+
+## Gunakan ruang umpan balik simpan hanya saat terlihat
+
+Pil Tersimpan tidak lagi menyediakan ruang bilah alat saat tersembunyi. Pil masuk ke tata letak selama animasi konfirmasi dan kembali dihapus setelah animasi selesai.
+
+## Simpan hanya perubahan kanvas nyata
+
+Klik yang hanya memilih tidak lagi memancarkan peristiwa perubahan konten sehingga mengeklik kanvas yang tidak berubah tidak memicu penyimpanan atau umpan balik Tersimpan.
+
+## Pertahankan gambar yang sedang dibuat hanya untuk pengguna lain
+
+Draf gambar ditandai sebagai pembaruan kolaborasi sementara dan dirender pada lapisan draf jarak jauh yang terpisah. Draf dikecualikan dari snapshot tersimpan dan respons snapshot rekan sehingga pembuat tidak melihat bayangan objeknya sendiri yang dikirim kembali.
+
+## Pertahankan pratinjau kolaborasi sebagai sementara
+
+Pemindahan, pengubahan ukuran, dan penyuntingan teks langsung kini tetap berada di lapisan pratinjau jarak jauh alih-alih masuk ke adegan persisten. Pratinjau gambar yang ditinggalkan dibatalkan bila memungkinkan dan kedaluwarsa secara otomatis setelah kolaborator terputus berhenti memperbaruinya.
+
+## Tampilkan hanya penyuntingan kolaboratif terbaru
+
+Saat kolaborator lain menyunting objek yang sudah dipilih, pratinjau langsung kini menggantikan render stabil objek tersebut. Kanvas tidak lagi menampilkan keadaan awal yang dipilih dan penyuntingan yang sedang berlangsung secara bersamaan.
+
+## Pulihkan jarak bagian aplikasi
+
+Baris kosong kembali memisahkan penyiapan pengontrol dan fungsi tingkat atas aplikasi papan tulis, sehingga struktur yang mudah dibaca tetap terjaga setelah refaktor terbaru.
+
+## Komit
+
+- [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
+
+- [d41face](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d41face059249b7eae205a499f487a744b32225b)
+
+- [69f81cf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/69f81cf0d45b915e02ccb51c2747ea42cb5f4bbf)
+
+- [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
+
+- [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
+
+- [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
+
+- [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
+
+- [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)
+
+- [4cfcaa0](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4cfcaa0911c15083d23d2ca3bfb286dc1ff7788d)

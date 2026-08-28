@@ -34,6 +34,10 @@ Selection-only clicks no longer emit a content-change event, so clicking an unch
 
 Drawing drafts are marked as transient collaboration updates and rendered in a separate remote-draft layer. They are excluded from saved snapshots and peer snapshot responses, preventing creators from seeing a returned ghost of their own object.
 
+## Keep collaboration previews temporary
+
+Live moves, resizes, and text edits now remain in the remote preview layer instead of entering the persistent scene. Abandoned drawing previews are cancelled when possible and expire automatically after a disconnected collaborator stops updating them.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)

@@ -22,7 +22,9 @@ export function createWhiteboardCanvas(
 ) {
     const context = canvasElement.getContext("2d");
     let elements = [];
-    let remoteDraftElements = new Map();
+    const remoteDraftElements = drafts.createRemoteDraftStore({
+        onExpire: scheduleRender,
+    });
     let currentPoints = [];
     let draftElement = null;
     let isDrawing = false;
@@ -63,7 +65,6 @@ export function createWhiteboardCanvas(
             redraw();
         });
     }
-
     function redraw() {
         renderWhiteboardScene({
             activeTool,
@@ -83,19 +84,16 @@ export function createWhiteboardCanvas(
             viewportOffsetY,
         });
     }
-
     function cloneElements(items = elements) {
         return items.map((element) => ({
             ...element,
             points: element.points?.map((point) => [...point]),
         }));
     }
-
     function resizeCanvas() {
         if (!isDrawing) updateCanvasSize();
         scheduleRender();
     }
-
     function updateCanvasSize() {
         const parent = canvasElement.parentElement;
         const rect = parent?.getBoundingClientRect();
@@ -107,7 +105,6 @@ export function createWhiteboardCanvas(
         canvasElement.style.width = `${width}px`;
         canvasElement.style.height = `${height}px`;
     }
-
     function getCanvasPoint(event) {
         const rect = canvasElement.getBoundingClientRect();
         return [
@@ -733,6 +730,7 @@ export function createWhiteboardCanvas(
                 bumpElementVersion(draftElement, { isTransient: false }),
             );
         }
+        const abandonedDraft = draftElement?.id;
         currentPoints = [];
         draftElement = null;
         dragStartPoint = null;
@@ -744,6 +742,8 @@ export function createWhiteboardCanvas(
         dragSelectBox = null;
         selectDragMode = null;
         scheduleRender();
+        if (abandonedDraft && !elements.some(({ id }) => id === abandonedDraft))
+            notifyTransientChange();
     }
 
     function onDoubleClick(event) {
@@ -870,19 +870,23 @@ export function createWhiteboardCanvas(
         getViewportOffset() {
             return { x: viewportOffsetX, y: viewportOffsetY };
         },
-        applyElements(remoteElements, { replace = false } = {}) {
+        applyElements(
+            remoteElements,
+            { replace = false, transient = false } = {},
+        ) {
+            if (transient) {
+                remoteDraftElements.reconcile(remoteElements, elements);
+                scheduleRender();
+                return;
+            }
             const stableRemoteElements = remoteElements.filter(
                 (element) => element?.isTransient !== true,
             );
-            for (const element of remoteElements) {
-                if (element?.isTransient === true && element.id) {
-                    remoteDraftElements.set(element.id, element);
-                } else if (element?.id) {
-                    remoteDraftElements.delete(element.id);
-                }
+            for (const element of stableRemoteElements) {
+                if (element?.id) remoteDraftElements.delete(element.id);
             }
             if (replace) {
-                remoteDraftElements = new Map();
+                remoteDraftElements.clear();
                 elements = cloneElements(stableRemoteElements);
                 updateCanvasSize();
                 selectedElementIds = new Set(

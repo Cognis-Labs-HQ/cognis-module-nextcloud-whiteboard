@@ -34,6 +34,10 @@ Klik yang hanya memilih tidak lagi memancarkan peristiwa perubahan konten sehing
 
 Draf gambar ditandai sebagai pembaruan kolaborasi sementara dan dirender pada lapisan draf jarak jauh yang terpisah. Draf dikecualikan dari snapshot tersimpan dan respons snapshot rekan sehingga pembuat tidak melihat bayangan objeknya sendiri yang dikirim kembali.
 
+## Pertahankan pratinjau kolaborasi sebagai sementara
+
+Pemindahan, pengubahan ukuran, dan penyuntingan teks langsung kini tetap berada di lapisan pratinjau jarak jauh alih-alih masuk ke adegan persisten. Pratinjau gambar yang ditinggalkan dibatalkan bila memungkinkan dan kedaluwarsa secara otomatis setelah kolaborator terputus berhenti memperbaruinya.
+
 ## Komit
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)

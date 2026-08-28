@@ -7,9 +7,12 @@ export function applyRemoteSceneUpdate({
     setDisposableSaveDirty,
 }) {
     if (!Array.isArray(message.payload?.elements)) return false;
-    canvas.applyElements(message.payload.elements, { replace: false });
-    const mergedElements = canvas.getElements();
     const transientUpdate = message.payload.transient === true;
+    canvas.applyElements(message.payload.elements, {
+        replace: false,
+        transient: transientUpdate,
+    });
+    const mergedElements = canvas.getElements();
     if (!transientUpdate && message.type === "SCENE_UPDATE") {
         setDisposableSaveDirty(session, true);
     }

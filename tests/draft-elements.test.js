@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
     canFinalizeDrawing,
+    createRemoteDraftStore,
     createDrawingDraft,
     preserveDraftIdentity,
 } from "../ui/whiteboard/reuse/draft-elements.js";
@@ -62,4 +63,45 @@ test("scene messages identify in-flight drawing updates", () => {
 
     assert.equal(message.payload.transient, true);
     assert.deepEqual(message.payload.elements, elements);
+});
+
+test("remote drafts expire if their creator abandons the update", () => {
+    let expiration;
+    let expired = 0;
+    const store = createRemoteDraftStore({
+        schedule(callback) {
+            expiration = callback;
+            return 1;
+        },
+        cancel() {},
+        onExpire() {
+            expired += 1;
+        },
+    });
+
+    store.set({ id: "abandoned-draft" });
+    assert.equal(store.has("abandoned-draft"), true);
+
+    expiration();
+    assert.equal(store.has("abandoned-draft"), false);
+    assert.equal(expired, 1);
+});
+
+test("transient edits remain previews without replacing stable elements", () => {
+    const store = createRemoteDraftStore({
+        schedule: () => 1,
+        cancel() {},
+    });
+    const stable = [{ id: "shape", version: 2, x: 10 }];
+
+    store.reconcile([{ id: "shape", version: 3, x: 20 }], stable);
+    assert.deepEqual(store.get("shape"), {
+        id: "shape",
+        version: 3,
+        x: 20,
+    });
+    assert.deepEqual(stable, [{ id: "shape", version: 2, x: 10 }]);
+
+    store.reconcile(stable, stable);
+    assert.equal(store.has("shape"), false);
 });

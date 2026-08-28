@@ -381,17 +381,14 @@ test("collaborative scenes merge remote edits before saving", async () => {
             ),
         ),
     );
-    assert.match(
-        sceneUpdatesSource,
-        /canvas\.applyElements\(message\.payload\.elements, \{ replace: false \}\)/,
-    );
+    assert.match(sceneUpdatesSource, /transient: transientUpdate/);
     assert.match(
         sceneUpdatesSource,
         /const mergedElements = canvas\.getElements\(\)/,
     );
     assert.match(sceneUpdatesSource, /persistChanges\(mergedElements\)/);
     assert.match(canvasSource, /element\.isDeleted/);
-    assert.match(canvasSource, /let remoteDraftElements = new Map\(\)/);
+    assert.match(canvasSource, /createRemoteDraftStore/);
     assert.match(
         canvasSource,
         /elements: \[\.\.\.elements, \.\.\.remoteDraftElements\.values\(\)\]/,

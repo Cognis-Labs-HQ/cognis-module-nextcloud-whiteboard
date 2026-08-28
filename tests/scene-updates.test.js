@@ -16,8 +16,8 @@ test("in-flight drawing updates stay out of persistence and save state", () => {
             },
         },
         canvas: {
-            applyElements(elements) {
-                applied.push(...elements);
+            applyElements(elements, options) {
+                applied.push({ elements, options });
             },
             getElements: () => [],
         },
@@ -32,7 +32,12 @@ test("in-flight drawing updates stay out of persistence and save state", () => {
     });
 
     assert.equal(handled, true);
-    assert.deepEqual(applied, [{ id: "remote-draft", isTransient: true }]);
+    assert.deepEqual(applied, [
+        {
+            elements: [{ id: "remote-draft", isTransient: true }],
+            options: { replace: false, transient: true },
+        },
+    ]);
     assert.equal(persistCalls, 0);
     assert.equal(dirtyCalls, 0);
 });

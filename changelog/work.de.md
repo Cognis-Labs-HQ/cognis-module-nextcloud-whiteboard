@@ -34,6 +34,10 @@ Reine Auswahlklicks lösen kein Inhaltsänderungsereignis mehr aus. Ein Klick au
 
 Zeichnungsentwürfe werden als vorübergehende Kollaborationsaktualisierungen gekennzeichnet und in einer separaten Ebene für entfernte Entwürfe dargestellt. Sie werden aus gespeicherten Momentaufnahmen und Antworten anderer Teilnehmer ausgeschlossen, damit Ersteller kein zurückgesendetes Geisterbild ihres eigenen Objekts sehen.
 
+## Vorschauen der Zusammenarbeit vorübergehend halten
+
+Laufende Verschiebungen, Größenänderungen und Textbearbeitungen bleiben nun in der entfernten Vorschauebene, statt in die dauerhafte Szene zu gelangen. Aufgegebene Zeichnungsvorschauen werden nach Möglichkeit abgebrochen und laufen automatisch ab, wenn getrennte Beteiligte sie nicht mehr aktualisieren.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)

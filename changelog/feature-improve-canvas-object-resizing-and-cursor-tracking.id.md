@@ -1,5 +1,7 @@
 # Kolaborasi papan tulis langsung yang lebih lancar
 
+**Cabang Fitur:** feature-improve-canvas-object-resizing-and-cursor-tracking
+
 ## Objek dicerminkan saat ukurannya melewati sumbu
 
 Menyeret gagang pengubah ukuran melewati tepi yang berlawanan kini mencerminkan isi objek, bukan mengembalikan orientasi sebelumnya.
@@ -23,3 +25,11 @@ Membuka papan tulis normal kini secara tegas menonaktifkan tampilan komponen tan
 ## Jendela komponen tidak lagi mengubah kerangka halaman
 
 Jendela komponen papan tulis kini membiarkan mode kerangka halaman tanpa batas tetap nonaktif dan menyerahkan pembingkaian kepada jendela host, sehingga navigasi SPA tidak membawa tampilan rapat ke halaman lain.
+
+## Komit
+
+- [c0e93b3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c0e93b392d2aa3ffcc90fdcff149c1cff6fca293)
+- [9b08604](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/9b0860479c280d624734d9415327517ea59926a5)
+- [a64b94c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a64b94c3ffd36d56d3f4355d18476b932bd05053)
+- [93d0d8a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/93d0d8aa5fcdc7c89eae71208dfada5a6f2d40f4)
+- [bdc7b97](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bdc7b97b510fdd96c816be51df907f7358cb6332)

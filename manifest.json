@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.74",
+    "version": "2.3.77",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -107,6 +107,10 @@
             "sha256": "8fafead6e01dbab777528e72d1ce924ff3d8e0bd250d21a0a29116fe1ef7ed44"
         },
         {
+            "path": ".github/copilot-instructions.md",
+            "sha256": "687d079e9482ba8a0d93a0cd752bbf6b5ec4b31bb8594c146336c58479ae8f15"
+        },
+        {
             "path": ".gitignore",
             "sha256": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97"
         },
@@ -120,7 +124,7 @@
         },
         {
             "path": "AGENTS.md",
-            "sha256": "6c8241bf4681aef09af5f9b2b1d2db1b5df69e5e56bff5ff3d0a06edbf67b5df"
+            "sha256": "687d079e9482ba8a0d93a0cd752bbf6b5ec4b31bb8594c146336c58479ae8f15"
         },
         {
             "path": "LICENSE",
@@ -248,11 +252,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "920bed107c3da6260c9ad20435a6370ec06b73d3e2afb156d6209b621eb12e20"
+            "sha256": "13870c6d72d3eb59fde9c75701be4fef5788a8eb51a476ac577d33af03f04183"
         },
         {
             "path": "package.json",
-            "sha256": "a64e567cf4b9dfffe5c349517078f3d48b14bc99ec750233eda66c9e203c133f"
+            "sha256": "b6c81b948e06e939ccc4f6a5627ace4b646bb41d83fe0861937f0a7aa4e96596"
         },
         {
             "path": "routes.json",
@@ -280,7 +284,7 @@
         },
         {
             "path": "tests/documentation-convention.test.js",
-            "sha256": "4b8db59e7d7ec21e6cac9f623ffd1f66f2374295eb97cb6828b4985cff7acd40"
+            "sha256": "fe00acad806f4b01b05a3a570363ac429eeefdcb00a0db27f00f308ab8bef35c"
         },
         {
             "path": "tests/draft-elements.test.js",

@@ -1,5 +1,7 @@
 # より滑らかなホワイトボードのリアルタイム共同作業
 
+**機能ブランチ:** feature-improve-canvas-object-resizing-and-cursor-tracking
+
 ## 軸を越えてサイズ変更したオブジェクトを反転
 
 サイズ変更ハンドルを反対側の辺までドラッグすると、以前の向きに戻さず、オブジェクトの内容を反転するようになりました。
@@ -23,3 +25,11 @@
 ## コンポーネントウィンドウがページシェルを変更しないように改善
 
 ホワイトボードのコンポーネントウィンドウではページコンポーザーの境界線なしモードを無効のままにし、枠の表示をホストウィンドウに任せるようになりました。これにより、SPA ナビゲーション後の別ページにミーティング表示が引き継がれることを防ぎます。
+
+## コミット
+
+- [c0e93b3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c0e93b392d2aa3ffcc90fdcff149c1cff6fca293)
+- [9b08604](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/9b0860479c280d624734d9415327517ea59926a5)
+- [a64b94c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a64b94c3ffd36d56d3f4355d18476b932bd05053)
+- [93d0d8a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/93d0d8aa5fcdc7c89eae71208dfada5a6f2d40f4)
+- [bdc7b97](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bdc7b97b510fdd96c816be51df907f7358cb6332)

@@ -84,11 +84,6 @@ test("localized changelogs identify their branch and linked commits", () => {
             new RegExp(`^\\*\\*${branchLabel}:\\*\\* \\S+$`, "m"),
         );
 
-        if (
-            path.includes(`${relative(ROOT, resolve(ROOT, "changelog/work"))}.`)
-        ) {
-            continue;
-        }
         assert.match(markdown, new RegExp(`^## ${commitsLabel}$`, "m"));
         assert.match(
             markdown,

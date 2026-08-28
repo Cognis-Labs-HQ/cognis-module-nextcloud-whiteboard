@@ -10,6 +10,11 @@ Entri changelog yang dilokalkan kini mencantumkan cabang fiturnya dan menautkan 
 
 Instruksi untuk agent dan Copilot kini menggunakan alur asal perubahan changelog yang sama, termasuk aturan komit pembukuan khusus.
 
+## Jaga keselarasan instruksi kontributor
+
+`AGENTS.md` kembali menjadi tautan simbolis ke `.github/copilot-instructions.md`, sehingga agent dan Copilot selalu menggunakan satu sumber instruksi repositori yang berwenang.
+
 ## Komit
 
 - [60c6013](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/60c601382c9fc4a5dca2276968a837b582ed54d9)
+- [1d0c88c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/1d0c88c390440db34cfe61ce33164ce9074f7296)

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, lstatSync } from "node:fs";
 import { access, readFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 
@@ -41,7 +41,7 @@ const expectedPaths = execFileSync(
             path !== "README.md" &&
             !path.startsWith("changelog/") &&
             existsSync(path) &&
-            statSync(path).isFile(),
+            lstatSync(path).isFile(),
     )
     .sort();
 const packagedPaths = manifest.files.map((file) => file.path).sort();

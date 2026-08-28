@@ -31,10 +31,10 @@ test("module manifest excludes changelog entries from packaged hashes", () => {
     );
 });
 
-test("module manifest includes the contributor instructions", () => {
+test("module manifest excludes repository symlinks", () => {
     assert.equal(
         manifest.files.some(({ path }) => path === "AGENTS.md"),
-        true,
+        false,
     );
 });
 

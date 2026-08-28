@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.81",
+    "version": "2.3.82",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -118,10 +118,6 @@
         {
             "path": ".prettierrc",
             "sha256": "fa9273146be8edfd6bbddaff9d0654effb7b4cd67c6163b67e971195d796ead3"
-        },
-        {
-            "path": "AGENTS.md",
-            "sha256": "687d079e9482ba8a0d93a0cd752bbf6b5ec4b31bb8594c146336c58479ae8f15"
         },
         {
             "path": "LICENSE",
@@ -249,11 +245,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "9bd591f2f74bee277e3db8928a9f109a87f708e9f36c00f5dcf1d28a322ba476"
+            "sha256": "8c706ccb1c664bc3928e932432779b7e994ad5d8413172e9d3f1d5b074a7b584"
         },
         {
             "path": "package.json",
-            "sha256": "16cbea9edc07885ac99fac08179aa27ba7a75f18e3fa640b88432f975c0a3038"
+            "sha256": "fa7686da746496b0e19e54b9df6827b3d996782dabe323df3bdf1da056b788b1"
         },
         {
             "path": "routes.json",
@@ -261,11 +257,11 @@
         },
         {
             "path": "scripts/update-manifest-hashes.js",
-            "sha256": "a558c2909981a73f394a9478f09f8f591c09be2dc745f54b6d855c889692b5e5"
+            "sha256": "fbb61588d051d6705592f2667a864f2f263da922cd8b4062e6afe27530842b4b"
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "bd663481003678b9636c258c5589e1b848374aee1ad9d1b1bb1f23520c5669d1"
+            "sha256": "cdfb9e8943bdb5d52cf8f253fba355e701eab6278b84830c44a6789608a20ffb"
         },
         {
             "path": "tests/ambiguous-names.test.js",
@@ -301,7 +297,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "e01d51601cce1c22c6329eb07e6a7b53d682907fd2cbd88fa15c93e882bd6438"
+            "sha256": "755604cbfc7dbef8e1846ce6afb5fbef5c5d7f178b5f14b91f0a0b6275b3a26e"
         },
         {
             "path": "tests/overlay.test.js",

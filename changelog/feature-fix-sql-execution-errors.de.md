@@ -1,6 +1,6 @@
 # Zuverlässige Initialisierung der Whiteboard-Datenbank
 
-**Feature-Zweig:** work
+**Feature-Zweig:** feature-fix-sql-execution-errors
 
 ## Gleichzeitige Schemaerstellung verhindern
 

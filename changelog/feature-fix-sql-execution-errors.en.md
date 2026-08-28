@@ -1,6 +1,6 @@
 # Reliable whiteboard database initialization
 
-**Feature Branch:** work
+**Feature Branch:** feature-fix-sql-execution-errors
 
 ## Prevent concurrent schema creation
 

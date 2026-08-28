@@ -30,6 +30,10 @@ Pil Tersimpan tidak lagi menyediakan ruang bilah alat saat tersembunyi. Pil masu
 
 Klik yang hanya memilih tidak lagi memancarkan peristiwa perubahan konten sehingga mengeklik kanvas yang tidak berubah tidak memicu penyimpanan atau umpan balik Tersimpan.
 
+## Pertahankan gambar yang sedang dibuat hanya untuk pengguna lain
+
+Draf gambar ditandai sebagai pembaruan kolaborasi sementara dan dirender pada lapisan draf jarak jauh yang terpisah. Draf dikecualikan dari snapshot tersimpan dan respons snapshot rekan sehingga pembuat tidak melihat bayangan objeknya sendiri yang dikirim kembali.
+
 ## Komit
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -41,3 +45,5 @@ Klik yang hanya memilih tidak lagi memancarkan peristiwa perubahan konten sehing
 - [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
 
 - [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
+
+- [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)

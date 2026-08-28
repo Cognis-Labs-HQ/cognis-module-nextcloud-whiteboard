@@ -49,8 +49,8 @@ export function encodeSyncMessage(type, payload = {}) {
     return new TextEncoder().encode(JSON.stringify({ type, payload }));
 }
 
-export function encodeSceneMessage(type, elements) {
-    return encodeSyncMessage(type, { elements });
+export function encodeSceneMessage(type, elements, { transient = false } = {}) {
+    return encodeSyncMessage(type, { elements, transient });
 }
 
 export function decodeSceneMessage(payload) {

@@ -5,6 +5,7 @@ import {
     createDrawingDraft,
     preserveDraftIdentity,
 } from "../ui/whiteboard/reuse/draft-elements.js";
+import { decodeSceneMessage, encodeSceneMessage } from "../ui/app/realtime.js";
 
 test("drawing drafts keep one collaborative identity through pointer movement", () => {
     const initial = preserveDraftIdentity(
@@ -51,4 +52,14 @@ test("drawing drafts keep one collaborative identity through pointer movement", 
         }),
         true,
     );
+});
+
+test("scene messages identify in-flight drawing updates", () => {
+    const elements = [{ id: "draft", isTransient: true }];
+    const message = decodeSceneMessage(
+        encodeSceneMessage("SCENE_UPDATE", elements, { transient: true }),
+    );
+
+    assert.equal(message.payload.transient, true);
+    assert.deepEqual(message.payload.elements, elements);
 });

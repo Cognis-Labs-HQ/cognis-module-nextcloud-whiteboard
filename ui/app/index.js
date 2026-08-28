@@ -26,6 +26,7 @@ import {
     loadSocketIo,
     throttleLatest,
 } from "./realtime.js";
+import { applyRemoteSceneUpdate } from "./reuse/scene-updates.js";
 import {
     applyRemotePresenceSelections,
     getPointerOffset,
@@ -112,11 +113,9 @@ const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
     getSavedElements: () => savedElements,
     translate: translateModuleString,
 });
-
 async function loadBoards() {
     boards = await fetchWhiteboardList();
 }
-
 function teardownCanvas() {
     shareControlDispose?.();
     shareControlDispose = null;
@@ -147,13 +146,11 @@ function teardownCanvas() {
     runtimeDispose?.();
     runtimeDispose = null;
 }
-
 function canRenameActiveBoard() {
     return Boolean(
         !integrationCanvasMode && activeSession?.canRename && activeBoard?.id,
     );
 }
-
 function applyBoardTitle(title) {
     const normalizedTitle = String(title ?? "").trim();
     if (!normalizedTitle) return;
@@ -167,7 +164,6 @@ function applyBoardTitle(title) {
         titleEl.textContent = normalizedTitle;
     }
 }
-
 function emitBoardRenamed(title) {
     if (!socketInstance?.connected || !activeSession?.roomId) return;
     socketInstance.emit(
@@ -296,7 +292,7 @@ function connectSocket(io, session, canvas) {
         }
     }, EMIT_DEBOUNCE_MS);
     const emitChanges = throttleLatest(
-        (elements, type = SYNC_MESSAGE_SCENE_INIT) => {
+        (elements, type = SYNC_MESSAGE_SCENE_INIT, transient = false) => {
             if (!canWrite) return;
             if (!socket.connected || !joinedRoom) {
                 setSyncStatus(
@@ -312,7 +308,7 @@ function connectSocket(io, session, canvas) {
             socket.emit(
                 "server-broadcast",
                 roomId,
-                encodeSceneMessage(type, elements),
+                encodeSceneMessage(type, elements, { transient }),
                 [],
             );
             if (session.disposable) {
@@ -338,7 +334,13 @@ function connectSocket(io, session, canvas) {
         composer?.refreshPresence?.();
         if (meta?.transient !== true) setDisposableSaveDirty(session, true);
         if (canWrite && meta?.transient !== true) persistChanges(elements);
-        if (canWrite) emitChanges(elements, SYNC_MESSAGE_SCENE_UPDATE);
+        if (canWrite) {
+            emitChanges(
+                elements,
+                SYNC_MESSAGE_SCENE_UPDATE,
+                meta?.transient === true,
+            );
+        }
     });
     socket.on("connect", () => {
         lastConnectionToast = "";
@@ -396,18 +398,16 @@ function connectSocket(io, session, canvas) {
             if (
                 (message.type === SYNC_MESSAGE_SCENE_INIT ||
                     message.type === SYNC_MESSAGE_SCENE_UPDATE) &&
-                Array.isArray(message.payload?.elements)
+                applyRemoteSceneUpdate({
+                    message,
+                    canvas,
+                    session,
+                    canWrite,
+                    persistChanges,
+                    setDisposableSaveDirty,
+                })
             ) {
-                canvas.applyElements(message.payload.elements, {
-                    replace: false,
-                });
-                const mergedElements = canvas.getElements();
-                savedElements = mergedElements;
-                if (message.type === SYNC_MESSAGE_SCENE_UPDATE) {
-                    setDisposableSaveDirty(session, true);
-                    emitSceneSnapshot();
-                }
-                if (canWrite) persistChanges(mergedElements);
+                savedElements = canvas.getElements();
             }
         } catch (error) {
             console.warn(

@@ -30,6 +30,10 @@ The Saved pill no longer reserves toolbar space while hidden. It enters the layo
 
 Selection-only clicks no longer emit a content-change event, so clicking an unchanged canvas does not trigger persistence or Saved feedback.
 
+## Keep in-flight drawings remote-only
+
+Drawing drafts are marked as transient collaboration updates and rendered in a separate remote-draft layer. They are excluded from saved snapshots and peer snapshot responses, preventing creators from seeing a returned ghost of their own object.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -41,3 +45,5 @@ Selection-only clicks no longer emit a content-change event, so clicking an unch
 - [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
 
 - [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
+
+- [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)

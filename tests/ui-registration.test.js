@@ -370,21 +370,45 @@ test("drawing starts before canvas focus can move the viewport", async () => {
 });
 
 test("collaborative scenes merge remote edits before saving", async () => {
-    const [appSource, canvasSource] = await Promise.all(
-        ["../ui/app/index.js", "../ui/whiteboard/canvas.js"].map(
-            (relativePath) =>
-                import("node:fs/promises").then((fs) =>
-                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
-                ),
+    const [appSource, canvasSource, sceneUpdatesSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/whiteboard/canvas.js",
+            "../ui/app/reuse/scene-updates.js",
+        ].map((relativePath) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
+            ),
         ),
     );
     assert.match(
-        appSource,
-        /canvas\.applyElements\(message\.payload\.elements, \{\s*replace: false/s,
+        sceneUpdatesSource,
+        /canvas\.applyElements\(message\.payload\.elements, \{ replace: false \}\)/,
     );
-    assert.match(appSource, /const mergedElements = canvas\.getElements\(\)/);
-    assert.match(appSource, /persistChanges\(mergedElements\)/);
+    assert.match(
+        sceneUpdatesSource,
+        /const mergedElements = canvas\.getElements\(\)/,
+    );
+    assert.match(sceneUpdatesSource, /persistChanges\(mergedElements\)/);
     assert.match(canvasSource, /element\.isDeleted/);
+    assert.match(canvasSource, /let remoteDraftElements = new Map\(\)/);
+    assert.match(
+        canvasSource,
+        /elements: \[\.\.\.elements, \.\.\.remoteDraftElements\.values\(\)\]/,
+    );
+    assert.match(
+        canvasSource,
+        /stableRemoteElements = remoteElements\.filter\(/,
+    );
+    assert.match(
+        sceneUpdatesSource,
+        /const transientUpdate = message\.payload\.transient/,
+    );
+    assert.match(sceneUpdatesSource, /if \(canWrite && !transientUpdate\)/);
+    assert.doesNotMatch(
+        appSource,
+        /message\.type === SYNC_MESSAGE_SCENE_UPDATE[\s\S]{0,180}emitSceneSnapshot\(\)/,
+    );
 });
 
 test("joining collaborators request a scene from peers after reconnecting", async () => {
@@ -406,10 +430,6 @@ test("joining collaborators request a scene from peers after reconnecting", asyn
     assert.match(
         appSource,
         /socket\.on\("user-joined",[\s\S]*if \(joinedRoom\) emitSceneSnapshot\(\)/,
-    );
-    assert.match(
-        appSource,
-        /message\.type === SYNC_MESSAGE_SCENE_UPDATE[\s\S]*emitSceneSnapshot\(\)/,
     );
     const snapshotSource = appSource.slice(
         appSource.indexOf("const emitSceneSnapshot"),

@@ -30,6 +30,10 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 
 選択だけを行うクリックではコンテンツ変更イベントを送信しなくなり、変更のないキャンバスをクリックしても永続化や保存通知は実行されません。
 
+## 描画中のオブジェクトを他の参加者だけに表示
+
+描画中の下書きを一時的な共同編集更新として識別し、リモート下書き専用レイヤーで描画します。保存済みスナップショットや参加者からのスナップショット応答には含めないため、作成者に自分のオブジェクトの残像が返されません。
+
 ## コミット
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -41,3 +45,5 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 - [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
 
 - [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
+
+- [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)

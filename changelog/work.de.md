@@ -30,6 +30,10 @@ Die „Gespeichert“-Anzeige reserviert im ausgeblendeten Zustand keinen Platz 
 
 Reine Auswahlklicks lösen kein Inhaltsänderungsereignis mehr aus. Ein Klick auf eine unveränderte Zeichenfläche startet daher weder die Speicherung noch die Speicherbestätigung.
 
+## Laufende Zeichnungen nur bei anderen anzeigen
+
+Zeichnungsentwürfe werden als vorübergehende Kollaborationsaktualisierungen gekennzeichnet und in einer separaten Ebene für entfernte Entwürfe dargestellt. Sie werden aus gespeicherten Momentaufnahmen und Antworten anderer Teilnehmer ausgeschlossen, damit Ersteller kein zurückgesendetes Geisterbild ihres eigenen Objekts sehen.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -41,3 +45,5 @@ Reine Auswahlklicks lösen kein Inhaltsänderungsereignis mehr aus. Ein Klick au
 - [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
 
 - [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)
+
+- [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)

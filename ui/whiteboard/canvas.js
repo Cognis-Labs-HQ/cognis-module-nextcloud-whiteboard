@@ -22,6 +22,7 @@ export function createWhiteboardCanvas(
 ) {
     const context = canvasElement.getContext("2d");
     let elements = [];
+    let remoteDraftElements = new Map();
     let currentPoints = [];
     let draftElement = null;
     let isDrawing = false;
@@ -72,7 +73,7 @@ export function createWhiteboardCanvas(
             dragSelectBox,
             dragStartPoint,
             draftElement,
-            elements,
+            elements: [...elements, ...remoteDraftElements.values()],
             eraserSelectionIds,
             isDrawing,
             remoteSelections,
@@ -870,8 +871,19 @@ export function createWhiteboardCanvas(
             return { x: viewportOffsetX, y: viewportOffsetY };
         },
         applyElements(remoteElements, { replace = false } = {}) {
+            const stableRemoteElements = remoteElements.filter(
+                (element) => element?.isTransient !== true,
+            );
+            for (const element of remoteElements) {
+                if (element?.isTransient === true && element.id) {
+                    remoteDraftElements.set(element.id, element);
+                } else if (element?.id) {
+                    remoteDraftElements.delete(element.id);
+                }
+            }
             if (replace) {
-                elements = cloneElements(remoteElements);
+                remoteDraftElements = new Map();
+                elements = cloneElements(stableRemoteElements);
                 updateCanvasSize();
                 selectedElementIds = new Set(
                     [...selectedElementIds].filter((id) =>
@@ -890,7 +902,7 @@ export function createWhiteboardCanvas(
                 return;
             }
             const remoteById = new Map(
-                remoteElements.map((element) => [element.id, element]),
+                stableRemoteElements.map((element) => [element.id, element]),
             );
             const localById = new Map(
                 elements.map((element) => [element.id, element]),

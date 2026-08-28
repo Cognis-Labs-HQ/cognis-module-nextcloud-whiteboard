@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.77",
+    "version": "2.3.79",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -123,10 +123,6 @@
             "sha256": "fa9273146be8edfd6bbddaff9d0654effb7b4cd67c6163b67e971195d796ead3"
         },
         {
-            "path": "AGENTS.md",
-            "sha256": "687d079e9482ba8a0d93a0cd752bbf6b5ec4b31bb8594c146336c58479ae8f15"
-        },
-        {
             "path": "LICENSE",
             "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
         },
@@ -216,7 +212,7 @@
         },
         {
             "path": "api/store.js",
-            "sha256": "4b082a805d721e741d2f7eb69103b57834b2fdca2a607af283528689f405c739"
+            "sha256": "4662d80691429c0affb1ca8baa1734d0b7f9894134fe0f692265c32ecd944b67"
         },
         {
             "path": "assets/banner.png",
@@ -252,11 +248,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "13870c6d72d3eb59fde9c75701be4fef5788a8eb51a476ac577d33af03f04183"
+            "sha256": "f317979452f96d858b54cdfad5f18c7e11ba0f7484c5e1c378e42d6fa29f71c1"
         },
         {
             "path": "package.json",
-            "sha256": "b6c81b948e06e939ccc4f6a5627ace4b646bb41d83fe0861937f0a7aa4e96596"
+            "sha256": "67cb72177b6f445f64e35058d5e8914b93a357add57883b118851d744478b446"
         },
         {
             "path": "routes.json",
@@ -264,11 +260,11 @@
         },
         {
             "path": "scripts/update-manifest-hashes.js",
-            "sha256": "a558c2909981a73f394a9478f09f8f591c09be2dc745f54b6d855c889692b5e5"
+            "sha256": "fbb61588d051d6705592f2667a864f2f263da922cd8b4062e6afe27530842b4b"
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "9bac9e8068f04044c272cb4f18ebfecceeb123938ba898d3d9ff8e1c655329a6"
+            "sha256": "cdfb9e8943bdb5d52cf8f253fba355e701eab6278b84830c44a6789608a20ffb"
         },
         {
             "path": "tests/ambiguous-names.test.js",
@@ -304,7 +300,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "afdba339e7c2fe5e4b25465dfe76ed9d392c6304b3627142fd0a87c2f1487c74"
+            "sha256": "0a7211f248b548db0c4440a004b19d7d0a72ec914d09be20f94d4e338f69d0b9"
         },
         {
             "path": "tests/overlay.test.js",
@@ -320,7 +316,7 @@
         },
         {
             "path": "tests/store.test.js",
-            "sha256": "5d7c025c45ff3d1dab6b2c5e6ecace4a4e32341f350fc5322cecc8edc069b8f8"
+            "sha256": "92073330ab4c26dc1008ee2ae0dcbe34d10174cac1d20c074ce2e267435e72b9"
         },
         {
             "path": "tests/structural-compliance.test.js",

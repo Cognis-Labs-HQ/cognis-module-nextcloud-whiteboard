@@ -151,6 +151,49 @@ test("nextcloud whiteboard store persists normalized configuration", async () =>
     assert.equal(saved.imageUploadMaxBytes, 2097152);
 });
 
+test("nextcloud whiteboard store serializes concurrent schema creation", async () => {
+    let ensureTableCalls = 0;
+    let releaseFirstTable;
+    const firstTablePending = new Promise((resolve) => {
+        releaseFirstTable = resolve;
+    });
+    const db = {
+        async ensureTable() {
+            ensureTableCalls += 1;
+            if (ensureTableCalls === 1) await firstTablePending;
+        },
+    };
+    const store = new NextcloudWhiteboardStore({ db });
+
+    const first = store.ensureSchema();
+    const second = store.ensureSchema();
+
+    assert.strictEqual(first, second);
+    assert.equal(ensureTableCalls, 1);
+    releaseFirstTable();
+    await Promise.all([first, second]);
+    assert.equal(ensureTableCalls, 6);
+
+    await store.ensureSchema();
+    assert.equal(ensureTableCalls, 6);
+});
+
+test("nextcloud whiteboard store retries schema creation after a failure", async () => {
+    let ensureTableCalls = 0;
+    const db = {
+        async ensureTable() {
+            ensureTableCalls += 1;
+            if (ensureTableCalls === 1) throw new Error("schema unavailable");
+        },
+    };
+    const store = new NextcloudWhiteboardStore({ db });
+
+    await assert.rejects(store.ensureSchema(), /schema unavailable/);
+    await store.ensureSchema();
+
+    assert.equal(ensureTableCalls, 7);
+});
+
 test("nextcloud whiteboard store deletes configuration", async () => {
     const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
     await store.ensureSchema();

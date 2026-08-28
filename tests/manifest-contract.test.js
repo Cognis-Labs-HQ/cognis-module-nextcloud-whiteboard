@@ -34,6 +34,13 @@ test("module manifest excludes changelog entries from packaged hashes", () => {
     );
 });
 
+test("module manifest excludes repository symlinks from packaged hashes", () => {
+    assert.equal(
+        manifest.files.some(({ path }) => path === "AGENTS.md"),
+        false,
+    );
+});
+
 test("module manifest exposes required whiteboard configuration to preference ingestion", () => {
     assert.deepEqual(
         manifest.ui.preferences.map(

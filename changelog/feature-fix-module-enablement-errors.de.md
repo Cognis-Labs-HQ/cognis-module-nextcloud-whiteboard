@@ -42,6 +42,10 @@ Laufende Verschiebungen, Größenänderungen und Textbearbeitungen bleiben nun i
 
 Das Verhalten der Zeichenflächen-Werkzeugleiste befindet sich nun in einem gezielten Modul, und die Normalisierung entfernter Auswahlen ist in einer wiederverwendbaren Zeichenflächenebene gebündelt, anstatt übergroße Anwendungsdateien zu benötigen.
 
+## Nur die aktuelle gemeinsame Bearbeitung anzeigen
+
+Wenn andere Beteiligte ein bereits ausgewähltes Objekt bearbeiten, ersetzt die Live-Vorschau nun die dauerhafte Darstellung dieses Objekts. Die Zeichenfläche zeigt nicht mehr gleichzeitig den ausgewählten Ausgangszustand und die laufende Bearbeitung an.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -57,3 +61,5 @@ Das Verhalten der Zeichenflächen-Werkzeugleiste befindet sich nun in einem gezi
 - [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
 
 - [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
+
+- [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)

@@ -101,7 +101,23 @@ test("transient edits remain previews without replacing stable elements", () => 
         x: 20,
     });
     assert.deepEqual(stable, [{ id: "shape", version: 2, x: 10 }]);
+    assert.deepEqual(store.compose(stable), [
+        { id: "shape", version: 3, x: 20 },
+    ]);
 
     store.reconcile(stable, stable);
     assert.equal(store.has("shape"), false);
+});
+
+test("remote drafts without stable counterparts remain visible", () => {
+    const store = createRemoteDraftStore({
+        schedule: () => 1,
+        cancel() {},
+    });
+    store.set({ id: "new-shape", version: 1 });
+
+    assert.deepEqual(store.compose([{ id: "stable-shape", version: 1 }]), [
+        { id: "stable-shape", version: 1 },
+        { id: "new-shape", version: 1 },
+    ]);
 });

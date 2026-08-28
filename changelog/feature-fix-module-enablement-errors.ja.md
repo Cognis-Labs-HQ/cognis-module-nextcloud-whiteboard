@@ -42,6 +42,10 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 
 キャンバスツールバーの動作を専用モジュールに移し、リモート選択の正規化を再利用可能なホワイトボード層にまとめ、大きすぎるアプリケーションファイルへの依存を解消しました。
 
+## 最新の共同編集だけを表示
+
+別の共同編集者が選択済みのオブジェクトを編集すると、ライブプレビューがそのオブジェクトの安定状態の描画を置き換えるようになりました。選択時の初期状態と編集中の状態がキャンバスに同時表示されることはありません。
+
 ## コミット
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -57,3 +61,5 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 - [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
 
 - [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
+
+- [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)

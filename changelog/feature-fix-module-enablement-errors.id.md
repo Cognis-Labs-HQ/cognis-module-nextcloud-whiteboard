@@ -38,6 +38,10 @@ Draf gambar ditandai sebagai pembaruan kolaborasi sementara dan dirender pada la
 
 Pemindahan, pengubahan ukuran, dan penyuntingan teks langsung kini tetap berada di lapisan pratinjau jarak jauh alih-alih masuk ke adegan persisten. Pratinjau gambar yang ditinggalkan dibatalkan bila memungkinkan dan kedaluwarsa secara otomatis setelah kolaborator terputus berhenti memperbaruinya.
 
+## Tampilkan hanya penyuntingan kolaboratif terbaru
+
+Saat kolaborator lain menyunting objek yang sudah dipilih, pratinjau langsung kini menggantikan render stabil objek tersebut. Kanvas tidak lagi menampilkan keadaan awal yang dipilih dan penyuntingan yang sedang berlangsung secara bersamaan.
+
 ## Komit
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -53,3 +57,5 @@ Pemindahan, pengubahan ukuran, dan penyuntingan teks langsung kini tetap berada 
 - [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
 
 - [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
+
+- [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)

@@ -42,6 +42,10 @@ Live moves, resizes, and text edits now remain in the remote preview layer inste
 
 Canvas toolbar behavior now lives in a focused module, and remote-selection normalization is grouped in a reusable whiteboard layer instead of relying on oversized application files.
 
+## Show only the latest collaborative edit
+
+When another collaborator edits an object that is already selected, the live preview now replaces the stable rendering of that object. The canvas no longer draws both the selected starting state and the in-flight edit at the same time.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -57,3 +61,5 @@ Canvas toolbar behavior now lives in a focused module, and remote-selection norm
 - [0a66697](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0a66697637c4d93eca95eac47297787c08726320)
 
 - [aa53f27](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/aa53f276825ec86376d4dbf74f830a72d1e0aff5)
+
+- [80cedb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/80cedb5613263ea332575a3976c7b01b609d3cc6)

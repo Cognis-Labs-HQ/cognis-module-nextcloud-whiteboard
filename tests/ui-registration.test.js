@@ -401,7 +401,7 @@ test("collaborative scenes merge remote edits before saving", async () => {
     assert.match(canvasSource, /createRemoteDraftStore/);
     assert.match(
         canvasSource,
-        /elements: \[\.\.\.elements, \.\.\.remoteDraftElements\.values\(\)\]/,
+        /elements: remoteDraftElements\.compose\(elements\)/,
     );
     assert.match(
         canvasSource,

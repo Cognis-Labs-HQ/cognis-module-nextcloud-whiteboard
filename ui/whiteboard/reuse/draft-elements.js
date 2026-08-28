@@ -66,8 +66,19 @@ export function createRemoteDraftStore({
         }
     }
 
+    function compose(stableElements) {
+        const stableIds = new Set(stableElements.map(({ id }) => id));
+        return [
+            ...stableElements.map(
+                (element) => elements.get(element.id) ?? element,
+            ),
+            ...[...elements.values()].filter(({ id }) => !stableIds.has(id)),
+        ];
+    }
+
     return {
         clear,
+        compose,
         delete: remove,
         get: (id) => elements.get(id),
         has: (id) => elements.has(id),

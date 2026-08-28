@@ -77,7 +77,7 @@ export function createWhiteboardCanvas(
             dragSelectBox,
             dragStartPoint,
             draftElement,
-            elements: [...elements, ...remoteDraftElements.values()],
+            elements: remoteDraftElements.compose(elements),
             eraserSelectionIds,
             isDrawing,
             remoteSelections,

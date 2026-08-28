@@ -22,6 +22,14 @@ Das herunterladbare Manifest schließt nun den Symlink der Beitragsrichtlinien a
 
 UUIDs von Kernkomponenten verbleiben in `requires`, während die neuen Felder `hardDependencies` und `softDependencies` ausdrücklich festlegen, dass Nextcloud Whiteboard keine Installationsabhängigkeiten zu externen Modulen besitzt.
 
+## Platz für Speicherbestätigung nur bei Sichtbarkeit verwenden
+
+Die „Gespeichert“-Anzeige reserviert im ausgeblendeten Zustand keinen Platz mehr in der Werkzeugleiste. Für ihre Bestätigungsanimation wird sie in das Layout eingeblendet und nach Ende der Animation wieder entfernt.
+
+## Nur tatsächliche Zeichenflächenänderungen speichern
+
+Reine Auswahlklicks lösen kein Inhaltsänderungsereignis mehr aus. Ein Klick auf eine unveränderte Zeichenfläche startet daher weder die Speicherung noch die Speicherbestätigung.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -31,3 +39,5 @@ UUIDs von Kernkomponenten verbleiben in `requires`, während die neuen Felder `h
 - [69f81cf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/69f81cf0d45b915e02ccb51c2747ea42cb5f4bbf)
 
 - [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
+
+- [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)

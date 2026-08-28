@@ -22,6 +22,14 @@ Manifes yang dapat diunduh kini mengecualikan symlink petunjuk kontribusi karena
 
 UUID komponen inti tetap berada di `requires`, sedangkan bidang baru `hardDependencies` dan `softDependencies` secara tegas menyatakan bahwa Nextcloud Whiteboard tidak memiliki dependensi instalasi modul eksternal.
 
+## Gunakan ruang umpan balik simpan hanya saat terlihat
+
+Pil Tersimpan tidak lagi menyediakan ruang bilah alat saat tersembunyi. Pil masuk ke tata letak selama animasi konfirmasi dan kembali dihapus setelah animasi selesai.
+
+## Simpan hanya perubahan kanvas nyata
+
+Klik yang hanya memilih tidak lagi memancarkan peristiwa perubahan konten sehingga mengeklik kanvas yang tidak berubah tidak memicu penyimpanan atau umpan balik Tersimpan.
+
 ## Komit
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -31,3 +39,5 @@ UUID komponen inti tetap berada di `requires`, sedangkan bidang baru `hardDepend
 - [69f81cf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/69f81cf0d45b915e02ccb51c2747ea42cb5f4bbf)
 
 - [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
+
+- [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)

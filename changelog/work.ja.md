@@ -22,6 +22,14 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 
 コアコンポーネントの UUID は `requires` に維持し、新しい `hardDependencies` と `softDependencies` フィールドによって Nextcloud Whiteboard に外部モジュールのインストール依存関係がないことを明示します。
 
+## 保存通知の表示中だけ領域を使用
+
+「保存済み」ピルは非表示の間、ツールバーの領域を確保しません。確認アニメーション中だけレイアウトに入り、アニメーション終了後に再び取り除かれます。
+
+## 実際のキャンバス変更だけを保存
+
+選択だけを行うクリックではコンテンツ変更イベントを送信しなくなり、変更のないキャンバスをクリックしても永続化や保存通知は実行されません。
+
 ## コミット
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -31,3 +39,5 @@ Nextcloud Whiteboard は必要な Cognis コアコンポーネントと外部モ
 - [69f81cf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/69f81cf0d45b915e02ccb51c2747ea42cb5f4bbf)
 
 - [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)
+
+- [0098018](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0098018a714ce03e75bd4e6dc92fe06dd9db35f9)

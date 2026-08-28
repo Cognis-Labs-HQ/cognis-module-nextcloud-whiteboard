@@ -238,11 +238,12 @@ export function createWhiteboardCanvas(
 
     function pushHistoryEntry(beforeSnapshot, afterSnapshot) {
         const entry = createHistoryEntry(beforeSnapshot, afterSnapshot);
-        if (entry.changedIds.length === 0) return;
+        if (entry.changedIds.length === 0) return false;
         historyPast.push(entry);
         historyPast = historyPast.slice(-100);
         historyFuture = [];
         notifyHistoryChange();
+        return true;
     }
 
     function applyHistorySnapshot(snapshot, changedIds) {
@@ -699,12 +700,12 @@ export function createWhiteboardCanvas(
         isDrawing = false;
         if (activeTool === "select") {
             if (selectDragMode) {
-                pushHistoryEntry(
+                const didChange = pushHistoryEntry(
                     historySnapshot ?? cloneElements(),
                     cloneElements(),
                 );
                 updateCanvasSize();
-                changeCallback?.([...elements]);
+                if (didChange) changeCallback?.([...elements]);
             }
         } else if (activeTool === "eraser") {
             if (eraserSelectionIds.size > 0) {

@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.83",
+    "version": "2.3.84",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -250,11 +250,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "b42d702da6cd0961c4330772fa59a52a12765251a4bd2c879b860f7614fddcca"
+            "sha256": "dbb4dc781291fdcbc69905f669660660e45d751168e68a9df993c044eb97ac75"
         },
         {
             "path": "package.json",
-            "sha256": "97d6dba8b844690df4ba8e56f342d8fa11816db11461eea35e43d31d0f9d337d"
+            "sha256": "40b1ff8ee3decddff95a19d070621f83f189b1a42b540f8c1fc643304b8231dd"
         },
         {
             "path": "routes.json",
@@ -326,7 +326,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "d80631b65764ea353ed4f08a3648f7b39c5a9bc2330d6b7050c2202cb84a4d39"
+            "sha256": "7ff5d06573ed013854b6f773ba6a76e4be5f5d3d1afb6fce0e42a3855c136e8b"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -386,7 +386,7 @@
         },
         {
             "path": "ui/app/status.js",
-            "sha256": "a2151407d84de485ed9d3bc3b79f1ea6b9ea74dc66978e0e45239faf4b1e0d48"
+            "sha256": "96ac807c74b6ac4252f5c77123cf45caa49a676f1624b036ef3488438010a0aa"
         },
         {
             "path": "ui/index.html",
@@ -430,7 +430,7 @@
         },
         {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "db81f167d74c5aceb862175ca643396c013337cb14d40ef3cb6d0d048e341262"
+            "sha256": "23ce71341179f6da168ef2b6407ce34d77590c3d126e7a7a4f7c2127ed99f3d7"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",
@@ -438,7 +438,7 @@
         },
         {
             "path": "ui/whiteboard/canvas.js",
-            "sha256": "fd3dab9b1beb4ded965c9285c83b2d5214d23c694c6dde5f11bcdbaf8462df77"
+            "sha256": "01080f6a08e44fa7f9a3913febcccbdfb24a0cf99912a44e0012ba8d260a2941"
         },
         {
             "path": "ui/whiteboard/clipboard-images.js",

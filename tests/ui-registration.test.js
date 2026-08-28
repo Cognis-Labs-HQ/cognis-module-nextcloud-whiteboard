@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { registerUi } from "../api/index.js";
 
@@ -763,6 +764,14 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     );
     assert.match(stylesSource, /@container \(max-width: 44rem\)/);
     assert.match(
+        stylesSource,
+        /\.whiteboard-saved-pill\s*\{[^}]*display: none/s,
+    );
+    assert.match(
+        stylesSource,
+        /:has\(\.whiteboard-save-confirmed\)[^{]*\.whiteboard-saved-pill\s*\{[^}]*display: inline-block/s,
+    );
+    assert.match(
         appSource,
         /function bindDisposableSaveButton\(session, canvas\)/,
     );
@@ -775,6 +784,18 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     assert.match(
         renderSource,
         /\$\{disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
+    );
+});
+
+test("canvas selection clicks do not report content changes", async () => {
+    const source = await readFile(
+        new URL("../ui/whiteboard/canvas.js", import.meta.url),
+        "utf8",
+    );
+    assert.match(source, /const didChange = pushHistoryEntry\(/);
+    assert.match(
+        source,
+        /if \(didChange\) changeCallback\?\.\(\[\.\.\.elements\]\)/,
     );
 });
 

@@ -4,7 +4,7 @@
 
 ## Konfigurasi tersedia sebelum pengaktifan
 
-Nextcloud Whiteboard tidak lagi mendeklarasikan dependensi gateway wajib yang dapat mencegah pemuatan rute konfigurasinya saat modul dinonaktifkan. Integrasi waktu proses tetap menggunakan kapabilitas Cognis yang dideklarasikan.
+Nextcloud Whiteboard memisahkan komponen inti Cognis yang diperlukan dari dependensi modul eksternal agar Cognis dapat menerapkan aturan siklus hidup yang tepat untuk setiap jenis dependensi.
 
 ## Inventaris integritas yang dapat diinstal
 
@@ -18,6 +18,10 @@ Petunjuk kontribusi tetap ditautkan ke petunjuk repositori kanonis, sedangkan in
 
 Manifes yang dapat diunduh kini mengecualikan symlink petunjuk kontribusi karena API berkas repositori tidak menyediakannya sebagai berkas modul yang dapat diinstal. Symlink tersebut tetap tidak berubah di repositori.
 
+## Selaraskan metadata dependensi dengan Cognis
+
+UUID komponen inti tetap berada di `requires`, sedangkan bidang baru `hardDependencies` dan `softDependencies` secara tegas menyatakan bahwa Nextcloud Whiteboard tidak memiliki dependensi instalasi modul eksternal.
+
 ## Komit
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -25,3 +29,5 @@ Manifes yang dapat diunduh kini mengecualikan symlink petunjuk kontribusi karena
 - [d41face](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d41face059249b7eae205a499f487a744b32225b)
 
 - [69f81cf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/69f81cf0d45b915e02ccb51c2747ea42cb5f4bbf)
+
+- [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)

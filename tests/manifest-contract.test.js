@@ -15,8 +15,13 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
     ]);
 });
 
-test("module manifest does not block configuration on hard dependencies", () => {
-    assert.deepEqual(manifest.requires, []);
+test("module manifest separates core components from external modules", () => {
+    assert.deepEqual(manifest.requires, [
+        "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
+        "0da92508-63fa-53ed-918c-e6f08692a382",
+    ]);
+    assert.deepEqual(manifest.hardDependencies, []);
+    assert.deepEqual(manifest.softDependencies, []);
 });
 
 test("module manifest requires the Cognis authentication gateway", () => {

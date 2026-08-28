@@ -4,7 +4,7 @@
 
 ## Configuration is available before enablement
 
-Nextcloud Whiteboard no longer declares hard gateway dependencies that can prevent its configuration routes from loading while the module is disabled. Runtime integrations continue to use the declared Cognis capabilities.
+Nextcloud Whiteboard keeps its required Cognis core components separate from external-module dependencies, allowing Cognis to apply the correct lifecycle rules to each dependency type.
 
 ## Installable integrity inventory
 
@@ -18,6 +18,10 @@ The contributor instructions remain linked to the canonical repository instructi
 
 The downloadable manifest now excludes the contributor-instructions symlink because repository file APIs do not expose it as an installable module file. The symlink remains unchanged in the repository.
 
+## Align dependency metadata with Cognis
+
+Core component UUIDs remain in `requires`, while the new `hardDependencies` and `softDependencies` fields explicitly declare that Nextcloud Whiteboard has no external-module installation dependencies.
+
 ## Commits
 
 - [3ec9f03](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/3ec9f03b132007f53ec2ae7d2b18b32754aa7422)
@@ -25,3 +29,5 @@ The downloadable manifest now excludes the contributor-instructions symlink beca
 - [d41face](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d41face059249b7eae205a499f487a744b32225b)
 
 - [69f81cf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/69f81cf0d45b915e02ccb51c2747ea42cb5f4bbf)
+
+- [608dbd1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/608dbd18c9b362450d603f7e5d73585b22bf031d)

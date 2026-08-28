@@ -6,6 +6,12 @@ import { relative, resolve } from "node:path";
 const ROOT = resolve(import.meta.dirname, "..");
 const TEMPLATE = resolve(ROOT, ".github/DOCUMENTATION_TEMPLATE.en.md");
 const LANGUAGES = ["de", "en", "id", "ja"];
+const CHANGELOG_LABELS = {
+    de: ["Feature-Zweig", "Commits"],
+    en: ["Feature Branch", "Commits"],
+    id: ["Cabang Fitur", "Komit"],
+    ja: ["機能ブランチ", "コミット"],
+};
 
 function markdownFiles(directory) {
     return readdirSync(directory).flatMap((name) => {
@@ -63,5 +69,30 @@ test("every documentation topic has one variant per supported language", () => {
     }
     for (const [topic, variants] of families) {
         assert.deepEqual([...variants].sort(), [...LANGUAGES].sort(), topic);
+    }
+});
+
+test("localized changelogs identify their branch and linked commits", () => {
+    const changelogs = markdownFiles(resolve(ROOT, "changelog"));
+    for (const path of changelogs) {
+        const match = /\.([a-z]{2})\.md$/.exec(path);
+        assert.ok(match, `${relative(ROOT, path)} must have a language suffix`);
+        const [branchLabel, commitsLabel] = CHANGELOG_LABELS[match[1]];
+        const markdown = readFileSync(path, "utf8");
+        assert.match(
+            markdown,
+            new RegExp(`^\\*\\*${branchLabel}:\\*\\* \\S+$`, "m"),
+        );
+
+        if (
+            path.includes(`${relative(ROOT, resolve(ROOT, "changelog/work"))}.`)
+        ) {
+            continue;
+        }
+        assert.match(markdown, new RegExp(`^## ${commitsLabel}$`, "m"));
+        assert.match(
+            markdown,
+            /^- \[[0-9a-f]{7}\]\(https:\/\/github\.com\/Cognis-Labs-HQ\/cognis-module-nextcloud-whiteboard\/commit\/[0-9a-f]{40}\)$/m,
+        );
     }
 });

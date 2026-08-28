@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { lstat, readFile, readlink } from "node:fs/promises";
 import test from "node:test";
 
 const manifest = JSON.parse(
@@ -35,6 +35,15 @@ test("module manifest includes the contributor instructions", () => {
     assert.equal(
         manifest.files.some(({ path }) => path === "AGENTS.md"),
         true,
+    );
+});
+
+test("contributor instructions remain linked to the canonical instructions", async () => {
+    const instructionsUrl = new URL("../AGENTS.md", import.meta.url);
+    assert.equal((await lstat(instructionsUrl)).isSymbolicLink(), true);
+    assert.equal(
+        await readlink(instructionsUrl),
+        ".github/copilot-instructions.md",
     );
 });
 

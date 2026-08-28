@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.80",
+    "version": "2.3.81",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -249,11 +249,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "952901d05f75482e8c04a14b61b645e327e3ebe393abadb4e11826f015aba759"
+            "sha256": "9bd591f2f74bee277e3db8928a9f109a87f708e9f36c00f5dcf1d28a322ba476"
         },
         {
             "path": "package.json",
-            "sha256": "3706e074847f519e5660cc107348b971ad3e19696fbbcd2b40ab7391e8295363"
+            "sha256": "16cbea9edc07885ac99fac08179aa27ba7a75f18e3fa640b88432f975c0a3038"
         },
         {
             "path": "routes.json",
@@ -261,11 +261,11 @@
         },
         {
             "path": "scripts/update-manifest-hashes.js",
-            "sha256": "fbb61588d051d6705592f2667a864f2f263da922cd8b4062e6afe27530842b4b"
+            "sha256": "a558c2909981a73f394a9478f09f8f591c09be2dc745f54b6d855c889692b5e5"
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "cdfb9e8943bdb5d52cf8f253fba355e701eab6278b84830c44a6789608a20ffb"
+            "sha256": "bd663481003678b9636c258c5589e1b848374aee1ad9d1b1bb1f23520c5669d1"
         },
         {
             "path": "tests/ambiguous-names.test.js",
@@ -301,7 +301,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "55aeb7119b54e8a5825690c0b29ca91bca81c90bccc5932700ecfc0f21328f3d"
+            "sha256": "e01d51601cce1c22c6329eb07e6a7b53d682907fd2cbd88fa15c93e882bd6438"
         },
         {
             "path": "tests/overlay.test.js",

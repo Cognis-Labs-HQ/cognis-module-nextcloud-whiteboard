@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.79",
+    "version": "2.3.80",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -50,10 +50,7 @@
         ],
         "stringsBaseUrl": "/static/modules/nextcloud-whiteboard/languages"
     },
-    "requires": [
-        "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
-        "0da92508-63fa-53ed-918c-e6f08692a382"
-    ],
+    "requires": [],
     "summary": "module.nextcloud_whiteboard.summary",
     "description": "module.nextcloud_whiteboard.description",
     "categories": ["module.nextcloud_whiteboard.category_collaboration"],
@@ -121,6 +118,10 @@
         {
             "path": ".prettierrc",
             "sha256": "fa9273146be8edfd6bbddaff9d0654effb7b4cd67c6163b67e971195d796ead3"
+        },
+        {
+            "path": "AGENTS.md",
+            "sha256": "687d079e9482ba8a0d93a0cd752bbf6b5ec4b31bb8594c146336c58479ae8f15"
         },
         {
             "path": "LICENSE",
@@ -248,11 +249,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "f317979452f96d858b54cdfad5f18c7e11ba0f7484c5e1c378e42d6fa29f71c1"
+            "sha256": "952901d05f75482e8c04a14b61b645e327e3ebe393abadb4e11826f015aba759"
         },
         {
             "path": "package.json",
-            "sha256": "67cb72177b6f445f64e35058d5e8914b93a357add57883b118851d744478b446"
+            "sha256": "3706e074847f519e5660cc107348b971ad3e19696fbbcd2b40ab7391e8295363"
         },
         {
             "path": "routes.json",
@@ -300,7 +301,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "0a7211f248b548db0c4440a004b19d7d0a72ec914d09be20f94d4e338f69d0b9"
+            "sha256": "55aeb7119b54e8a5825690c0b29ca91bca81c90bccc5932700ecfc0f21328f3d"
         },
         {
             "path": "tests/overlay.test.js",

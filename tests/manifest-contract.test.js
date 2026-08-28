@@ -15,11 +15,8 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
     ]);
 });
 
-test("module manifest requires the profile adapter and share gateway", () => {
-    assert.deepEqual(manifest.requires, [
-        "4387fae9-26dd-5a80-84b2-e5f4833b7fb9",
-        "0da92508-63fa-53ed-918c-e6f08692a382",
-    ]);
+test("module manifest does not block configuration on hard dependencies", () => {
+    assert.deepEqual(manifest.requires, []);
 });
 
 test("module manifest requires the Cognis authentication gateway", () => {
@@ -34,10 +31,10 @@ test("module manifest excludes changelog entries from packaged hashes", () => {
     );
 });
 
-test("module manifest excludes repository symlinks from packaged hashes", () => {
+test("module manifest includes the contributor instructions", () => {
     assert.equal(
         manifest.files.some(({ path }) => path === "AGENTS.md"),
-        false,
+        true,
     );
 });
 

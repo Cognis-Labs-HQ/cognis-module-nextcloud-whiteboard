@@ -77,9 +77,20 @@ export class NextcloudWhiteboardStore {
     constructor({ db, log }) {
         this.db = db;
         this.log = log;
+        this.schemaPromise = null;
     }
 
-    async ensureSchema() {
+    ensureSchema() {
+        if (!this.schemaPromise) {
+            this.schemaPromise = this.createSchema().catch((error) => {
+                this.schemaPromise = null;
+                throw error;
+            });
+        }
+        return this.schemaPromise;
+    }
+
+    async createSchema() {
         await this.db.ensureTable({
             name: "nextcloud_whiteboard_config",
             columns: [

@@ -77,6 +77,7 @@ export async function resolveWhiteboardUserAccess({
     whiteboardId,
     resolveShareGuestAccess,
     resolveShareUserAccess,
+    resolveShareDelegatedAccess,
     requireWrite = false,
 }) {
     if (typeof resolveShareGuestAccess === "function") {
@@ -105,6 +106,15 @@ export async function resolveWhiteboardUserAccess({
                     displayName: shareAccess.displayName,
                 };
             }
+            const delegatedAccess = await resolveDelegatedAccess({
+                claims,
+                whiteboardId,
+                requiredCapability: requireWrite
+                    ? "whiteboard:write"
+                    : "whiteboard:read",
+                resolveShareDelegatedAccess,
+            });
+            if (delegatedAccess.authorized) return delegatedAccess;
             return {
                 authorized: false,
                 status: 403,
@@ -172,6 +182,43 @@ export async function resolveWhiteboardUserAccess({
               message:
                   "You are not listed as an allowed whiteboard participant.",
           };
+}
+
+async function resolveDelegatedAccess({
+    claims,
+    whiteboardId,
+    requiredCapability,
+    resolveShareDelegatedAccess,
+}) {
+    if (typeof resolveShareDelegatedAccess !== "function")
+        return { authorized: false };
+    const resolveCapability = async (capability) => {
+        const result = await resolveShareDelegatedAccess({
+            claims,
+            resourceType: "whiteboard",
+            resourceId: whiteboardId,
+            requiredCapability: capability,
+        }).catch(() => null);
+        return result?.shareGuest === true &&
+            result?.authorized === true &&
+            result?.resourceType === "whiteboard" &&
+            result?.resourceId === whiteboardId &&
+            result?.requiredCapability === capability
+            ? result
+            : null;
+    };
+    const delegatedAccess = await resolveCapability(requiredCapability);
+    if (!delegatedAccess) return { authorized: false };
+    const writeAccess =
+        requiredCapability === "whiteboard:write"
+            ? delegatedAccess
+            : await resolveCapability("whiteboard:write");
+    return {
+        authorized: true,
+        canWrite: Boolean(writeAccess),
+        username: delegatedAccess.username,
+        displayName: delegatedAccess.displayName,
+    };
 }
 
 export function registerConfiguredOrigin(registerScriptOrigins, config) {

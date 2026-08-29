@@ -40,6 +40,75 @@ test("user-share recipients keep their account identity for whiteboard access", 
     assert.equal(nativeAccessChecked, false);
 });
 
+test("share guests receive only resource-scoped delegated whiteboard access", async () => {
+    const delegatedRequests = [];
+    const common = {
+        claims: { sub: "share:meeting-share:guest-1" },
+        profileStore: {},
+        store: { async canAccessWhiteboard() {} },
+        whiteboardId: "board-1",
+        resolveShareGuestAccess: async () => ({
+            shareGuest: true,
+            authorized: false,
+        }),
+        resolveShareDelegatedAccess: async (request) => {
+            delegatedRequests.push(request);
+            return {
+                shareGuest: true,
+                authorized: request.requiredCapability === "whiteboard:read",
+                resourceType: request.resourceType,
+                resourceId: request.resourceId,
+                requiredCapability: request.requiredCapability,
+                canWrite: false,
+                username: "guest:guest-1",
+                displayName: "Guest #123456",
+            };
+        },
+    };
+
+    const readAccess = await resolveWhiteboardUserAccess(common);
+    assert.equal(readAccess.authorized, true);
+    assert.equal(readAccess.canWrite, false);
+    assert.equal(readAccess.username, "guest:guest-1");
+
+    const writeAccess = await resolveWhiteboardUserAccess({
+        ...common,
+        requireWrite: true,
+    });
+    assert.equal(writeAccess.authorized, false);
+    assert.equal(writeAccess.code, "forbidden");
+    assert.deepEqual(delegatedRequests[1], {
+        claims: common.claims,
+        resourceType: "whiteboard",
+        resourceId: "board-1",
+        requiredCapability: "whiteboard:write",
+    });
+});
+
+test("delegated access cannot broaden the requested resource scope", async () => {
+    const access = await resolveWhiteboardUserAccess({
+        claims: { sub: "share:revoked-meeting-share:guest-1" },
+        profileStore: {},
+        store: { async canAccessWhiteboard() {} },
+        whiteboardId: "board-1",
+        resolveShareGuestAccess: async () => ({
+            shareGuest: true,
+            authorized: false,
+        }),
+        resolveShareDelegatedAccess: async () => ({
+            shareGuest: true,
+            authorized: true,
+            resourceType: "whiteboard",
+            resourceId: "another-board",
+            requiredCapability: "whiteboard:read",
+            username: "guest:guest-1",
+        }),
+    });
+
+    assert.equal(access.authorized, false);
+    assert.equal(access.code, "forbidden");
+});
+
 import { issueAccessToken, requireTestAuth } from "./reuse/auth.js";
 
 function createMemoryDb() {

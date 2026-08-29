@@ -22,7 +22,6 @@ const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
     "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
 ];
-
 import {
     buildCognisWhiteboardUrl,
     createProfileStoreCapability,
@@ -33,7 +32,6 @@ import {
     resolveStore,
     resolveWhiteboardUserAccess,
 } from "./access.js";
-
 export function registerUi(ctx) {
     const moduleUiRoot = path.join(ctx.moduleRoot, "ui");
     ctx.registerStaticDir("", moduleUiRoot);
@@ -43,7 +41,6 @@ export function registerUi(ctx) {
         access: { minRole: "user" },
         providesCapabilities: ["whiteboard:uiGateway"],
     });
-
     ctx.registerSpaRoute({
         id: "module.nextcloud.whiteboard",
         pattern: "^/whiteboards$",
@@ -52,7 +49,6 @@ export function registerUi(ctx) {
         stylesheets: WHITEBOARD_STYLESHEETS,
         access: { minRole: "user" },
     });
-
     ctx.registerSpaRoute({
         id: "module.nextcloud.whiteboard.canvas",
         pattern: "^/whiteboard$",
@@ -74,7 +70,6 @@ export function registerUi(ctx) {
         stringsBaseUrl: "/static/modules/nextcloud-whiteboard/languages",
     });
 }
-
 export function registerApiRoutes(router, ctx) {
     const requireAuth = ctx.getCapability("auth:requireAuth");
     const dbExecutor = ctx.getCapability("db:executor");
@@ -88,6 +83,16 @@ export function registerApiRoutes(router, ctx) {
     );
     const resolveShareUserAccess = ctx.getCapability("share:resolveUserAccess");
     const resolveShareGuestId = ctx.getCapability("share:resolveGuestId");
+    const resolveMeetingWhiteboardAssociation = ctx.getCapability(
+        "meetings:resolveWhiteboardAssociation",
+    );
+    const resolveAccess = (options) =>
+        resolveWhiteboardUserAccess({
+            ...options,
+            resolveShareGuestAccess,
+            resolveShareUserAccess,
+            resolveMeetingWhiteboardAssociation,
+        });
     const listSharesByResource = ctx.getCapability("share:listByResource");
     const systemCtx = ctx.getCapability("system:ctx");
     const registerNamespace = ctx.getCapability("files:registerNamespace");
@@ -427,6 +432,7 @@ export function registerApiRoutes(router, ctx) {
         profileStore,
         resolveShareGuestAccess,
         resolveShareUserAccess,
+        resolveMeetingWhiteboardAssociation,
         resolveWhiteboardUserAccess,
         whiteboardFiles,
     });
@@ -444,13 +450,11 @@ export function registerApiRoutes(router, ctx) {
                 sendError(res, 404, "not_found", "Whiteboard not found.");
                 return;
             }
-            const access = await resolveWhiteboardUserAccess({
+            const access = await resolveAccess({
                 claims,
                 profileStore,
                 store,
                 whiteboardId: whiteboard.id,
-                resolveShareGuestAccess,
-                resolveShareUserAccess,
                 requireWrite: false,
             });
             if (!access.authorized) {
@@ -512,13 +516,11 @@ export function registerApiRoutes(router, ctx) {
                 sendError(res, 404, "not_found", "Whiteboard not found.");
                 return;
             }
-            const access = await resolveWhiteboardUserAccess({
+            const access = await resolveAccess({
                 claims,
                 profileStore,
                 store,
                 whiteboardId: whiteboard.id,
-                resolveShareGuestAccess,
-                resolveShareUserAccess,
                 requireWrite: true,
             });
             if (!access.authorized) {
@@ -567,13 +569,11 @@ export function registerApiRoutes(router, ctx) {
                 sendError(res, 404, "not_found", "Whiteboard not found.");
                 return;
             }
-            const access = await resolveWhiteboardUserAccess({
+            const access = await resolveAccess({
                 claims,
                 profileStore,
                 store,
                 whiteboardId: whiteboard.id,
-                resolveShareGuestAccess,
-                resolveShareUserAccess,
                 requireWrite: false,
             });
             if (!access.authorized) {
@@ -641,13 +641,11 @@ export function registerApiRoutes(router, ctx) {
                     sendError(res, 404, "not_found", "Whiteboard not found.");
                     return;
                 }
-                const access = await resolveWhiteboardUserAccess({
+                const access = await resolveAccess({
                     claims,
                     profileStore,
                     store,
                     whiteboardId: whiteboard.id,
-                    resolveShareGuestAccess,
-                    resolveShareUserAccess,
                     requireWrite: false,
                 });
                 if (!access.authorized) {
@@ -899,13 +897,11 @@ export function registerApiRoutes(router, ctx) {
                 sendError(res, 404, "not_found", "Whiteboard not found.");
                 return;
             }
-            const access = await resolveWhiteboardUserAccess({
+            const access = await resolveAccess({
                 claims,
                 profileStore,
                 store,
                 whiteboardId: whiteboard.id,
-                resolveShareGuestAccess,
-                resolveShareUserAccess,
                 requireWrite: true,
             });
             if (!access.authorized) {

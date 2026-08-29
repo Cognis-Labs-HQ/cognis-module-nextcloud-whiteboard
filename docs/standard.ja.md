@@ -88,3 +88,7 @@ Cognis は `db:executor` Capability を通じて構成、ボード、アクセ�
 本番環境では Whiteboard サーバーを HTTPS で提供し、API キーを秘密として保護してください。構成した origin は Cognis とユーザーのブラウザーの両方から到達可能で、リバースプロキシは WebSocket upgrade を許可する必要があります。セッション JWT には有効期限があるため時刻同期も必要です。
 
 マニフェスト記載の公開 `ctx` Capability と Flow だけを使用してください。Cognis の Gateway・Adapter 内部をインポートせず、API キーをブラウザーへ公開せず、ホストルーターを迂回せず、未認証のモジュール API 呼び出しを作成しないでください。パッケージファイル変更後は `manifest.files` を再生成し、4 言語の文書とロケールを同期してください。
+
+### 委任されたミーティングアクセスの境界
+
+ゲスト用のミーティング共有は、その `meeting` リソースだけを対象とし、Share ゲートウェイがホワイトボード共有として扱うことはありません。委任されたボードアクセスでは、ctx ケーパビリティ `meetings:resolveWhiteboardAssociation` が Jitsi 所有のミーティングとホワイトボードの関連付けを確認し、要求された `whiteboard:read` または `whiteboard:write` 操作を明示的に許可する必要があります。その後 Whiteboard は `share:resolveGuestAccess` を個別に呼び出し、元のミーティング共有と `meeting:join` 権限を検証します。結果が存在しない、取り消されている、一致しない、またはスコープが不足している場合、セッション、要素、プレゼンス、画像、起動ルートへのアクセスを拒否します。

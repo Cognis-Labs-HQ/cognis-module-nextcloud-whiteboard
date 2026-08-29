@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.89",
+    "version": "2.3.90",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -78,6 +78,7 @@
         "files:namespace",
         "files:registerNamespace",
         "logging:log",
+        "meetings:resolveWhiteboardAssociation",
         "share:listByResource",
         "share:openPopup",
         "share:resolveGuestAccess",
@@ -146,7 +147,7 @@
         },
         {
             "path": "api/access.js",
-            "sha256": "c421dc4a8e59eb22ca244118e18d1bd3303946adb3f96f3b42ba26b40a5990dc"
+            "sha256": "981686b2438057777351e95d6dc5cd09fc15934eb467763dd267a2c3410db323"
         },
         {
             "path": "api/config-values.js",
@@ -158,11 +159,11 @@
         },
         {
             "path": "api/image-routes.js",
-            "sha256": "befc10189bda8a2bf87ae25b0214f321da932e756edcdcd8c9204e27660ef2d1"
+            "sha256": "a8d25a697f8dd5f6a9bd885abea5ed615de60f0434974a2a9a433ac486d18d04"
         },
         {
             "path": "api/index.js",
-            "sha256": "1e89c7da0eb219316a07b790439f44253c059ff85315d3d67d5dcf713940db85"
+            "sha256": "a09e544c246ea6556ee5b0fdea1f61a4705f844a138b9255bf74afc27a1711e9"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -234,27 +235,27 @@
         },
         {
             "path": "docs/standard.de.md",
-            "sha256": "c9fc66950d118fa4488fad02c52c07b28b1d6a93c48523b650119c7fd9bf94ba"
+            "sha256": "602cfbcbfd33cf2036de454ec0184676d0319640afda31e547471c25bd87b5e4"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "ba4f76fa7dbd2d4011270fd74eecf361ed3e36e3b3e927efde1484d2be11ccf6"
+            "sha256": "9084a43536ffedf4146d7c967263ad83c6030aeb801d4025f29d846c57f9977b"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "604e995a77ca44fa9ac434dac0de3385464018dae75baa6869fbc6e4cf89c9d1"
+            "sha256": "0eb1304adb5d39e6afd7705e35ca6fdd15d86db873b2bb8ce164cd3bc45e767e"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "94c75b66cd4112d4462226003020caf22e80c3dfe7009950cc7bf4dae9e59048"
+            "sha256": "929b7450dd317c6212cbcac93604d554550336b7e8a3796769aabde8f0431abc"
         },
         {
             "path": "package-lock.json",
-            "sha256": "4fcc228c626a9afef9cf83f28155a0a18a0b22b19debaba02b0cf279008f9b06"
+            "sha256": "417a80062ce01974914fdfafe13aa927459706a4e4b237a7759495c4b50985c0"
         },
         {
             "path": "package.json",
-            "sha256": "0506046edc4aed3097bf513961544e7b36385ca7c819464707be8261b1958081"
+            "sha256": "9901516afd52d7a97d62af4eede3a395b12803b70c0938d40e3f744717a2069b"
         },
         {
             "path": "routes.json",
@@ -274,7 +275,7 @@
         },
         {
             "path": "tests/api-routes-sharing.test.js",
-            "sha256": "58a0c3a9fe7c78209fabcb2e95bd3c89ff64f6b8c4db7de661461cf5e14b8d29"
+            "sha256": "ad22678e65fa0f0d9a2bd14edf619641347263433c7f146ea36c260ba2359af6"
         },
         {
             "path": "tests/api-routes.test.js",

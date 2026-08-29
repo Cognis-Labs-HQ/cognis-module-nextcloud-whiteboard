@@ -40,6 +40,87 @@ test("user-share recipients keep their account identity for whiteboard access", 
     assert.equal(nativeAccessChecked, false);
 });
 
+test("meeting share guests receive only association-scoped whiteboard access", async () => {
+    const shareRequests = [];
+    const associationRequests = [];
+    const common = {
+        claims: { sub: "share:meeting-share:guest-1" },
+        profileStore: {},
+        store: { async canAccessWhiteboard() {} },
+        whiteboardId: "board-1",
+        resolveShareGuestAccess: async (request) => {
+            shareRequests.push(request);
+            if (request.resourceType === "whiteboard") {
+                return { shareGuest: true, authorized: false };
+            }
+            return {
+                shareGuest: true,
+                authorized:
+                    request.resourceType === "meeting" &&
+                    request.resourceId === "meeting-1" &&
+                    request.requiredCapability === "meeting:join",
+                username: "guest:guest-1",
+                displayName: "Guest #123456",
+            };
+        },
+        resolveMeetingWhiteboardAssociation: async (request) => {
+            associationRequests.push(request);
+            return {
+                associated: true,
+                meetingId: "meeting-1",
+                allowedCapabilities: ["whiteboard:read"],
+            };
+        },
+    };
+
+    const readAccess = await resolveWhiteboardUserAccess(common);
+    assert.equal(readAccess.authorized, true);
+    assert.equal(readAccess.canWrite, false);
+    assert.equal(readAccess.username, "guest:guest-1");
+    assert.deepEqual(readAccess.delegatedFrom, {
+        resourceType: "meeting",
+        resourceId: "meeting-1",
+    });
+
+    const writeAccess = await resolveWhiteboardUserAccess({
+        ...common,
+        requireWrite: true,
+    });
+    assert.equal(writeAccess.authorized, false);
+    assert.equal(writeAccess.code, "forbidden");
+    assert.equal(
+        shareRequests.filter((request) => request.resourceType === "meeting")
+            .length,
+        1,
+        "the gateway must validate the meeting share only after operation scope",
+    );
+    assert.equal(associationRequests[1].requiredCapability, "whiteboard:write");
+});
+
+test("an association cannot replace validation of the original meeting share", async () => {
+    const access = await resolveWhiteboardUserAccess({
+        claims: { sub: "share:revoked-meeting-share:guest-1" },
+        profileStore: {},
+        store: { async canAccessWhiteboard() {} },
+        whiteboardId: "board-1",
+        resolveShareGuestAccess: async ({ resourceType }) => ({
+            shareGuest: true,
+            authorized: false,
+            ...(resourceType === "meeting"
+                ? { username: "guest:guest-1" }
+                : {}),
+        }),
+        resolveMeetingWhiteboardAssociation: async () => ({
+            associated: true,
+            meetingId: "meeting-1",
+            allowedCapabilities: ["whiteboard:read", "whiteboard:write"],
+        }),
+    });
+
+    assert.equal(access.authorized, false);
+    assert.equal(access.code, "forbidden");
+});
+
 import { issueAccessToken, requireTestAuth } from "./reuse/auth.js";
 
 function createMemoryDb() {

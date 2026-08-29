@@ -77,6 +77,7 @@ export async function resolveWhiteboardUserAccess({
     whiteboardId,
     resolveShareGuestAccess,
     resolveShareUserAccess,
+    resolveMeetingWhiteboardAssociation,
     requireWrite = false,
 }) {
     if (typeof resolveShareGuestAccess === "function") {
@@ -105,6 +106,16 @@ export async function resolveWhiteboardUserAccess({
                     displayName: shareAccess.displayName,
                 };
             }
+            const delegatedAccess = await resolveMeetingDelegatedAccess({
+                claims,
+                whiteboardId,
+                requiredCapability: requireWrite
+                    ? "whiteboard:write"
+                    : "whiteboard:read",
+                resolveShareGuestAccess,
+                resolveMeetingWhiteboardAssociation,
+            });
+            if (delegatedAccess.authorized) return delegatedAccess;
             return {
                 authorized: false,
                 status: 403,
@@ -172,6 +183,49 @@ export async function resolveWhiteboardUserAccess({
               message:
                   "You are not listed as an allowed whiteboard participant.",
           };
+}
+
+async function resolveMeetingDelegatedAccess({
+    claims,
+    whiteboardId,
+    requiredCapability,
+    resolveShareGuestAccess,
+    resolveMeetingWhiteboardAssociation,
+}) {
+    if (typeof resolveMeetingWhiteboardAssociation !== "function")
+        return { authorized: false };
+    const association = await resolveMeetingWhiteboardAssociation({
+        claims,
+        meetingResourceType: "meeting",
+        whiteboardResourceType: "whiteboard",
+        whiteboardId,
+        requiredCapability,
+    }).catch(() => null);
+    const meetingId = String(association?.meetingId ?? "").trim();
+    const allowedCapabilities = Array.isArray(association?.allowedCapabilities)
+        ? association.allowedCapabilities
+        : [];
+    if (
+        association?.associated !== true ||
+        !meetingId ||
+        !allowedCapabilities.includes(requiredCapability)
+    )
+        return { authorized: false };
+    const meetingShare = await resolveShareGuestAccess({
+        claims,
+        resourceType: "meeting",
+        resourceId: meetingId,
+        requiredCapability: "meeting:join",
+    }).catch(() => null);
+    if (!meetingShare?.shareGuest || !meetingShare.authorized)
+        return { authorized: false };
+    return {
+        authorized: true,
+        canWrite: allowedCapabilities.includes("whiteboard:write"),
+        username: meetingShare.username,
+        displayName: meetingShare.displayName,
+        delegatedFrom: { resourceType: "meeting", resourceId: meetingId },
+    };
 }
 
 export function registerConfiguredOrigin(registerScriptOrigins, config) {

@@ -88,7 +88,3 @@ The client reconnects with bounded delay, suspends realtime work while its tab i
 Deploy the standalone whiteboard server over HTTPS in production and protect the shared API key as a secret. The configured origin must be reachable by both Cognis and users' browsers. Reverse proxies must allow websocket upgrades. Clock synchronization is required because session JWTs expire.
 
 Use only the public `ctx` capabilities and flows listed in the manifest. Do not import Cognis gateway or adapter internals, expose the API key to browser code, bypass the host router, or construct unauthenticated module API calls. Regenerate `manifest.files` after every packaged-file change and keep all four documentation and locale variants synchronized.
-
-### Delegated meeting access boundary
-
-A guest meeting share remains scoped to its `meeting`; the Share gateway never treats it as a whiteboard share. Delegated board access requires the ctx capability `meetings:resolveWhiteboardAssociation` to confirm the Jitsi-owned meeting-to-whiteboard association and explicitly allow the requested `whiteboard:read` or `whiteboard:write` operation. Whiteboard then independently asks `share:resolveGuestAccess` to validate the original meeting share and its `meeting:join` grant. A missing, revoked, mismatched, or insufficiently scoped result denies access to sessions, elements, presence, images, and launch routes.

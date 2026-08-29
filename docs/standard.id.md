@@ -88,7 +88,3 @@ Klien menyambung kembali dengan jeda terbatas, menangguhkan pekerjaan waktu nyat
 Gunakan HTTPS untuk server whiteboard produksi dan lindungi kunci API sebagai rahasia. Origin harus dapat dijangkau Cognis dan browser pengguna; reverse proxy harus mengizinkan upgrade websocket. Sinkronisasi waktu diperlukan karena JWT sesi kedaluwarsa.
 
 Gunakan hanya capability dan flow `ctx` publik yang dinyatakan dalam manifes. Jangan mengimpor internal gateway atau adapter Cognis, mengekspos kunci API ke browser, melewati router host, atau membuat panggilan API tanpa autentikasi. Buat ulang `manifest.files` setelah setiap perubahan file paket dan sinkronkan keempat varian dokumentasi serta locale.
-
-### Batas akses rapat terdelegasi
-
-Pembagian rapat untuk tamu tetap dibatasi pada sumber daya `meeting`; gateway Share tidak pernah menganggapnya sebagai pembagian papan tulis. Akses papan yang didelegasikan mengharuskan kapabilitas ctx `meetings:resolveWhiteboardAssociation` mengonfirmasi hubungan rapat-ke-papan-tulis milik Jitsi dan secara eksplisit mengizinkan operasi `whiteboard:read` atau `whiteboard:write` yang diminta. Whiteboard kemudian secara mandiri meminta `share:resolveGuestAccess` memvalidasi pembagian rapat asli beserta izin `meeting:join`. Hasil yang tidak ada, telah dicabut, tidak cocok, atau cakupannya tidak memadai akan menolak akses ke sesi, elemen, kehadiran, gambar, dan rute peluncuran.

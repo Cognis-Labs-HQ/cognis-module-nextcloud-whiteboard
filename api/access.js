@@ -77,7 +77,7 @@ export async function resolveWhiteboardUserAccess({
     whiteboardId,
     resolveShareGuestAccess,
     resolveShareUserAccess,
-    resolveMeetingWhiteboardAssociation,
+    resolveShareDelegatedAccess,
     requireWrite = false,
 }) {
     if (typeof resolveShareGuestAccess === "function") {
@@ -106,14 +106,13 @@ export async function resolveWhiteboardUserAccess({
                     displayName: shareAccess.displayName,
                 };
             }
-            const delegatedAccess = await resolveMeetingDelegatedAccess({
+            const delegatedAccess = await resolveDelegatedAccess({
                 claims,
                 whiteboardId,
                 requiredCapability: requireWrite
                     ? "whiteboard:write"
                     : "whiteboard:read",
-                resolveShareGuestAccess,
-                resolveMeetingWhiteboardAssociation,
+                resolveShareDelegatedAccess,
             });
             if (delegatedAccess.authorized) return delegatedAccess;
             return {
@@ -185,46 +184,40 @@ export async function resolveWhiteboardUserAccess({
           };
 }
 
-async function resolveMeetingDelegatedAccess({
+async function resolveDelegatedAccess({
     claims,
     whiteboardId,
     requiredCapability,
-    resolveShareGuestAccess,
-    resolveMeetingWhiteboardAssociation,
+    resolveShareDelegatedAccess,
 }) {
-    if (typeof resolveMeetingWhiteboardAssociation !== "function")
+    if (typeof resolveShareDelegatedAccess !== "function")
         return { authorized: false };
-    const association = await resolveMeetingWhiteboardAssociation({
-        claims,
-        meetingResourceType: "meeting",
-        whiteboardResourceType: "whiteboard",
-        whiteboardId,
-        requiredCapability,
-    }).catch(() => null);
-    const meetingId = String(association?.meetingId ?? "").trim();
-    const allowedCapabilities = Array.isArray(association?.allowedCapabilities)
-        ? association.allowedCapabilities
-        : [];
-    if (
-        association?.associated !== true ||
-        !meetingId ||
-        !allowedCapabilities.includes(requiredCapability)
-    )
-        return { authorized: false };
-    const meetingShare = await resolveShareGuestAccess({
-        claims,
-        resourceType: "meeting",
-        resourceId: meetingId,
-        requiredCapability: "meeting:join",
-    }).catch(() => null);
-    if (!meetingShare?.shareGuest || !meetingShare.authorized)
-        return { authorized: false };
+    const resolveCapability = async (capability) => {
+        const result = await resolveShareDelegatedAccess({
+            claims,
+            resourceType: "whiteboard",
+            resourceId: whiteboardId,
+            requiredCapability: capability,
+        }).catch(() => null);
+        return result?.shareGuest === true &&
+            result?.authorized === true &&
+            result?.resourceType === "whiteboard" &&
+            result?.resourceId === whiteboardId &&
+            result?.requiredCapability === capability
+            ? result
+            : null;
+    };
+    const delegatedAccess = await resolveCapability(requiredCapability);
+    if (!delegatedAccess) return { authorized: false };
+    const writeAccess =
+        requiredCapability === "whiteboard:write"
+            ? delegatedAccess
+            : await resolveCapability("whiteboard:write");
     return {
         authorized: true,
-        canWrite: allowedCapabilities.includes("whiteboard:write"),
-        username: meetingShare.username,
-        displayName: meetingShare.displayName,
-        delegatedFrom: { resourceType: "meeting", resourceId: meetingId },
+        canWrite: Boolean(writeAccess),
+        username: delegatedAccess.username,
+        displayName: delegatedAccess.displayName,
     };
 }
 

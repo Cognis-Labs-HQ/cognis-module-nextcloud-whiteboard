@@ -40,35 +40,28 @@ test("user-share recipients keep their account identity for whiteboard access", 
     assert.equal(nativeAccessChecked, false);
 });
 
-test("meeting share guests receive only association-scoped whiteboard access", async () => {
-    const shareRequests = [];
-    const associationRequests = [];
+test("share guests receive only resource-scoped delegated whiteboard access", async () => {
+    const delegatedRequests = [];
     const common = {
         claims: { sub: "share:meeting-share:guest-1" },
         profileStore: {},
         store: { async canAccessWhiteboard() {} },
         whiteboardId: "board-1",
-        resolveShareGuestAccess: async (request) => {
-            shareRequests.push(request);
-            if (request.resourceType === "whiteboard") {
-                return { shareGuest: true, authorized: false };
-            }
+        resolveShareGuestAccess: async () => ({
+            shareGuest: true,
+            authorized: false,
+        }),
+        resolveShareDelegatedAccess: async (request) => {
+            delegatedRequests.push(request);
             return {
                 shareGuest: true,
-                authorized:
-                    request.resourceType === "meeting" &&
-                    request.resourceId === "meeting-1" &&
-                    request.requiredCapability === "meeting:join",
+                authorized: request.requiredCapability === "whiteboard:read",
+                resourceType: request.resourceType,
+                resourceId: request.resourceId,
+                requiredCapability: request.requiredCapability,
+                canWrite: false,
                 username: "guest:guest-1",
                 displayName: "Guest #123456",
-            };
-        },
-        resolveMeetingWhiteboardAssociation: async (request) => {
-            associationRequests.push(request);
-            return {
-                associated: true,
-                meetingId: "meeting-1",
-                allowedCapabilities: ["whiteboard:read"],
             };
         },
     };
@@ -77,10 +70,6 @@ test("meeting share guests receive only association-scoped whiteboard access", a
     assert.equal(readAccess.authorized, true);
     assert.equal(readAccess.canWrite, false);
     assert.equal(readAccess.username, "guest:guest-1");
-    assert.deepEqual(readAccess.delegatedFrom, {
-        resourceType: "meeting",
-        resourceId: "meeting-1",
-    });
 
     const writeAccess = await resolveWhiteboardUserAccess({
         ...common,
@@ -88,32 +77,31 @@ test("meeting share guests receive only association-scoped whiteboard access", a
     });
     assert.equal(writeAccess.authorized, false);
     assert.equal(writeAccess.code, "forbidden");
-    assert.equal(
-        shareRequests.filter((request) => request.resourceType === "meeting")
-            .length,
-        1,
-        "the gateway must validate the meeting share only after operation scope",
-    );
-    assert.equal(associationRequests[1].requiredCapability, "whiteboard:write");
+    assert.deepEqual(delegatedRequests[1], {
+        claims: common.claims,
+        resourceType: "whiteboard",
+        resourceId: "board-1",
+        requiredCapability: "whiteboard:write",
+    });
 });
 
-test("an association cannot replace validation of the original meeting share", async () => {
+test("delegated access cannot broaden the requested resource scope", async () => {
     const access = await resolveWhiteboardUserAccess({
         claims: { sub: "share:revoked-meeting-share:guest-1" },
         profileStore: {},
         store: { async canAccessWhiteboard() {} },
         whiteboardId: "board-1",
-        resolveShareGuestAccess: async ({ resourceType }) => ({
+        resolveShareGuestAccess: async () => ({
             shareGuest: true,
             authorized: false,
-            ...(resourceType === "meeting"
-                ? { username: "guest:guest-1" }
-                : {}),
         }),
-        resolveMeetingWhiteboardAssociation: async () => ({
-            associated: true,
-            meetingId: "meeting-1",
-            allowedCapabilities: ["whiteboard:read", "whiteboard:write"],
+        resolveShareDelegatedAccess: async () => ({
+            shareGuest: true,
+            authorized: true,
+            resourceType: "whiteboard",
+            resourceId: "another-board",
+            requiredCapability: "whiteboard:read",
+            username: "guest:guest-1",
         }),
     });
 

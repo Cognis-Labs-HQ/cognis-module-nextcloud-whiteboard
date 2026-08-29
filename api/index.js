@@ -87,15 +87,15 @@ export function registerApiRoutes(router, ctx) {
     );
     const resolveShareUserAccess = ctx.getCapability("share:resolveUserAccess");
     const resolveShareGuestId = ctx.getCapability("share:resolveGuestId");
-    const resolveMeetingWhiteboardAssociation = ctx.getCapability(
-        "meetings:resolveWhiteboardAssociation",
+    const resolveShareDelegatedAccess = ctx.getCapability(
+        "share:resolveDelegatedAccess",
     );
     const resolveAccess = (options) =>
         resolveWhiteboardUserAccess({
             ...options,
             resolveShareGuestAccess,
             resolveShareUserAccess,
-            resolveMeetingWhiteboardAssociation,
+            resolveShareDelegatedAccess,
         });
     const listSharesByResource = ctx.getCapability("share:listByResource");
     const systemCtx = ctx.getCapability("system:ctx");
@@ -361,7 +361,7 @@ export function registerApiRoutes(router, ctx) {
         profileStore,
         resolveShareGuestAccess,
         resolveShareUserAccess,
-        resolveMeetingWhiteboardAssociation,
+        resolveShareDelegatedAccess,
         resolveWhiteboardUserAccess,
         whiteboardFiles,
     });

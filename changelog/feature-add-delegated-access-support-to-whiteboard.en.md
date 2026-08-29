@@ -1,10 +1,10 @@
-# Secure delegated Whiteboard access for meeting guests
+# Secure delegated access for Whiteboard guests
 
 **Feature Branch:** feature-add-delegated-access-support-to-whiteboard
 
-## Validate meeting shares without broadening their scope
+## Validate delegated shares without broadening their scope
 
-Whiteboard guests may now use a validated meeting share only when Jitsi confirms its meeting-to-whiteboard association and explicitly permits the requested read or write operation. The Share gateway still validates the original meeting grant and never converts it into a general whiteboard share.
+Whiteboard guests may use delegated access only when the Share gateway validates the source share, its provider-owned resource association, and the requested read or write operation. The delegated contract must echo the exact Whiteboard resource and capability, so it cannot become a broader Whiteboard share.
 
 ## Keep API route ownership focused
 
@@ -12,4 +12,4 @@ Configuration routes now live in their own API-layer module, while the main regi
 
 ## Commits
 
-- [36613f8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/36613f8aee20aaf968045f9939af5e74010e4de7)
+- [a94759f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a94759fa84f286554fc8eaf35b09e084dd6924c0)

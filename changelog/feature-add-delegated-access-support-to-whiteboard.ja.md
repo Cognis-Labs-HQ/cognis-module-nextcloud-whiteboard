@@ -1,10 +1,10 @@
-# ミーティングゲスト向けの安全な委任 Whiteboard アクセス
+# Whiteboard ゲスト向けの安全な委任アクセス
 
 **機能ブランチ:** feature-add-delegated-access-support-to-whiteboard
 
-## スコープを拡大せずにミーティング共有を検証
+## スコープを拡大せずに委任共有を検証
 
-Whiteboard のゲストは、Jitsi がミーティングとホワイトボードの関連付けを確認し、要求された読み取りまたは書き込み操作を明示的に許可した場合に限り、検証済みのミーティング共有を利用できるようになりました。Share ゲートウェイは引き続き元のミーティング権限を検証し、一般的なホワイトボード共有へ変換することはありません。
+Whiteboard のゲストが委任アクセスを利用できるのは、Share ゲートウェイが元の共有、プロバイダー所有のリソース関連付け、要求された読み取りまたは書き込み操作を検証した場合だけです。委任契約は正確な Whiteboard リソースとケーパビリティを返す必要があるため、より広範な Whiteboard 共有にはなりません。
 
 ## API ルートの責務を明確化
 
@@ -12,4 +12,4 @@ Whiteboard のゲストは、Jitsi がミーティングとホワイトボード
 
 ## コミット
 
-- [36613f8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/36613f8aee20aaf968045f9939af5e74010e4de7)
+- [a94759f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a94759fa84f286554fc8eaf35b09e084dd6924c0)

@@ -1,7 +1,5 @@
 import path from "node:path";
-import { hasMinRole } from "./reuse/http.js";
-import { readJson } from "./reuse/http.js";
-import { sendError, sendJson } from "./reuse/http.js";
+import { hasMinRole, readJson, sendError, sendJson } from "./reuse/http.js";
 import { getFirstStageResult } from "./reuse/flow-helpers.js";
 import { checkHttpLiveness } from "./reuse/http-liveness.js";
 import { registerWhiteboardShareFlowHooks } from "./share-hooks.js";
@@ -9,6 +7,7 @@ import { registerWhiteboardImageRoutes } from "./image-routes.js";
 import { registerWhiteboardConfigRoutes } from "./config-routes.js";
 import { resolveExpiry } from "./config-values.js";
 import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
+import { loadCanvasElements } from "./reuse/canvas-loader.js";
 import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
 import {
     createWhiteboardEnableTest,
@@ -412,7 +411,14 @@ export function registerApiRoutes(router, ctx) {
                 whiteboardId: whiteboard.id,
                 username,
             });
-            const elements = await store.getElementsSnapshot(whiteboard.id);
+            const elements = await loadCanvasElements({
+                store,
+                log,
+                res,
+                whiteboardId: whiteboard.id,
+                username,
+            });
+            if (!elements) return;
             const saved = await store.hasUserCopy(whiteboard.id, username);
             sendJson(res, 200, {
                 data: {

@@ -303,6 +303,83 @@ test("nextcloud whiteboard session route works without share capabilities", asyn
     assert.ok(body.data.token);
 });
 
+test("whiteboard canvas load failures are explicit in server logs and responses", async () => {
+    const db = createMemoryDb();
+    const store = new NextcloudWhiteboardStore({ db });
+    await store.ensureSchema();
+    await store.saveConfig({
+        serverUrl: "https://whiteboard.example.test",
+        apiKey: "session-token-secret-at-least-16-chars",
+    });
+    const board = await store.createWhiteboard({
+        title: "Unavailable canvas",
+        createdBy: "alice",
+        participants: [],
+    });
+    const executeCommand = db.executeCommand.bind(db);
+    db.executeCommand = async (command) => {
+        if (
+            command.option === "SELECT" &&
+            command.table === "nextcloud_whiteboard_snapshots"
+        ) {
+            throw new Error("database details must remain private");
+        }
+        return executeCommand(command);
+    };
+    const logs = [];
+    const router = createRouterCapture();
+    registerApiRoutes(router, {
+        getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
+            if (key === "db:executor") return db;
+            if (key === "social:profileStore") {
+                return {
+                    async getProfile(accountId) {
+                        return { handle: accountId };
+                    },
+                };
+            }
+            if (key === "logging:log") {
+                return (level, message, details) =>
+                    logs.push({ level, message, details });
+            }
+            return undefined;
+        },
+    });
+    const res = createJsonResponse();
+
+    await router.handler(
+        "GET",
+        "/api/v1/modules/nextcloud-whiteboard/whiteboards/session",
+    )(
+        {
+            url: `/api/v1/modules/nextcloud-whiteboard/whiteboards/session?id=${board.id}`,
+            headers: {
+                authorization: `Bearer ${issueAccessToken("alice", "user", 60)}`,
+            },
+        },
+        res,
+    );
+
+    assert.equal(res.statusCode, 500);
+    assert.deepEqual(res.json(), {
+        error: {
+            code: "canvas_load_failed",
+            message: "Whiteboard canvas could not be loaded.",
+        },
+    });
+    assert.equal(logs.at(-1)?.level, "error");
+    assert.equal(logs.at(-1)?.message, "Whiteboard canvas failed to load.");
+    assert.deepEqual(logs.at(-1)?.details, {
+        component: "nextcloud-whiteboard-module",
+        operation: "load_whiteboard_canvas",
+        whiteboardId: board.id,
+        username: "alice",
+        errorName: "Error",
+    });
+    assert.doesNotMatch(JSON.stringify(logs), /database details/);
+});
+
 test("whiteboard owners can expand an existing canvas participant set", async () => {
     const db = createMemoryDb();
     const store = new NextcloudWhiteboardStore({ db });

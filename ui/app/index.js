@@ -131,6 +131,22 @@ async function loadBoards() {
     boards = await fetchWhiteboardList();
 }
 
+function reportCanvasLoadError(error, boardId, stage) {
+    console.error("[nextcloud-whiteboard] whiteboard canvas load failed.", {
+        boardId: String(boardId ?? ""),
+        stage,
+        error,
+    });
+    const detail = String(error?.message ?? "").trim();
+    const message = detail
+        ? `${translateModuleString("module.nextcloud_whiteboard.canvas_load_failed")} ${detail}`
+        : translateModuleString(
+              "module.nextcloud_whiteboard.canvas_load_failed",
+          );
+    setOverlayVisible(pageMountRoot, true, message);
+    showToast(message, { variant: "error" });
+}
+
 function teardownCanvas() {
     shareControlDispose?.();
     shareControlDispose = null;
@@ -556,8 +572,7 @@ async function openBoard(board) {
     try {
         session = await fetchWhiteboardSession(board.id);
     } catch (error) {
-        setOverlayVisible(pageMountRoot, true, error.message);
-        showToast(error.message, { variant: "error" });
+        reportCanvasLoadError(error, board.id, "session");
         return;
     }
     activeSession = session;
@@ -578,24 +593,29 @@ async function openBoard(board) {
         runtimeDispose?.();
         runtimeDispose = runtime.dispose;
     } catch (error) {
-        setOverlayVisible(pageMountRoot, true, error.message);
-        showToast(error.message, { variant: "error" });
+        reportCanvasLoadError(error, board.id, "realtime-runtime");
         return;
     }
     const canvasElement = withinMount("#whiteboard-canvas");
     if (!canvasElement) return;
-    canvasInstance = createWhiteboardCanvas(canvasElement, {
-        readOnly: session.canWrite !== true,
-    });
-    if (session.canWrite === true) {
-        canvasInstance.setImageUploader((dataUrl) =>
-            uploadWhiteboardImage(session.roomId, dataUrl),
-        );
-    }
-    canvasInstance.setImageUploadMaxBytes(imageUploadMaxBytes);
-    savedElements = Array.isArray(session.elements) ? session.elements : [];
-    if (savedElements.length > 0) {
-        canvasInstance.applyElements(savedElements);
+    try {
+        canvasInstance = createWhiteboardCanvas(canvasElement, {
+            readOnly: session.canWrite !== true,
+        });
+        if (session.canWrite === true) {
+            canvasInstance.setImageUploader((dataUrl) =>
+                uploadWhiteboardImage(session.roomId, dataUrl),
+            );
+        }
+        canvasInstance.setImageUploadMaxBytes(imageUploadMaxBytes);
+        savedElements = Array.isArray(session.elements) ? session.elements : [];
+        if (savedElements.length > 0) {
+            canvasInstance.applyElements(savedElements);
+        }
+    } catch (error) {
+        reportCanvasLoadError(error, board.id, "canvas-render");
+        teardownCanvas();
+        return;
     }
     setSyncStatus("syncing", "module.nextcloud_whiteboard.status_syncing");
     socketInstance = connectSocket(io, session, canvasInstance);

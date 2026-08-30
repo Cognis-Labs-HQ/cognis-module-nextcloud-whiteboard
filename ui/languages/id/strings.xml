@@ -30,6 +30,7 @@
   <string name="module.nextcloud_whiteboard.preflight_failed">Pemeriksaan server papan tulis gagal. Silakan coba lagi.</string>
   <string name="module.nextcloud_whiteboard.socket_load_failed">Tidak dapat memuat Socket.IO dari server papan tulis.</string>
   <string name="module.nextcloud_whiteboard.load_boards_failed">Tidak dapat memuat papan tulis.</string>
+  <string name="module.nextcloud_whiteboard.canvas_load_failed">Kanvas papan tulis tidak dapat dimuat.</string>
   <string name="module.nextcloud_whiteboard.connecting">Menghubungkan ke papan tulis&#x2026;</string>
   <string name="module.nextcloud_whiteboard.admin_title">Pengaturan papan tulis Nextcloud</string>
   <string name="module.nextcloud_whiteboard.server_url">URL server papan tulis</string>

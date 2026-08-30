@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.94",
+    "version": "2.3.96",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -167,7 +167,11 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "b5bd38c9ec57c253d93da41a67142e78cb850b252380d7e174e2d5d3f4f11470"
+            "sha256": "1391a03deb93d48a8271622941be5d1f8f446ed610cf68c6326b901a75f65251"
+        },
+        {
+            "path": "api/reuse/canvas-loader.js",
+            "sha256": "5a39bc3b1cb6cb25a0b2576ef34d374669eaa38ce13678999665495c86d8f2d5"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -255,11 +259,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "c40376393176f33cdf9cd193af8c7921e1e6e26b8c056261da39538bf9030715"
+            "sha256": "0de9d5eb6bd7751f8e5986c9a4e6dedf1c74c45ae27d653551e3b8d82f54e558"
         },
         {
             "path": "package.json",
-            "sha256": "ff024f5487e9f15aa6f7a50fea37a8793400bd39aefa8327b15b25db64707be1"
+            "sha256": "53e9067847746395d0a81ba8990f5a0b6c6d77e1ed20cce6a0b5929d859cc3c4"
         },
         {
             "path": "routes.json",
@@ -283,7 +287,7 @@
         },
         {
             "path": "tests/api-routes.test.js",
-            "sha256": "141db54ff0cbd55d06f8f11466b6d441dd4a48014a454396c9afba381ead77a8"
+            "sha256": "e5ae329e8a9b8d052a73a41526406c50f90a117c522d9d93d84c8abc9379d626"
         },
         {
             "path": "tests/documentation-convention.test.js",
@@ -371,7 +375,7 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "c421be0156acf035db9bf361b95b24eab66f99aa327b25bcb0ce4a1ed22439da"
+            "sha256": "20e9fd9ced746569689693f97eb2ec47f5dcd95861c2529ee7cad7049ef2b2f6"
         },
         {
             "path": "ui/app/overlay.js",
@@ -415,19 +419,19 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "4c5dcb452514e31ac2f93cc82cc64635713b4cb44e4900070dc612bcb1c8fd37"
+            "sha256": "b30011704aaee82afa94236d2bad5d6a2b61d7d0090353d3ebe0f63af90e8978"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "0d5a975b54592879c71cb52ade63f98d04ae6e4df5e7affc046826cdaf278ff1"
+            "sha256": "77f46631af8d9258599ca5753c0f2e182185c18869318c66131aed61797d757c"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "847f1943a262ded2284874b8a09e8f5840cc2bbdfd32a491ec97b6a0e8bbb8e2"
+            "sha256": "92d27a00fa697f690d4bd3c2bda4fe405a1c44bddc57b32054f7446b952a4f8e"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "f20f6ffc0e5f45f11efd8bbc5c250348da21152fb8f158a22eefc283fcef749d"
+            "sha256": "01a4f49c905a5d165dc66a97a31747e2f136905d9db9596280d2a30b14593cd1"
         },
         {
             "path": "ui/navbar.js",

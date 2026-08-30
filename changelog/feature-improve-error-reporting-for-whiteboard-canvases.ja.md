@@ -1,6 +1,6 @@
 # ホワイトボードキャンバスの明確な読み込みエラー
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-improve-error-reporting-for-whiteboard-canvases
 
 ## キャンバスの読み込み失敗を明確に報告
 
@@ -8,4 +8,4 @@
 
 ## コミット
 
-- [141506e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/141506e1140bc4817934f073ae3f66db5fca5c04)
+- [ad3b981](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ad3b9813ec42c3eb475d696854e42086726d42ec)

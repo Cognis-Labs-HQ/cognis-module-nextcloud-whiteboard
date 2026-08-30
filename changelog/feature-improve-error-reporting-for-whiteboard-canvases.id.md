@@ -1,6 +1,6 @@
 # Galat pemuatan kanvas papan tulis yang jelas
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-improve-error-reporting-for-whiteboard-canvases
 
 ## Laporkan kegagalan pemuatan kanvas dengan jelas
 
@@ -8,4 +8,4 @@ Kegagalan sesi dan perenderan kanvas kini menampilkan pesan khusus di peramban s
 
 ## Komit
 
-- [141506e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/141506e1140bc4817934f073ae3f66db5fca5c04)
+- [ad3b981](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ad3b9813ec42c3eb475d696854e42086726d42ec)

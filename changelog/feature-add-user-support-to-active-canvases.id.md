@@ -1,6 +1,6 @@
 # Perluas partisipasi kanvas aktif
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-add-user-support-to-active-canvases
 
 ## Tambahkan pengguna yang baru diundang ke kanvas yang sudah ada
 
@@ -8,4 +8,4 @@ Kanvas persisten kini menyediakan capability penyedia opsional agar integrasi ra
 
 ## Komit
 
-- [e3fcd46](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e3fcd4641a473dab81a557f00f8b2dcd06ebf811)
+- [28563ef](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/28563ef81c677c52ff8bd32ff17418e1c5cdeecb)

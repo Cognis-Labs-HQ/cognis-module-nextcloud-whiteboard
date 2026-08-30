@@ -1,6 +1,6 @@
 # Expand active canvas participation
 
-**Feature Branch:** work
+**Feature Branch:** feature-add-user-support-to-active-canvases
 
 ## Add newly invited users to existing canvases
 
@@ -8,4 +8,4 @@ Persistent canvases now expose an optional provider capability that lets meeting
 
 ## Commits
 
-- [e3fcd46](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e3fcd4641a473dab81a557f00f8b2dcd06ebf811)
+- [28563ef](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/28563ef81c677c52ff8bd32ff17418e1c5cdeecb)

@@ -1,6 +1,6 @@
 # アクティブなキャンバスへの参加を拡張
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-add-user-support-to-active-canvases
 
 ## 新しく招待されたユーザーを既存のキャンバスに追加
 
@@ -8,4 +8,4 @@
 
 ## コミット
 
-- [e3fcd46](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e3fcd4641a473dab81a557f00f8b2dcd06ebf811)
+- [28563ef](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/28563ef81c677c52ff8bd32ff17418e1c5cdeecb)

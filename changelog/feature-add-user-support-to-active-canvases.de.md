@@ -1,6 +1,6 @@
 # Teilnahme an aktiven Arbeitsflächen erweitern
 
-**Feature-Zweig:** work
+**Feature-Zweig:** feature-add-user-support-to-active-canvases
 
 ## Neu eingeladene Benutzer zu bestehenden Arbeitsflächen hinzufügen
 
@@ -8,4 +8,4 @@ Dauerhafte Arbeitsflächen bieten nun eine optionale Provider-Capability, mit de
 
 ## Commits
 
-- [e3fcd46](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e3fcd4641a473dab81a557f00f8b2dcd06ebf811)
+- [28563ef](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/28563ef81c677c52ff8bd32ff17418e1c5cdeecb)

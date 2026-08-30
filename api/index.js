@@ -433,6 +433,80 @@ export function registerApiRoutes(router, ctx) {
     );
 
     router.post(
+        "/api/v1/modules/nextcloud-whiteboard/whiteboards/access/expand",
+        async (req, res) => {
+            await store.ensureSchema();
+            const claims = requireAuth(req, res, "user");
+            if (!claims) return;
+            const body = await readJson(req);
+            const whiteboardId = String(body.whiteboardId ?? "").trim();
+            const whiteboard = await store.getWhiteboardById(whiteboardId);
+            if (!whiteboard) {
+                sendError(res, 404, "not_found", "Whiteboard not found.");
+                return;
+            }
+            const requesterUsername = await resolveRequesterUsername(
+                profileStore,
+                claims.sub,
+            ).catch((error) => {
+                sendError(res, 409, "profile_required", error.message);
+                return null;
+            });
+            if (!requesterUsername) return;
+            if (whiteboard.createdBy !== requesterUsername) {
+                sendError(
+                    res,
+                    403,
+                    "forbidden",
+                    "Only the whiteboard owner can expand participant access.",
+                );
+                return;
+            }
+            if (whiteboard.disposable) {
+                sendError(
+                    res,
+                    409,
+                    "disposable_whiteboard",
+                    "Disposable whiteboard access cannot be expanded.",
+                );
+                return;
+            }
+            const participants = await resolveParticipantHandles(
+                profileStore,
+                body.participantHandles,
+                hasMinRole(claims.role, "admin"),
+            );
+            if (participants.length === 0) {
+                sendError(
+                    res,
+                    400,
+                    "bad_request",
+                    "At least one valid participant handle is required.",
+                );
+                return;
+            }
+            const expandedParticipants = await store.expandWhiteboardAccess(
+                whiteboard.id,
+                participants,
+            );
+            log?.("info", "Whiteboard participant access expanded.", {
+                component: "nextcloud-whiteboard-module",
+                operation: "expand_whiteboard_access",
+                whiteboardId: whiteboard.id,
+                participantCount: participants.length,
+                requestedBy: requesterUsername,
+            });
+            sendJson(res, 200, {
+                data: {
+                    whiteboardId: whiteboard.id,
+                    participants: expandedParticipants,
+                },
+            });
+        },
+        { access: { minRole: "user" } },
+    );
+
+    router.post(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/elements",
         async (req, res) => {
             await store.ensureSchema();

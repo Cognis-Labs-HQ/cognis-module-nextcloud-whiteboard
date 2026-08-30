@@ -20,6 +20,8 @@ Users open `/whiteboards` to create or select a board and `/whiteboard?id=<board
 
 Owners can open the host share popup from the toolbar and grant read or write access. Account recipients can open the board directly; link recipients resolve through the host share flows and receive only the capabilities granted by the share.
 
+Existing persistent canvases can also receive newly invited users while they are active. The optional `whiteboard:uiGateway.expandCanvasAccess` provider method validates the requested profiles and asks the owner-authorized API to extend the stored editor allow-list without replacing existing access.
+
 **Integrate through capabilities**
 
 Resolve public capabilities from `ctx` instead of hard-coding another component's routes or importing its internals:

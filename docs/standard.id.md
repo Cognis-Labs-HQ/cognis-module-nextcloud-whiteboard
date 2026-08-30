@@ -20,6 +20,8 @@ Pengguna membuka `/whiteboards` untuk membuat atau memilih papan dan `/whiteboar
 
 Pemilik dapat membuka popup berbagi host dari bilah alat dan memberi akses baca atau tulis. Penerima akun membuka papan secara langsung; penerima tautan diselesaikan melalui flow berbagi host dan hanya menerima capability yang diberikan.
 
+Kanvas persisten yang sudah ada juga dapat menerima pengguna yang baru diundang saat kanvas aktif. Metode penyedia opsional `whiteboard:uiGateway.expandCanvasAccess` memvalidasi profil yang diminta dan memakai API yang diotorisasi pemilik untuk memperluas daftar izin editor tersimpan tanpa mengganti akses yang sudah ada.
+
 **Mengintegrasikan melalui capability**
 
 Dapatkan capability publik dari `ctx`; jangan mengodekan route komponen lain atau mengimpor internalnya:

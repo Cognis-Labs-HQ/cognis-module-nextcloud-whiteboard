@@ -20,6 +20,8 @@ Benutzer öffnen `/whiteboards`, um ein Board anzulegen oder auszuwählen, und `
 
 Eigentümer können über die Werkzeugleiste den Freigabedialog des Hosts öffnen und Lese- oder Schreibzugriff erteilen. Kontoempfänger öffnen das Board direkt; Linkempfänger werden über die Freigabe-Flows des Hosts aufgelöst und erhalten nur die freigegebenen Capabilities.
 
+Bereits bestehende dauerhafte Arbeitsflächen können auch während ihrer Nutzung neu eingeladene Benutzer aufnehmen. Die optionale Provider-Methode `whiteboard:uiGateway.expandCanvasAccess` validiert die angeforderten Profile und erweitert über die vom Eigentümer autorisierte API die gespeicherte Editor-Zugriffsliste, ohne bestehende Zugriffe zu ersetzen.
+
 **Über Capabilities integrieren**
 
 Lösen Sie öffentliche Capabilities über `ctx` auf, statt Routen anderer Komponenten fest zu codieren oder deren Interna zu importieren:

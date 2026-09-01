@@ -95,6 +95,7 @@ export function registerApiRoutes(router, ctx) {
     const resolveAccess = (options) =>
         resolveWhiteboardUserAccess({
             ...options,
+            profileIdentity,
             resolveShareGuestAccess,
             resolveShareUserAccess,
             resolveShareDelegatedAccess,
@@ -143,7 +144,7 @@ export function registerApiRoutes(router, ctx) {
         return;
     }
 
-    const store = resolveStore(dbExecutor, log);
+    const store = resolveStore(dbExecutor, log, profileIdentity);
     const runEnableTest = createWhiteboardEnableTest({
         store,
         checkHttpLiveness,
@@ -190,7 +191,7 @@ export function registerApiRoutes(router, ctx) {
             ctx: systemCtx ?? ctx,
             store,
             profileStore,
-            resolveWhiteboardUserAccess,
+            resolveWhiteboardUserAccess: resolveAccess,
             resolveShareGuestId,
             whiteboardStylesheets: WHITEBOARD_STYLESHEETS,
         });
@@ -288,6 +289,7 @@ export function registerApiRoutes(router, ctx) {
             if (!claims) return;
             const username = await resolveRequesterUsername(
                 profileStore,
+                profileIdentity,
                 claims.sub,
             ).catch((error) => {
                 sendError(res, 409, "profile_required", error.message);
@@ -307,7 +309,7 @@ export function registerApiRoutes(router, ctx) {
         resolveShareGuestAccess,
         resolveShareUserAccess,
         resolveShareDelegatedAccess,
-        resolveWhiteboardUserAccess,
+        resolveWhiteboardUserAccess: resolveAccess,
         whiteboardFiles,
     });
 
@@ -593,6 +595,7 @@ export function registerApiRoutes(router, ctx) {
             }
             const username = await resolveRequesterUsername(
                 profileStore,
+                profileIdentity,
                 claims.sub,
             ).catch((error) => {
                 sendError(res, 409, "profile_required", error.message);
@@ -647,7 +650,7 @@ export function registerApiRoutes(router, ctx) {
                 sendError(res, 404, "not_found", "Whiteboard not found.");
                 return;
             }
-            const access = await resolveWhiteboardUserAccess({
+            const access = await resolveAccess({
                 claims,
                 profileStore,
                 store,
@@ -806,6 +809,7 @@ export function registerApiRoutes(router, ctx) {
             const body = await readJson(req);
             const username = await resolveRequesterUsername(
                 profileStore,
+                profileIdentity,
                 claims.sub,
             ).catch((error) => {
                 sendError(res, 409, "profile_required", error.message);
@@ -824,6 +828,7 @@ export function registerApiRoutes(router, ctx) {
             }
             const participants = await resolveParticipantHandles(
                 profileStore,
+                profileIdentity,
                 body.participants,
                 hasMinRole(claims.role, "admin"),
             );

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { NextcloudWhiteboardStore } from "../api/store.js";
+import { testProfileIdentity } from "./reuse/profile-identity.js";
 
 function createMemoryDb() {
     const tables = new Map();
@@ -120,7 +121,10 @@ test("merged snapshot reads and writes through one transaction", async () => {
             await callback(executor);
         },
     };
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
 
     const saved = await store.saveMergedElementsSnapshot("board", [
         { id: "incoming", version: 1 },
@@ -137,7 +141,10 @@ test("merged snapshot reads and writes through one transaction", async () => {
 });
 
 test("nextcloud whiteboard store persists normalized configuration", async () => {
-    const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
+    const store = new NextcloudWhiteboardStore({
+        db: createMemoryDb(),
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     const saved = await store.saveConfig({
         serverUrl: "https://whiteboard.example.test:3002",
@@ -163,7 +170,10 @@ test("nextcloud whiteboard store serializes concurrent schema creation", async (
             if (ensureTableCalls === 1) await firstTablePending;
         },
     };
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
 
     const first = store.ensureSchema();
     const second = store.ensureSchema();
@@ -186,7 +196,10 @@ test("nextcloud whiteboard store retries schema creation after a failure", async
             if (ensureTableCalls === 1) throw new Error("schema unavailable");
         },
     };
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
 
     await assert.rejects(store.ensureSchema(), /schema unavailable/);
     await store.ensureSchema();
@@ -195,7 +208,10 @@ test("nextcloud whiteboard store retries schema creation after a failure", async
 });
 
 test("nextcloud whiteboard store deletes configuration", async () => {
-    const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
+    const store = new NextcloudWhiteboardStore({
+        db: createMemoryDb(),
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     await store.saveConfig({
         serverUrl: "https://whiteboard.example.test",
@@ -214,7 +230,10 @@ test("nextcloud whiteboard store deletes configuration", async () => {
 });
 
 test("nextcloud whiteboard store enforces allow-list access", async () => {
-    const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
+    const store = new NextcloudWhiteboardStore({
+        db: createMemoryDb(),
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     const board = await store.createWhiteboard({
         title: "Planning",
@@ -228,7 +247,10 @@ test("nextcloud whiteboard store enforces allow-list access", async () => {
 });
 
 test("nextcloud whiteboard store renames boards", async () => {
-    const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
+    const store = new NextcloudWhiteboardStore({
+        db: createMemoryDb(),
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     const board = await store.createWhiteboard({
         title: "Planning",
@@ -272,7 +294,10 @@ test("nextcloud whiteboard presence pointer columns use structured text types", 
             await callback(db);
         },
     };
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     const presenceTable = definitions.find(
         (definition) => definition.name === "nextcloud_whiteboard_presence",
@@ -306,7 +331,10 @@ test("nextcloud whiteboard presence stores null pointer timestamp when no pointe
             await callback(db);
         },
     };
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
 
     await store.upsertPresence({
         whiteboardId: "board-1",
@@ -329,7 +357,10 @@ test("nextcloud whiteboard presence stores null pointer timestamp when no pointe
 });
 
 test("nextcloud whiteboard store allows configuration before API key is set", async () => {
-    const store = new NextcloudWhiteboardStore({ db: createMemoryDb() });
+    const store = new NextcloudWhiteboardStore({
+        db: createMemoryDb(),
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     const saved = await store.saveConfig({
         serverUrl: "https://whiteboard.example.test",

@@ -3,10 +3,12 @@ import test from "node:test";
 import { registerApiRoutes } from "../api/index.js";
 import { NextcloudWhiteboardStore } from "../api/store.js";
 import { resolveWhiteboardUserAccess } from "../api/access.js";
+import { testProfileIdentity } from "./reuse/profile-identity.js";
 
 test("user-share recipients keep their account identity for whiteboard access", async () => {
     let nativeAccessChecked = false;
     const access = await resolveWhiteboardUserAccess({
+        profileIdentity: testProfileIdentity,
         claims: { sub: "bob" },
         profileStore: {
             async getProfile(accountId) {
@@ -43,6 +45,7 @@ test("user-share recipients keep their account identity for whiteboard access", 
 test("share guests receive only resource-scoped delegated whiteboard access", async () => {
     const delegatedRequests = [];
     const common = {
+        profileIdentity: testProfileIdentity,
         claims: { sub: "share:meeting-share:guest-1" },
         profileStore: {},
         store: { async canAccessWhiteboard() {} },
@@ -72,6 +75,7 @@ test("share guests receive only resource-scoped delegated whiteboard access", as
     assert.equal(readAccess.username, "guest:guest-1");
 
     const writeAccess = await resolveWhiteboardUserAccess({
+        profileIdentity: testProfileIdentity,
         ...common,
         requireWrite: true,
     });
@@ -87,6 +91,7 @@ test("share guests receive only resource-scoped delegated whiteboard access", as
 
 test("delegated access cannot broaden the requested resource scope", async () => {
     const access = await resolveWhiteboardUserAccess({
+        profileIdentity: testProfileIdentity,
         claims: { sub: "share:revoked-meeting-share:guest-1" },
         profileStore: {},
         store: { async canAccessWhiteboard() {} },
@@ -240,7 +245,10 @@ function createJsonResponse() {
 
 test("nextcloud whiteboard share route accepts issue-token flow result", async () => {
     const db = createMemoryDb();
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     const board = await store.createWhiteboard({
         title: "Planning",
@@ -280,6 +288,7 @@ test("nextcloud whiteboard share route accepts issue-token flow result", async (
     };
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
@@ -315,7 +324,10 @@ test("nextcloud whiteboard share route accepts issue-token flow result", async (
 
 test("nextcloud whiteboard share guests use gateway guest profiles", async () => {
     const db = createMemoryDb();
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     await store.saveConfig({
         serverUrl: "https://whiteboard.example.test",
@@ -329,6 +341,7 @@ test("nextcloud whiteboard share guests use gateway guest profiles", async () =>
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
@@ -374,7 +387,10 @@ test("nextcloud whiteboard share guests use gateway guest profiles", async () =>
 test("nextcloud whiteboard presence tracks share guests and profile users", async () => {
     const guestAccessRequests = [];
     const db = createMemoryDb();
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     const board = await store.createWhiteboard({
         title: "Planning",
@@ -384,6 +400,7 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") {
@@ -578,6 +595,7 @@ test("nextcloud whiteboard config remains available without the profile store", 
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             return undefined;
@@ -605,6 +623,7 @@ test("nextcloud whiteboard routes resolve a profile store registered later", asy
     let profileStore;
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") return profileStore;
@@ -650,7 +669,10 @@ test("nextcloud whiteboard routes resolve a profile store registered later", asy
 
 test("nextcloud whiteboard config save preserves existing API key when omitted", async () => {
     const db = createMemoryDb();
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     await store.saveConfig({
         serverUrl: "https://whiteboard.example.test",
@@ -660,6 +682,7 @@ test("nextcloud whiteboard config save preserves existing API key when omitted",
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") return { async getProfile() {} };
@@ -699,6 +722,7 @@ test("nextcloud whiteboard config save accepts URL updates before an API key is 
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") return { async getProfile() {} };
@@ -734,7 +758,10 @@ test("nextcloud whiteboard config save accepts URL updates before an API key is 
 
 test("nextcloud whiteboard config validation identifies the invalid field", async () => {
     const db = createMemoryDb();
-    const store = new NextcloudWhiteboardStore({ db });
+    const store = new NextcloudWhiteboardStore({
+        db,
+        profileIdentity: testProfileIdentity,
+    });
     await store.ensureSchema();
     await store.saveConfig({
         serverUrl: "https://whiteboard.example.test",
@@ -744,6 +771,7 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
             if (key === "db:executor") return db;
             if (key === "social:profileStore") return { async getProfile() {} };

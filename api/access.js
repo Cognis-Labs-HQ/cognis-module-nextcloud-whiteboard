@@ -1,14 +1,17 @@
-import { normalizeHandleKey } from "./reuse/normalize-handle.js";
 import { NextcloudWhiteboardStore } from "./store.js";
 
 const PAGE_RESOURCE_ORIGIN_OWNER_ID = "module:nextcloud-whiteboard";
 
 const storeByExecutor = new WeakMap();
 
-export function resolveStore(dbExecutor, log) {
+export function resolveStore(dbExecutor, log, profileIdentity) {
     const existingStore = storeByExecutor.get(dbExecutor);
     if (existingStore) return existingStore;
-    const store = new NextcloudWhiteboardStore({ db: dbExecutor, log });
+    const store = new NextcloudWhiteboardStore({
+        db: dbExecutor,
+        log,
+        profileIdentity,
+    });
     storeByExecutor.set(dbExecutor, store);
     return store;
 }
@@ -52,9 +55,13 @@ export function createProfileIdentityCapability(ctx) {
     };
 }
 
-export async function resolveRequesterUsername(profileStore, accountId) {
+export async function resolveRequesterUsername(
+    profileStore,
+    profileIdentity,
+    accountId,
+) {
     const profile = await profileStore.getProfile(accountId);
-    const username = normalizeHandleKey(profile?.handle ?? "");
+    const username = profileIdentity.normalizeHandleKey(profile?.handle ?? "");
     if (!username) {
         throw new Error(
             "A visible profile handle is required to use Whiteboards.",
@@ -65,6 +72,7 @@ export async function resolveRequesterUsername(profileStore, accountId) {
 
 export async function resolveParticipantHandles(
     profileStore,
+    profileIdentity,
     requestedHandles,
     includeHidden,
 ) {
@@ -72,12 +80,12 @@ export async function resolveParticipantHandles(
     for (const candidate of Array.isArray(requestedHandles)
         ? requestedHandles
         : []) {
-        const normalizedHandle = normalizeHandleKey(candidate);
+        const normalizedHandle = profileIdentity.normalizeHandleKey(candidate);
         if (!normalizedHandle) continue;
         const profile = await profileStore.getProfileByHandle(normalizedHandle);
         if (!profile?.handle) continue;
         if (!includeHidden && profile.visibility === "hidden") continue;
-        usernames.push(normalizeHandleKey(profile.handle));
+        usernames.push(profileIdentity.normalizeHandleKey(profile.handle));
     }
     return usernames;
 }
@@ -94,6 +102,7 @@ export function buildCognisWhiteboardUrl(
 export async function resolveWhiteboardUserAccess({
     claims,
     profileStore,
+    profileIdentity,
     store,
     whiteboardId,
     resolveShareGuestAccess,
@@ -165,6 +174,7 @@ export async function resolveWhiteboardUserAccess({
                   }).catch(() => null);
             const username = await resolveRequesterUsername(
                 profileStore,
+                profileIdentity,
                 claims.sub,
             ).catch(() => "");
             return username
@@ -184,6 +194,7 @@ export async function resolveWhiteboardUserAccess({
     }
     const username = await resolveRequesterUsername(
         profileStore,
+        profileIdentity,
         claims.sub,
     ).catch((error) => ({ error }));
     if (username?.error)

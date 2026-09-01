@@ -12,7 +12,7 @@ Jitsi Meet などのオーケストレーターは、正規の実行者アカウ
 
 ## 正規のハンドル正規化を再利用
 
-Whiteboard ウィンドウの作成では、モジュール独自のハンドル正規化処理をインポートせず、ホストのプロフィール ID capability を介して所有者を正規化するようになりました。
+すべての API、アクセス制御、永続化処理で、ハンドルの正規化にホストのプロフィール ID capability を使用するようになりました。重複していたモジュール独自の正規化処理は完全に削除しました。
 
 ## コミット
 
@@ -20,3 +20,4 @@ Whiteboard ウィンドウの作成では、モジュール独自のハンドル
 - [972b573](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/972b573d595667a3cd6786327b13f3cf08a897d6)
 - [ba1ec07](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ba1ec07cde8d4cdaceebdfc6295a3ed08c9eb33b)
 - [a2ccce2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a2ccce25543b6b580960bfc71c6d2acf9daec9f0)
+- [824bed8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/824bed8296198c32c69bc928130f7b93c1a56a6f)

@@ -40,13 +40,28 @@ function normalizeSelectionItems(selection) {
         .filter(Boolean);
 }
 
+function normalizePresenceInteraction(selection) {
+    return ["drawing", "idle", "pressing", "typing"].includes(
+        selection?.interaction,
+    )
+        ? selection.interaction
+        : "idle";
+}
+
 function serializePresenceSelection(selection) {
     const normalizedItems = normalizeSelectionItems(selection);
     const elementIds = normalizeSelectionElementIds(selection);
-    if (normalizedItems.length === 0 && elementIds.length === 0) return null;
+    const interaction = normalizePresenceInteraction(selection);
+    if (
+        normalizedItems.length === 0 &&
+        elementIds.length === 0 &&
+        interaction === "idle"
+    )
+        return null;
     return JSON.stringify({
         ...(normalizedItems.length ? { items: normalizedItems } : {}),
         ...(elementIds.length ? { elementIds } : {}),
+        interaction,
         updatedAt: new Date().toISOString(),
     });
 }
@@ -58,10 +73,17 @@ function parsePresenceSelection(value) {
         const parsed = JSON.parse(raw);
         const items = normalizeSelectionItems(parsed);
         const elementIds = normalizeSelectionElementIds(parsed);
-        if (items.length === 0 && elementIds.length === 0) return null;
+        const interaction = normalizePresenceInteraction(parsed);
+        if (
+            items.length === 0 &&
+            elementIds.length === 0 &&
+            interaction === "idle"
+        )
+            return null;
         return {
             ...(items.length ? { items } : {}),
             ...(elementIds.length ? { elementIds } : {}),
+            interaction,
             updatedAt: String(parsed.updatedAt ?? ""),
         };
     } catch {

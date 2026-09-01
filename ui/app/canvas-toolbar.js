@@ -146,14 +146,20 @@ export function bindWhiteboardCanvasToolbar({
             .catch(() => ["Inter", "Arial", "sans-serif"])
             .then((fonts) => {
                 if (!fontFamilySelect.isConnected) return;
+                const selectedFont = parseSavedFont(
+                    canvas.getTextStyle?.().fontFamily,
+                );
                 fontFamilySelect.replaceChildren(
-                    ...Array.from(new Set(fonts)).map((font) => {
-                        const option = document.createElement("option");
-                        option.value = font;
-                        option.textContent = font;
-                        option.style.fontFamily = `${toFontFamilyValue(font)}, Arial, sans-serif`;
-                        return option;
-                    }),
+                    ...Array.from(new Set([selectedFont, ...fonts]))
+                        .filter(Boolean)
+                        .map((font) => {
+                            const option = document.createElement("option");
+                            option.value = font;
+                            option.textContent = font;
+                            option.style.fontFamily = `${toFontFamilyValue(font)}, Arial, sans-serif`;
+                            option.selected = font === selectedFont;
+                            return option;
+                        }),
                 );
             });
     }

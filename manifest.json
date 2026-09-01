@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.113",
+    "version": "2.3.114",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -234,7 +234,7 @@
         },
         {
             "path": "api/store.js",
-            "sha256": "2f872659f365482840139724655e336fbd7ff0b89b1600797f73832a0f0b9e9e"
+            "sha256": "33cb1802f5879ab6c5f387b4bbd5f65e14adb170808d192044cfed61426349be"
         },
         {
             "path": "assets/banner.png",
@@ -270,11 +270,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "2ca060b69673cebddccc4a59e0b21358d5f77fa71d59c7e6792feb5dc2c92350"
+            "sha256": "6f003972d664bbd15cc8dbac65a122e01d1eb6c595823ca69e296c102d0cfdf1"
         },
         {
             "path": "package.json",
-            "sha256": "a0832dc7b0090a28976b30ed3f585b875701f25a2b775a313e004382e46a29de"
+            "sha256": "f2daca6d72bc79ab7162562c646ff672331d1c74a7fecb2542313853a1d49f65"
         },
         {
             "path": "routes.json",
@@ -362,7 +362,7 @@
         },
         {
             "path": "tests/store.test.js",
-            "sha256": "6571372888b0c54a023e02a2b1c5194b772238e6647450ad628c17b1e975945f"
+            "sha256": "1e0e5d714a04dedf461219a4fb1532a69b015a3425fef1254f9dfc6779b3af79"
         },
         {
             "path": "tests/structural-compliance.test.js",
@@ -370,7 +370,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "fc32788c9e80cb55849d41e06c3c03018ec45e01421efba55f60f6630e73ca2f"
+            "sha256": "9aaaa30b8ad0e9eca466ad1627743b96eca82851abb5926a20bb74fb3d2dbfb4"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -390,7 +390,7 @@
         },
         {
             "path": "ui/app/canvas-toolbar.js",
-            "sha256": "1e931ae551df8ff096112f249aca0c979c766ed145f21fe1e9ed25745f59f507"
+            "sha256": "22e304e4a10749110d1388f19243533da716c0eb39763758c0018029c3e1a2fc"
         },
         {
             "path": "ui/app/clear-canvas.js",
@@ -614,7 +614,7 @@
         },
         {
             "path": "ui/whiteboard/canvas.js",
-            "sha256": "9f870318cd3691f244aec8746c0f10a98cdd8b0eae12c94e8af44537258a04a9"
+            "sha256": "a92ab24934f91d77b70242187cb13dc80a39a9e3e45d3f07dae776ee8f5675a4"
         },
         {
             "path": "ui/whiteboard/clipboard-images.js",

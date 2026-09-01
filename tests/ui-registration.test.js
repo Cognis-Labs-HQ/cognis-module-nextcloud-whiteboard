@@ -336,6 +336,8 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
     assert.match(source, /getElementAnchorPoints,/);
     assert.match(source, /toFontFamilyValue/);
     assert.match(source, /getCurrentAppFont/);
+    assert.match(source, /getTextStyle\(\)/);
+    assert.match(source, /bumpElementVersion\(element, patch\)/);
     assert.match(source, /function notifyTransientChange\(\)/);
     assert.match(source, /transient:\s*true/);
     assert.doesNotMatch(source, /canvasElement\.width \|\| 0/);

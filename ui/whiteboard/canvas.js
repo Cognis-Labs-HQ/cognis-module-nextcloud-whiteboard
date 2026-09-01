@@ -36,7 +36,7 @@ export function createWhiteboardCanvas(
     let strokeColor = "auto";
     let strokeWidth = 4;
     let textFontSize = 28;
-    let textFontFamily = "sans-serif";
+    let textFontFamily = `${toFontFamilyValue(getCurrentAppFont())}, Arial, sans-serif`;
     let activeTool = "select";
     let imageUploadMaxBytes = 1048576;
     let imageUploader = null;
@@ -800,26 +800,31 @@ export function createWhiteboardCanvas(
             }
         },
         setTextStyle({ fontSize, fontFamily }) {
+            const patch = {};
             if (fontSize !== undefined)
-                textFontSize = Math.max(
+                patch.fontSize = textFontSize = Math.max(
                     8,
                     Math.min(96, Number(fontSize) || 28),
                 );
             if (fontFamily !== undefined)
-                textFontFamily = `${toFontFamilyValue(fontFamily)}, Arial, sans-serif`;
+                patch.fontFamily =
+                    textFontFamily = `${toFontFamilyValue(fontFamily)}, Arial, sans-serif`;
             if (selectedElement()?.type === "text") {
                 commitElements(
                     elements.map((element) =>
                         element.id === selectedElementId
-                            ? bumpElementVersion(element, {
-                                  fontSize: textFontSize,
-                                  fontFamily: textFontFamily,
-                              })
+                            ? bumpElementVersion(element, patch)
                             : element,
                     ),
                 );
                 notifySelection();
             }
+        },
+        getTextStyle() {
+            return {
+                fontSize: textFontSize,
+                fontFamily: textFontFamily,
+            };
         },
         setImageUploadMaxBytes(maxBytes) {
             imageUploadMaxBytes = Number(maxBytes);

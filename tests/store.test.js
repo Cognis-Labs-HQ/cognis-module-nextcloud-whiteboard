@@ -356,6 +356,26 @@ test("nextcloud whiteboard presence stores null pointer timestamp when no pointe
     assert.equal(insert.values.pointer_updated_at, null);
 });
 
+test("nextcloud whiteboard presence preserves interaction without a selection", async () => {
+    const store = new NextcloudWhiteboardStore({
+        db: createMemoryDb(),
+        profileIdentity: testProfileIdentity,
+    });
+    await store.ensureSchema();
+    await store.upsertPresence({
+        whiteboardId: "board-1",
+        username: "alice",
+        sessionId: "session-1",
+        displayName: "Alice",
+        guest: false,
+        selection: { interaction: "typing" },
+    });
+
+    const presence = await store.listPresence("board-1");
+
+    assert.equal(presence[0].selection.interaction, "typing");
+});
+
 test("nextcloud whiteboard store allows configuration before API key is set", async () => {
     const store = new NextcloudWhiteboardStore({
         db: createMemoryDb(),

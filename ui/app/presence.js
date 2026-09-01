@@ -24,7 +24,10 @@ export function getPresenceColor(entry) {
 }
 
 export function getSelectionPayload(canvasInstance) {
-    return { elementIds: canvasInstance?.getSelectedElementIds?.() ?? [] };
+    return {
+        elementIds: canvasInstance?.getSelectedElementIds?.() ?? [],
+        interaction: canvasInstance?.getPresenceInteraction?.() ?? "idle",
+    };
 }
 
 export function applyRemotePresenceSelections({
@@ -38,6 +41,7 @@ export function applyRemotePresenceSelections({
         .map((entry) => ({
             color: getPresenceColor(entry),
             elementIds: entry.selection?.elementIds ?? [],
+            interaction: entry.selection?.interaction ?? "idle",
             label: getPresenceDisplayName(entry),
         }))
         .filter((selection) => selection.elementIds.length > 0);

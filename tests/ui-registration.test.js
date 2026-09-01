@@ -273,7 +273,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     );
     assert.match(realtimeSource, /function throttleLatest\(callback, delay\)/);
     assert.match(realtimeSource, /callback\(\.\.\.args\)/);
-    assert.match(source, /pointerThrottleMs:\s*50/);
+    assert.match(source, /pointerThrottleMs:\s*32/);
     assert.match(source, /refreshIntervalMs:\s*250/);
     assert.match(textToolsSource, /addEventListener\(["']input["']/);
     assert.match(canvasSource, /flipX:\s*nextRight < nextX/);

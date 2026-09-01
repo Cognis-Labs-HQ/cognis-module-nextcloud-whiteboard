@@ -779,7 +779,7 @@ export async function mount(
         persistLayoutPreferences: false,
         presenceTracker: {
             endpoint: `${API_BASE}/whiteboards/presence`,
-            pointerThrottleMs: 50,
+            pointerThrottleMs: 32,
             refreshIntervalMs: 250,
             pageId: () => activeBoard?.id ?? "",
             storageKey: "nextcloud_whiteboard_presence_session",

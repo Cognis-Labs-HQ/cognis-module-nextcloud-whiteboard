@@ -14,8 +14,13 @@
 
 コンポーネントウィンドウで開いたホワイトボードでは、新規作成と履歴の操作を非表示にしました。
 
+## リアルタイム共同編集のフィードバック
+
+オブジェクトのアンカーポイントでポインターカーソルを表示します。削除されたオブジェクトのリモート選択は直ちに解除され、共同編集者の表示でオブジェクト操作中と入力中を区別できます。
+
 ## コミット
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
 - [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)
 - [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)
+- [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)

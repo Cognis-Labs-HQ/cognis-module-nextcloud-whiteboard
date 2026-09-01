@@ -295,7 +295,6 @@ export function createWhiteboardCanvas(
         notifyHistoryChange();
         return true;
     }
-
     function updateEraserSelection(endPoint) {
         if (!dragStartPoint) return;
         const box = buildDragBox(dragStartPoint, endPoint);
@@ -310,7 +309,6 @@ export function createWhiteboardCanvas(
         );
         scheduleRender();
     }
-
     function setActiveTool(tool) {
         activeTool = tool;
         eraserSelectionIds = new Set();
@@ -329,14 +327,12 @@ export function createWhiteboardCanvas(
         toolCallback?.(tool);
         scheduleRender();
     }
-
     function selectOnlyElement(elementId) {
         selectedElementIds = elementId ? new Set([elementId]) : new Set();
         selectedElementId = elementId ?? null;
         notifySelection();
         scheduleRender();
     }
-
     function deleteSelectedElements() {
         if (selectedElementIds.size === 0) return false;
         const idsToDelete = new Set(selectedElementIds);
@@ -353,7 +349,6 @@ export function createWhiteboardCanvas(
         scheduleRender();
         return true;
     }
-
     function toggleElementSelection(elementId) {
         if (!elementId) return;
         selectedElementIds = new Set(selectedElementIds);
@@ -368,25 +363,21 @@ export function createWhiteboardCanvas(
         notifySelection();
         scheduleRender();
     }
-
     function currentAppFont() {
         const value = getComputedStyle(document.documentElement)
             .getPropertyValue("--app-font")
             .trim();
         return parseSavedFont(value);
     }
-
     function textElement() {
         const selected = selectedElement();
         return selected?.type === "text" ? selected : null;
     }
-
     function positionTextOverlay(overlay, element, yOffset = 0) {
         overlay.style.left = `${element.x - viewportOffsetX}px`;
         overlay.style.top = `${element.y - viewportOffsetY + yOffset}px`;
         overlay.style.width = `${Math.max(180, element.width ?? 180)}px`;
     }
-
     const textTools = createWhiteboardTextTools({
         canvasElement,
         commitElements,
@@ -407,13 +398,11 @@ export function createWhiteboardCanvas(
             notifyTransientChange();
         },
     });
-
     function commitCreatedElement(element) {
         commitElements([...elements, element]);
         selectOnlyElement(element.id);
         if (!keepToolActive) setActiveTool("select");
     }
-
     function onPointerDown(event) {
         if (event.button === 1) {
             event.preventDefault();
@@ -513,7 +502,6 @@ export function createWhiteboardCanvas(
         updateDrawingDraft();
         scheduleRender();
     }
-
     function onPointerMove(event) {
         if (panState?.pointerId === event.pointerId) {
             event.preventDefault();
@@ -535,7 +523,11 @@ export function createWhiteboardCanvas(
                 const anchorIndex = findAnchorAt(selectedElement(), x, y);
                 const hoveredElement = findElementAt(x, y);
                 canvasElement.style.cursor =
-                    anchorIndex >= 0 || hoveredElement ? "grab" : "pointer";
+                    anchorIndex >= 0
+                        ? "pointer"
+                        : hoveredElement
+                          ? "grab"
+                          : "pointer";
             }
             return;
         }
@@ -651,7 +643,6 @@ export function createWhiteboardCanvas(
         currentPoints.push([x, y]);
         updateDrawingDraft();
     }
-
     function onPointerUp(event) {
         if (panState && (!event || panState.pointerId === event.pointerId)) {
             panState = null;
@@ -715,7 +706,6 @@ export function createWhiteboardCanvas(
         if (abandonedDraft && !elements.some(({ id }) => id === abandonedDraft))
             notifyTransientChange();
     }
-
     function onDoubleClick(event) {
         const [x, y] = getCanvasPoint(event);
         const element = findElementAt(x, y);
@@ -724,7 +714,6 @@ export function createWhiteboardCanvas(
             textTools.openTextEditor(element);
         }
     }
-
     function onKeyDown(event) {
         const modifierPressed = event.ctrlKey || event.metaKey;
         if (modifierPressed && !event.altKey) {
@@ -856,6 +845,17 @@ export function createWhiteboardCanvas(
         getSelectedElementIds() {
             return getSelectedElementIds();
         },
+        getPresenceInteraction() {
+            if (canvasElement.parentElement?.querySelector(".wb-text-editor"))
+                return "typing";
+            if (
+                isDrawing &&
+                activeTool === "select" &&
+                (selectDragMode === "move" || selectDragMode === "resize")
+            )
+                return "pressing";
+            return "idle";
+        },
         setRemoteSelections(selections) {
             setRemoteSelections(selections);
         },
@@ -890,7 +890,10 @@ export function createWhiteboardCanvas(
                     selectedElementId = null;
                 remoteSelections = new Map(
                     [...remoteSelections].filter(([id]) =>
-                        elements.some((element) => element.id === id),
+                        elements.some(
+                            (element) =>
+                                element.id === id && !element.isDeleted,
+                        ),
                     ),
                 );
                 notifySelection();
@@ -930,7 +933,11 @@ export function createWhiteboardCanvas(
             if (selectedElementId && !selectedElement())
                 selectedElementId = null;
             remoteSelections = new Map(
-                [...remoteSelections].filter(([id]) => currentIds.has(id)),
+                [...remoteSelections].filter(([id]) =>
+                    elements.some(
+                        (element) => element.id === id && !element.isDeleted,
+                    ),
+                ),
             );
             notifySelection();
             scheduleRender();

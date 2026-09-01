@@ -22,6 +22,10 @@ Objekt-Ankerpunkte verwenden jetzt einen Zeiger-Cursor. Entfernte Objekte verlie
 
 Die Schaltfläche zum Leeren verwendet jetzt eine stabile delegierte Ereignisbehandlung in der Werkzeugleiste und ein natives Button-Element, sodass der Bestätigungsdialog auch nach Aktualisierungen zuverlässig geöffnet wird.
 
+## Präzise Kollaborationszeiger und Auswahlbereinigung
+
+Beim Leeren der Canvas oder Löschen eines Objekts werden jetzt alle zugehörigen lokalen und entfernten Auswahlen aufgehoben. Canvas-eigene Kollaborationszeiger werden häufiger aktualisiert, unterscheiden Bewegung und Texteingabe und weichen beim Zeichnen, Schreiben und Ändern der Größe den Echtzeit-Markierungen.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -29,3 +33,4 @@ Die Schaltfläche zum Leeren verwendet jetzt eine stabile delegierte Ereignisbeh
 - [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
+- [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)

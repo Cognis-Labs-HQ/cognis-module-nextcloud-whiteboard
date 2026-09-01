@@ -22,6 +22,10 @@ Titik jangkar objek kini memakai kursor penunjuk. Pilihan jarak jauh segera dibe
 
 Tombol bersihkan kini memakai penanganan peristiwa terdelegasi yang stabil pada bilah alat dan elemen tombol asli, sehingga dialog konfirmasi selalu terbuka setelah bilah alat diperbarui.
 
+## Kursor kolaborasi akurat dan pembersihan pilihan
+
+Membersihkan kanvas atau menghapus objek kini menghapus semua pilihan lokal dan jarak jauh yang terkait. Kursor kolaborator bawaan kanvas diperbarui lebih sering, berganti antara status bergerak dan mengetik, serta digantikan label langsung saat menggambar, mengetik, dan mengubah ukuran.
+
 ## Komit
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -29,3 +33,4 @@ Tombol bersihkan kini memakai penanganan peristiwa terdelegasi yang stabil pada 
 - [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
+- [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)

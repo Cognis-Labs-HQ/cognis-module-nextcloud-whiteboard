@@ -273,7 +273,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     );
     assert.match(realtimeSource, /function throttleLatest\(callback, delay\)/);
     assert.match(realtimeSource, /callback\(\.\.\.args\)/);
-    assert.match(source, /pointerThrottleMs:\s*32/);
+    assert.match(source, /pointerThrottleMs:\s*16/);
     assert.match(source, /refreshIntervalMs:\s*250/);
     assert.match(textToolsSource, /addEventListener\(["']input["']/);
     assert.match(canvasSource, /flipX:\s*nextRight < nextX/);
@@ -334,7 +334,8 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
         /bumpElementVersion\(element, \{ isDeleted: true \}\)/,
     );
     assert.match(source, /getElementAnchorPoints,/);
-    assert.match(source, /parseSavedFont, toFontFamilyValue/);
+    assert.match(source, /toFontFamilyValue/);
+    assert.match(source, /getCurrentAppFont/);
     assert.match(source, /function notifyTransientChange\(\)/);
     assert.match(source, /transient:\s*true/);
     assert.doesNotMatch(source, /canvasElement\.width \|\| 0/);

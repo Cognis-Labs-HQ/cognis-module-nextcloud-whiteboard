@@ -35,9 +35,10 @@ export function applyRemotePresenceSelections({
     entries = [],
     sessionId = "",
 }) {
-    const selections = entries
+    const collaborators = entries
         .filter((entry) => String(entry?.sessionId ?? "") !== sessionId)
-        .filter((entry) => entry?.active !== false)
+        .filter((entry) => entry?.active !== false);
+    const selections = collaborators
         .map((entry) => ({
             color: getPresenceColor(entry),
             elementIds: entry.selection?.elementIds ?? [],
@@ -46,6 +47,17 @@ export function applyRemotePresenceSelections({
         }))
         .filter((selection) => selection.elementIds.length > 0);
     canvasInstance?.setRemoteSelections?.(selections);
+    canvasInstance?.setRemotePointers?.(
+        collaborators
+            .filter((entry) => entry?.pointer)
+            .map((entry) => ({
+                color: getPresenceColor(entry),
+                interaction: entry.selection?.interaction ?? "idle",
+                label: getPresenceDisplayName(entry),
+                x: Number(entry.pointer.x) || 0,
+                y: Number(entry.pointer.y) || 0,
+            })),
+    );
 }
 
 export function renderWhiteboardPresenceEntry(entry) {

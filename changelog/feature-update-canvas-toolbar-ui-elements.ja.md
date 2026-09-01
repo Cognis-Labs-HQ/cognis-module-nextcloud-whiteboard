@@ -22,6 +22,10 @@
 
 消去ボタンをネイティブなボタン要素に変更し、ツールバーで安定したイベント委譲を使用することで、ツールバー更新後も確認ダイアログが確実に開くようにしました。
 
+## 正確な共同編集カーソルと選択解除
+
+キャンバスの消去またはオブジェクトの削除時に、対応するローカル選択とリモート選択をすべて解除します。キャンバス独自の共同編集カーソルをより頻繁に更新し、移動中と入力中を切り替え、描画・入力・サイズ変更中はリアルタイム表示を優先します。
+
 ## コミット
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -29,3 +33,4 @@
 - [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
+- [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)

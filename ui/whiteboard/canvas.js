@@ -11,12 +11,16 @@ import {
     scaleElementToBounds,
 } from "./elements.js";
 import { renderWhiteboardScene } from "./render-scene.js";
-import { parseSavedFont, toFontFamilyValue } from "../reuse/font-resources.js";
-import { createWhiteboardTextTools } from "./text-tools.js";
+import { toFontFamilyValue } from "../reuse/font-resources.js";
+import { createWhiteboardTextTools, getCurrentAppFont } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
 import * as drafts from "./reuse/draft-elements.js";
-import { buildRemoteSelections } from "./reuse/remote-selections.js";
+import {
+    buildRemoteSelections,
+    findVisibleElement,
+    retainVisibleElementIds,
+} from "./reuse/remote-selections.js";
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},
@@ -58,6 +62,7 @@ export function createWhiteboardCanvas(
     let viewportOffsetX = 0;
     let viewportOffsetY = 0;
     let remoteSelections = new Map();
+    let remotePointers = [];
     let keepToolActive = false;
     if (readOnly) canvasElement.style.cursor = "pointer";
     function scheduleRender() {
@@ -81,6 +86,7 @@ export function createWhiteboardCanvas(
             eraserSelectionIds,
             isDrawing,
             remoteSelections,
+            remotePointers,
             selectedElementId,
             selectedElementIds,
             viewportOffsetX,
@@ -122,9 +128,7 @@ export function createWhiteboardCanvas(
         );
     }
     function selectedElement() {
-        return (
-            elements.find((element) => element.id === selectedElementId) ?? null
-        );
+        return findVisibleElement(elements, selectedElementId);
     }
     function syncPrimarySelection() {
         if (selectedElementId && selectedElementIds.has(selectedElementId))
@@ -140,9 +144,7 @@ export function createWhiteboardCanvas(
             }));
     }
     function getSelectedElementIds() {
-        return [...selectedElementIds].filter((id) =>
-            elements.some((element) => element.id === id),
-        );
+        return [...retainVisibleElementIds(selectedElementIds, elements)];
     }
     function setRemoteSelections(selections = []) {
         remoteSelections = buildRemoteSelections(selections);
@@ -363,12 +365,6 @@ export function createWhiteboardCanvas(
         notifySelection();
         scheduleRender();
     }
-    function currentAppFont() {
-        const value = getComputedStyle(document.documentElement)
-            .getPropertyValue("--app-font")
-            .trim();
-        return parseSavedFont(value);
-    }
     function textElement() {
         const selected = selectedElement();
         return selected?.type === "text" ? selected : null;
@@ -381,7 +377,7 @@ export function createWhiteboardCanvas(
     const textTools = createWhiteboardTextTools({
         canvasElement,
         commitElements,
-        currentAppFont,
+        currentAppFont: getCurrentAppFont,
         getElements: () => elements,
         getTextElement: textElement,
         getTextFormatMenu: () => textFormatMenu,
@@ -740,7 +736,6 @@ export function createWhiteboardCanvas(
             event.stopPropagation();
         }
     }
-
     const onPaste = createClipboardImageHandler({
         commitCreatedElement,
         getImageUploadMaxBytes: () => imageUploadMaxBytes,
@@ -752,7 +747,6 @@ export function createWhiteboardCanvas(
             });
         },
     });
-
     const unbindCanvasEvents = bindWhiteboardCanvasEvents({
         canvasElement,
         onDoubleClick,
@@ -848,16 +842,17 @@ export function createWhiteboardCanvas(
         getPresenceInteraction() {
             if (canvasElement.parentElement?.querySelector(".wb-text-editor"))
                 return "typing";
-            if (
-                isDrawing &&
-                activeTool === "select" &&
-                (selectDragMode === "move" || selectDragMode === "resize")
-            )
+            if (isDrawing && activeTool === "select" && selectDragMode)
                 return "pressing";
+            if (isDrawing) return "drawing";
             return "idle";
         },
         setRemoteSelections(selections) {
             setRemoteSelections(selections);
+        },
+        setRemotePointers(pointers = []) {
+            remotePointers = pointers;
+            scheduleRender();
         },
         getViewportOffset() {
             return { x: viewportOffsetX, y: viewportOffsetY };
@@ -881,10 +876,9 @@ export function createWhiteboardCanvas(
                 remoteDraftElements.clear();
                 elements = cloneElements(stableRemoteElements);
                 updateCanvasSize();
-                selectedElementIds = new Set(
-                    [...selectedElementIds].filter((id) =>
-                        elements.some((element) => element.id === id),
-                    ),
+                selectedElementIds = retainVisibleElementIds(
+                    selectedElementIds,
+                    elements,
                 );
                 if (selectedElementId && !selectedElement())
                     selectedElementId = null;
@@ -926,9 +920,9 @@ export function createWhiteboardCanvas(
             }
             elements = [...localById.values()];
             updateCanvasSize();
-            const currentIds = new Set(elements.map((element) => element.id));
-            selectedElementIds = new Set(
-                [...selectedElementIds].filter((id) => currentIds.has(id)),
+            selectedElementIds = retainVisibleElementIds(
+                selectedElementIds,
+                elements,
             );
             if (selectedElementId && !selectedElement())
                 selectedElementId = null;
@@ -958,6 +952,7 @@ export function createWhiteboardCanvas(
             currentPoints = [];
             eraserSelectionIds = new Set();
             selectedElementIds = new Set();
+            remoteSelections = new Map();
             scheduleRender();
             selectedElementId = null;
             notifySelection();

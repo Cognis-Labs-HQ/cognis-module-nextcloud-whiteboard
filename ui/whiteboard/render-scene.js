@@ -5,6 +5,7 @@ import {
     getElementBounds,
     renderElement,
 } from "./elements.js";
+import { renderRemotePointers } from "./reuse/remote-pointers.js";
 
 export function renderWhiteboardScene({
     activeTool,
@@ -18,6 +19,7 @@ export function renderWhiteboardScene({
     eraserSelectionIds,
     isDrawing,
     remoteSelections,
+    remotePointers,
     selectedElementId,
     selectedElementIds,
     viewportOffsetX,
@@ -58,6 +60,7 @@ export function renderWhiteboardScene({
         viewportOffsetX,
         viewportOffsetY,
     });
+    renderRemotePointers({ canvasElement, context, pointers: remotePointers });
 }
 
 function renderElementSelection({

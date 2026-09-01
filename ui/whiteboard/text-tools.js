@@ -4,6 +4,13 @@ import {
     toFontFamilyValue,
 } from "../reuse/font-resources.js";
 
+export function getCurrentAppFont() {
+    const value = getComputedStyle(document.documentElement)
+        .getPropertyValue("--app-font")
+        .trim();
+    return parseSavedFont(value);
+}
+
 export function createWhiteboardTextTools({
     canvasElement,
     commitElements,

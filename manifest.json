@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.107",
+    "version": "2.3.108",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -265,11 +265,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "07f807c9d75752834cc9d3fcf00e9c7c352f7702b9fa66e2a2fefac10b40e939"
+            "sha256": "df9d905d32950d4c216f4c025a29df432514919c964d5073d42738e59e4d0e89"
         },
         {
             "path": "package.json",
-            "sha256": "68461d16bdb48b244208a13a2d8ea0e3db550b8e7e9c8844a42c0394113ceea4"
+            "sha256": "8727d74a7b9cf7cb0235966bb242e2f49eb35738b9220aa6ae0e631231b45ec4"
         },
         {
             "path": "routes.json",
@@ -328,8 +328,12 @@
             "sha256": "24689d4e2fa905f9ce6f2dfec1b1fa40840cdfe1f3a40a298204444dd614045e"
         },
         {
+            "path": "tests/remote-pointers.test.js",
+            "sha256": "63fd80478a9885a62ea16b94f946f6990dae213f786f57ea970d700215d87acf"
+        },
+        {
             "path": "tests/remote-selections.test.js",
-            "sha256": "1205cc4e2334455639991013605f24786238b2c78bdf361698d0e3e1401a7ea6"
+            "sha256": "02c44fd50246ac157efe727d797e508f00d04a7542fd0273845651b159bfb060"
         },
         {
             "path": "tests/reuse/auth.js",
@@ -357,7 +361,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "a3fdf1c3caed56e0f5bf0ca0ae92f3dd5bb39c11fbf3099fc050d1f9fdb7f7be"
+            "sha256": "d243bee1127f90c2d020d0e7e09417354fac984d9e087b36f62466f2caacf85d"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -393,7 +397,7 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "b46456b6417733f761277abe5c491a9970ac080e47855887f1dbb19b83f3977a"
+            "sha256": "a6c961e925661843e9344ab0b8da420ef426541a5ee5738b364960d459ba2a79"
         },
         {
             "path": "ui/app/overlay.js",
@@ -405,7 +409,7 @@
         },
         {
             "path": "ui/app/presence.js",
-            "sha256": "14e2d89febb9a1d8f1d464f0a05bbe1f4ff720984159958c818e3de260bbb72b"
+            "sha256": "b69059b3bb0760985cf099b055928e48226ec3d3054d6eba35ed9ab9493239f7"
         },
         {
             "path": "ui/app/realtime.js",
@@ -593,7 +597,7 @@
         },
         {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "2e6399a29c601660cf1ae4f2af27734cbb68525c61a8435b7bfbd2383a2b7835"
+            "sha256": "cd409bbab6979a2c2f83c8721426f386e7a29ba96b9de9effc95023c477ad4b1"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",
@@ -601,7 +605,7 @@
         },
         {
             "path": "ui/whiteboard/canvas.js",
-            "sha256": "bc704216f252a8c0baecdd246c30dc7444aeb53afaa4b588f1f505e01b3f86de"
+            "sha256": "9f870318cd3691f244aec8746c0f10a98cdd8b0eae12c94e8af44537258a04a9"
         },
         {
             "path": "ui/whiteboard/clipboard-images.js",
@@ -613,19 +617,23 @@
         },
         {
             "path": "ui/whiteboard/render-scene.js",
-            "sha256": "f6a78fd323f5a2e4a3d5283d7165954d79f6dabb92b6939a700e93209f844d2b"
+            "sha256": "b11b2f5aa201b18a72f2179b1128f7041e050e4ed26e3cf35ce04a33907e877d"
         },
         {
             "path": "ui/whiteboard/reuse/draft-elements.js",
             "sha256": "f40200c4a8c75916517de3b3833e48fc7af477cecdbb477b56ace04bffd477c6"
         },
         {
+            "path": "ui/whiteboard/reuse/remote-pointers.js",
+            "sha256": "345168f36698fbe854b55fa2a2318121c9b7d9685da500eb77df86087a960ba1"
+        },
+        {
             "path": "ui/whiteboard/reuse/remote-selections.js",
-            "sha256": "c061ac282f60f29930985ce27d9236705b5d2a17d7c88302b28116dfdbc83989"
+            "sha256": "6b052a86043006508e7a6522809236c699d08ab7066f9270230916bc926aee74"
         },
         {
             "path": "ui/whiteboard/text-tools.js",
-            "sha256": "938441216c5dfa3f69f44c726ff520d4c84df8a347529e3d1165da3b7420bf57"
+            "sha256": "ab2fc9ec0d2b310aef45ffd99f5b9d74f877bfcec63bd3632161026b39f87983"
         }
     ]
 }

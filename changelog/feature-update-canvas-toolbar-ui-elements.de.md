@@ -26,6 +26,10 @@ Die Schaltfläche zum Leeren verwendet jetzt eine stabile delegierte Ereignisbeh
 
 Beim Leeren der Canvas oder Löschen eines Objekts werden jetzt alle zugehörigen lokalen und entfernten Auswahlen aufgehoben. Canvas-eigene Kollaborationszeiger werden häufiger aktualisiert, unterscheiden Bewegung und Texteingabe und weichen beim Zeichnen, Schreiben und Ändern der Größe den Echtzeit-Markierungen.
 
+## Stabiles Layout der Speicheranzeige
+
+Die Werkzeugleiste reserviert jetzt dauerhaft die Breite der übersetzten Gespeichert-Anzeige, sodass ihre Bestätigungsanimation benachbarte Steuerelemente nicht mehr verschiebt.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -34,3 +38,4 @@ Beim Leeren der Canvas oder Löschen eines Objekts werden jetzt alle zugehörige
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
+- [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)

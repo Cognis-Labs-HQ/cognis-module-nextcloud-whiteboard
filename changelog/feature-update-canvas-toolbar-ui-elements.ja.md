@@ -26,6 +26,10 @@
 
 キャンバスの消去またはオブジェクトの削除時に、対応するローカル選択とリモート選択をすべて解除します。キャンバス独自の共同編集カーソルをより頻繁に更新し、移動中と入力中を切り替え、描画・入力・サイズ変更中はリアルタイム表示を優先します。
 
+## 保存状態の安定したレイアウト
+
+ツールバーで翻訳済みの保存済みピルの幅を常に確保し、確認アニメーションの表示時に隣接する操作部品が移動しないようにしました。
+
 ## コミット
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -34,3 +38,4 @@
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
+- [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)

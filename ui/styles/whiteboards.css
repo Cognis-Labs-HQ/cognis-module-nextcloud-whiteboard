@@ -382,11 +382,12 @@ body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
     background: var(--success, #2d9e5c);
     border-radius: 999px;
     color: #fff;
-    display: none;
+    display: inline-block;
     font-size: 0.75rem;
     opacity: 0;
     padding: 0.2rem 0.55rem;
     transform: translateX(0.75rem) scale(0.8);
+    visibility: hidden;
     white-space: nowrap;
 }
 
@@ -394,7 +395,7 @@ body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
     .whiteboard-save-state:has(.whiteboard-save-confirmed)
     .whiteboard-saved-pill {
     animation: whiteboard-saved-pill 1.4s ease both;
-    display: inline-block;
+    visibility: visible;
 }
 
 .whiteboard-canvas-wrap .whiteboard-save-confirmed {

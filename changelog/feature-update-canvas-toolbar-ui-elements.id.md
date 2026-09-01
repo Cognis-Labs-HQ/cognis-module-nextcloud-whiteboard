@@ -26,6 +26,10 @@ Tombol bersihkan kini memakai penanganan peristiwa terdelegasi yang stabil pada 
 
 Membersihkan kanvas atau menghapus objek kini menghapus semua pilihan lokal dan jarak jauh yang terkait. Kursor kolaborator bawaan kanvas diperbarui lebih sering, berganti antara status bergerak dan mengetik, serta digantikan label langsung saat menggambar, mengetik, dan mengubah ukuran.
 
+## Tata letak status tersimpan yang stabil
+
+Bilah alat kini selalu menyediakan ruang selebar indikator Tersimpan yang diterjemahkan, sehingga animasi konfirmasinya tidak lagi menggeser kontrol di sebelahnya.
+
 ## Komit
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -34,3 +38,4 @@ Membersihkan kanvas atau menghapus objek kini menghapus semua pilihan lokal dan 
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
+- [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)

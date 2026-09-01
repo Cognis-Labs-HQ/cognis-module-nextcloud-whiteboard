@@ -24,6 +24,7 @@ const WHITEBOARD_STYLESHEETS = [
 ];
 import {
     buildCognisWhiteboardUrl,
+    createProfileIdentityCapability,
     createProfileStoreCapability,
     registerStoredOrigin,
     resolveParticipantHandles,
@@ -77,7 +78,7 @@ export function registerApiRoutes(router, ctx) {
     const requireAuth = ctx.getCapability("auth:requireAuth");
     const dbExecutor = ctx.getCapability("db:executor");
     const profileStore = createProfileStoreCapability(ctx);
-    const profileIdentity = ctx.getCapability("social:profile:identity");
+    const profileIdentity = createProfileIdentityCapability(ctx);
     const log = ctx.getCapability("logging:log");
     const registerScriptOrigins = ctx.getCapability(
         "auth:registerPageScriptOrigins",

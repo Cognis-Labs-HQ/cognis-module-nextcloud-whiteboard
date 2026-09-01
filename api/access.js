@@ -31,6 +31,27 @@ export function createProfileStoreCapability(ctx) {
     };
 }
 
+export function createProfileIdentityCapability(ctx) {
+    const requireProfileIdentity = () => {
+        const profileIdentity = ctx.getCapability("social:profile:identity");
+        if (!profileIdentity) {
+            throw new Error("Profile identity capability is unavailable.");
+        }
+        return profileIdentity;
+    };
+    return {
+        normalizeHandleKey(...args) {
+            return requireProfileIdentity().normalizeHandleKey(...args);
+        },
+        normalizeHandleKeys(...args) {
+            return requireProfileIdentity().normalizeHandleKeys(...args);
+        },
+        resolveAccountHandle(...args) {
+            return requireProfileIdentity().resolveAccountHandle(...args);
+        },
+    };
+}
+
 export async function resolveRequesterUsername(profileStore, accountId) {
     const profile = await profileStore.getProfile(accountId);
     const username = normalizeHandleKey(profile?.handle ?? "");

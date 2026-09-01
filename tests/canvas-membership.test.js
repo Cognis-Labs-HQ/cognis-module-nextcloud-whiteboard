@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { createProfileIdentityCapability } from "../api/access.js";
 import { createCanvasMembershipCapability } from "../api/reuse/canvas-membership.js";
 
 function createHarness() {
@@ -169,6 +170,28 @@ test("canvas membership sanitizes and logs dependency failures", async () => {
         },
     ]);
     assert.doesNotMatch(JSON.stringify(harness.logs), /password|secret/);
+});
+
+test("profile identity resolution follows late capability registration", async () => {
+    let registeredIdentity;
+    const profileIdentity = createProfileIdentityCapability({
+        getCapability(capability) {
+            return capability === "social:profile:identity"
+                ? registeredIdentity
+                : undefined;
+        },
+    });
+
+    assert.throws(
+        () => profileIdentity.normalizeHandleKey("@Alice"),
+        /Profile identity capability is unavailable/,
+    );
+    registeredIdentity = {
+        normalizeHandleKey(handle) {
+            return String(handle).replace(/^@/, "").toLowerCase();
+        },
+    };
+    assert.equal(profileIdentity.normalizeHandleKey("@Alice"), "alice");
 });
 
 test("legacy canvas membership controls are removed", async () => {

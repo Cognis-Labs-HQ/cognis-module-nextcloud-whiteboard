@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.99",
+    "version": "2.3.100",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -149,7 +149,7 @@
         },
         {
             "path": "api/access.js",
-            "sha256": "a0b0b041de4ea965bb326d8d72c2547f45a45b47f709a1171d2c3947a252162e"
+            "sha256": "07c2e25c0eb8155ea81686ad650358cc865d2d95fca6440bb348339780c8c65e"
         },
         {
             "path": "api/config-routes.js",
@@ -169,7 +169,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "38698a1c70f831205de535976eeb6e9069a1e1b70b4d22ca065ae918139a2900"
+            "sha256": "9b89527baeb83d2294519703517d6e0ccb3336a8840041e130136460de5ad686"
         },
         {
             "path": "api/reuse/canvas-loader.js",
@@ -269,11 +269,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "710de94b27f70f8227033f75ec67ddfab0bbad5adb870134fdc41bc34bb3a309"
+            "sha256": "690e97c0eeb7538035839510a41221e0747388aaedbbb55e219e4f48adf03dd6"
         },
         {
             "path": "package.json",
-            "sha256": "deee18092a366fde1155fefbd8e4507929a8ed95e9fae8883fca728ab9f802e6"
+            "sha256": "ac02435bced3e35de3cc60442268d86c3733194a575ea8f2156de5178c44ff1f"
         },
         {
             "path": "routes.json",
@@ -301,7 +301,7 @@
         },
         {
             "path": "tests/canvas-membership.test.js",
-            "sha256": "fef22c505acc4fa5681691d2e71d2161e656f4b138b0c2ba45ec7facc68d4fbe"
+            "sha256": "08d562856243029ede83fc55ae750e84044bbc9cae82f02b63ef4c8259e5ecf5"
         },
         {
             "path": "tests/documentation-convention.test.js",

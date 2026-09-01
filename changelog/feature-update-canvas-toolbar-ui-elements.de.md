@@ -34,6 +34,10 @@ Die Werkzeugleiste reserviert jetzt dauerhaft die Breite der übersetzten Gespei
 
 Whiteboard-Raster und -Karte werden jetzt auf den kleineren Wert aus dem verfügbaren Platz des Elternelements und der dynamischen Viewport-Höhe begrenzt. Die Canvas erzeugt kein Dokument-Scrolling mehr und bleibt über ihre unendliche Verschiebefläche navigierbar.
 
+## Viewport-Größe im Besitz des Composers
+
+Sämtliche Modulstile für Page-Shell-Elemente wurden entfernt. Das Whiteboard fordert begrenztes Inhalts-Scrolling jetzt über seinen Page-Composer-Payload an, sodass der Host die Canvas an den verfügbaren Viewport anpasst.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -44,3 +48,4 @@ Whiteboard-Raster und -Karte werden jetzt auf den kleineren Wert aus dem verfüg
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
 - [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
+- [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)

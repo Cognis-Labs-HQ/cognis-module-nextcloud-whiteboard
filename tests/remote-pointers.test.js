@@ -18,13 +18,13 @@ function createHarness() {
         scrollWidth: 100,
     };
     const canvasElement = {
-        closest: () => root,
         getBoundingClientRect: () => ({
             height: 100,
             left: 0,
             top: 0,
             width: 100,
         }),
+        parentElement: root,
     };
     const context = new Proxy(
         { measureText: (text) => ({ width: text.length * 6 }) },

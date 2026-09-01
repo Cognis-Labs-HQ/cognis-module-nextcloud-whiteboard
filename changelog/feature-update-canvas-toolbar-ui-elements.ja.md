@@ -34,6 +34,10 @@
 
 ホワイトボードのグリッドとカードを、親要素の空き領域と利用可能な動的ビューポート高のうち小さい方に制限しました。キャンバスによる文書スクロールを防ぎ、無限パン領域で引き続き移動できます。
 
+## Composerが管理するビューポートサイズ
+
+ページシェル要素に対するモジュール側のスタイルをすべて削除しました。ホワイトボードはPage Composerのペイロードで制約付きコンテンツスクロールを要求し、ホストが利用可能なビューポートにキャンバスを合わせます。
+
 ## コミット
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -44,3 +48,4 @@
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
 - [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
+- [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)

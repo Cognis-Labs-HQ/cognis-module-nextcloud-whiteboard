@@ -3,8 +3,7 @@ export function renderRemotePointers({
     context,
     pointers = [],
 }) {
-    const root =
-        canvasElement.closest(".main-window") ?? canvasElement.parentElement;
+    const root = canvasElement.parentElement;
     if (!root) return;
     const rootBounds = root.getBoundingClientRect();
     const canvasBounds = canvasElement.getBoundingClientRect();

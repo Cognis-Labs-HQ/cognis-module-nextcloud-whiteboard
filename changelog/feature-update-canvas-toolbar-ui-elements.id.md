@@ -34,6 +34,10 @@ Bilah alat kini selalu menyediakan ruang selebar indikator Tersimpan yang diterj
 
 Grid dan kartu papan tulis kini dibatasi ke ukuran yang lebih kecil antara ruang induk dan tinggi viewport dinamis yang tersedia. Kanvas tidak lagi membuat dokumen bergulir dan tetap dapat dijelajahi melalui permukaan geser tanpa batas.
 
+## Ukuran viewport milik composer
+
+Seluruh gaya modul untuk elemen page shell telah dihapus. Papan tulis kini meminta pengguliran konten terbatas melalui payload page composer agar host menyesuaikan ukuran kanvas dengan viewport yang tersedia.
+
 ## Komit
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -44,3 +48,4 @@ Grid dan kartu papan tulis kini dibatasi ke ukuran yang lebih kecil antara ruang
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
 - [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
+- [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)

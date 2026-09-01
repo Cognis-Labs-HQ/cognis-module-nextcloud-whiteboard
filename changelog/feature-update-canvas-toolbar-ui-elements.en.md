@@ -34,6 +34,10 @@ The toolbar now permanently reserves the translated Saved pill width, so its con
 
 The whiteboard grid and card now clamp to the smaller of their parent space and the available dynamic viewport height. The canvas no longer creates document scrolling and remains navigable through its infinite panning surface.
 
+## Composer-owned viewport sizing
+
+Removed all module styling of page-shell elements. The whiteboard now requests bounded content scrolling through its page composer payload, allowing the host to size the canvas to the offered viewport.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -44,3 +48,4 @@ The whiteboard grid and card now clamp to the smaller of their parent space and 
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
 - [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
+- [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)

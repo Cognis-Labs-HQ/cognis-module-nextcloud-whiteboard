@@ -99,7 +99,7 @@ test("nextcloud whiteboard disables page layout editing", async () => {
         fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(appSource, /allowCustomization:\s*false/);
-    assert.match(appSource, /contentScrolling:\s*false/);
+    assert.match(appSource, /contentScrolling:\s*true/);
     assert.match(appSource, /borderless:\s*false/);
     assert.doesNotMatch(appSource, /borderless:\s*embeddedComponentMode/);
     assert.match(appSource, /frameless:\s*embeddedComponentMode/);
@@ -879,9 +879,32 @@ test("component whiteboards clamp the canvas grid to their parent height", async
         stylesSource,
         /\.whiteboard-canvas-wrap--embedded\s*\{[^}]*max-height:\s*100%;/s,
     );
-    assert.match(
+    assert.doesNotMatch(
         stylesSource,
-        /\.main-window:has\(\.whiteboard-canvas-wrap\) \.content-grid,[^{]*\.widget-card:has\(> \.whiteboard-canvas-wrap\)\s*\{[^}]*max-block-size:\s*calc\(100dvh - 12rem\);[^}]*overflow:\s*hidden;/s,
+        /\.(main-window|content-grid|widget-card)/,
+    );
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+    );
+    assert.match(appSource, /contentScrolling:\s*true/);
+});
+
+test("whiteboard UI does not reach into page-shell-owned elements", async () => {
+    const sources = await Promise.all(
+        [
+            "../ui/styles/whiteboards.css",
+            "../ui/app/index.js",
+            "../ui/whiteboard/reuse/remote-pointers.js",
+        ].map((path) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(path, import.meta.url), "utf8"),
+            ),
+        ),
+    );
+
+    assert.doesNotMatch(
+        sources.join("\n"),
+        /main-window|content-grid|widget-card/,
     );
 });
 

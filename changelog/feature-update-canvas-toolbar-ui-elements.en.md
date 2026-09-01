@@ -1,6 +1,6 @@
 # A polished whiteboard toolbar
 
-**Feature Branch:** work
+**Feature Branch:** feature-update-canvas-toolbar-ui-elements
 
 ## Clear, theme-aware drawing controls
 
@@ -18,3 +18,4 @@ Removed the new-whiteboard and history actions from whiteboards opened inside co
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
 - [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)
+- [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)

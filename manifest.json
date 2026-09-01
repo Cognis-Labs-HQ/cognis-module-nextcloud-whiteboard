@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.104",
+    "version": "2.3.105",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -265,11 +265,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "29848f0f066a09c9d19168006fad0ea48403a75bc56943bb7373fdf5d0a8c295"
+            "sha256": "8804ef94b58ccfa74fc8307ba749419360ffbfe3a5ef95208e5dc4a6320ad005"
         },
         {
             "path": "package.json",
-            "sha256": "aee5806ff3be793bbfa0e7469a231ffdadbf8371748fe1ec0fcc37a1a00ca8ea"
+            "sha256": "91b0a81e29b546cb119c791319bc5ff679b08557ee4e9cf4bbebb4771ce8c199"
         },
         {
             "path": "routes.json",
@@ -353,7 +353,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "fe4afde25d877ea118536eb8242246de1767288cf62dd4a3955d3e2f78283940"
+            "sha256": "39f7986634c29d89f0292ade0830ba80aca55d71bd24fa53f2c0d43aa82df757"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -452,64 +452,124 @@
             "sha256": "ffa36057dc22d1a4cadb7c5f0516059297d85f2b639a2d798d4d0002b43191d7"
         },
         {
-            "path": "ui/reuse/assets/arrow.svg",
-            "sha256": "444dbdf9baadbb07dc61dcea7f15cb60da4211f1dccae0e4f6cda6c6525819a0"
+            "path": "ui/reuse/assets/arrow-dark.svg",
+            "sha256": "dfc65cab70e36a6ba97771a50a9e8fe3a3c0c43b9448d1897736340a58ab6510"
         },
         {
-            "path": "ui/reuse/assets/clear.svg",
-            "sha256": "e23b6824ccd437037b0952adaec8ded366092462eab180d9c376f708cc78de8a"
+            "path": "ui/reuse/assets/arrow-light.svg",
+            "sha256": "5a20988b3e1db24736e5dba3c8c0c41cc786d830ee4f23a7f4797076f1bd8b12"
         },
         {
-            "path": "ui/reuse/assets/diamond.svg",
-            "sha256": "16bbe0fe224170e6a328d79755fe3788b6652ac516bb332ee5e5fdc0193e98f4"
+            "path": "ui/reuse/assets/clear-dark.svg",
+            "sha256": "0eef274b3be4a4d4596881b6821a78f670c30b24575e337389d28869097bcf39"
         },
         {
-            "path": "ui/reuse/assets/ellipse.svg",
-            "sha256": "7d59aa4cdd270c4ff75d3b59702162646973eec922773b6f899d5e6bb4531a54"
+            "path": "ui/reuse/assets/clear-light.svg",
+            "sha256": "a8005fa61617308bafe9bba247fe592056780c1767c5b90de31f04daa12fbd16"
         },
         {
-            "path": "ui/reuse/assets/eraser.svg",
-            "sha256": "670af1fb05f572fb74a7953c5f5e8baead060c2e411a291956641766cc3a08cf"
+            "path": "ui/reuse/assets/diamond-dark.svg",
+            "sha256": "6bf057abec9b29095a77a2fd12d7a8760b70ac3d9f98767ac4ef9fd4c69e7afb"
         },
         {
-            "path": "ui/reuse/assets/history.svg",
-            "sha256": "ccda800525134fe43721af2cb6b4fafb34bb9c93f5d8d904cc8804170a4580f8"
+            "path": "ui/reuse/assets/diamond-light.svg",
+            "sha256": "516c0703cb7dd622bd34ad9d3c5303c4d488785e93e079e54f2c99dd45eb071c"
         },
         {
-            "path": "ui/reuse/assets/line.svg",
-            "sha256": "6c5ba325fa13321d5132e1288b8c58f6f8aa7f1e5058a81aab731f7f8a27f00c"
+            "path": "ui/reuse/assets/ellipse-dark.svg",
+            "sha256": "f53042f0406c133fdfb74df61ac5b5806837941666b0da9f7d888d810042daf9"
         },
         {
-            "path": "ui/reuse/assets/lock.svg",
-            "sha256": "8cbeeca8b65952c373111f28b5630a5b9f30cdf40580b24c274b517a3d40e086"
+            "path": "ui/reuse/assets/ellipse-light.svg",
+            "sha256": "b61524ece7160e885fc2d24508b3e8dbd7a311ec2df47072c924165cc9e7c4a2"
         },
         {
-            "path": "ui/reuse/assets/new.svg",
-            "sha256": "c3f36910711c6a59c80d08a16207b6f75095e4b38d82f61c3024137807a5f61d"
+            "path": "ui/reuse/assets/eraser-dark.svg",
+            "sha256": "87e5810160f14720a33e55dc4e093c1c3235fe716d27ff3ce23fc5654b7522e6"
         },
         {
-            "path": "ui/reuse/assets/pen.svg",
-            "sha256": "951ba9f0a9cd2290a2187d23c8e271a38c1daaf34ae155c0aa13a68cb7c2d06c"
+            "path": "ui/reuse/assets/eraser-light.svg",
+            "sha256": "7be23c84fcf6cfacdc8501fedcda23110dc1bffa7386a62313dd9d1a525b7528"
         },
         {
-            "path": "ui/reuse/assets/rectangle.svg",
-            "sha256": "2c9d4602cec3aa6c653452a76683b7510fff8588e8418f82227fff6777f4c478"
+            "path": "ui/reuse/assets/history-dark.svg",
+            "sha256": "4460af01e6417c7bd7837b94f8e3de2c6866d7ccb68b6c3e1502e55ef29a9a89"
         },
         {
-            "path": "ui/reuse/assets/redo.svg",
-            "sha256": "82c964ed3378dfa0df7ee8a206997678314761bf8afa6692575beac140d96ba7"
+            "path": "ui/reuse/assets/history-light.svg",
+            "sha256": "d8f6f111e24140b944435e9d4e47de468404f4b32e32fae3c03cb996d2686ee0"
         },
         {
-            "path": "ui/reuse/assets/select.svg",
-            "sha256": "9e8a4ff54c9c61ab9e8a4c27ec0fec3bce7172a603a3f3529565f645c36548dd"
+            "path": "ui/reuse/assets/line-dark.svg",
+            "sha256": "17eaa29b512124a7f977469b9e9d45ef5af91266aa17ce9aa0df9b6be23255ae"
         },
         {
-            "path": "ui/reuse/assets/text.svg",
-            "sha256": "3154d73d9fe352961a080e0d70a8952fa1290629dd49e6f7b5b8c54ae1c6a3db"
+            "path": "ui/reuse/assets/line-light.svg",
+            "sha256": "f42e147718389c389546ebfe399a1e81f0f02d85c11b66263407883f85fb0690"
         },
         {
-            "path": "ui/reuse/assets/undo.svg",
-            "sha256": "85cc2d36b17241b69956c49b87703e82eb34d855577ef690893861e2ea5d618e"
+            "path": "ui/reuse/assets/lock-dark.svg",
+            "sha256": "3756c57a61340c5fe313fd0cd58a2041bb74c11e9393c9c82d22858cae390331"
+        },
+        {
+            "path": "ui/reuse/assets/lock-light.svg",
+            "sha256": "9de3ae2e75d92a4a2957cfb4c0bdbafd512e46e6e12048876d8dcd0f5c7888b9"
+        },
+        {
+            "path": "ui/reuse/assets/new-dark.svg",
+            "sha256": "0ff1bb7571a6e18dccd7fdebf89ee618311ba66cab596043a55556cbb7264525"
+        },
+        {
+            "path": "ui/reuse/assets/new-light.svg",
+            "sha256": "f6b1ce7c2afd935ac1fe791cff49dfbb106d59ff2672e277a382df77004475a3"
+        },
+        {
+            "path": "ui/reuse/assets/pen-dark.svg",
+            "sha256": "fe6c62fad6fbe0c3bf038e1cf01204be12e8e05173712d057faeab0837283b69"
+        },
+        {
+            "path": "ui/reuse/assets/pen-light.svg",
+            "sha256": "dcc55d20325e10f3dd11ca1f0be99cd8d5364c6ed4470f3e4a8f88955bb1cd02"
+        },
+        {
+            "path": "ui/reuse/assets/rectangle-dark.svg",
+            "sha256": "832c06077e5967f4ce596b4c098e1db77e3633aa4ed68b6c49464f81efa10938"
+        },
+        {
+            "path": "ui/reuse/assets/rectangle-light.svg",
+            "sha256": "496f43f05ec24befc469692094c2bf77be9d1154eef8af51c5a20b1e4eebdec7"
+        },
+        {
+            "path": "ui/reuse/assets/redo-dark.svg",
+            "sha256": "cec36a5c99848649b2a8816788048bab3e7575511a5f73ff848c45752cc9486c"
+        },
+        {
+            "path": "ui/reuse/assets/redo-light.svg",
+            "sha256": "257575fe965c794160bd6ab1ed9ae63bc92159c44ddac8f9f07090dd0bfb72c0"
+        },
+        {
+            "path": "ui/reuse/assets/select-dark.svg",
+            "sha256": "4f31694f42c559567d879be314fe443b637b497ba97e3a2814ca1f4f7a25c4ee"
+        },
+        {
+            "path": "ui/reuse/assets/select-light.svg",
+            "sha256": "8ff3211ad9b8482b4f0e07ef1e7a9596ccf1e1415fc7dd37af69abcd9c3ec82a"
+        },
+        {
+            "path": "ui/reuse/assets/text-dark.svg",
+            "sha256": "22fdb8a6d3e3d9252d4d2afb88a7f7c795f0967745d8262bcbf4939fbbcfb23d"
+        },
+        {
+            "path": "ui/reuse/assets/text-light.svg",
+            "sha256": "9c0a6a0d0cb4dcf348d3d7cc7667b00aeeb4b6669f85ef5c4022468437a71864"
+        },
+        {
+            "path": "ui/reuse/assets/undo-dark.svg",
+            "sha256": "c4efc9314c12729c59c1f05d79174233f7f1f912d89e14452530ef620540590c"
+        },
+        {
+            "path": "ui/reuse/assets/undo-light.svg",
+            "sha256": "3b8156753d505642aede5c49b0ce70faddbe98f7aee2e4d3a8927561203f9efe"
         },
         {
             "path": "ui/reuse/board-navigation.js",
@@ -529,7 +589,7 @@
         },
         {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "956b8208284aa4a0e76068c13907ac25fd7a2143f874f0a0953436c6ac49a52b"
+            "sha256": "2e6399a29c601660cf1ae4f2af27734cbb68525c61a8435b7bfbd2383a2b7835"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",

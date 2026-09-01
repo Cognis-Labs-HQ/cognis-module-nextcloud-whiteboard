@@ -1,6 +1,6 @@
 # Bilah alat papan tulis yang lebih rapi
 
-**Cabang Fitur:** work
+**Cabang Fitur:** feature-update-canvas-toolbar-ui-elements
 
 ## Kontrol gambar yang jelas dan mendukung tema
 
@@ -18,3 +18,4 @@ Tindakan papan tulis baru dan riwayat kini disembunyikan pada papan tulis yang d
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
 - [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)
+- [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)

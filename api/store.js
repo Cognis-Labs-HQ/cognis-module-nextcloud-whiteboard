@@ -289,6 +289,34 @@ export class NextcloudWhiteboardStore {
         }
     }
 
+    async deleteWhiteboard(id) {
+        const whiteboardId = String(id ?? "").trim();
+        if (!whiteboardId) return;
+        await this.db.transaction(async (executor) => {
+            for (const table of [
+                "nextcloud_whiteboard_presence",
+                "nextcloud_whiteboard_snapshots",
+                "nextcloud_whiteboard_user_copies",
+                "nextcloud_whiteboard_access",
+                "nextcloud_whiteboards",
+            ]) {
+                await executor.executeCommand({
+                    option: "DELETE",
+                    table,
+                    where: [
+                        {
+                            column:
+                                table === "nextcloud_whiteboards"
+                                    ? "id"
+                                    : "whiteboard_id",
+                            value: whiteboardId,
+                        },
+                    ],
+                });
+            }
+        });
+    }
+
     async createWhiteboard({
         title,
         createdBy,

@@ -38,6 +38,10 @@ Whiteboard-Raster und -Karte werden jetzt auf den kleineren Wert aus dem verfüg
 
 Sämtliche Modulstile für Page-Shell-Elemente wurden entfernt. Das Whiteboard fordert begrenztes Inhalts-Scrolling jetzt über seinen Page-Composer-Payload an, sodass der Host die Canvas an den verfügbaren Viewport anpasst.
 
+## Funktion zum Löschen von Canvas
+
+Die durch Eigentümer autorisierte Funktion `whiteboard:deleteCanvas` für Bereinigungsabläufe von Meetings wurde veröffentlicht. Beim Löschen werden Canvas-Präsenz, Snapshots, gespeicherte Kopien, Zugriffsrechte und der Canvas-Datensatz transaktional entfernt.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -49,3 +53,4 @@ Sämtliche Modulstile für Page-Shell-Elemente wurden entfernt. Das Whiteboard f
 - [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
 - [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)
+- [0543ba2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0543ba2aaefddfdfdbad7f9cf725bae2ee48b1bf)

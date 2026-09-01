@@ -13,6 +13,7 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
         "whiteboard:getEmbedUrl",
         "whiteboard:fetchBoardData",
         "whiteboard:membership",
+        "whiteboard:deleteCanvas",
     ]);
 });
 

@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.102",
+    "version": "2.3.103",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -265,11 +265,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "80f2aa2a93042a204a87f4ad81700c4b66b9f8535270458811a572bd5989daf4"
+            "sha256": "91e604c25de748a007c6873809ae3445208d11db0164c6bada6a6827eae53fde"
         },
         {
             "path": "package.json",
-            "sha256": "d913832b19df32465441f4829e302067ec9000bf51c9c20981f747bd2b81ed3e"
+            "sha256": "091f741a620d5159411b271f7b589f1221f34e95d482faa4c49fb030a29c63ec"
         },
         {
             "path": "routes.json",
@@ -353,7 +353,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "dce67fb9e9b60742b85a63fe49459e4d317b92b4c917975ed56fcb43a410ab1f"
+            "sha256": "7f443fb51ca79fec8ee47212d34ff3da24e09b935ef63f7edbcfdf0c0692815c"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -373,7 +373,7 @@
         },
         {
             "path": "ui/app/canvas-toolbar.js",
-            "sha256": "bd6487d9acba7bd9232b20cc7bb3e2a7b6c282e287123ec8d411ec380dba517e"
+            "sha256": "a2cf5bede5ddc7162abd1ffcd4eaf5c375e1f88a48718ab61b7220f115dccfb7"
         },
         {
             "path": "ui/app/clear-canvas.js",
@@ -409,7 +409,7 @@
         },
         {
             "path": "ui/app/render.js",
-            "sha256": "30729bc7aa130c85c3a75217c3b39995c3b78e2cf0c54413c980b4ede08c1ae8"
+            "sha256": "dfb7608706f38d720e30531efc5fec23e98145513af3ce17edd7541fd3ae6037"
         },
         {
             "path": "ui/app/reuse/scene-updates.js",
@@ -433,19 +433,19 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "b30011704aaee82afa94236d2bad5d6a2b61d7d0090353d3ebe0f63af90e8978"
+            "sha256": "98f163dfec26335e459706ac0b5f6ac0c917e91edffc8057e9c973aff35cf31f"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "77f46631af8d9258599ca5753c0f2e182185c18869318c66131aed61797d757c"
+            "sha256": "6dd37cdeb9776df342f9451d6d1d4ede31f24f8ab2fb8e219c5e85e15fd9fb91"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "92d27a00fa697f690d4bd3c2bda4fe405a1c44bddc57b32054f7446b952a4f8e"
+            "sha256": "bf7bb03aeba136167d31cd41387a49592f51caf91d3dd70d34a67e50aae535bd"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "01a4f49c905a5d165dc66a97a31747e2f136905d9db9596280d2a30b14593cd1"
+            "sha256": "1f84cbe02ec85a8015a5ad26049e47a7c334e6210eb65a3e24830d50e7d28553"
         },
         {
             "path": "ui/navbar.js",
@@ -469,7 +469,7 @@
         },
         {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "23ce71341179f6da168ef2b6407ce34d77590c3d126e7a7a4f7c2127ed99f3d7"
+            "sha256": "d6a40acf08fa32a14416dbdaaa460735e891167d47fbdf8353b948eea9b4a8ed"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",
@@ -477,7 +477,7 @@
         },
         {
             "path": "ui/whiteboard/canvas.js",
-            "sha256": "c43087146fc9b8bd7ad202b34e4478543ce71bea85a8b731b53816ad3bbf4c92"
+            "sha256": "16ac5decc90e7c1d310035888c8238a8062d353bc1eb73ad15dddd8016a0fa09"
         },
         {
             "path": "ui/whiteboard/clipboard-images.js",

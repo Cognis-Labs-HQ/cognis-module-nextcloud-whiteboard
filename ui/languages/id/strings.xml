@@ -113,4 +113,6 @@
   <string name="module.nextcloud_whiteboard.saved">Tersimpan</string>
   <string name="module.nextcloud_whiteboard.save_canvas">Simpan</string>
   <string name="module.nextcloud_whiteboard.status_unsaved">Belum disimpan.</string>
+  <string name="module.nextcloud_whiteboard.font_size">Ukuran font</string>
+  <string name="module.nextcloud_whiteboard.font_family">Jenis font</string>
 </resources>

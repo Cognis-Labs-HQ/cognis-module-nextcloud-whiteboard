@@ -17,7 +17,6 @@ import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
 import * as drafts from "./reuse/draft-elements.js";
 import { buildRemoteSelections } from "./reuse/remote-selections.js";
-
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},
@@ -32,6 +31,8 @@ export function createWhiteboardCanvas(
     let isDrawing = false;
     let strokeColor = "auto";
     let strokeWidth = 4;
+    let textFontSize = 28;
+    let textFontFamily = "sans-serif";
     let activeTool = "select";
     let imageUploadMaxBytes = 1048576;
     let imageUploader = null;
@@ -67,7 +68,6 @@ export function createWhiteboardCanvas(
             redraw();
         });
     }
-
     function redraw() {
         renderWhiteboardScene({
             activeTool,
@@ -87,19 +87,16 @@ export function createWhiteboardCanvas(
             viewportOffsetY,
         });
     }
-
     function cloneElements(items = elements) {
         return items.map((element) => ({
             ...element,
             points: element.points?.map((point) => [...point]),
         }));
     }
-
     function resizeCanvas() {
         if (!isDrawing) updateCanvasSize();
         scheduleRender();
     }
-
     function updateCanvasSize() {
         const parent = canvasElement.parentElement;
         const rect = parent?.getBoundingClientRect();
@@ -111,7 +108,6 @@ export function createWhiteboardCanvas(
         canvasElement.style.width = `${width}px`;
         canvasElement.style.height = `${height}px`;
     }
-
     function getCanvasPoint(event) {
         const rect = canvasElement.getBoundingClientRect();
         return [
@@ -119,26 +115,22 @@ export function createWhiteboardCanvas(
             event.clientY - rect.top + viewportOffsetY,
         ];
     }
-
     function findAnchorAt(element, x, y) {
         if (!element) return -1;
         return getElementAnchorPoints(element).findIndex(
             ([anchorX, anchorY]) => Math.hypot(anchorX - x, anchorY - y) <= 10,
         );
     }
-
     function selectedElement() {
         return (
             elements.find((element) => element.id === selectedElementId) ?? null
         );
     }
-
     function syncPrimarySelection() {
         if (selectedElementId && selectedElementIds.has(selectedElementId))
             return;
         selectedElementId = selectedElementIds.values().next().value ?? null;
     }
-
     function getSelectedElementBounds() {
         return elements
             .filter((element) => selectedElementIds.has(element.id))
@@ -147,18 +139,15 @@ export function createWhiteboardCanvas(
                 ...getElementBounds(element),
             }));
     }
-
     function getSelectedElementIds() {
         return [...selectedElementIds].filter((id) =>
             elements.some((element) => element.id === id),
         );
     }
-
     function setRemoteSelections(selections = []) {
         remoteSelections = buildRemoteSelections(selections);
         scheduleRender();
     }
-
     function notifySelection() {
         syncPrimarySelection();
         const element = selectedElement();
@@ -172,7 +161,6 @@ export function createWhiteboardCanvas(
         );
         textTools.syncTextFormatMenu();
     }
-
     function findElementAt(x, y) {
         return [...elements]
             .reverse()
@@ -181,21 +169,18 @@ export function createWhiteboardCanvas(
                     !element.isDeleted && elementContainsPoint(element, x, y),
             );
     }
-
     function notifyTransientChange() {
         changeCallback?.(
             draftElement ? [...elements, draftElement] : [...elements],
             { transient: true },
         );
     }
-
     function updateDraftElement(nextElement) {
         if (!nextElement) return;
         draftElement = drafts.preserveDraftIdentity(draftElement, nextElement);
         scheduleRender();
         notifyTransientChange();
     }
-
     function updateDrawingDraft() {
         updateDraftElement(
             drafts.createDrawingDraft({
@@ -207,7 +192,6 @@ export function createWhiteboardCanvas(
             }),
         );
     }
-
     function createHistoryEntry(beforeSnapshot, afterSnapshot) {
         const beforeById = new Map(
             beforeSnapshot.map((item) => [item.id, item]),
@@ -227,7 +211,6 @@ export function createWhiteboardCanvas(
             }),
         };
     }
-
     function pushHistoryEntry(beforeSnapshot, afterSnapshot) {
         const entry = createHistoryEntry(beforeSnapshot, afterSnapshot);
         if (entry.changedIds.length === 0) return false;
@@ -237,7 +220,6 @@ export function createWhiteboardCanvas(
         notifyHistoryChange();
         return true;
     }
-
     function applyHistorySnapshot(snapshot, changedIds) {
         const snapshotById = new Map(snapshot.map((item) => [item.id, item]));
         const currentById = new Map(elements.map((item) => [item.id, item]));
@@ -274,7 +256,6 @@ export function createWhiteboardCanvas(
         changeCallback?.([...elements]);
         notifySelection();
     }
-
     function commitElements(nextElements, { record = true } = {}) {
         const before = cloneElements();
         if (record) {
@@ -285,14 +266,12 @@ export function createWhiteboardCanvas(
         scheduleRender();
         changeCallback?.([...elements]);
     }
-
     function notifyHistoryChange() {
         historyCallback?.({
             canUndo: historyPast.length > 0,
             canRedo: historyFuture.length > 0,
         });
     }
-
     function restoreElements(snapshot) {
         elements = cloneElements(snapshot);
         updateCanvasSize();
@@ -300,7 +279,6 @@ export function createWhiteboardCanvas(
         changeCallback?.([...elements]);
         notifySelection();
     }
-
     function undo() {
         const entry = historyPast.pop();
         if (!entry) return false;
@@ -309,7 +287,6 @@ export function createWhiteboardCanvas(
         notifyHistoryChange();
         return true;
     }
-
     function redo() {
         const entry = historyFuture.pop();
         if (!entry) return false;
@@ -522,12 +499,11 @@ export function createWhiteboardCanvas(
                 setActiveTool("select");
                 return;
             }
-            const element = bumpElementVersion(
-                buildTextElement([x, y], "Text", strokeColor),
-                {
-                    fontFamily: `${toFontFamilyValue(currentAppFont())}, Arial, sans-serif`,
-                },
-            );
+            const element = {
+                ...buildTextElement([x, y], "Text", strokeColor),
+                fontSize: textFontSize,
+                fontFamily: textFontFamily,
+            };
             commitCreatedElement(element);
             textTools.openTextEditor(element);
             isDrawing = false;
@@ -834,6 +810,28 @@ export function createWhiteboardCanvas(
                     elements.map((element) =>
                         element.id === selectedElementId
                             ? bumpElementVersion(element, { strokeWidth })
+                            : element,
+                    ),
+                );
+                notifySelection();
+            }
+        },
+        setTextStyle({ fontSize, fontFamily }) {
+            if (fontSize !== undefined)
+                textFontSize = Math.max(
+                    8,
+                    Math.min(96, Number(fontSize) || 28),
+                );
+            if (fontFamily !== undefined)
+                textFontFamily = `${toFontFamilyValue(fontFamily)}, Arial, sans-serif`;
+            if (selectedElement()?.type === "text") {
+                commitElements(
+                    elements.map((element) =>
+                        element.id === selectedElementId
+                            ? bumpElementVersion(element, {
+                                  fontSize: textFontSize,
+                                  fontFamily: textFontFamily,
+                              })
                             : element,
                     ),
                 );

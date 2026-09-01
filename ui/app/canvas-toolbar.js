@@ -1,4 +1,9 @@
 import { confirmClearCanvas } from "./clear-canvas.js";
+import {
+    loadFontsCatalog,
+    parseSavedFont,
+    toFontFamilyValue,
+} from "../reuse/font-resources.js";
 
 export function bindWhiteboardCanvasToolbar({
     canvas,
@@ -21,7 +26,7 @@ export function bindWhiteboardCanvasToolbar({
         const historyButton = withinMount("#whiteboard-history");
         historyButton?.insertAdjacentHTML(
             "afterend",
-            `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}">🔒</button>`,
+            `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}"><svg class="whiteboard-tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button>`,
         );
     }
     toolbar
@@ -46,6 +51,8 @@ export function bindWhiteboardCanvasToolbar({
             btn.classList.toggle("active", btn.dataset.tool === tool);
         });
         updateStyleControls();
+        const textControls = withinMount("#whiteboard-text-controls");
+        if (textControls) textControls.hidden = tool !== "text";
     }
     function selectedCanUseStrokeWidth() {
         return Boolean(selectedElement?.strokeWidthApplicable);
@@ -132,6 +139,30 @@ export function bindWhiteboardCanvasToolbar({
     strokeSelect?.addEventListener("change", () => {
         canvas.setStrokeWidth(strokeSelect.value);
     });
+    const fontSizeInput = withinMount("#whiteboard-font-size");
+    const fontFamilySelect = withinMount("#whiteboard-font-family");
+    if (fontFamilySelect) {
+        void loadFontsCatalog()
+            .catch(() => ["Inter", "Arial", "sans-serif"])
+            .then((fonts) => {
+                if (!fontFamilySelect.isConnected) return;
+                fontFamilySelect.replaceChildren(
+                    ...Array.from(new Set(fonts)).map((font) => {
+                        const option = document.createElement("option");
+                        option.value = font;
+                        option.textContent = font;
+                        option.style.fontFamily = `${toFontFamilyValue(font)}, Arial, sans-serif`;
+                        return option;
+                    }),
+                );
+            });
+    }
+    fontSizeInput?.addEventListener("change", () => {
+        canvas.setTextStyle?.({ fontSize: fontSizeInput.value });
+    });
+    fontFamilySelect?.addEventListener("change", () => {
+        canvas.setTextStyle?.({ fontFamily: fontFamilySelect.value });
+    });
     canvas.onSelectionChange?.((element) => {
         selectedElement = element;
         if (colorInput && element?.strokeColor) {
@@ -139,6 +170,14 @@ export function bindWhiteboardCanvasToolbar({
                 element.strokeColor === "auto"
                     ? themeStrokeColor()
                     : element.strokeColor;
+        }
+        if (element?.type === "text") {
+            if (fontSizeInput) {
+                fontSizeInput.value = String(element.fontSize ?? 28);
+            }
+            if (fontFamilySelect) {
+                fontFamilySelect.value = parseSavedFont(element.fontFamily);
+            }
         }
         updateStyleControls();
         onSelectionChange();
@@ -148,7 +187,7 @@ export function bindWhiteboardCanvasToolbar({
         "click",
         async (event) => {
             event.preventDefault();
-            if (!(await confirmClearCanvas(translateModuleString))) return;
+            if (!(await confirmClearCanvas(translate))) return;
             canvas.clearAll();
             onClear();
         },

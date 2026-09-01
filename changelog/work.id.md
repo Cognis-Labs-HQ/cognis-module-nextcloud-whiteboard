@@ -1,0 +1,19 @@
+# Bilah alat papan tulis yang lebih rapi
+
+**Cabang Fitur:** work
+
+## Kontrol gambar yang jelas dan mendukung tema
+
+Simbol bilah alat diganti dengan ikon SVG yang konsisten dan mengikuti warna tema terang maupun gelap, pemilih warna membulat diperbesar, serta tindakan bersihkan dipindahkan ke samping judul kanvas.
+
+## Pemformatan teks yang lebih baik
+
+Pilihan jenis dan ukuran font ditambahkan saat alat Teks aktif, serta tata letak bilah format teks mengambang dibuat lebih seimbang.
+
+## Kanvas komponen yang lebih terfokus
+
+Tindakan papan tulis baru dan riwayat kini disembunyikan pada papan tulis yang dibuka di jendela komponen.
+
+## Komit
+
+- [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)

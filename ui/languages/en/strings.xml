@@ -113,4 +113,6 @@
   <string name="module.nextcloud_whiteboard.saved">Saved</string>
   <string name="module.nextcloud_whiteboard.save_canvas">Save</string>
   <string name="module.nextcloud_whiteboard.status_unsaved">Not saved.</string>
+  <string name="module.nextcloud_whiteboard.font_size">Font size</string>
+  <string name="module.nextcloud_whiteboard.font_family">Font family</string>
 </resources>

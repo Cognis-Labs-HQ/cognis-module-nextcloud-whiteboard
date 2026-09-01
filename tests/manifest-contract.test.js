@@ -12,6 +12,7 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
         "whiteboard:access-control",
         "whiteboard:getEmbedUrl",
         "whiteboard:fetchBoardData",
+        "whiteboard:membership",
     ]);
 });
 

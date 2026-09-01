@@ -9,6 +9,7 @@ import { resolveExpiry } from "./config-values.js";
 import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
 import { loadCanvasElements } from "./reuse/canvas-loader.js";
 import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
+import { createCanvasMembershipCapability } from "./reuse/canvas-membership.js";
 import {
     createWhiteboardEnableTest,
     registerWhiteboardEnableTestRoute,
@@ -21,7 +22,6 @@ const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
     "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
 ];
-
 import {
     buildCognisWhiteboardUrl,
     createProfileStoreCapability,
@@ -197,6 +197,7 @@ export function registerApiRoutes(router, ctx) {
     }
 
     const moduleApi = {
+        membership: createCanvasMembershipCapability(store, profileStore),
         async spawnWhiteboardWindow(options = {}) {
             await store.ensureSchema();
             const createdBy = normalizeHandleKey(options.createdBy);
@@ -267,7 +268,6 @@ export function registerApiRoutes(router, ctx) {
         "nextcloud-whiteboard:spawnWhiteboardWindow",
         moduleApi.spawnWhiteboardWindow,
     );
-
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/ping",
         async (_req, res) => {
@@ -325,7 +325,6 @@ export function registerApiRoutes(router, ctx) {
         },
         { access: { minRole: "user" } },
     );
-
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards",
         async (req, res) => {

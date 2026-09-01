@@ -2,14 +2,15 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.96",
+    "version": "2.3.97",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
         "whiteboard:collaboration",
         "whiteboard:access-control",
         "whiteboard:getEmbedUrl",
-        "whiteboard:fetchBoardData"
+        "whiteboard:fetchBoardData",
+        "whiteboard:membership"
     ],
     "entrypoints": {
         "bootstrap": "./bootstrap.js",
@@ -167,11 +168,15 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "1391a03deb93d48a8271622941be5d1f8f446ed610cf68c6326b901a75f65251"
+            "sha256": "beb893ed2151a4b9fa61e18991a96a856b8fa50d5991688df5006716864c6173"
         },
         {
             "path": "api/reuse/canvas-loader.js",
             "sha256": "5a39bc3b1cb6cb25a0b2576ef34d374669eaa38ce13678999665495c86d8f2d5"
+        },
+        {
+            "path": "api/reuse/canvas-membership.js",
+            "sha256": "9935d265c0e50e4ae86b6e96a8b4808aae970dd76ac763b576e33efc22f132e9"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -223,7 +228,7 @@
         },
         {
             "path": "api/store.js",
-            "sha256": "2a90159a1c3d6fb7ae600b892008bdf79e8fd5f639c70d78c7bc2cb0572a71ba"
+            "sha256": "ce0526437e627bab2fa8501644d130e1d7ae986f4017f335fbe16fc75b3b2002"
         },
         {
             "path": "assets/banner.png",
@@ -235,7 +240,7 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "9b8241794cd6b004b42d2c7e7b92c96e1a4a9b2126e43c2ebd2e35c90e355c3b"
+            "sha256": "e8befac7716619200184f793c68fcea978c598de802366c0552ae870761447c0"
         },
         {
             "path": "cli/index.js",
@@ -259,11 +264,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "0de9d5eb6bd7751f8e5986c9a4e6dedf1c74c45ae27d653551e3b8d82f54e558"
+            "sha256": "bf1fdd20276b4ec0965072ee2764326ff33f14157445b6b94adc0c3531727292"
         },
         {
             "path": "package.json",
-            "sha256": "53e9067847746395d0a81ba8990f5a0b6c6d77e1ed20cce6a0b5929d859cc3c4"
+            "sha256": "1432848f34592b9e03019643009a1ee7847eb0903ae99d71aaa7731b0c9f53b2"
         },
         {
             "path": "routes.json",
@@ -290,6 +295,10 @@
             "sha256": "e5ae329e8a9b8d052a73a41526406c50f90a117c522d9d93d84c8abc9379d626"
         },
         {
+            "path": "tests/canvas-membership.test.js",
+            "sha256": "f14284cb7cfdae67f325374deccf9e1bfb827fbf2e7152af070589a12cc9ec7a"
+        },
+        {
             "path": "tests/documentation-convention.test.js",
             "sha256": "fe00acad806f4b01b05a3a570363ac429eeefdcb00a0db27f00f308ab8bef35c"
         },
@@ -311,7 +320,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "66062db570e1742a244b66c279fd49d2a508a4fcb9319b9cda70e38a63139f2f"
+            "sha256": "ab214d9702bdecfa5ec6e4e32b4bfc54ccf111888e4c44917fb226d5167a2a81"
         },
         {
             "path": "tests/overlay.test.js",

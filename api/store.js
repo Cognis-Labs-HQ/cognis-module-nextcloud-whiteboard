@@ -480,6 +480,26 @@ export class NextcloudWhiteboardStore {
         return this.listParticipants(whiteboardId);
     }
 
+    async addWhiteboardMember(id, username) {
+        const normalizedUsername = normalizeHandleKey(username);
+        if (!normalizedUsername) return;
+        await this.expandWhiteboardAccess(id, [normalizedUsername]);
+    }
+
+    async removeWhiteboardMember(id, username) {
+        const whiteboardId = String(id ?? "").trim();
+        const normalizedUsername = normalizeHandleKey(username);
+        if (!whiteboardId || !normalizedUsername) return;
+        await this.db.executeCommand({
+            option: "DELETE",
+            table: "nextcloud_whiteboard_access",
+            where: [
+                { column: "whiteboard_id", value: whiteboardId },
+                { column: "username", value: normalizedUsername },
+            ],
+        });
+    }
+
     async canAccessWhiteboard(id, username) {
         const result = await this.db.executeCommand({
             option: "SELECT",

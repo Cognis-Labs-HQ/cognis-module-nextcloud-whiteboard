@@ -10,8 +10,13 @@ Jitsi Meet und andere Orchestratoren können jetzt über die CTX-Capability `whi
 
 Mitgliedschaftsänderungen initialisieren jetzt vor dem Zugriff den Speicher, lehnen ausgeblendete Profile ab, lösen die kanonische Profilidentitäts-Capability des Hosts zum Aufrufzeitpunkt auf, damit ihr aktueller Registrierungs- und Aktivierungszustand berücksichtigt wird, und melden Abhängigkeitsfehler, ohne interne Details offenzulegen.
 
+## Kanonische Handle-Normalisierung wiederverwenden
+
+Beim Erstellen eines Whiteboard-Fensters wird dessen Eigentümer jetzt über die Profilidentitäts-Capability des Hosts normalisiert, statt den moduleigenen Handle-Normalisierer zu importieren.
+
 ## Commits
 
 - [a5d8e7c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a5d8e7cc98565a24365e0e7f4faf42861c722c56)
 - [972b573](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/972b573d595667a3cd6786327b13f3cf08a897d6)
 - [ba1ec07](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ba1ec07cde8d4cdaceebdfc6295a3ed08c9eb33b)
+- [a2ccce2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a2ccce25543b6b580960bfc71c6d2acf9daec9f0)

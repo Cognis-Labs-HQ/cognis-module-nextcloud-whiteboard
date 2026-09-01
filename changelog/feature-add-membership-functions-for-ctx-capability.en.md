@@ -10,8 +10,13 @@ Jitsi Meet and other orchestrators can now add or remove a canvas participant th
 
 Membership changes now initialize storage before access, reject hidden profiles, resolve the host's canonical profile identity capability at call time so its current registration and enablement state is honored, and report dependency failures without exposing internal details.
 
+## Reuse canonical handle normalization
+
+Whiteboard window creation now normalizes its owner through the host profile identity capability instead of importing the module-local handle normalizer.
+
 ## Commits
 
 - [a5d8e7c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a5d8e7cc98565a24365e0e7f4faf42861c722c56)
 - [972b573](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/972b573d595667a3cd6786327b13f3cf08a897d6)
 - [ba1ec07](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ba1ec07cde8d4cdaceebdfc6295a3ed08c9eb33b)
+- [a2ccce2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a2ccce25543b6b580960bfc71c6d2acf9daec9f0)

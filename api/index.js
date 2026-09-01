@@ -22,6 +22,7 @@ const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
     "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
 ];
+
 import {
     buildCognisWhiteboardUrl,
     createProfileIdentityCapability,
@@ -212,6 +213,7 @@ export function registerApiRoutes(router, ctx) {
         "nextcloud-whiteboard:spawnWhiteboardWindow",
         moduleApi.spawnWhiteboardWindow,
     );
+
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/ping",
         async (_req, res) => {
@@ -269,6 +271,7 @@ export function registerApiRoutes(router, ctx) {
         },
         { access: { minRole: "user" } },
     );
+
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards",
         async (req, res) => {

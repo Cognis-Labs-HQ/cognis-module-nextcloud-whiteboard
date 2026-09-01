@@ -1,6 +1,5 @@
 import { buildCognisWhiteboardUrl } from "../access.js";
 import { createCanvasMembershipCapability } from "./canvas-membership.js";
-import { normalizeHandleKey } from "./normalize-handle.js";
 
 export function createWhiteboardModuleApi({
     store,
@@ -17,7 +16,9 @@ export function createWhiteboardModuleApi({
         }),
         async spawnWhiteboardWindow(options = {}) {
             await store.ensureSchema();
-            const createdBy = normalizeHandleKey(options.createdBy);
+            const createdBy = profileIdentity.normalizeHandleKey(
+                options.createdBy,
+            );
             if (!createdBy) {
                 throw new Error(
                     "createdBy is required to spawn a whiteboard window.",

@@ -10,8 +10,13 @@ Jitsi Meet dan orkestrator lain kini dapat menambah atau menghapus peserta kanva
 
 Perubahan keanggotaan kini menginisialisasi penyimpanan sebelum akses, menolak profil tersembunyi, mengambil kapabilitas identitas profil kanonis milik host pada saat pemanggilan agar status pendaftaran dan pengaktifannya saat ini dipatuhi, serta melaporkan kegagalan dependensi tanpa mengungkapkan detail internal.
 
+## Gunakan kembali normalisasi handle kanonis
+
+Pembuatan jendela whiteboard kini menormalisasi pemiliknya melalui kapabilitas identitas profil milik host, bukan dengan mengimpor penormal handle lokal milik modul.
+
 ## Komit
 
 - [a5d8e7c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a5d8e7cc98565a24365e0e7f4faf42861c722c56)
 - [972b573](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/972b573d595667a3cd6786327b13f3cf08a897d6)
 - [ba1ec07](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ba1ec07cde8d4cdaceebdfc6295a3ed08c9eb33b)
+- [a2ccce2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a2ccce25543b6b580960bfc71c6d2acf9daec9f0)

@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createProfileIdentityCapability } from "../api/access.js";
 import { createCanvasMembershipCapability } from "../api/reuse/canvas-membership.js";
+import { createWhiteboardModuleApi } from "../api/reuse/module-api.js";
 
 function createHarness() {
     const participants = new Set(["alice", "bob"]);
@@ -192,6 +193,42 @@ test("profile identity resolution follows late capability registration", async (
         },
     };
     assert.equal(profileIdentity.normalizeHandleKey("@Alice"), "alice");
+});
+
+test("whiteboard spawning uses the host profile identity normalizer", async () => {
+    const normalizedHandles = [];
+    const moduleApi = createWhiteboardModuleApi({
+        store: {
+            async ensureSchema() {},
+            async getConfig() {
+                return {
+                    serverUrl: "https://whiteboard.example",
+                    apiKeyConfigured: true,
+                };
+            },
+            async createWhiteboard(options) {
+                return {
+                    id: "canvas-1",
+                    createdBy: options.createdBy,
+                    disposable: false,
+                };
+            },
+        },
+        profileStore: {},
+        profileIdentity: {
+            normalizeHandleKey(handle) {
+                normalizedHandles.push(handle);
+                return "canonical-alice";
+            },
+        },
+    });
+
+    const result = await moduleApi.spawnWhiteboardWindow({
+        createdBy: "@Alice",
+    });
+
+    assert.deepEqual(normalizedHandles, ["@Alice"]);
+    assert.equal(result.access.owner, "canonical-alice");
 });
 
 test("legacy canvas membership controls are removed", async () => {

@@ -5,6 +5,7 @@ import {
     getElementBounds,
     renderElement,
 } from "./elements.js";
+import { renderRemotePointers } from "./reuse/remote-pointers.js";
 
 export function renderWhiteboardScene({
     activeTool,
@@ -18,6 +19,7 @@ export function renderWhiteboardScene({
     eraserSelectionIds,
     isDrawing,
     remoteSelections,
+    remotePointers,
     selectedElementId,
     selectedElementIds,
     viewportOffsetX,
@@ -58,6 +60,7 @@ export function renderWhiteboardScene({
         viewportOffsetX,
         viewportOffsetY,
     });
+    renderRemotePointers({ canvasElement, context, pointers: remotePointers });
 }
 
 function renderElementSelection({
@@ -99,8 +102,14 @@ function renderElementSelection({
     );
     if (remoteSelection?.label && !localSelection && !eraserSelection) {
         context.font = "600 12px system-ui, sans-serif";
-        const labelWidth =
-            context.measureText(remoteSelection.label).width + 12;
+        const activityIcon =
+            remoteSelection.interaction === "typing"
+                ? "⌨ "
+                : remoteSelection.interaction === "pressing"
+                  ? "● "
+                  : "";
+        const activityLabel = `${activityIcon}${remoteSelection.label}`;
+        const labelWidth = context.measureText(activityLabel).width + 12;
         const labelX = bounds.x - 4;
         const labelY = Math.max(4, bounds.y - 22);
         context.setLineDash([]);
@@ -109,7 +118,7 @@ function renderElementSelection({
         context.fillStyle =
             style.getPropertyValue("--whiteboard-selection-label").trim() ||
             "#ffffff";
-        context.fillText(remoteSelection.label, labelX + 6, labelY + 13);
+        context.fillText(activityLabel, labelX + 6, labelY + 13);
     }
     context.restore();
     if (element.id === selectedElementId) {

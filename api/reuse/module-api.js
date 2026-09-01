@@ -1,5 +1,6 @@
 import { buildCognisWhiteboardUrl } from "../access.js";
 import { createCanvasMembershipCapability } from "./canvas-membership.js";
+import { createCanvasDeletionCapability } from "./canvas-deletion.js";
 
 export function createWhiteboardModuleApi({
     store,
@@ -8,6 +9,12 @@ export function createWhiteboardModuleApi({
     log,
 }) {
     return {
+        deleteCanvas: createCanvasDeletionCapability({
+            store,
+            profileStore,
+            profileIdentity,
+            log,
+        }),
         membership: createCanvasMembershipCapability({
             store,
             profileStore,

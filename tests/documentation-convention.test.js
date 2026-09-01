@@ -91,3 +91,11 @@ test("localized changelogs identify their branch and linked commits", () => {
         );
     }
 });
+
+test("temporary work changelogs are not retained", () => {
+    const temporaryChangelogs = readdirSync(resolve(ROOT, "changelog")).filter(
+        (name) => /^work\.(?:de|en|id|ja)\.md$/.test(name),
+    );
+
+    assert.deepEqual(temporaryChangelogs, []);
+});

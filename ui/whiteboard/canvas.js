@@ -3,7 +3,6 @@ import {
     buildDragBox,
     buildTextElement,
     bumpElementVersion,
-    bumpElementVersionPast,
     getElementBounds,
     getElementAnchorPoints,
     elementContainsPoint,
@@ -11,12 +10,21 @@ import {
     scaleElementToBounds,
 } from "./elements.js";
 import { renderWhiteboardScene } from "./render-scene.js";
-import { parseSavedFont, toFontFamilyValue } from "../reuse/font-resources.js";
-import { createWhiteboardTextTools } from "./text-tools.js";
+import { toFontFamilyValue } from "../reuse/font-resources.js";
+import { createWhiteboardTextTools, getCurrentAppFont } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
 import * as drafts from "./reuse/draft-elements.js";
-import { buildRemoteSelections } from "./reuse/remote-selections.js";
+import { createElementHistory } from "./reuse/element-history.js";
+import {
+    applyElementHistorySnapshot,
+    mergeRemoteElements,
+} from "./reuse/element-sync.js";
+import {
+    buildRemoteSelections,
+    findVisibleElement,
+    retainVisibleElementIds,
+} from "./reuse/remote-selections.js";
 
 export function createWhiteboardCanvas(
     canvasElement,
@@ -32,6 +40,8 @@ export function createWhiteboardCanvas(
     let isDrawing = false;
     let strokeColor = "auto";
     let strokeWidth = 4;
+    let textFontSize = 28;
+    let textFontFamily = `${toFontFamilyValue(getCurrentAppFont())}, Arial, sans-serif`;
     let activeTool = "select";
     let imageUploadMaxBytes = 1048576;
     let imageUploader = null;
@@ -49,14 +59,13 @@ export function createWhiteboardCanvas(
     let historyCallback = null;
     let toolCallback = null;
     let pendingRender = false;
-    let historyPast = [];
-    let historyFuture = [];
     let historySnapshot = null;
     let textFormatMenu = null;
     let panState = null;
     let viewportOffsetX = 0;
     let viewportOffsetY = 0;
     let remoteSelections = new Map();
+    let remotePointers = [];
     let keepToolActive = false;
     if (readOnly) canvasElement.style.cursor = "pointer";
     function scheduleRender() {
@@ -81,6 +90,7 @@ export function createWhiteboardCanvas(
             eraserSelectionIds,
             isDrawing,
             remoteSelections,
+            remotePointers,
             selectedElementId,
             selectedElementIds,
             viewportOffsetX,
@@ -128,9 +138,7 @@ export function createWhiteboardCanvas(
     }
 
     function selectedElement() {
-        return (
-            elements.find((element) => element.id === selectedElementId) ?? null
-        );
+        return findVisibleElement(elements, selectedElementId);
     }
 
     function syncPrimarySelection() {
@@ -149,9 +157,7 @@ export function createWhiteboardCanvas(
     }
 
     function getSelectedElementIds() {
-        return [...selectedElementIds].filter((id) =>
-            elements.some((element) => element.id === id),
-        );
+        return [...retainVisibleElementIds(selectedElementIds, elements)];
     }
 
     function setRemoteSelections(selections = []) {
@@ -208,67 +214,8 @@ export function createWhiteboardCanvas(
         );
     }
 
-    function createHistoryEntry(beforeSnapshot, afterSnapshot) {
-        const beforeById = new Map(
-            beforeSnapshot.map((item) => [item.id, item]),
-        );
-        const afterById = new Map(afterSnapshot.map((item) => [item.id, item]));
-        const changedIds = new Set([...beforeById.keys(), ...afterById.keys()]);
-        return {
-            before: beforeSnapshot,
-            after: afterSnapshot,
-            changedIds: [...changedIds].filter((id) => {
-                const before = beforeById.get(id);
-                const after = afterById.get(id);
-                return (
-                    JSON.stringify(before ?? null) !==
-                    JSON.stringify(after ?? null)
-                );
-            }),
-        };
-    }
-
-    function pushHistoryEntry(beforeSnapshot, afterSnapshot) {
-        const entry = createHistoryEntry(beforeSnapshot, afterSnapshot);
-        if (entry.changedIds.length === 0) return false;
-        historyPast.push(entry);
-        historyPast = historyPast.slice(-100);
-        historyFuture = [];
-        notifyHistoryChange();
-        return true;
-    }
-
     function applyHistorySnapshot(snapshot, changedIds) {
-        const snapshotById = new Map(snapshot.map((item) => [item.id, item]));
-        const currentById = new Map(elements.map((item) => [item.id, item]));
-        const changed = new Set(changedIds);
-        elements = [
-            ...elements
-                .filter((element) => !changed.has(element.id))
-                .map((element) => ({
-                    ...element,
-                    points: element.points?.map((point) => [...point]),
-                })),
-            ...[...changed]
-                .map((id) => snapshotById.get(id))
-                .filter(Boolean)
-                .map((element) =>
-                    bumpElementVersionPast(
-                        element,
-                        currentById.get(element.id),
-                        {
-                            points: element.points?.map((point) => [...point]),
-                        },
-                    ),
-                ),
-            ...[...changed]
-                .filter((id) => !snapshotById.has(id) && currentById.has(id))
-                .map((id) =>
-                    bumpElementVersion(currentById.get(id), {
-                        isDeleted: true,
-                    }),
-                ),
-        ];
+        elements = applyElementHistorySnapshot(elements, snapshot, changedIds);
         updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
@@ -278,19 +225,12 @@ export function createWhiteboardCanvas(
     function commitElements(nextElements, { record = true } = {}) {
         const before = cloneElements();
         if (record) {
-            pushHistoryEntry(before, cloneElements(nextElements));
+            history.record(before, cloneElements(nextElements));
         }
         elements = nextElements;
         updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
-    }
-
-    function notifyHistoryChange() {
-        historyCallback?.({
-            canUndo: historyPast.length > 0,
-            canRedo: historyFuture.length > 0,
-        });
     }
 
     function restoreElements(snapshot) {
@@ -301,23 +241,10 @@ export function createWhiteboardCanvas(
         notifySelection();
     }
 
-    function undo() {
-        const entry = historyPast.pop();
-        if (!entry) return false;
-        historyFuture.push(entry);
-        applyHistorySnapshot(entry.before, entry.changedIds);
-        notifyHistoryChange();
-        return true;
-    }
-
-    function redo() {
-        const entry = historyFuture.pop();
-        if (!entry) return false;
-        historyPast.push(entry);
-        applyHistorySnapshot(entry.after, entry.changedIds);
-        notifyHistoryChange();
-        return true;
-    }
+    const history = createElementHistory({
+        applySnapshot: applyHistorySnapshot,
+        onChange: (state) => historyCallback?.(state),
+    });
 
     function updateEraserSelection(endPoint) {
         if (!dragStartPoint) return;
@@ -392,13 +319,6 @@ export function createWhiteboardCanvas(
         scheduleRender();
     }
 
-    function currentAppFont() {
-        const value = getComputedStyle(document.documentElement)
-            .getPropertyValue("--app-font")
-            .trim();
-        return parseSavedFont(value);
-    }
-
     function textElement() {
         const selected = selectedElement();
         return selected?.type === "text" ? selected : null;
@@ -413,7 +333,7 @@ export function createWhiteboardCanvas(
     const textTools = createWhiteboardTextTools({
         canvasElement,
         commitElements,
-        currentAppFont,
+        currentAppFont: getCurrentAppFont,
         getElements: () => elements,
         getTextElement: textElement,
         getTextFormatMenu: () => textFormatMenu,
@@ -522,12 +442,11 @@ export function createWhiteboardCanvas(
                 setActiveTool("select");
                 return;
             }
-            const element = bumpElementVersion(
-                buildTextElement([x, y], "Text", strokeColor),
-                {
-                    fontFamily: `${toFontFamilyValue(currentAppFont())}, Arial, sans-serif`,
-                },
-            );
+            const element = {
+                ...buildTextElement([x, y], "Text", strokeColor),
+                fontSize: textFontSize,
+                fontFamily: textFontFamily,
+            };
             commitCreatedElement(element);
             textTools.openTextEditor(element);
             isDrawing = false;
@@ -559,7 +478,11 @@ export function createWhiteboardCanvas(
                 const anchorIndex = findAnchorAt(selectedElement(), x, y);
                 const hoveredElement = findElementAt(x, y);
                 canvasElement.style.cursor =
-                    anchorIndex >= 0 || hoveredElement ? "grab" : "pointer";
+                    anchorIndex >= 0
+                        ? "pointer"
+                        : hoveredElement
+                          ? "grab"
+                          : "pointer";
             }
             return;
         }
@@ -692,7 +615,7 @@ export function createWhiteboardCanvas(
         isDrawing = false;
         if (activeTool === "select") {
             if (selectDragMode) {
-                const didChange = pushHistoryEntry(
+                const didChange = history.record(
                     historySnapshot ?? cloneElements(),
                     cloneElements(),
                 );
@@ -756,7 +679,7 @@ export function createWhiteboardCanvas(
             if (normalizedKey === "z" && !event.shiftKey) {
                 event.preventDefault();
                 event.stopPropagation();
-                undo();
+                history.undo();
                 return;
             }
             if (
@@ -765,7 +688,7 @@ export function createWhiteboardCanvas(
             ) {
                 event.preventDefault();
                 event.stopPropagation();
-                redo();
+                history.redo();
                 return;
             }
         }
@@ -802,9 +725,11 @@ export function createWhiteboardCanvas(
         },
         readOnly,
     });
+
     const resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(canvasElement.parentElement ?? document.body);
     resizeCanvas();
+
     return {
         setTool(tool) {
             setActiveTool(tool);
@@ -840,6 +765,33 @@ export function createWhiteboardCanvas(
                 notifySelection();
             }
         },
+        setTextStyle({ fontSize, fontFamily }) {
+            const patch = {};
+            if (fontSize !== undefined)
+                patch.fontSize = textFontSize = Math.max(
+                    8,
+                    Math.min(96, Number(fontSize) || 28),
+                );
+            if (fontFamily !== undefined)
+                patch.fontFamily =
+                    textFontFamily = `${toFontFamilyValue(fontFamily)}, Arial, sans-serif`;
+            if (selectedElement()?.type === "text") {
+                commitElements(
+                    elements.map((element) =>
+                        element.id === selectedElementId
+                            ? bumpElementVersion(element, patch)
+                            : element,
+                    ),
+                );
+                notifySelection();
+            }
+        },
+        getTextStyle() {
+            return {
+                fontSize: textFontSize,
+                fontFamily: textFontFamily,
+            };
+        },
         setImageUploadMaxBytes(maxBytes) {
             imageUploadMaxBytes = Number(maxBytes);
         },
@@ -858,8 +810,20 @@ export function createWhiteboardCanvas(
         getSelectedElementIds() {
             return getSelectedElementIds();
         },
+        getPresenceInteraction() {
+            if (canvasElement.parentElement?.querySelector(".wb-text-editor"))
+                return "typing";
+            if (isDrawing && activeTool === "select" && selectDragMode)
+                return "pressing";
+            if (isDrawing) return "drawing";
+            return "idle";
+        },
         setRemoteSelections(selections) {
             setRemoteSelections(selections);
+        },
+        setRemotePointers(pointers = []) {
+            remotePointers = pointers;
+            scheduleRender();
         },
         getViewportOffset() {
             return { x: viewportOffsetX, y: viewportOffsetY };
@@ -883,56 +847,38 @@ export function createWhiteboardCanvas(
                 remoteDraftElements.clear();
                 elements = cloneElements(stableRemoteElements);
                 updateCanvasSize();
-                selectedElementIds = new Set(
-                    [...selectedElementIds].filter((id) =>
-                        elements.some((element) => element.id === id),
-                    ),
+                selectedElementIds = retainVisibleElementIds(
+                    selectedElementIds,
+                    elements,
                 );
                 if (selectedElementId && !selectedElement())
                     selectedElementId = null;
                 remoteSelections = new Map(
                     [...remoteSelections].filter(([id]) =>
-                        elements.some((element) => element.id === id),
+                        elements.some(
+                            (element) =>
+                                element.id === id && !element.isDeleted,
+                        ),
                     ),
                 );
                 notifySelection();
                 scheduleRender();
                 return;
             }
-            const remoteById = new Map(
-                stableRemoteElements.map((element) => [element.id, element]),
-            );
-            const localById = new Map(
-                elements.map((element) => [element.id, element]),
-            );
-            for (const [remoteId, remoteElement] of remoteById) {
-                const local = localById.get(remoteId);
-                if (!local) {
-                    localById.set(remoteId, remoteElement);
-                    continue;
-                }
-                const remoteVersion = remoteElement.version ?? 0;
-                const localVersion = local.version ?? 0;
-                if (remoteVersion > localVersion) {
-                    localById.set(remoteId, remoteElement);
-                } else if (
-                    remoteVersion === localVersion &&
-                    (remoteElement.versionNonce ?? 0) >
-                        (local.versionNonce ?? 0)
-                ) {
-                    localById.set(remoteId, remoteElement);
-                }
-            }
-            elements = [...localById.values()];
+            elements = mergeRemoteElements(elements, stableRemoteElements);
             updateCanvasSize();
-            const currentIds = new Set(elements.map((element) => element.id));
-            selectedElementIds = new Set(
-                [...selectedElementIds].filter((id) => currentIds.has(id)),
+            selectedElementIds = retainVisibleElementIds(
+                selectedElementIds,
+                elements,
             );
             if (selectedElementId && !selectedElement())
                 selectedElementId = null;
             remoteSelections = new Map(
-                [...remoteSelections].filter(([id]) => currentIds.has(id)),
+                [...remoteSelections].filter(([id]) =>
+                    elements.some(
+                        (element) => element.id === id && !element.isDeleted,
+                    ),
+                ),
             );
             notifySelection();
             scheduleRender();
@@ -947,12 +893,13 @@ export function createWhiteboardCanvas(
                     : bumpElementVersion(element, { isDeleted: true }),
             );
             if (visibleElements.length > 0) {
-                pushHistoryEntry(cloneElements(), clearedElements);
+                history.record(cloneElements(), clearedElements);
             }
             elements = clearedElements;
             currentPoints = [];
             eraserSelectionIds = new Set();
             selectedElementIds = new Set();
+            remoteSelections = new Map();
             scheduleRender();
             selectedElementId = null;
             notifySelection();
@@ -968,19 +915,19 @@ export function createWhiteboardCanvas(
         },
         onHistoryChange(callback) {
             historyCallback = callback;
-            notifyHistoryChange();
+            history.notifyChange();
         },
         canUndo() {
-            return historyPast.length > 0;
+            return history.canUndo();
         },
         canRedo() {
-            return historyFuture.length > 0;
+            return history.canRedo();
         },
         onChange(callback) {
             changeCallback = callback;
         },
-        undo,
-        redo,
+        undo: history.undo,
+        redo: history.redo,
         destroy() {
             textFormatMenu?.remove();
             resizeObserver.disconnect();

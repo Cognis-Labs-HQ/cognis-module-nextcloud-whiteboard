@@ -99,7 +99,7 @@ test("nextcloud whiteboard disables page layout editing", async () => {
         fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(appSource, /allowCustomization:\s*false/);
-    assert.match(appSource, /contentScrolling:\s*false/);
+    assert.match(appSource, /contentScrolling:\s*true/);
     assert.match(appSource, /borderless:\s*false/);
     assert.doesNotMatch(appSource, /borderless:\s*embeddedComponentMode/);
     assert.match(appSource, /frameless:\s*embeddedComponentMode/);
@@ -264,7 +264,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         ),
         /remoteSelections\.get\(element\.id\)/,
     );
-    assert.match(canvasSource, /function pushHistoryEntry\(/);
+    assert.match(canvasSource, /createElementHistory/);
     assert.match(canvasSource, /function applyHistorySnapshot\(/);
     assert.match(renderSource, /id="page-presence-section"/);
     assert.match(
@@ -273,7 +273,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     );
     assert.match(realtimeSource, /function throttleLatest\(callback, delay\)/);
     assert.match(realtimeSource, /callback\(\.\.\.args\)/);
-    assert.match(source, /pointerThrottleMs:\s*50/);
+    assert.match(source, /pointerThrottleMs:\s*16/);
     assert.match(source, /refreshIntervalMs:\s*250/);
     assert.match(textToolsSource, /addEventListener\(["']input["']/);
     assert.match(canvasSource, /flipX:\s*nextRight < nextX/);
@@ -334,13 +334,16 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
         /bumpElementVersion\(element, \{ isDeleted: true \}\)/,
     );
     assert.match(source, /getElementAnchorPoints,/);
-    assert.match(source, /parseSavedFont, toFontFamilyValue/);
+    assert.match(source, /toFontFamilyValue/);
+    assert.match(source, /getCurrentAppFont/);
+    assert.match(source, /getTextStyle\(\)/);
+    assert.match(source, /bumpElementVersion\(element, patch\)/);
     assert.match(source, /function notifyTransientChange\(\)/);
     assert.match(source, /transient:\s*true/);
     assert.doesNotMatch(source, /canvasElement\.width \|\| 0/);
     assert.match(source, /viewportOffsetX/);
     assert.match(source, /getViewportOffset\(\)/);
-    assert.match(source, /function notifyHistoryChange\(\)/);
+    assert.match(source, /history\.notifyChange\(\)/);
     assert.match(source, /canRedo\(\)/);
     assert.doesNotMatch(source, /parent\.scrollLeft =/);
     assert.match(
@@ -563,9 +566,18 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
         /data-tool="\$\{tool\}" class="whiteboard-tool/,
     );
     assert.match(
-        appSource + renderSource,
-        /toolButton\(['"]pen['"], ['"]module.nextcloud_whiteboard.tool_pen['"], ['"]✎['"]\)/,
+        renderSource,
+        /toolButton\(tool, `module.nextcloud_whiteboard.tool_\$\{tool\}`, icon\(tool\)\)/,
     );
+    assert.match(
+        renderSource,
+        /whiteboard-tool-icon whiteboard-tool-icon--\$\{name\}/,
+    );
+    assert.doesNotMatch(renderSource, /<svg class="whiteboard-tool-icon"/);
+    assert.match(renderSource, /<button type="button" id="whiteboard-clear"/);
+    assert.match(stylesSource, /reuse\/assets\/pen-light\.svg/);
+    assert.match(stylesSource, /reuse\/assets\/pen-dark\.svg/);
+    assert.match(stylesSource, /body\[data-theme="dark"\]/);
     assert.match(
         appSource,
         /const SYNC_MESSAGE_BOARD_RENAMED = ['"]BOARD_RENAMED['"]/,
@@ -794,11 +806,11 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     assert.match(stylesSource, /@container \(max-width: 44rem\)/);
     assert.match(
         stylesSource,
-        /\.whiteboard-saved-pill\s*\{[^}]*display: none/s,
+        /\.whiteboard-saved-pill\s*\{[^}]*display: inline-block[^}]*visibility: hidden/s,
     );
     assert.match(
         stylesSource,
-        /:has\(\.whiteboard-save-confirmed\)[^{]*\.whiteboard-saved-pill\s*\{[^}]*display: inline-block/s,
+        /:has\(\.whiteboard-save-confirmed\)[^{]*\.whiteboard-saved-pill\s*\{[^}]*visibility: visible/s,
     );
     assert.match(
         disposableSaveSource,
@@ -821,10 +833,23 @@ test("canvas selection clicks do not report content changes", async () => {
         new URL("../ui/whiteboard/canvas.js", import.meta.url),
         "utf8",
     );
-    assert.match(source, /const didChange = pushHistoryEntry\(/);
+    assert.match(source, /const didChange = history\.record\(/);
     assert.match(
         source,
         /if \(didChange\) changeCallback\?\.\(\[\.\.\.elements\]\)/,
+    );
+});
+
+test("canvas source keeps readable spacing between top-level sections", async () => {
+    const source = await readFile(
+        new URL("../ui/whiteboard/canvas.js", import.meta.url),
+        "utf8",
+    );
+
+    assert.match(source, /remote-selections\.js";\n\nexport function/);
+    assert.doesNotMatch(
+        source,
+        /^    }\n    (?:function|const (?:history|textTools|onPaste|unbindCanvasEvents|resizeObserver)|return \{)/gm,
     );
 });
 
@@ -869,4 +894,44 @@ test("component whiteboards clamp the canvas grid to their parent height", async
         stylesSource,
         /\.whiteboard-canvas-wrap--embedded\s*\{[^}]*max-height:\s*100%;/s,
     );
+    assert.doesNotMatch(
+        stylesSource,
+        /\.(main-window|content-grid|widget-card)/,
+    );
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
+    );
+    assert.match(appSource, /contentScrolling:\s*true/);
+});
+
+test("whiteboard UI does not reach into page-shell-owned elements", async () => {
+    const sources = await Promise.all(
+        [
+            "../ui/styles/whiteboards.css",
+            "../ui/app/index.js",
+            "../ui/whiteboard/reuse/remote-pointers.js",
+        ].map((path) =>
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(path, import.meta.url), "utf8"),
+            ),
+        ),
+    );
+
+    assert.doesNotMatch(
+        sources.join("\n"),
+        /main-window|content-grid|widget-card/,
+    );
+});
+
+test("clear canvas uses delegated toolbar confirmation handling", async () => {
+    const toolbarSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/app/canvas-toolbar.js", import.meta.url),
+            "utf8",
+        ),
+    );
+
+    assert.match(toolbarSource, /toolbar\.addEventListener\(["']click["']/);
+    assert.match(toolbarSource, /closest\(["']#whiteboard-clear["']\)/);
+    assert.match(toolbarSource, /await confirmClearCanvas\(translate\)/);
 });

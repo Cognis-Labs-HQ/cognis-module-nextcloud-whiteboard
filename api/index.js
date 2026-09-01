@@ -211,6 +211,10 @@ export function registerApiRoutes(router, ctx) {
         moduleApi,
     );
     ctx.getCapability("system:ctx")?.contributePublicCapability?.(
+        "whiteboard:deleteCanvas",
+        moduleApi.deleteCanvas,
+    );
+    ctx.getCapability("system:ctx")?.contributePublicCapability?.(
         "nextcloud-whiteboard:spawnWhiteboardWindow",
         moduleApi.spawnWhiteboardWindow,
     );

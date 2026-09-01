@@ -1,0 +1,80 @@
+# Eine optimierte Whiteboard-Werkzeugleiste
+
+**Feature-Zweig:** feature-update-canvas-toolbar-ui-elements
+
+## Klare, themenfähige Zeichensteuerung
+
+Die Zeichen in der Werkzeugleiste wurden durch einheitliche, in `ui/reuse/assets/` gespeicherte SVG-Symbole ersetzt, die helle und dunkle Designs übernehmen. Außerdem wurde die abgerundete Farbauswahl vergrößert und die Aktion zum Leeren neben dem Canvas-Titel platziert.
+
+## Bessere Textformatierung
+
+Schriftfamilie und Schriftgröße sind jetzt bei aktivem Textwerkzeug verfügbar; zudem wurde die schwebende Textformatleiste ausgewogener gestaltet.
+
+## Fokussierte Komponenten-Canvas
+
+In Komponentenfenstern geöffnete Whiteboards zeigen die Aktionen für ein neues Whiteboard und den Verlauf nicht mehr an.
+
+## Direkte Rückmeldung bei der Zusammenarbeit
+
+Objekt-Ankerpunkte verwenden jetzt einen Zeiger-Cursor. Entfernte Objekte verlieren sofort ihre Auswahl durch andere Personen, und Markierungen unterscheiden aktive Objektinteraktionen und Texteingaben.
+
+## Bestätigung zum Leeren wiederhergestellt
+
+Die Schaltfläche zum Leeren verwendet jetzt eine stabile delegierte Ereignisbehandlung in der Werkzeugleiste und ein natives Button-Element, sodass der Bestätigungsdialog auch nach Aktualisierungen zuverlässig geöffnet wird.
+
+## Präzise Kollaborationszeiger und Auswahlbereinigung
+
+Beim Leeren der Canvas oder Löschen eines Objekts werden jetzt alle zugehörigen lokalen und entfernten Auswahlen aufgehoben. Canvas-eigene Kollaborationszeiger werden häufiger aktualisiert, unterscheiden Bewegung und Texteingabe und weichen beim Zeichnen, Schreiben und Ändern der Größe den Echtzeit-Markierungen.
+
+## Stabiles Layout der Speicheranzeige
+
+Die Werkzeugleiste reserviert jetzt dauerhaft die Breite der übersetzten Gespeichert-Anzeige, sodass ihre Bestätigungsanimation benachbarte Steuerelemente nicht mehr verschiebt.
+
+## Canvas in Viewport-Größe
+
+Whiteboard-Raster und -Karte werden jetzt auf den kleineren Wert aus dem verfügbaren Platz des Elternelements und der dynamischen Viewport-Höhe begrenzt. Die Canvas erzeugt kein Dokument-Scrolling mehr und bleibt über ihre unendliche Verschiebefläche navigierbar.
+
+## Viewport-Größe im Besitz des Composers
+
+Sämtliche Modulstile für Page-Shell-Elemente wurden entfernt. Das Whiteboard fordert begrenztes Inhalts-Scrolling jetzt über seinen Page-Composer-Payload an, sodass der Host die Canvas an den verfügbaren Viewport anpasst.
+
+## Funktion zum Löschen von Canvas
+
+Die durch Eigentümer autorisierte Funktion `whiteboard:deleteCanvas` für Bereinigungsabläufe von Meetings wurde veröffentlicht. Beim Löschen werden Canvas-Präsenz, Snapshots, gespeicherte Kopien, Zugriffsrechte und der Canvas-Datensatz transaktional entfernt.
+
+## Löschen durch alleinige Teilnehmende
+
+Eine Canvas mit genau einer teilnehmenden Person kann jetzt von dieser Person gelöscht werden, selbst wenn historische Eigentümerdaten eine andere Person ausweisen.
+
+## Aktivitäten von Mitwirkenden beibehalten
+
+Die Zustände beim Zeichnen, Drücken und Schreiben bleiben nun für andere Mitwirkende sichtbar, auch wenn kein Canvas-Element ausgewählt ist.
+
+## Einheitliche Textschriften und Bearbeitungen
+
+Die Textwerkzeugleiste startet nun mit der Schriftart der Canvas, und beim Ändern eines Textstils werden andere Stileigenschaften des ausgewählten Textelements nicht mehr überschrieben.
+
+## Canvas-Code wartungsfreundlicher gestalten
+
+Der Canvas-Quellcode behält seine lesbare Zeilenstruktur und übergibt die Verwaltung des Rückgängig- und Wiederholen-Zustands an ein fokussiertes, unabhängig getestetes Modul.
+
+## Abstände im Canvas-Quellcode wiederherstellen
+
+Leerzeilen trennen wieder die Canvas-Importe, Funktionen, Controller und die zurückgegebene API, damit der Quellcode seine beabsichtigte lesbare Struktur behält.
+
+## Commits
+
+- [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
+- [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)
+- [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)
+- [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
+- [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
+- [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
+- [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
+- [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
+- [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)
+- [0543ba2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0543ba2aaefddfdfdbad7f9cf725bae2ee48b1bf)
+- [4813641](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/481364152037d9fedc01d64805d451d6a1f776fe)
+- [b4408bd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b4408bd9f834536b0e8ed31d84c81f3710bb8439)
+- [d5ba8ae](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d5ba8aee43d16ca53d28f5a64551fd2c334b39bc)
+- [e132015](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e13201553ad7c13c1fed8d5796db558f05b35cd9)

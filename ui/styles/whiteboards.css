@@ -23,6 +23,7 @@
 }
 
 .whiteboard-canvas-wrap--embedded {
+    block-size: 100%;
     max-height: 100%;
 }
 
@@ -76,8 +77,124 @@
 
 .whiteboard-canvas-wrap #whiteboard-color {
     color-scheme: light dark;
-    inline-size: 2.5rem;
-    padding: 0.25rem;
+    block-size: 2.75rem;
+    border-radius: 999px;
+    inline-size: 2.75rem;
+    padding: 0.3rem;
+}
+
+.whiteboard-canvas-wrap #whiteboard-color::-webkit-color-swatch {
+    border: 0;
+    border-radius: 999px;
+}
+
+.whiteboard-canvas-wrap #whiteboard-color::-moz-color-swatch {
+    border: 0;
+    border-radius: 999px;
+}
+
+.whiteboard-canvas-wrap .whiteboard-tool-icon {
+    background: var(--whiteboard-tool-icon) center / contain no-repeat;
+    display: inline-block;
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+.whiteboard-canvas-wrap .whiteboard-tool-icon--new {
+    --whiteboard-tool-icon: url("../reuse/assets/new-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--history {
+    --whiteboard-tool-icon: url("../reuse/assets/history-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--lock {
+    --whiteboard-tool-icon: url("../reuse/assets/lock-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--select {
+    --whiteboard-tool-icon: url("../reuse/assets/select-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--pen {
+    --whiteboard-tool-icon: url("../reuse/assets/pen-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--rectangle {
+    --whiteboard-tool-icon: url("../reuse/assets/rectangle-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--diamond {
+    --whiteboard-tool-icon: url("../reuse/assets/diamond-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--ellipse {
+    --whiteboard-tool-icon: url("../reuse/assets/ellipse-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--arrow {
+    --whiteboard-tool-icon: url("../reuse/assets/arrow-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--line {
+    --whiteboard-tool-icon: url("../reuse/assets/line-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--text {
+    --whiteboard-tool-icon: url("../reuse/assets/text-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--eraser {
+    --whiteboard-tool-icon: url("../reuse/assets/eraser-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--undo {
+    --whiteboard-tool-icon: url("../reuse/assets/undo-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--redo {
+    --whiteboard-tool-icon: url("../reuse/assets/redo-light.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
+    --whiteboard-tool-icon: url("../reuse/assets/clear-light.svg");
+}
+
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--new {
+    --whiteboard-tool-icon: url("../reuse/assets/new-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--history {
+    --whiteboard-tool-icon: url("../reuse/assets/history-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--lock {
+    --whiteboard-tool-icon: url("../reuse/assets/lock-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--select {
+    --whiteboard-tool-icon: url("../reuse/assets/select-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--pen {
+    --whiteboard-tool-icon: url("../reuse/assets/pen-dark.svg");
+}
+body[data-theme="dark"]
+    .whiteboard-canvas-wrap
+    .whiteboard-tool-icon--rectangle {
+    --whiteboard-tool-icon: url("../reuse/assets/rectangle-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--diamond {
+    --whiteboard-tool-icon: url("../reuse/assets/diamond-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--ellipse {
+    --whiteboard-tool-icon: url("../reuse/assets/ellipse-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--arrow {
+    --whiteboard-tool-icon: url("../reuse/assets/arrow-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--line {
+    --whiteboard-tool-icon: url("../reuse/assets/line-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--text {
+    --whiteboard-tool-icon: url("../reuse/assets/text-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--eraser {
+    --whiteboard-tool-icon: url("../reuse/assets/eraser-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--undo {
+    --whiteboard-tool-icon: url("../reuse/assets/undo-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--redo {
+    --whiteboard-tool-icon: url("../reuse/assets/redo-dark.svg");
+}
+body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
+    --whiteboard-tool-icon: url("../reuse/assets/clear-dark.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool.active .whiteboard-tool-icon {
+    filter: brightness(0) invert(1);
 }
 
 .whiteboard-canvas-wrap #whiteboard-stroke-width {
@@ -99,10 +216,37 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 0 1 auto;
+    max-width: 100%;
+    min-width: 0;
+    width: max-content;
+}
+
+.whiteboard-canvas-wrap .whiteboard-board-identity {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 1 auto;
+    gap: 0.35rem;
     margin-inline-start: auto;
     max-width: 45%;
     min-width: 0;
-    width: max-content;
+}
+
+.whiteboard-canvas-wrap .whiteboard-board-identity #whiteboard-clear {
+    flex: none;
+}
+
+.whiteboard-canvas-wrap .whiteboard-text-controls[hidden] {
+    display: none;
+}
+
+.whiteboard-canvas-wrap #whiteboard-font-size {
+    min-width: 4.25rem;
+    width: 4.25rem;
+}
+
+.whiteboard-canvas-wrap #whiteboard-font-family {
+    max-width: 11rem;
+    min-width: 8rem;
 }
 
 .whiteboard-canvas-wrap .whiteboard-history-list {
@@ -235,11 +379,12 @@
     background: var(--success, #2d9e5c);
     border-radius: 999px;
     color: #fff;
-    display: none;
+    display: inline-block;
     font-size: 0.75rem;
     opacity: 0;
     padding: 0.2rem 0.55rem;
     transform: translateX(0.75rem) scale(0.8);
+    visibility: hidden;
     white-space: nowrap;
 }
 
@@ -247,7 +392,7 @@
     .whiteboard-save-state:has(.whiteboard-save-confirmed)
     .whiteboard-saved-pill {
     animation: whiteboard-saved-pill 1.4s ease both;
-    display: inline-block;
+    visibility: visible;
 }
 
 .whiteboard-canvas-wrap .whiteboard-save-confirmed {
@@ -418,8 +563,9 @@
     border-radius: 999px;
     box-shadow: 0 0.5rem 1.25rem var(--shadow, rgb(15 23 42 / 20%));
     display: flex;
-    gap: 0.25rem;
-    padding: 0.25rem;
+    gap: 0.4rem;
+    justify-content: space-between;
+    padding: 0.35rem;
     position: absolute;
     width: max-content;
     z-index: 4;
@@ -431,12 +577,13 @@
     border: 1px solid var(--border, #d8dee9);
     border-radius: 999px;
     font: inherit;
-    min-height: 1.8rem;
+    min-height: 2.25rem;
 }
 
 .whiteboard-canvas-wrap .whiteboard-text-menu button {
     background: transparent;
-    min-width: 1.8rem;
+    min-width: 2.25rem;
+    padding-inline: 0.65rem;
 }
 
 .whiteboard-canvas-wrap .whiteboard-text-menu button.active {
@@ -445,13 +592,14 @@
 }
 
 .whiteboard-canvas-wrap .whiteboard-text-menu input {
-    max-width: 4.5rem;
-    padding-inline: 0.45rem;
+    max-width: 4.75rem;
+    padding-inline: 0.65rem;
 }
 
 .whiteboard-canvas-wrap .whiteboard-text-menu select {
-    max-width: 12rem;
-    padding-inline: 0.45rem;
+    max-width: 13rem;
+    min-width: 8rem;
+    padding-inline: 0.65rem;
 }
 
 .whiteboard-canvas-wrap .whiteboard-presence-avatar {

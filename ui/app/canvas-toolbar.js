@@ -1,4 +1,9 @@
 import { confirmClearCanvas } from "./clear-canvas.js";
+import {
+    loadFontsCatalog,
+    parseSavedFont,
+    toFontFamilyValue,
+} from "../reuse/font-resources.js";
 
 export function bindWhiteboardCanvasToolbar({
     canvas,
@@ -21,7 +26,7 @@ export function bindWhiteboardCanvasToolbar({
         const historyButton = withinMount("#whiteboard-history");
         historyButton?.insertAdjacentHTML(
             "afterend",
-            `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}">🔒</button>`,
+            `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}"><span class="whiteboard-tool-icon whiteboard-tool-icon--lock" aria-hidden="true"></span></button>`,
         );
     }
     toolbar
@@ -46,6 +51,8 @@ export function bindWhiteboardCanvasToolbar({
             btn.classList.toggle("active", btn.dataset.tool === tool);
         });
         updateStyleControls();
+        const textControls = withinMount("#whiteboard-text-controls");
+        if (textControls) textControls.hidden = tool !== "text";
     }
     function selectedCanUseStrokeWidth() {
         return Boolean(selectedElement?.strokeWidthApplicable);
@@ -132,6 +139,36 @@ export function bindWhiteboardCanvasToolbar({
     strokeSelect?.addEventListener("change", () => {
         canvas.setStrokeWidth(strokeSelect.value);
     });
+    const fontSizeInput = withinMount("#whiteboard-font-size");
+    const fontFamilySelect = withinMount("#whiteboard-font-family");
+    if (fontFamilySelect) {
+        void loadFontsCatalog()
+            .catch(() => ["Inter", "Arial", "sans-serif"])
+            .then((fonts) => {
+                if (!fontFamilySelect.isConnected) return;
+                const selectedFont = parseSavedFont(
+                    canvas.getTextStyle?.().fontFamily,
+                );
+                fontFamilySelect.replaceChildren(
+                    ...Array.from(new Set([selectedFont, ...fonts]))
+                        .filter(Boolean)
+                        .map((font) => {
+                            const option = document.createElement("option");
+                            option.value = font;
+                            option.textContent = font;
+                            option.style.fontFamily = `${toFontFamilyValue(font)}, Arial, sans-serif`;
+                            option.selected = font === selectedFont;
+                            return option;
+                        }),
+                );
+            });
+    }
+    fontSizeInput?.addEventListener("change", () => {
+        canvas.setTextStyle?.({ fontSize: fontSizeInput.value });
+    });
+    fontFamilySelect?.addEventListener("change", () => {
+        canvas.setTextStyle?.({ fontFamily: fontFamilySelect.value });
+    });
     canvas.onSelectionChange?.((element) => {
         selectedElement = element;
         if (colorInput && element?.strokeColor) {
@@ -140,17 +177,25 @@ export function bindWhiteboardCanvasToolbar({
                     ? themeStrokeColor()
                     : element.strokeColor;
         }
+        if (element?.type === "text") {
+            if (fontSizeInput) {
+                fontSizeInput.value = String(element.fontSize ?? 28);
+            }
+            if (fontFamilySelect) {
+                fontFamilySelect.value = parseSavedFont(element.fontFamily);
+            }
+        }
         updateStyleControls();
         onSelectionChange();
     });
     updateStyleControls();
-    withinMount("#whiteboard-clear")?.addEventListener(
-        "click",
-        async (event) => {
-            event.preventDefault();
-            if (!(await confirmClearCanvas(translateModuleString))) return;
-            canvas.clearAll();
-            onClear();
-        },
-    );
+    toolbar.addEventListener("click", async (event) => {
+        const clearButton = event.target.closest("#whiteboard-clear");
+        if (!clearButton || !toolbar.contains(clearButton)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (!(await confirmClearCanvas(translate))) return;
+        canvas.clearAll();
+        onClear();
+    });
 }

@@ -46,6 +46,22 @@ Published the owner-authorized `whiteboard:deleteCanvas` capability required by 
 
 A canvas with exactly one participant may now be deleted by that participant even when historical ownership metadata identifies someone else.
 
+## Preserve collaborator activity
+
+Drawing, pressing, and typing states now remain available to remote collaborators even when no canvas element is selected.
+
+## Keep text fonts and edits consistent
+
+The text toolbar now starts with the canvas font, and changing one text style no longer overwrites the selected text element's other style properties.
+
+## Make canvas code easier to maintain
+
+The canvas source keeps its readable line structure and delegates undo and redo state management to a focused, independently tested module.
+
+## Restore canvas source spacing
+
+Blank lines once again separate the canvas imports, functions, controllers, and returned API so the source retains its intended readable structure.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -59,3 +75,6 @@ A canvas with exactly one participant may now be deleted by that participant eve
 - [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)
 - [0543ba2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0543ba2aaefddfdfdbad7f9cf725bae2ee48b1bf)
 - [4813641](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/481364152037d9fedc01d64805d451d6a1f776fe)
+- [b4408bd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b4408bd9f834536b0e8ed31d84c81f3710bb8439)
+- [d5ba8ae](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d5ba8aee43d16ca53d28f5a64551fd2c334b39bc)
+- [e132015](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e13201553ad7c13c1fed8d5796db558f05b35cd9)

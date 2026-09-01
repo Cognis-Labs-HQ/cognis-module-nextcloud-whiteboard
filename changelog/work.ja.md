@@ -14,7 +14,12 @@
 
 キャンバスのソースは読みやすい改行構造を維持し、元に戻す・やり直す状態の管理を、独立してテストされた専用モジュールへ委譲します。
 
+## キャンバスソースの間隔を復元
+
+キャンバスのインポート、関数、コントローラー、返却される API の間を再び空行で区切り、意図された読みやすい構造を維持します。
+
 ## コミット
 
 - [b4408bd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b4408bd9f834536b0e8ed31d84c81f3710bb8439)
 - [d5ba8ae](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d5ba8aee43d16ca53d28f5a64551fd2c334b39bc)
+- [e132015](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e13201553ad7c13c1fed8d5796db558f05b35cd9)

@@ -25,6 +25,7 @@ import {
     findVisibleElement,
     retainVisibleElementIds,
 } from "./reuse/remote-selections.js";
+
 export function createWhiteboardCanvas(
     canvasElement,
     { readOnly = false } = {},
@@ -75,6 +76,7 @@ export function createWhiteboardCanvas(
             redraw();
         });
     }
+
     function redraw() {
         renderWhiteboardScene({
             activeTool,
@@ -95,16 +97,19 @@ export function createWhiteboardCanvas(
             viewportOffsetY,
         });
     }
+
     function cloneElements(items = elements) {
         return items.map((element) => ({
             ...element,
             points: element.points?.map((point) => [...point]),
         }));
     }
+
     function resizeCanvas() {
         if (!isDrawing) updateCanvasSize();
         scheduleRender();
     }
+
     function updateCanvasSize() {
         const parent = canvasElement.parentElement;
         const rect = parent?.getBoundingClientRect();
@@ -116,6 +121,7 @@ export function createWhiteboardCanvas(
         canvasElement.style.width = `${width}px`;
         canvasElement.style.height = `${height}px`;
     }
+
     function getCanvasPoint(event) {
         const rect = canvasElement.getBoundingClientRect();
         return [
@@ -123,20 +129,24 @@ export function createWhiteboardCanvas(
             event.clientY - rect.top + viewportOffsetY,
         ];
     }
+
     function findAnchorAt(element, x, y) {
         if (!element) return -1;
         return getElementAnchorPoints(element).findIndex(
             ([anchorX, anchorY]) => Math.hypot(anchorX - x, anchorY - y) <= 10,
         );
     }
+
     function selectedElement() {
         return findVisibleElement(elements, selectedElementId);
     }
+
     function syncPrimarySelection() {
         if (selectedElementId && selectedElementIds.has(selectedElementId))
             return;
         selectedElementId = selectedElementIds.values().next().value ?? null;
     }
+
     function getSelectedElementBounds() {
         return elements
             .filter((element) => selectedElementIds.has(element.id))
@@ -145,13 +155,16 @@ export function createWhiteboardCanvas(
                 ...getElementBounds(element),
             }));
     }
+
     function getSelectedElementIds() {
         return [...retainVisibleElementIds(selectedElementIds, elements)];
     }
+
     function setRemoteSelections(selections = []) {
         remoteSelections = buildRemoteSelections(selections);
         scheduleRender();
     }
+
     function notifySelection() {
         syncPrimarySelection();
         const element = selectedElement();
@@ -165,6 +178,7 @@ export function createWhiteboardCanvas(
         );
         textTools.syncTextFormatMenu();
     }
+
     function findElementAt(x, y) {
         return [...elements]
             .reverse()
@@ -173,18 +187,21 @@ export function createWhiteboardCanvas(
                     !element.isDeleted && elementContainsPoint(element, x, y),
             );
     }
+
     function notifyTransientChange() {
         changeCallback?.(
             draftElement ? [...elements, draftElement] : [...elements],
             { transient: true },
         );
     }
+
     function updateDraftElement(nextElement) {
         if (!nextElement) return;
         draftElement = drafts.preserveDraftIdentity(draftElement, nextElement);
         scheduleRender();
         notifyTransientChange();
     }
+
     function updateDrawingDraft() {
         updateDraftElement(
             drafts.createDrawingDraft({
@@ -196,6 +213,7 @@ export function createWhiteboardCanvas(
             }),
         );
     }
+
     function applyHistorySnapshot(snapshot, changedIds) {
         elements = applyElementHistorySnapshot(elements, snapshot, changedIds);
         updateCanvasSize();
@@ -203,6 +221,7 @@ export function createWhiteboardCanvas(
         changeCallback?.([...elements]);
         notifySelection();
     }
+
     function commitElements(nextElements, { record = true } = {}) {
         const before = cloneElements();
         if (record) {
@@ -213,6 +232,7 @@ export function createWhiteboardCanvas(
         scheduleRender();
         changeCallback?.([...elements]);
     }
+
     function restoreElements(snapshot) {
         elements = cloneElements(snapshot);
         updateCanvasSize();
@@ -220,10 +240,12 @@ export function createWhiteboardCanvas(
         changeCallback?.([...elements]);
         notifySelection();
     }
+
     const history = createElementHistory({
         applySnapshot: applyHistorySnapshot,
         onChange: (state) => historyCallback?.(state),
     });
+
     function updateEraserSelection(endPoint) {
         if (!dragStartPoint) return;
         const box = buildDragBox(dragStartPoint, endPoint);
@@ -238,6 +260,7 @@ export function createWhiteboardCanvas(
         );
         scheduleRender();
     }
+
     function setActiveTool(tool) {
         activeTool = tool;
         eraserSelectionIds = new Set();
@@ -256,12 +279,14 @@ export function createWhiteboardCanvas(
         toolCallback?.(tool);
         scheduleRender();
     }
+
     function selectOnlyElement(elementId) {
         selectedElementIds = elementId ? new Set([elementId]) : new Set();
         selectedElementId = elementId ?? null;
         notifySelection();
         scheduleRender();
     }
+
     function deleteSelectedElements() {
         if (selectedElementIds.size === 0) return false;
         const idsToDelete = new Set(selectedElementIds);
@@ -278,6 +303,7 @@ export function createWhiteboardCanvas(
         scheduleRender();
         return true;
     }
+
     function toggleElementSelection(elementId) {
         if (!elementId) return;
         selectedElementIds = new Set(selectedElementIds);
@@ -292,15 +318,18 @@ export function createWhiteboardCanvas(
         notifySelection();
         scheduleRender();
     }
+
     function textElement() {
         const selected = selectedElement();
         return selected?.type === "text" ? selected : null;
     }
+
     function positionTextOverlay(overlay, element, yOffset = 0) {
         overlay.style.left = `${element.x - viewportOffsetX}px`;
         overlay.style.top = `${element.y - viewportOffsetY + yOffset}px`;
         overlay.style.width = `${Math.max(180, element.width ?? 180)}px`;
     }
+
     const textTools = createWhiteboardTextTools({
         canvasElement,
         commitElements,
@@ -321,11 +350,13 @@ export function createWhiteboardCanvas(
             notifyTransientChange();
         },
     });
+
     function commitCreatedElement(element) {
         commitElements([...elements, element]);
         selectOnlyElement(element.id);
         if (!keepToolActive) setActiveTool("select");
     }
+
     function onPointerDown(event) {
         if (event.button === 1) {
             event.preventDefault();
@@ -425,6 +456,7 @@ export function createWhiteboardCanvas(
         updateDrawingDraft();
         scheduleRender();
     }
+
     function onPointerMove(event) {
         if (panState?.pointerId === event.pointerId) {
             event.preventDefault();
@@ -566,6 +598,7 @@ export function createWhiteboardCanvas(
         currentPoints.push([x, y]);
         updateDrawingDraft();
     }
+
     function onPointerUp(event) {
         if (panState && (!event || panState.pointerId === event.pointerId)) {
             panState = null;
@@ -629,6 +662,7 @@ export function createWhiteboardCanvas(
         if (abandonedDraft && !elements.some(({ id }) => id === abandonedDraft))
             notifyTransientChange();
     }
+
     function onDoubleClick(event) {
         const [x, y] = getCanvasPoint(event);
         const element = findElementAt(x, y);
@@ -637,6 +671,7 @@ export function createWhiteboardCanvas(
             textTools.openTextEditor(element);
         }
     }
+
     function onKeyDown(event) {
         const modifierPressed = event.ctrlKey || event.metaKey;
         if (modifierPressed && !event.altKey) {
@@ -663,6 +698,7 @@ export function createWhiteboardCanvas(
             event.stopPropagation();
         }
     }
+
     const onPaste = createClipboardImageHandler({
         commitCreatedElement,
         getImageUploadMaxBytes: () => imageUploadMaxBytes,
@@ -674,6 +710,7 @@ export function createWhiteboardCanvas(
             });
         },
     });
+
     const unbindCanvasEvents = bindWhiteboardCanvasEvents({
         canvasElement,
         onDoubleClick,
@@ -688,9 +725,11 @@ export function createWhiteboardCanvas(
         },
         readOnly,
     });
+
     const resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(canvasElement.parentElement ?? document.body);
     resizeCanvas();
+
     return {
         setTool(tool) {
             setActiveTool(tool);

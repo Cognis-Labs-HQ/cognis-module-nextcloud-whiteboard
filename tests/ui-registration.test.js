@@ -840,6 +840,19 @@ test("canvas selection clicks do not report content changes", async () => {
     );
 });
 
+test("canvas source keeps readable spacing between top-level sections", async () => {
+    const source = await readFile(
+        new URL("../ui/whiteboard/canvas.js", import.meta.url),
+        "utf8",
+    );
+
+    assert.match(source, /remote-selections\.js";\n\nexport function/);
+    assert.doesNotMatch(
+        source,
+        /^    }\n    (?:function|const (?:history|textTools|onPaste|unbindCanvasEvents|resizeObserver)|return \{)/gm,
+    );
+});
+
 test("whiteboard obtains shared UI resources through the host capability", async () => {
     const [resourcesSource, appSource, shellSource] = await Promise.all(
         [

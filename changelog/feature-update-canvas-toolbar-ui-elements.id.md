@@ -18,9 +18,14 @@ Tindakan papan tulis baru dan riwayat kini disembunyikan pada papan tulis yang d
 
 Titik jangkar objek kini memakai kursor penunjuk. Pilihan jarak jauh segera dibersihkan saat objek dihapus, dan penanda kolaborator membedakan interaksi objek aktif dari aktivitas mengetik.
 
+## Memulihkan konfirmasi pembersihan kanvas
+
+Tombol bersihkan kini memakai penanganan peristiwa terdelegasi yang stabil pada bilah alat dan elemen tombol asli, sehingga dialog konfirmasi selalu terbuka setelah bilah alat diperbarui.
+
 ## Komit
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
 - [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)
 - [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
+- [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)

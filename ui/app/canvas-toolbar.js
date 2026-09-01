@@ -183,13 +183,13 @@ export function bindWhiteboardCanvasToolbar({
         onSelectionChange();
     });
     updateStyleControls();
-    withinMount("#whiteboard-clear")?.addEventListener(
-        "click",
-        async (event) => {
-            event.preventDefault();
-            if (!(await confirmClearCanvas(translate))) return;
-            canvas.clearAll();
-            onClear();
-        },
-    );
+    toolbar.addEventListener("click", async (event) => {
+        const clearButton = event.target.closest("#whiteboard-clear");
+        if (!clearButton || !toolbar.contains(clearButton)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (!(await confirmClearCanvas(translate))) return;
+        canvas.clearAll();
+        onClear();
+    });
 }

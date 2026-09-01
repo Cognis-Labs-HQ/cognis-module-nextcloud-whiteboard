@@ -18,9 +18,14 @@ Removed the new-whiteboard and history actions from whiteboards opened inside co
 
 Object handles now use a pointer cursor. Remote selections are removed as soon as their objects are deleted, and collaborator badges distinguish active object interaction and typing.
 
+## Restore clear-canvas confirmation
+
+The clear button now uses stable delegated toolbar handling and a native button, ensuring its confirmation dialog opens reliably after toolbar refreshes.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
 - [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)
 - [44cca91](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/44cca91a6dbf3e17f9a28e033e4dd0b9f7d8a631)
 - [99ede14](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/99ede14d59284b809d724052c202396f9a810a94)
+- [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)

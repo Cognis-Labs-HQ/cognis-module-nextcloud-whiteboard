@@ -571,6 +571,7 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
         /whiteboard-tool-icon whiteboard-tool-icon--\$\{name\}/,
     );
     assert.doesNotMatch(renderSource, /<svg class="whiteboard-tool-icon"/);
+    assert.match(renderSource, /<button type="button" id="whiteboard-clear"/);
     assert.match(stylesSource, /reuse\/assets\/pen-light\.svg/);
     assert.match(stylesSource, /reuse\/assets\/pen-dark\.svg/);
     assert.match(stylesSource, /body\[data-theme="dark"\]/);
@@ -877,4 +878,17 @@ test("component whiteboards clamp the canvas grid to their parent height", async
         stylesSource,
         /\.whiteboard-canvas-wrap--embedded\s*\{[^}]*max-height:\s*100%;/s,
     );
+});
+
+test("clear canvas uses delegated toolbar confirmation handling", async () => {
+    const toolbarSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/app/canvas-toolbar.js", import.meta.url),
+            "utf8",
+        ),
+    );
+
+    assert.match(toolbarSource, /toolbar\.addEventListener\(["']click["']/);
+    assert.match(toolbarSource, /closest\(["']#whiteboard-clear["']\)/);
+    assert.match(toolbarSource, /await confirmClearCanvas\(translate\)/);
 });

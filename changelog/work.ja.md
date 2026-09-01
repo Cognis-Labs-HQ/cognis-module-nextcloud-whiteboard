@@ -4,7 +4,7 @@
 
 ## テーマに対応した明瞭な描画操作
 
-ツールバーの文字記号を、ライト・ダーク両テーマの色を継承する統一されたSVGアイコンに置き換えました。丸いカラーピッカーを大きくし、消去操作をキャンバスタイトルの隣へ移動しました。
+ツールバーの文字記号を、`ui/reuse/assets/`に保存され、ライト・ダーク両テーマの色を継承する統一されたSVGアイコンに置き換えました。丸いカラーピッカーを大きくし、消去操作をキャンバスタイトルの隣へ移動しました。
 
 ## より使いやすいテキスト書式
 
@@ -17,3 +17,4 @@
 ## コミット
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
+- [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)

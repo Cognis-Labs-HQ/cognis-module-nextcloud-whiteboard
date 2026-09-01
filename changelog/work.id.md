@@ -4,7 +4,7 @@
 
 ## Kontrol gambar yang jelas dan mendukung tema
 
-Simbol bilah alat diganti dengan ikon SVG yang konsisten dan mengikuti warna tema terang maupun gelap, pemilih warna membulat diperbesar, serta tindakan bersihkan dipindahkan ke samping judul kanvas.
+Simbol bilah alat diganti dengan berkas ikon SVG konsisten yang disimpan di `ui/reuse/assets/` dan mengikuti warna tema terang maupun gelap, pemilih warna membulat diperbesar, serta tindakan bersihkan dipindahkan ke samping judul kanvas.
 
 ## Pemformatan teks yang lebih baik
 
@@ -17,3 +17,4 @@ Tindakan papan tulis baru dan riwayat kini disembunyikan pada papan tulis yang d
 ## Komit
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
+- [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)

@@ -93,13 +93,57 @@
 }
 
 .whiteboard-canvas-wrap .whiteboard-tool-icon {
-    fill: none;
+    background-color: currentColor;
+    display: inline-block;
     height: 1.25rem;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.8;
+    mask: var(--whiteboard-tool-icon) center / contain no-repeat;
     width: 1.25rem;
+}
+
+.whiteboard-canvas-wrap .whiteboard-tool-icon--new {
+    --whiteboard-tool-icon: url("../reuse/assets/new.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--history {
+    --whiteboard-tool-icon: url("../reuse/assets/history.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--lock {
+    --whiteboard-tool-icon: url("../reuse/assets/lock.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--select {
+    --whiteboard-tool-icon: url("../reuse/assets/select.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--pen {
+    --whiteboard-tool-icon: url("../reuse/assets/pen.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--rectangle {
+    --whiteboard-tool-icon: url("../reuse/assets/rectangle.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--diamond {
+    --whiteboard-tool-icon: url("../reuse/assets/diamond.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--ellipse {
+    --whiteboard-tool-icon: url("../reuse/assets/ellipse.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--arrow {
+    --whiteboard-tool-icon: url("../reuse/assets/arrow.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--line {
+    --whiteboard-tool-icon: url("../reuse/assets/line.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--text {
+    --whiteboard-tool-icon: url("../reuse/assets/text.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--eraser {
+    --whiteboard-tool-icon: url("../reuse/assets/eraser.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--undo {
+    --whiteboard-tool-icon: url("../reuse/assets/undo.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--redo {
+    --whiteboard-tool-icon: url("../reuse/assets/redo.svg");
+}
+.whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
+    --whiteboard-tool-icon: url("../reuse/assets/clear.svg");
 }
 
 .whiteboard-canvas-wrap #whiteboard-stroke-width {

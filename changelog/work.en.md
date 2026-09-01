@@ -4,7 +4,7 @@
 
 ## Clear, theme-aware drawing controls
 
-Replaced toolbar characters with consistent SVG icons that inherit light and dark theme colors, enlarged the rounded color picker, and placed the clear action beside the canvas title.
+Replaced toolbar characters with consistent SVG icon files stored in `ui/reuse/assets/` that inherit light and dark theme colors, enlarged the rounded color picker, and placed the clear action beside the canvas title.
 
 ## Better text formatting
 
@@ -17,3 +17,4 @@ Removed the new-whiteboard and history actions from whiteboards opened inside co
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
+- [4affd1e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4affd1ea400a8e2765418394c70af70997330fd8)

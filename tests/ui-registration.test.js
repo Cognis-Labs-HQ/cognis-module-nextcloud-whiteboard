@@ -567,6 +567,11 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
         /toolButton\(tool, `module.nextcloud_whiteboard.tool_\$\{tool\}`, icon\(tool\)\)/,
     );
     assert.match(
+        renderSource,
+        /whiteboard-tool-icon whiteboard-tool-icon--\$\{name\}/,
+    );
+    assert.doesNotMatch(renderSource, /<svg class="whiteboard-tool-icon"/);
+    assert.match(
         appSource,
         /const SYNC_MESSAGE_BOARD_RENAMED = ['"]BOARD_RENAMED['"]/,
     );

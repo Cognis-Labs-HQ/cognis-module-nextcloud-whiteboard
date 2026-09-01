@@ -20,27 +20,8 @@ export function renderCanvasElement({
     showShare = true,
     saved = false,
 }) {
-    const icon = (name) => {
-        const paths = {
-            new: '<path d="M12 5v14M5 12h14"/>',
-            history:
-                '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
-            lock: '<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
-            select: '<path d="m5 3 14 9-6 2-3 6z"/>',
-            pen: '<path d="m4 20 4.5-1 10-10-3.5-3.5-10 10zM13.5 6.5 17 10"/>',
-            rectangle: '<rect x="4" y="5" width="16" height="14" rx="1"/>',
-            diamond: '<path d="m12 3 9 9-9 9-9-9z"/>',
-            ellipse: '<ellipse cx="12" cy="12" rx="9" ry="7"/>',
-            arrow: '<path d="M4 12h16M14 6l6 6-6 6"/>',
-            line: '<path d="M4 18 20 6"/>',
-            text: '<path d="M5 5h14M12 5v14M8 19h8"/>',
-            eraser: '<path d="m4 15 9-10 7 7-7 8H8zM10 20h10"/>',
-            undo: '<path d="M9 7 4 12l5 5M5 12h8a6 6 0 0 1 6 6"/>',
-            redo: '<path d="m15 7 5 5-5 5M19 12h-8a6 6 0 0 0-6 6"/>',
-            clear: '<path d="M6 6l12 12M18 6 6 18"/>',
-        };
-        return `<svg class="whiteboard-tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${paths[name]}</svg>`;
-    };
+    const icon = (name) =>
+        `<span class="whiteboard-tool-icon whiteboard-tool-icon--${name}" aria-hidden="true"></span>`;
     const hasActiveBoard = Boolean(activeBoard);
     const overlayHidden = hasActiveBoard && preflightStatus === "passed";
     const overlayMessage = hasActiveBoard

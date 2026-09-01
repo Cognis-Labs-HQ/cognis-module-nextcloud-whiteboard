@@ -77,6 +77,7 @@ export function registerApiRoutes(router, ctx) {
     const requireAuth = ctx.getCapability("auth:requireAuth");
     const dbExecutor = ctx.getCapability("db:executor");
     const profileStore = createProfileStoreCapability(ctx);
+    const profileIdentity = ctx.getCapability("social:profile:identity");
     const log = ctx.getCapability("logging:log");
     const registerScriptOrigins = ctx.getCapability(
         "auth:registerPageScriptOrigins",
@@ -196,7 +197,12 @@ export function registerApiRoutes(router, ctx) {
         void registerStoredOrigin({ store, registerScriptOrigins, log });
     }
 
-    const moduleApi = createWhiteboardModuleApi({ store, profileStore, log });
+    const moduleApi = createWhiteboardModuleApi({
+        store,
+        profileStore,
+        profileIdentity,
+        log,
+    });
     ctx.getCapability("system:ctx")?.contributePublicCapability?.(
         "nextcloud-whiteboard:api",
         moduleApi,

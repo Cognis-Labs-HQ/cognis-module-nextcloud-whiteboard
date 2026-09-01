@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.98",
+    "version": "2.3.99",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -86,6 +86,7 @@
         "share:resolveGuestId",
         "share:resolveUserAccess",
         "social:profileStore",
+        "social:profile:identity",
         "system:ctx",
         "ui:reuse",
         "ui:profileAvatarRenderer",
@@ -168,7 +169,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "c861d6d263818d133b71ec6a5555b9cd3eb7fbc206dd37f84d6d8217c1cd1f50"
+            "sha256": "38698a1c70f831205de535976eeb6e9069a1e1b70b4d22ca065ae918139a2900"
         },
         {
             "path": "api/reuse/canvas-loader.js",
@@ -176,7 +177,7 @@
         },
         {
             "path": "api/reuse/canvas-membership.js",
-            "sha256": "9935d265c0e50e4ae86b6e96a8b4808aae970dd76ac763b576e33efc22f132e9"
+            "sha256": "f47e3e0c80690444874abe810c1645e49f22b7b70ad8af86e3fd5bc38c9ea4a8"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -204,7 +205,7 @@
         },
         {
             "path": "api/reuse/module-api.js",
-            "sha256": "8274a66e8dd3aadbb49544b072bb458f1bc4fd22f21c1af14a0c7433b77821d3"
+            "sha256": "59722f926ba87b83006513adf26c211de9701a0eae47fe6322bb16828f18ae05"
         },
         {
             "path": "api/reuse/normalize-handle.js",
@@ -268,11 +269,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "53bad3802afe8919b16c690a8936b0754d8049ce09b39775e4145bdcb4c22fb7"
+            "sha256": "710de94b27f70f8227033f75ec67ddfab0bbad5adb870134fdc41bc34bb3a309"
         },
         {
             "path": "package.json",
-            "sha256": "cb1c14244d3a2a5b16177ebef8d51bffa0b0d9182997d1e943b88f9f345e0f35"
+            "sha256": "deee18092a366fde1155fefbd8e4507929a8ed95e9fae8883fca728ab9f802e6"
         },
         {
             "path": "routes.json",
@@ -300,7 +301,7 @@
         },
         {
             "path": "tests/canvas-membership.test.js",
-            "sha256": "80b3cee9c789397203c32041e65b50df6a7fd0605b0e8968ac170f2e3dfa06af"
+            "sha256": "fef22c505acc4fa5681691d2e71d2161e656f4b138b0c2ba45ec7facc68d4fbe"
         },
         {
             "path": "tests/documentation-convention.test.js",

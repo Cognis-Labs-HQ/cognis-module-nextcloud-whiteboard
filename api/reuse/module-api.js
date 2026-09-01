@@ -2,9 +2,19 @@ import { buildCognisWhiteboardUrl } from "../access.js";
 import { createCanvasMembershipCapability } from "./canvas-membership.js";
 import { normalizeHandleKey } from "./normalize-handle.js";
 
-export function createWhiteboardModuleApi({ store, profileStore, log }) {
+export function createWhiteboardModuleApi({
+    store,
+    profileStore,
+    profileIdentity,
+    log,
+}) {
     return {
-        membership: createCanvasMembershipCapability(store, profileStore),
+        membership: createCanvasMembershipCapability({
+            store,
+            profileStore,
+            profileIdentity,
+            log,
+        }),
         async spawnWhiteboardWindow(options = {}) {
             await store.ensureSchema();
             const createdBy = normalizeHandleKey(options.createdBy);

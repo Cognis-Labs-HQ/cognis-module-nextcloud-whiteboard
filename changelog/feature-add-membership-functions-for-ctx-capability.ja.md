@@ -6,6 +6,11 @@
 
 Jitsi Meet などのオーケストレーターは、正規の実行者アカウント ID とユーザーアカウント ID を指定し、CTX capability `whiteboard:membership` を介してキャンバス参加者を追加または削除できるようになりました。この変更を実行できるのはキャンバス所有者だけで、所有者自身のアクセスは削除できません。
 
+## メンバーシップ変更を堅牢化
+
+メンバーシップ変更では、アクセス前にストレージを初期化し、非表示プロフィールを拒否し、ホストの正規プロフィール ID capability を使用するようになりました。また、内部情報を公開せずに依存関係の障害を報告します。
+
 ## コミット
 
+- [972b573](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/972b573d595667a3cd6786327b13f3cf08a897d6)
 - [ba1ec07](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ba1ec07cde8d4cdaceebdfc6295a3ed08c9eb33b)

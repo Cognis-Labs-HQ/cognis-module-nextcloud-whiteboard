@@ -9,7 +9,7 @@ import { resolveExpiry } from "./config-values.js";
 import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
 import { loadCanvasElements } from "./reuse/canvas-loader.js";
 import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
-import { createCanvasMembershipCapability } from "./reuse/canvas-membership.js";
+import { createWhiteboardModuleApi } from "./reuse/module-api.js";
 import {
     createWhiteboardEnableTest,
     registerWhiteboardEnableTestRoute,
@@ -196,70 +196,7 @@ export function registerApiRoutes(router, ctx) {
         void registerStoredOrigin({ store, registerScriptOrigins, log });
     }
 
-    const moduleApi = {
-        membership: createCanvasMembershipCapability(store, profileStore),
-        async spawnWhiteboardWindow(options = {}) {
-            await store.ensureSchema();
-            const createdBy = normalizeHandleKey(options.createdBy);
-            if (!createdBy) {
-                throw new Error(
-                    "createdBy is required to spawn a whiteboard window.",
-                );
-            }
-            const config = await store.getConfig();
-            if (!config.serverUrl || !config.apiKeyConfigured) {
-                throw new Error(
-                    "Nextcloud Whiteboard server URL and API key must be configured.",
-                );
-            }
-            const whiteboard = await store.createWhiteboard({
-                title: options.title,
-                createdBy,
-                participants: options.participants,
-                externalPath: options.externalPath,
-                disposable: options.disposable === true,
-            });
-            const launchUrl = buildCognisWhiteboardUrl(whiteboard.id, {
-                instantCanvas:
-                    options.instantCanvas === true ||
-                    options.disposable === true,
-            });
-            log?.("info", "Nextcloud Whiteboard window spawned.", {
-                component: "nextcloud-whiteboard-module",
-                operation: "spawn_whiteboard_window",
-                whiteboardId: whiteboard.id,
-                createdBy,
-            });
-            return {
-                whiteboardId: whiteboard.id,
-                launchUrl,
-                windowFeatures:
-                    "popup,width=1280,height=900,noopener,noreferrer",
-                access: {
-                    owner: createdBy,
-                    participants: whiteboard
-                        ? [createdBy, ...(options.participants ?? [])]
-                        : [createdBy],
-                },
-                disposable: whiteboard.disposable,
-            };
-        },
-        async fetchBoardData(whiteboardId) {
-            await store.ensureSchema();
-            const whiteboard = await store.getWhiteboardById(
-                String(whiteboardId ?? ""),
-            );
-            if (!whiteboard) return null;
-            return {
-                id: whiteboard.id,
-                title: whiteboard.title,
-                embedUrl: buildCognisWhiteboardUrl(whiteboard.id),
-                createdBy: whiteboard.createdBy,
-                createdAt: whiteboard.createdAt,
-                updatedAt: whiteboard.updatedAt,
-            };
-        },
-    };
+    const moduleApi = createWhiteboardModuleApi({ store, profileStore, log });
     ctx.getCapability("system:ctx")?.contributePublicCapability?.(
         "nextcloud-whiteboard:api",
         moduleApi,
@@ -431,80 +368,6 @@ export function registerApiRoutes(router, ctx) {
                     disposable: whiteboard.disposable,
                     saved,
                     token,
-                },
-            });
-        },
-        { access: { minRole: "user" } },
-    );
-
-    router.post(
-        "/api/v1/modules/nextcloud-whiteboard/whiteboards/access/expand",
-        async (req, res) => {
-            await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
-            if (!claims) return;
-            const body = await readJson(req);
-            const whiteboardId = String(body.whiteboardId ?? "").trim();
-            const whiteboard = await store.getWhiteboardById(whiteboardId);
-            if (!whiteboard) {
-                sendError(res, 404, "not_found", "Whiteboard not found.");
-                return;
-            }
-            const requesterUsername = await resolveRequesterUsername(
-                profileStore,
-                claims.sub,
-            ).catch((error) => {
-                sendError(res, 409, "profile_required", error.message);
-                return null;
-            });
-            if (!requesterUsername) return;
-            if (whiteboard.createdBy !== requesterUsername) {
-                sendError(
-                    res,
-                    403,
-                    "forbidden",
-                    "Only the whiteboard owner can expand participant access.",
-                );
-                return;
-            }
-            if (whiteboard.disposable) {
-                sendError(
-                    res,
-                    409,
-                    "disposable_whiteboard",
-                    "Disposable whiteboard access cannot be expanded.",
-                );
-                return;
-            }
-            const participants = await resolveParticipantHandles(
-                profileStore,
-                body.participantHandles,
-                hasMinRole(claims.role, "admin"),
-            );
-            if (participants.length === 0) {
-                sendError(
-                    res,
-                    400,
-                    "bad_request",
-                    "At least one valid participant handle is required.",
-                );
-                return;
-            }
-            const expandedParticipants = await store.expandWhiteboardAccess(
-                whiteboard.id,
-                participants,
-            );
-            log?.("info", "Whiteboard participant access expanded.", {
-                component: "nextcloud-whiteboard-module",
-                operation: "expand_whiteboard_access",
-                whiteboardId: whiteboard.id,
-                participantCount: participants.length,
-                requestedBy: requesterUsername,
-            });
-            sendJson(res, 200, {
-                data: {
-                    whiteboardId: whiteboard.id,
-                    participants: expandedParticipants,
                 },
             });
         },

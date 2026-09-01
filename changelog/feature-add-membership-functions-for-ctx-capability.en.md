@@ -1,6 +1,6 @@
 # Add canvas membership orchestration
 
-**Feature Branch:** work
+**Feature Branch:** feature-add-membership-functions-for-ctx-capability
 
 ## Expose straightforward membership changes
 
@@ -8,4 +8,4 @@ Jitsi Meet and other orchestrators can now add or remove a canvas participant th
 
 ## Commits
 
-- [37f900e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/37f900e5b2fd7b4234755e851d29e822311ef076)
+- [ba1ec07](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ba1ec07cde8d4cdaceebdfc6295a3ed08c9eb33b)

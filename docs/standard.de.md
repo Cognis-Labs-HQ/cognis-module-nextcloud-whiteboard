@@ -20,7 +20,7 @@ Benutzer öffnen `/whiteboards`, um ein Board anzulegen oder auszuwählen, und `
 
 Eigentümer können über die Werkzeugleiste den Freigabedialog des Hosts öffnen und Lese- oder Schreibzugriff erteilen. Kontoempfänger öffnen das Board direkt; Linkempfänger werden über die Freigabe-Flows des Hosts aufgelöst und erhalten nur die freigegebenen Capabilities.
 
-Bereits bestehende dauerhafte Arbeitsflächen können auch während ihrer Nutzung neu eingeladene Benutzer aufnehmen. Die optionale Provider-Methode `whiteboard:uiGateway.expandCanvasAccess` validiert die angeforderten Profile und erweitert über die vom Eigentümer autorisierte API die gespeicherte Editor-Zugriffsliste, ohne bestehende Zugriffe zu ersetzen.
+Die Mitgliedschaft dauerhafter Arbeitsflächen wird ausschließlich über die öffentliche CTX-Capability `whiteboard:membership` gesteuert. Ihre Funktionen `add` und `remove` akzeptieren eine Canvas-ID sowie kanonische Konto-IDs für Akteur und Benutzer, autorisieren den Canvas-Eigentümer und ändern jeweils einen Teilnehmer.
 
 **Über Capabilities integrieren**
 

@@ -444,46 +444,26 @@ export class NextcloudWhiteboardStore {
         );
     }
 
-    async expandWhiteboardAccess(id, usernames) {
+    async addWhiteboardMember(id, username) {
         const whiteboardId = String(id ?? "").trim();
-        const normalizedUsernames = normalizeHandleKeys(usernames);
-        if (!whiteboardId || normalizedUsernames.length === 0) {
-            return this.listParticipants(whiteboardId);
-        }
-        const existingUsernames = new Set(
-            await this.listParticipants(whiteboardId),
-        );
-        const newUsernames = normalizedUsernames.filter(
-            (username) => !existingUsernames.has(username),
-        );
-        if (newUsernames.length === 0) {
-            return Array.from(existingUsernames);
-        }
+        const normalizedUsername = normalizeHandleKey(username);
+        if (!whiteboardId || !normalizedUsername) return;
+        if (await this.canAccessWhiteboard(whiteboardId, normalizedUsername))
+            return;
         const grantedAt = new Date().toISOString();
-        await this.db.transaction(async (executor) => {
-            for (const username of newUsernames) {
-                await executor.executeCommand({
-                    option: "INSERT",
-                    table: "nextcloud_whiteboard_access",
-                    values: {
-                        whiteboard_id: whiteboardId,
-                        username,
-                        role: "editor",
-                        granted_at: grantedAt,
-                    },
-                    conflict: { action: "ignore" },
-                });
-            }
+        await this.db.executeCommand({
+            option: "INSERT",
+            table: "nextcloud_whiteboard_access",
+            values: {
+                whiteboard_id: whiteboardId,
+                username: normalizedUsername,
+                role: "editor",
+                granted_at: grantedAt,
+            },
+            conflict: { action: "ignore" },
         });
         const elements = await this.getElementsSnapshot(whiteboardId);
-        await this.saveUserCopies(whiteboardId, elements, newUsernames);
-        return this.listParticipants(whiteboardId);
-    }
-
-    async addWhiteboardMember(id, username) {
-        const normalizedUsername = normalizeHandleKey(username);
-        if (!normalizedUsername) return;
-        await this.expandWhiteboardAccess(id, [normalizedUsername]);
+        await this.saveUserCopies(whiteboardId, elements, [normalizedUsername]);
     }
 
     async removeWhiteboardMember(id, username) {

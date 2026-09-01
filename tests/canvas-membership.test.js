@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createCanvasMembershipCapability } from "../api/reuse/canvas-membership.js";
 
@@ -81,4 +82,19 @@ test("canvas membership authorizes the owner before changing access", async () =
     );
     assert.equal(participants.has("carol"), false);
     assert.equal(participants.has("alice"), true);
+});
+
+test("legacy canvas membership controls are removed", async () => {
+    const sources = await Promise.all(
+        [
+            "../api/index.js",
+            "../api/store.js",
+            "../ui/reuse/whiteboard-ui-gateway.js",
+        ].map((path) => readFile(new URL(path, import.meta.url), "utf8")),
+    );
+    const combinedSource = sources.join("\n");
+
+    assert.doesNotMatch(combinedSource, /expandCanvasAccess/);
+    assert.doesNotMatch(combinedSource, /expandWhiteboardAccess/);
+    assert.doesNotMatch(combinedSource, /whiteboards\/access\/expand/);
 });

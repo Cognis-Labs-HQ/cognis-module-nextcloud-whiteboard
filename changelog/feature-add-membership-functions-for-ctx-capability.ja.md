@@ -1,6 +1,6 @@
 # キャンバスメンバーシップのオーケストレーションを追加
 
-**機能ブランチ:** work
+**機能ブランチ:** feature-add-membership-functions-for-ctx-capability
 
 ## 直接的なメンバーシップ変更を提供
 
@@ -8,4 +8,4 @@ Jitsi Meet などのオーケストレーターは、正規の実行者アカウ
 
 ## コミット
 
-- [37f900e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/37f900e5b2fd7b4234755e851d29e822311ef076)
+- [ba1ec07](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ba1ec07cde8d4cdaceebdfc6295a3ed08c9eb33b)

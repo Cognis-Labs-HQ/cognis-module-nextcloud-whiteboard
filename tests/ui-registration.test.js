@@ -82,16 +82,6 @@ test("nextcloud whiteboard does not reload shared layout styles", async () => {
     assert.doesNotMatch(shellSource, /\/static\/styles\/reuse\/layout\.css/);
 });
 
-test("whiteboard gateway exposes participant access expansion", async () => {
-    const source = await readFile(
-        new URL("../ui/reuse/whiteboard-ui-gateway.js", import.meta.url),
-        "utf8",
-    );
-    assert.match(source, /async expandCanvasAccess\(/);
-    assert.match(source, /whiteboards\/access\/expand/);
-    assert.match(source, /participantHandles/);
-});
-
 test("nextcloud whiteboard share permissions use explicit access labels", async () => {
     const strings = await import("node:fs/promises").then((fs) =>
         fs.readFile(

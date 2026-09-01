@@ -30,6 +30,10 @@ Membersihkan kanvas atau menghapus objek kini menghapus semua pilihan lokal dan 
 
 Bilah alat kini selalu menyediakan ruang selebar indikator Tersimpan yang diterjemahkan, sehingga animasi konfirmasinya tidak lagi menggeser kontrol di sebelahnya.
 
+## Kanvas seukuran viewport
+
+Grid dan kartu papan tulis kini dibatasi ke ukuran yang lebih kecil antara ruang induk dan tinggi viewport dinamis yang tersedia. Kanvas tidak lagi membuat dokumen bergulir dan tetap dapat dijelajahi melalui permukaan geser tanpa batas.
+
 ## Komit
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -39,3 +43,4 @@ Bilah alat kini selalu menyediakan ruang selebar indikator Tersimpan yang diterj
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
 - [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
+- [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)

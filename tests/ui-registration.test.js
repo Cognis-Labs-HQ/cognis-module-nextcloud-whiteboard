@@ -879,6 +879,10 @@ test("component whiteboards clamp the canvas grid to their parent height", async
         stylesSource,
         /\.whiteboard-canvas-wrap--embedded\s*\{[^}]*max-height:\s*100%;/s,
     );
+    assert.match(
+        stylesSource,
+        /\.main-window:has\(\.whiteboard-canvas-wrap\) \.content-grid,[^{]*\.widget-card:has\(> \.whiteboard-canvas-wrap\)\s*\{[^}]*max-block-size:\s*calc\(100dvh - 12rem\);[^}]*overflow:\s*hidden;/s,
+    );
 });
 
 test("clear canvas uses delegated toolbar confirmation handling", async () => {

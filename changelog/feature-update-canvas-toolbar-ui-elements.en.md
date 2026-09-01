@@ -30,6 +30,10 @@ Clearing the canvas or deleting an object now removes every matching local and r
 
 The toolbar now permanently reserves the translated Saved pill width, so its confirmation animation no longer shifts neighboring controls.
 
+## Viewport-sized canvas
+
+The whiteboard grid and card now clamp to the smaller of their parent space and the available dynamic viewport height. The canvas no longer creates document scrolling and remains navigable through its infinite panning surface.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -39,3 +43,4 @@ The toolbar now permanently reserves the translated Saved pill width, so its con
 - [0e906e8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0e906e8b690c1274f9e3f0689cfbe5205a530097)
 - [d7d09ed](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d7d09edc43bf57ef9fd16657aee467061ed1230d)
 - [e80c294](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/e80c2945c9cced41d4b17faed29aef817b3455d8)
+- [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)

@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.117",
+    "version": "2.3.118",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -270,11 +270,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "551d88e93ac9afa20b804600b9a58a025bd7f7a16fe40d1e1e5cc27b71877b7b"
+            "sha256": "a1022f738347e9770745b0daf5b3413dfe7c424c28b0043c6aef714bebf74a26"
         },
         {
             "path": "package.json",
-            "sha256": "d9daf90c87428ce477bd223b0c08b1f80faecb947691901e7a6dbf50a2990443"
+            "sha256": "1ea29e717b89de41ee24bd38075ae31bb7053b1f8c685cd3d287546abfa6e331"
         },
         {
             "path": "routes.json",
@@ -310,7 +310,7 @@
         },
         {
             "path": "tests/documentation-convention.test.js",
-            "sha256": "fe00acad806f4b01b05a3a570363ac429eeefdcb00a0db27f00f308ab8bef35c"
+            "sha256": "c54ec6f3ec0a9ac7579d446a8184b18c9050b7671189215040c044d6e8bebf78"
         },
         {
             "path": "tests/draft-elements.test.js",

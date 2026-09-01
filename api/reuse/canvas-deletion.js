@@ -31,9 +31,15 @@ export function createCanvasDeletionCapability({
             if (!whiteboard) {
                 throw new CanvasDeletionRequestError("Whiteboard not found.");
             }
-            if (whiteboard.createdBy !== actorHandle) {
+            const actorOwnsCanvas = whiteboard.createdBy === actorHandle;
+            const participants = actorOwnsCanvas
+                ? []
+                : await store.listParticipants(whiteboard.id);
+            const actorIsSoleParticipant =
+                participants.length === 1 && participants[0] === actorHandle;
+            if (!actorOwnsCanvas && !actorIsSoleParticipant) {
                 throw new CanvasDeletionRequestError(
-                    "Only the whiteboard owner can delete the canvas.",
+                    "Only the whiteboard owner or sole participant can delete the canvas.",
                 );
             }
             await store.deleteWhiteboard(whiteboard.id);

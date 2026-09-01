@@ -42,6 +42,10 @@ Sämtliche Modulstile für Page-Shell-Elemente wurden entfernt. Das Whiteboard f
 
 Die durch Eigentümer autorisierte Funktion `whiteboard:deleteCanvas` für Bereinigungsabläufe von Meetings wurde veröffentlicht. Beim Löschen werden Canvas-Präsenz, Snapshots, gespeicherte Kopien, Zugriffsrechte und der Canvas-Datensatz transaktional entfernt.
 
+## Löschen durch alleinige Teilnehmende
+
+Eine Canvas mit genau einer teilnehmenden Person kann jetzt von dieser Person gelöscht werden, selbst wenn historische Eigentümerdaten eine andere Person ausweisen.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -54,3 +58,4 @@ Die durch Eigentümer autorisierte Funktion `whiteboard:deleteCanvas` für Berei
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
 - [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)
 - [0543ba2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0543ba2aaefddfdfdbad7f9cf725bae2ee48b1bf)
+- [4813641](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/481364152037d9fedc01d64805d451d6a1f776fe)

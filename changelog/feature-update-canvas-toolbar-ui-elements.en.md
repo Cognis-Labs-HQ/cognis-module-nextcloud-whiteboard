@@ -42,6 +42,10 @@ Removed all module styling of page-shell elements. The whiteboard now requests b
 
 Published the owner-authorized `whiteboard:deleteCanvas` capability required by meeting cleanup flows. Deletion transactionally removes canvas presence, snapshots, saved copies, access grants, and the canvas record.
 
+## Sole-participant deletion
+
+A canvas with exactly one participant may now be deleted by that participant even when historical ownership metadata identifies someone else.
+
 ## Commits
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -54,3 +58,4 @@ Published the owner-authorized `whiteboard:deleteCanvas` capability required by 
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
 - [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)
 - [0543ba2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0543ba2aaefddfdfdbad7f9cf725bae2ee48b1bf)
+- [4813641](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/481364152037d9fedc01d64805d451d6a1f776fe)

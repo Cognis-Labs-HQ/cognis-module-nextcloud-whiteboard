@@ -20,6 +20,10 @@ function createHarness() {
         async deleteWhiteboard(id) {
             calls.push(["deleteWhiteboard", id]);
         },
+        async listParticipants() {
+            calls.push("listParticipants");
+            return ["alice", "bob"];
+        },
     };
     const profileStore = {
         async getProfile(accountId) {
@@ -65,12 +69,32 @@ test("canvas deletion rejects non-owners", async () => {
             actorAccountId: "account:bob",
             whiteboardId: "canvas-1",
         }),
-        /Only the whiteboard owner can delete the canvas/,
+        /Only the whiteboard owner or sole participant can delete the canvas/,
     );
     assert.equal(
         harness.calls.some((call) => Array.isArray(call)),
         false,
     );
+});
+
+test("canvas deletion allows a sole participant when ownership is stale", async () => {
+    const harness = createHarness();
+    harness.store.listParticipants = async () => {
+        harness.calls.push("listParticipants");
+        return ["bob"];
+    };
+
+    await harness.deleteCanvas({
+        actorAccountId: "account:bob",
+        whiteboardId: "canvas-1",
+    });
+
+    assert.deepEqual(harness.calls, [
+        "ensureSchema",
+        "getWhiteboardById",
+        "listParticipants",
+        ["deleteWhiteboard", "canvas-1"],
+    ]);
 });
 
 test("canvas deletion removes dependent records transactionally", async () => {

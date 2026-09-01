@@ -42,6 +42,10 @@ Seluruh gaya modul untuk elemen page shell telah dihapus. Papan tulis kini memin
 
 Kapabilitas `whiteboard:deleteCanvas` dengan otorisasi pemilik kini tersedia untuk alur pembersihan rapat. Penghapusan secara transaksional menghapus kehadiran kanvas, snapshot, salinan tersimpan, izin akses, dan data kanvas.
 
+## Penghapusan oleh peserta tunggal
+
+Kanvas dengan tepat satu peserta kini dapat dihapus oleh peserta tersebut meskipun metadata kepemilikan lama mencatat pengguna lain.
+
 ## Komit
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -54,3 +58,4 @@ Kapabilitas `whiteboard:deleteCanvas` dengan otorisasi pemilik kini tersedia unt
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
 - [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)
 - [0543ba2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0543ba2aaefddfdfdbad7f9cf725bae2ee48b1bf)
+- [4813641](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/481364152037d9fedc01d64805d451d6a1f776fe)

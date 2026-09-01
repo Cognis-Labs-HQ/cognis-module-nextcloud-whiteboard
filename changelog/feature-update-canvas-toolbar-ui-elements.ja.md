@@ -42,6 +42,10 @@
 
 会議のクリーンアップ処理に必要な、所有者認可付きの`whiteboard:deleteCanvas`機能を公開しました。削除時にはキャンバスのプレゼンス、スナップショット、保存済みコピー、アクセス権、キャンバスレコードをトランザクションで削除します。
 
+## 単独参加者による削除
+
+参加者が1人だけのキャンバスは、過去の所有者メタデータが別の利用者を示していても、その参加者が削除できるようになりました。
+
 ## コミット
 
 - [5359a44](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5359a44d3a62ae2e05175f96e4f1271802f54544)
@@ -54,3 +58,4 @@
 - [4c190bf](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4c190bf57de58f5f23972b1fa56feeb53d590bfa)
 - [16bb05b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/16bb05b5270c657c48d8a275358c8e60a072e8e9)
 - [0543ba2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0543ba2aaefddfdfdbad7f9cf725bae2ee48b1bf)
+- [4813641](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/481364152037d9fedc01d64805d451d6a1f776fe)

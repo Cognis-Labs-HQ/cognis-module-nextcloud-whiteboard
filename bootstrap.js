@@ -69,12 +69,38 @@ export function bootstrapModule(ctx) {
         return moduleApi.fetchBoardData(whiteboardId);
     };
 
+    const membership = {
+        async add(input) {
+            const moduleApi = systemCtx?.getCapability?.(
+                "nextcloud-whiteboard:api",
+            );
+            if (!moduleApi?.membership) {
+                throw new Error(
+                    "Nextcloud Whiteboard membership capability is unavailable.",
+                );
+            }
+            return moduleApi.membership.add(input);
+        },
+        async remove(input) {
+            const moduleApi = systemCtx?.getCapability?.(
+                "nextcloud-whiteboard:api",
+            );
+            if (!moduleApi?.membership) {
+                throw new Error(
+                    "Nextcloud Whiteboard membership capability is unavailable.",
+                );
+            }
+            return moduleApi.membership.remove(input);
+        },
+    };
+
     ctx.contributePublicCapability(
         "nextcloud-whiteboard:spawnWhiteboardWindow",
         spawnWhiteboardWindow,
     );
     ctx.contributePublicCapability("whiteboard:getEmbedUrl", getEmbedUrl);
     ctx.contributePublicCapability("whiteboard:fetchBoardData", fetchBoardData);
+    ctx.contributePublicCapability("whiteboard:membership", membership);
 
     ctx.flow.extend(
         "bootstrap-platform",
@@ -86,6 +112,7 @@ export function bootstrapModule(ctx) {
                 "nextcloud-whiteboard:spawnWhiteboardWindow",
                 "whiteboard:getEmbedUrl",
                 "whiteboard:fetchBoardData",
+                "whiteboard:membership",
             ],
         }),
     );

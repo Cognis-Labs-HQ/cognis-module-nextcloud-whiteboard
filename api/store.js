@@ -6,10 +6,6 @@ import {
     normalizeLeadingSlashPath,
 } from "./reuse/text-normalizers.js";
 import { normalizeHttpUrl } from "./reuse/url-parts.js";
-import {
-    normalizeHandleKey,
-    normalizeHandleKeys,
-} from "./reuse/normalize-handle.js";
 import { mergeElementsSnapshots } from "./reuse/elements-snapshot.js";
 
 function normalizeSelectionElementIds(selection) {
@@ -74,9 +70,10 @@ function parsePresenceSelection(value) {
 }
 
 export class NextcloudWhiteboardStore {
-    constructor({ db, log }) {
+    constructor({ db, log, profileIdentity }) {
         this.db = db;
         this.log = log;
+        this.profileIdentity = profileIdentity;
         this.schemaPromise = null;
     }
 
@@ -300,11 +297,14 @@ export class NextcloudWhiteboardStore {
         disposable = false,
     }) {
         const id = randomUUID();
-        const normalizedCreator = normalizeHandleKey(createdBy);
-        const normalizedParticipants = normalizeHandleKeys([
-            normalizedCreator,
-            ...(Array.isArray(participants) ? participants : []),
-        ]);
+        const normalizedCreator =
+            this.profileIdentity.normalizeHandleKey(createdBy);
+        const normalizedParticipants = this.profileIdentity.normalizeHandleKeys(
+            [
+                normalizedCreator,
+                ...(Array.isArray(participants) ? participants : []),
+            ],
+        );
         const accessToken = createUrlSafeRandomToken(18);
         const resolvedPath = normalizeLeadingSlashPath(
             externalPath || `/apps/whiteboard/${id}.whiteboard`,
@@ -397,7 +397,8 @@ export class NextcloudWhiteboardStore {
     }
 
     async listAccessibleWhiteboards(username) {
-        const normalizedUsername = normalizeHandleKey(username);
+        const normalizedUsername =
+            this.profileIdentity.normalizeHandleKey(username);
         const access = await this.db.executeCommand({
             option: "SELECT",
             table: "nextcloud_whiteboard_access",
@@ -439,45 +440,47 @@ export class NextcloudWhiteboardStore {
             table: "nextcloud_whiteboard_access",
             where: [{ column: "whiteboard_id", value: String(id ?? "") }],
         });
-        return normalizeHandleKeys(
+        return this.profileIdentity.normalizeHandleKeys(
             (result.rows ?? []).map((row) => row.username),
         );
     }
 
-    async expandWhiteboardAccess(id, usernames) {
+    async addWhiteboardMember(id, username) {
         const whiteboardId = String(id ?? "").trim();
-        const normalizedUsernames = normalizeHandleKeys(usernames);
-        if (!whiteboardId || normalizedUsernames.length === 0) {
-            return this.listParticipants(whiteboardId);
-        }
-        const existingUsernames = new Set(
-            await this.listParticipants(whiteboardId),
-        );
-        const newUsernames = normalizedUsernames.filter(
-            (username) => !existingUsernames.has(username),
-        );
-        if (newUsernames.length === 0) {
-            return Array.from(existingUsernames);
-        }
+        const normalizedUsername =
+            this.profileIdentity.normalizeHandleKey(username);
+        if (!whiteboardId || !normalizedUsername) return;
+        if (await this.canAccessWhiteboard(whiteboardId, normalizedUsername))
+            return;
         const grantedAt = new Date().toISOString();
-        await this.db.transaction(async (executor) => {
-            for (const username of newUsernames) {
-                await executor.executeCommand({
-                    option: "INSERT",
-                    table: "nextcloud_whiteboard_access",
-                    values: {
-                        whiteboard_id: whiteboardId,
-                        username,
-                        role: "editor",
-                        granted_at: grantedAt,
-                    },
-                    conflict: { action: "ignore" },
-                });
-            }
+        await this.db.executeCommand({
+            option: "INSERT",
+            table: "nextcloud_whiteboard_access",
+            values: {
+                whiteboard_id: whiteboardId,
+                username: normalizedUsername,
+                role: "editor",
+                granted_at: grantedAt,
+            },
+            conflict: { action: "ignore" },
         });
         const elements = await this.getElementsSnapshot(whiteboardId);
-        await this.saveUserCopies(whiteboardId, elements, newUsernames);
-        return this.listParticipants(whiteboardId);
+        await this.saveUserCopies(whiteboardId, elements, [normalizedUsername]);
+    }
+
+    async removeWhiteboardMember(id, username) {
+        const whiteboardId = String(id ?? "").trim();
+        const normalizedUsername =
+            this.profileIdentity.normalizeHandleKey(username);
+        if (!whiteboardId || !normalizedUsername) return;
+        await this.db.executeCommand({
+            option: "DELETE",
+            table: "nextcloud_whiteboard_access",
+            where: [
+                { column: "whiteboard_id", value: whiteboardId },
+                { column: "username", value: normalizedUsername },
+            ],
+        });
     }
 
     async canAccessWhiteboard(id, username) {
@@ -486,7 +489,10 @@ export class NextcloudWhiteboardStore {
             table: "nextcloud_whiteboard_access",
             where: [
                 { column: "whiteboard_id", value: String(id ?? "") },
-                { column: "username", value: normalizeHandleKey(username) },
+                {
+                    column: "username",
+                    value: this.profileIdentity.normalizeHandleKey(username),
+                },
             ],
             limit: 1,
         });
@@ -636,7 +642,9 @@ export class NextcloudWhiteboardStore {
     async saveUserCopies(id, elements, usernames) {
         const safeElements = Array.isArray(elements) ? elements : [];
         const savedAt = new Date().toISOString();
-        for (const username of normalizeHandleKeys(usernames)) {
+        for (const username of this.profileIdentity.normalizeHandleKeys(
+            usernames,
+        )) {
             await this.db.executeCommand({
                 option: "INSERT",
                 table: "nextcloud_whiteboard_user_copies",
@@ -666,7 +674,7 @@ export class NextcloudWhiteboardStore {
             columns: ["username"],
             where: [{ column: "whiteboard_id", value: String(id ?? "") }],
         });
-        return normalizeHandleKeys(
+        return this.profileIdentity.normalizeHandleKeys(
             (result.rows ?? []).map((row) => row.username),
         );
     }
@@ -677,7 +685,10 @@ export class NextcloudWhiteboardStore {
             table: "nextcloud_whiteboard_user_copies",
             where: [
                 { column: "whiteboard_id", value: String(id ?? "") },
-                { column: "username", value: normalizeHandleKey(username) },
+                {
+                    column: "username",
+                    value: this.profileIdentity.normalizeHandleKey(username),
+                },
             ],
             limit: 1,
         });
@@ -690,7 +701,10 @@ export class NextcloudWhiteboardStore {
             table: "nextcloud_whiteboard_user_copies",
             where: [
                 { column: "whiteboard_id", value: String(id ?? "") },
-                { column: "username", value: normalizeHandleKey(username) },
+                {
+                    column: "username",
+                    value: this.profileIdentity.normalizeHandleKey(username),
+                },
             ],
             limit: 1,
         });
@@ -710,7 +724,10 @@ export class NextcloudWhiteboardStore {
             table: "nextcloud_whiteboard_user_copies",
             where: [
                 { column: "whiteboard_id", value: String(id ?? "") },
-                { column: "username", value: normalizeHandleKey(username) },
+                {
+                    column: "username",
+                    value: this.profileIdentity.normalizeHandleKey(username),
+                },
             ],
         });
     }

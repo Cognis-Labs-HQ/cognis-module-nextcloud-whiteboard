@@ -20,7 +20,7 @@ Nextcloud Whiteboard モジュールは、独立した Nextcloud Whiteboard Sock
 
 所有者はツールバーからホストの共有ポップアップを開き、読み取りまたは書き込み権限を付与できます。アカウント受信者は直接ボードを開き、リンク受信者はホストの共有 Flow で解決され、付与された Capability だけを受け取ります。
 
-既存の永続キャンバスには、使用中でも新しく招待されたユーザーを追加できます。任意の Provider メソッド `whiteboard:uiGateway.expandCanvasAccess` は要求されたプロフィールを検証し、所有者が認可された API を通じて、既存のアクセスを置き換えずに保存済みの編集者許可リストを拡張します。
+永続キャンバスのメンバーシップは、公開 CTX capability `whiteboard:membership` だけで制御します。`add` と `remove` 関数はキャンバス ID と正規の実行者およびユーザーのアカウント ID を受け取り、キャンバス所有者を認可して、参加者を一人ずつ変更します。
 
 **Capability で統合する**
 

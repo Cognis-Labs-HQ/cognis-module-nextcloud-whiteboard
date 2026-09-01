@@ -20,7 +20,7 @@ Users open `/whiteboards` to create or select a board and `/whiteboard?id=<board
 
 Owners can open the host share popup from the toolbar and grant read or write access. Account recipients can open the board directly; link recipients resolve through the host share flows and receive only the capabilities granted by the share.
 
-Existing persistent canvases can also receive newly invited users while they are active. The optional `whiteboard:uiGateway.expandCanvasAccess` provider method validates the requested profiles and asks the owner-authorized API to extend the stored editor allow-list without replacing existing access.
+Persistent canvas membership is controlled only through the public `whiteboard:membership` CTX capability. Its `add` and `remove` functions accept a canvas ID plus canonical actor and user account IDs, authorize the canvas owner, and update one participant at a time.
 
 **Integrate through capabilities**
 

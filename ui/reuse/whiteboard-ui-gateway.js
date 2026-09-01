@@ -52,25 +52,6 @@ const gateway = {
         );
     },
 
-    async expandCanvasAccess({ whiteboardId, participantHandles } = {}) {
-        const response = await apiFetch(
-            "/api/v1/modules/nextcloud-whiteboard/whiteboards/access/expand",
-            {
-                method: "POST",
-                headers: { "content-type": "application/json" },
-                body: JSON.stringify({ whiteboardId, participantHandles }),
-            },
-        );
-        const payload = await response.json().catch(() => ({}));
-        if (!response.ok) {
-            throw new Error(
-                payload?.error?.message ??
-                    "Canvas participant access could not be expanded.",
-            );
-        }
-        return payload.data;
-    },
-
     async createDisposableCanvas({
         resourceType,
         resourceId,

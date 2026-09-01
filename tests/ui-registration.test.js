@@ -264,7 +264,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         ),
         /remoteSelections\.get\(element\.id\)/,
     );
-    assert.match(canvasSource, /function pushHistoryEntry\(/);
+    assert.match(canvasSource, /createElementHistory/);
     assert.match(canvasSource, /function applyHistorySnapshot\(/);
     assert.match(renderSource, /id="page-presence-section"/);
     assert.match(
@@ -343,7 +343,7 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
     assert.doesNotMatch(source, /canvasElement\.width \|\| 0/);
     assert.match(source, /viewportOffsetX/);
     assert.match(source, /getViewportOffset\(\)/);
-    assert.match(source, /function notifyHistoryChange\(\)/);
+    assert.match(source, /history\.notifyChange\(\)/);
     assert.match(source, /canRedo\(\)/);
     assert.doesNotMatch(source, /parent\.scrollLeft =/);
     assert.match(
@@ -833,7 +833,7 @@ test("canvas selection clicks do not report content changes", async () => {
         new URL("../ui/whiteboard/canvas.js", import.meta.url),
         "utf8",
     );
-    assert.match(source, /const didChange = pushHistoryEntry\(/);
+    assert.match(source, /const didChange = history\.record\(/);
     assert.match(
         source,
         /if \(didChange\) changeCallback\?\.\(\[\.\.\.elements\]\)/,

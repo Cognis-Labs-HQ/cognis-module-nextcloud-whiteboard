@@ -3,7 +3,6 @@ import {
     buildDragBox,
     buildTextElement,
     bumpElementVersion,
-    bumpElementVersionPast,
     getElementBounds,
     getElementAnchorPoints,
     elementContainsPoint,
@@ -16,6 +15,11 @@ import { createWhiteboardTextTools, getCurrentAppFont } from "./text-tools.js";
 import { createClipboardImageHandler } from "./clipboard-images.js";
 import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
 import * as drafts from "./reuse/draft-elements.js";
+import { createElementHistory } from "./reuse/element-history.js";
+import {
+    applyElementHistorySnapshot,
+    mergeRemoteElements,
+} from "./reuse/element-sync.js";
 import {
     buildRemoteSelections,
     findVisibleElement,
@@ -54,8 +58,6 @@ export function createWhiteboardCanvas(
     let historyCallback = null;
     let toolCallback = null;
     let pendingRender = false;
-    let historyPast = [];
-    let historyFuture = [];
     let historySnapshot = null;
     let textFormatMenu = null;
     let panState = null;
@@ -194,65 +196,8 @@ export function createWhiteboardCanvas(
             }),
         );
     }
-    function createHistoryEntry(beforeSnapshot, afterSnapshot) {
-        const beforeById = new Map(
-            beforeSnapshot.map((item) => [item.id, item]),
-        );
-        const afterById = new Map(afterSnapshot.map((item) => [item.id, item]));
-        const changedIds = new Set([...beforeById.keys(), ...afterById.keys()]);
-        return {
-            before: beforeSnapshot,
-            after: afterSnapshot,
-            changedIds: [...changedIds].filter((id) => {
-                const before = beforeById.get(id);
-                const after = afterById.get(id);
-                return (
-                    JSON.stringify(before ?? null) !==
-                    JSON.stringify(after ?? null)
-                );
-            }),
-        };
-    }
-    function pushHistoryEntry(beforeSnapshot, afterSnapshot) {
-        const entry = createHistoryEntry(beforeSnapshot, afterSnapshot);
-        if (entry.changedIds.length === 0) return false;
-        historyPast.push(entry);
-        historyPast = historyPast.slice(-100);
-        historyFuture = [];
-        notifyHistoryChange();
-        return true;
-    }
     function applyHistorySnapshot(snapshot, changedIds) {
-        const snapshotById = new Map(snapshot.map((item) => [item.id, item]));
-        const currentById = new Map(elements.map((item) => [item.id, item]));
-        const changed = new Set(changedIds);
-        elements = [
-            ...elements
-                .filter((element) => !changed.has(element.id))
-                .map((element) => ({
-                    ...element,
-                    points: element.points?.map((point) => [...point]),
-                })),
-            ...[...changed]
-                .map((id) => snapshotById.get(id))
-                .filter(Boolean)
-                .map((element) =>
-                    bumpElementVersionPast(
-                        element,
-                        currentById.get(element.id),
-                        {
-                            points: element.points?.map((point) => [...point]),
-                        },
-                    ),
-                ),
-            ...[...changed]
-                .filter((id) => !snapshotById.has(id) && currentById.has(id))
-                .map((id) =>
-                    bumpElementVersion(currentById.get(id), {
-                        isDeleted: true,
-                    }),
-                ),
-        ];
+        elements = applyElementHistorySnapshot(elements, snapshot, changedIds);
         updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
@@ -261,18 +206,12 @@ export function createWhiteboardCanvas(
     function commitElements(nextElements, { record = true } = {}) {
         const before = cloneElements();
         if (record) {
-            pushHistoryEntry(before, cloneElements(nextElements));
+            history.record(before, cloneElements(nextElements));
         }
         elements = nextElements;
         updateCanvasSize();
         scheduleRender();
         changeCallback?.([...elements]);
-    }
-    function notifyHistoryChange() {
-        historyCallback?.({
-            canUndo: historyPast.length > 0,
-            canRedo: historyFuture.length > 0,
-        });
     }
     function restoreElements(snapshot) {
         elements = cloneElements(snapshot);
@@ -281,22 +220,10 @@ export function createWhiteboardCanvas(
         changeCallback?.([...elements]);
         notifySelection();
     }
-    function undo() {
-        const entry = historyPast.pop();
-        if (!entry) return false;
-        historyFuture.push(entry);
-        applyHistorySnapshot(entry.before, entry.changedIds);
-        notifyHistoryChange();
-        return true;
-    }
-    function redo() {
-        const entry = historyFuture.pop();
-        if (!entry) return false;
-        historyPast.push(entry);
-        applyHistorySnapshot(entry.after, entry.changedIds);
-        notifyHistoryChange();
-        return true;
-    }
+    const history = createElementHistory({
+        applySnapshot: applyHistorySnapshot,
+        onChange: (state) => historyCallback?.(state),
+    });
     function updateEraserSelection(endPoint) {
         if (!dragStartPoint) return;
         const box = buildDragBox(dragStartPoint, endPoint);
@@ -655,7 +582,7 @@ export function createWhiteboardCanvas(
         isDrawing = false;
         if (activeTool === "select") {
             if (selectDragMode) {
-                const didChange = pushHistoryEntry(
+                const didChange = history.record(
                     historySnapshot ?? cloneElements(),
                     cloneElements(),
                 );
@@ -717,7 +644,7 @@ export function createWhiteboardCanvas(
             if (normalizedKey === "z" && !event.shiftKey) {
                 event.preventDefault();
                 event.stopPropagation();
-                undo();
+                history.undo();
                 return;
             }
             if (
@@ -726,7 +653,7 @@ export function createWhiteboardCanvas(
             ) {
                 event.preventDefault();
                 event.stopPropagation();
-                redo();
+                history.redo();
                 return;
             }
         }
@@ -899,31 +826,7 @@ export function createWhiteboardCanvas(
                 scheduleRender();
                 return;
             }
-            const remoteById = new Map(
-                stableRemoteElements.map((element) => [element.id, element]),
-            );
-            const localById = new Map(
-                elements.map((element) => [element.id, element]),
-            );
-            for (const [remoteId, remoteElement] of remoteById) {
-                const local = localById.get(remoteId);
-                if (!local) {
-                    localById.set(remoteId, remoteElement);
-                    continue;
-                }
-                const remoteVersion = remoteElement.version ?? 0;
-                const localVersion = local.version ?? 0;
-                if (remoteVersion > localVersion) {
-                    localById.set(remoteId, remoteElement);
-                } else if (
-                    remoteVersion === localVersion &&
-                    (remoteElement.versionNonce ?? 0) >
-                        (local.versionNonce ?? 0)
-                ) {
-                    localById.set(remoteId, remoteElement);
-                }
-            }
-            elements = [...localById.values()];
+            elements = mergeRemoteElements(elements, stableRemoteElements);
             updateCanvasSize();
             selectedElementIds = retainVisibleElementIds(
                 selectedElementIds,
@@ -951,7 +854,7 @@ export function createWhiteboardCanvas(
                     : bumpElementVersion(element, { isDeleted: true }),
             );
             if (visibleElements.length > 0) {
-                pushHistoryEntry(cloneElements(), clearedElements);
+                history.record(cloneElements(), clearedElements);
             }
             elements = clearedElements;
             currentPoints = [];
@@ -973,19 +876,19 @@ export function createWhiteboardCanvas(
         },
         onHistoryChange(callback) {
             historyCallback = callback;
-            notifyHistoryChange();
+            history.notifyChange();
         },
         canUndo() {
-            return historyPast.length > 0;
+            return history.canUndo();
         },
         canRedo() {
-            return historyFuture.length > 0;
+            return history.canRedo();
         },
         onChange(callback) {
             changeCallback = callback;
         },
-        undo,
-        redo,
+        undo: history.undo,
+        redo: history.redo,
         destroy() {
             textFormatMenu?.remove();
             resizeObserver.disconnect();

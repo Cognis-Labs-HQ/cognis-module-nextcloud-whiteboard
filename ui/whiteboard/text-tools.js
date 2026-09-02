@@ -27,11 +27,21 @@ export function createWhiteboardTextTools({
 
     function updateTextStyle(elementId, patch) {
         commitElements(
-            getElements().map((item) =>
-                item.id === elementId
-                    ? { ...item, ...patch, version: (item.version || 1) + 1 }
-                    : item,
-            ),
+            getElements().map((item) => {
+                if (item.id !== elementId) return item;
+                const nextItem = {
+                    ...item,
+                    ...patch,
+                    version: (item.version || 1) + 1,
+                };
+                if (patch.fontSize !== undefined) {
+                    const scale =
+                        patch.fontSize / Math.max(1, item.fontSize ?? 28);
+                    nextItem.width = Math.max(1, (item.width ?? 1) * scale);
+                    nextItem.height = Math.max(1, (item.height ?? 1) * scale);
+                }
+                return nextItem;
+            }),
         );
     }
 
@@ -98,11 +108,13 @@ export function createWhiteboardTextTools({
         syncTextMenuToggleStates(textFormatMenu, element);
     }
 
-    function updateTextElement(element, text) {
+    function updateTextElement(element, text, dimensions = {}) {
         const nextText = text.trim() || "Text";
         const fontSize = element.fontSize ?? 28;
-        const width = Math.max(160, nextText.length * fontSize * 0.62);
-        const height = Math.max(56, fontSize * 1.8);
+        const width =
+            dimensions.width ??
+            Math.max(160, nextText.length * fontSize * 0.62);
+        const height = dimensions.height ?? Math.max(56, fontSize * 1.8);
         commitElements(
             getElements().map((item) =>
                 item.id === element.id
@@ -111,6 +123,7 @@ export function createWhiteboardTextTools({
                           text: nextText,
                           width,
                           height,
+                          fontSize: dimensions.fontSize ?? item.fontSize,
                           version: (item.version || 1) + 1,
                       }
                     : item,
@@ -127,14 +140,28 @@ export function createWhiteboardTextTools({
         editor.className = "wb-text-editor whiteboard-text-editor";
         editor.value = element.text ?? "Text";
         positionTextOverlay(editor, element);
-        editor.style.width = `${Math.max(180, element.width ?? 180)}px`;
-        editor.style.height = `${Math.max(64, element.height ?? 64)}px`;
+        editor.style.width = `${Math.max(1, element.width ?? 180)}px`;
+        editor.style.height = `${Math.max(1, element.height ?? 64)}px`;
         editor.style.fontSize = `${element.fontSize ?? 28}px`;
         editor.style.fontFamily = `${element.fontFamily || toFontFamilyValue(currentAppFont())}, Arial, sans-serif`;
         editor.style.fontWeight = element.fontWeight === "700" ? "700" : "400";
         editor.style.fontStyle =
             element.fontStyle === "italic" ? "italic" : "normal";
+        editor.style.textDecoration = element.textDecoration ?? "none";
         parent.appendChild(editor);
+        const initialHeight = Math.max(1, element.height ?? 64);
+        const initialFontSize = element.fontSize ?? 28;
+        const editorResizeObserver = new ResizeObserver(() => {
+            const fontSize =
+                initialFontSize * (editor.offsetHeight / initialHeight);
+            editor.style.fontSize = `${fontSize}px`;
+            updateTransientElement?.(element.id, {
+                width: editor.offsetWidth,
+                height: editor.offsetHeight,
+                fontSize,
+            });
+        });
+        editorResizeObserver.observe(editor);
         editor.focus();
         editor.select();
         editor.addEventListener("input", () => {
@@ -145,13 +172,20 @@ export function createWhiteboardTextTools({
             if (finished) return;
             finished = true;
             const value = editor.value;
+            const dimensions = {
+                width: editor.offsetWidth,
+                height: editor.offsetHeight,
+                fontSize: Number.parseFloat(editor.style.fontSize),
+            };
+            editorResizeObserver.disconnect();
             editor.parentNode?.removeChild(editor);
-            updateTextElement(element, value);
+            updateTextElement(element, value, dimensions);
         };
         editor.addEventListener("blur", finish, { once: true });
         editor.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
                 finished = true;
+                editorResizeObserver.disconnect();
                 editor.parentNode?.removeChild(editor);
                 selectOnlyElement(element.id);
             } else if (event.key === "Enter" && !event.shiftKey) {

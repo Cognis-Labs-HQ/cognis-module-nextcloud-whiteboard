@@ -363,6 +363,9 @@ export function scaleElementToBounds(element, nextBounds) {
         width: Math.max(1, nextBounds.width),
         height: Math.max(1, nextBounds.height),
     };
+    if (element.type === "text") {
+        patch.fontSize = Math.max(1, (element.fontSize ?? 16) * scaleY);
+    }
     if (Array.isArray(element.points)) {
         patch.points = element.points.map(([pointX, pointY]) => {
             const scaledX = (element.x + pointX - originalBounds.x) * scaleX;

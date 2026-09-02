@@ -3,6 +3,7 @@ import test from "node:test";
 import { mergeElementsSnapshots } from "../api/reuse/elements-snapshot.js";
 import {
     bumpElementVersionPast,
+    getTextBoxDimensions,
     scaleElementToBounds,
 } from "../ui/whiteboard/elements.js";
 
@@ -63,4 +64,15 @@ test("resizing a text box scales its rendered font with its height", () => {
     assert.equal(resized.fontSize, 56);
     assert.equal(resized.width, 320);
     assert.equal(resized.height, 112);
+    assert.equal(resized.autoSize, false);
+});
+
+test("automatically sized text boxes use only the rendered text dimensions", () => {
+    const dimensions = getTextBoxDimensions(
+        "test",
+        28,
+        (text) => text.length * 14,
+    );
+
+    assert.deepEqual(dimensions, { width: 56, height: 28 });
 });

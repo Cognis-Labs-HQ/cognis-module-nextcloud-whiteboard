@@ -4,8 +4,8 @@
 
 ## Teks kini mengikuti ukuran kotak teks
 
-Mengubah ukuran kotak teks kini turut menskalakan font, dan editor menggunakan dimensi konten serta tinggi baris yang sama dengan pratinjau kanvas.
+Kotak teks kini membesar dan mengecil mengikuti dimensi persis teks yang dirender selama pengetikan. Setelah kotak teks diubah ukurannya secara manual, perubahan ukuran berikutnya tetap menskalakan font.
 
 ## Komit
 
-- [bda0607](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bda06077e64c41e9fac15910b9592a4bed55d8ab)
+- [f98938e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f98938e40cf72d9f898a1400aad25d5f27a20bb5)

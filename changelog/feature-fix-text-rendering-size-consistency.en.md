@@ -4,8 +4,8 @@
 
 ## Text now follows its text box size
 
-Resizing a text box scales its font, and the editor uses the same content dimensions and line height as the canvas preview.
+Text boxes now grow and shrink to the exact rendered text dimensions while typing. Once a text box is resized manually, subsequent resizing continues to scale its font.
 
 ## Commits
 
-- [bda0607](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bda06077e64c41e9fac15910b9592a4bed55d8ab)
+- [f98938e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f98938e40cf72d9f898a1400aad25d5f27a20bb5)

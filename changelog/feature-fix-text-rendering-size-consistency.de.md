@@ -4,8 +4,8 @@
 
 ## Text folgt jetzt der Größe seines Textfelds
 
-Beim Ändern der Größe eines Textfelds wird die Schrift mitskaliert, und der Editor verwendet dieselben Inhaltsmaße und dieselbe Zeilenhöhe wie die Leinwandvorschau.
+Textfelder wachsen und schrumpfen während der Eingabe nun auf die exakten Abmessungen des gerenderten Textes. Sobald die Größe eines Textfelds manuell geändert wurde, wird die Schrift bei weiteren Größenänderungen weiterhin mitskaliert.
 
 ## Commits
 
-- [bda0607](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bda06077e64c41e9fac15910b9592a4bed55d8ab)
+- [f98938e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f98938e40cf72d9f898a1400aad25d5f27a20bb5)

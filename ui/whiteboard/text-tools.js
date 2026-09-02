@@ -3,6 +3,7 @@ import {
     parseSavedFont,
     toFontFamilyValue,
 } from "../reuse/font-resources.js";
+import { getTextBoxDimensions } from "./elements.js";
 
 export function getCurrentAppFont() {
     const value = getComputedStyle(document.documentElement)
@@ -124,6 +125,7 @@ export function createWhiteboardTextTools({
                           width,
                           height,
                           fontSize: dimensions.fontSize ?? item.fontSize,
+                          autoSize: dimensions.autoSize ?? item.autoSize,
                           version: (item.version || 1) + 1,
                       }
                     : item,
@@ -149,23 +151,62 @@ export function createWhiteboardTextTools({
             element.fontStyle === "italic" ? "italic" : "normal";
         editor.style.textDecoration = element.textDecoration ?? "none";
         parent.appendChild(editor);
-        const initialHeight = Math.max(1, element.height ?? 64);
-        const initialFontSize = element.fontSize ?? 28;
-        const editorResizeObserver = new ResizeObserver(() => {
-            const fontSize =
-                initialFontSize * (editor.offsetHeight / initialHeight);
-            editor.style.fontSize = `${fontSize}px`;
+        const measurementContext = canvasElement.getContext("2d");
+        let automaticallySized = element.autoSize !== false;
+        let expectedWidth = editor.offsetWidth;
+        let expectedHeight = editor.offsetHeight;
+        let previousHeight = expectedHeight;
+        let previousFontSize = element.fontSize ?? 28;
+
+        function fitEditorToText() {
+            if (!measurementContext) return;
+            measurementContext.font = `${editor.style.fontStyle} ${editor.style.fontWeight} ${editor.style.fontSize} ${editor.style.fontFamily}`;
+            const dimensions = getTextBoxDimensions(
+                editor.value,
+                Number.parseFloat(editor.style.fontSize),
+                (line) => measurementContext.measureText(line).width,
+            );
+            editor.style.width = `${dimensions.width}px`;
+            editor.style.height = `${dimensions.height}px`;
+            expectedWidth = dimensions.width;
+            expectedHeight = dimensions.height;
+            previousHeight = dimensions.height;
             updateTransientElement?.(element.id, {
-                width: editor.offsetWidth,
-                height: editor.offsetHeight,
+                text: editor.value,
+                ...dimensions,
+                autoSize: true,
+            });
+        }
+
+        if (automaticallySized) fitEditorToText();
+        const editorResizeObserver = new ResizeObserver(() => {
+            const width = editor.offsetWidth;
+            const height = editor.offsetHeight;
+            if (width === expectedWidth && height === expectedHeight) return;
+            automaticallySized = false;
+            const fontSize =
+                previousFontSize * (height / Math.max(1, previousHeight));
+            editor.style.fontSize = `${fontSize}px`;
+            expectedWidth = width;
+            expectedHeight = height;
+            previousHeight = height;
+            previousFontSize = fontSize;
+            updateTransientElement?.(element.id, {
+                width,
+                height,
                 fontSize,
+                autoSize: false,
             });
         });
         editorResizeObserver.observe(editor);
         editor.focus();
         editor.select();
         editor.addEventListener("input", () => {
-            updateTransientElement?.(element.id, { text: editor.value });
+            if (automaticallySized) {
+                fitEditorToText();
+            } else {
+                updateTransientElement?.(element.id, { text: editor.value });
+            }
         });
         let finished = false;
         const finish = () => {
@@ -176,6 +217,7 @@ export function createWhiteboardTextTools({
                 width: editor.offsetWidth,
                 height: editor.offsetHeight,
                 fontSize: Number.parseFloat(editor.style.fontSize),
+                autoSize: automaticallySized,
             };
             editorResizeObserver.disconnect();
             editor.parentNode?.removeChild(editor);

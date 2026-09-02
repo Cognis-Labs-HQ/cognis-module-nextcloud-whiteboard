@@ -1,6 +1,6 @@
 # Einheitliche Textgröße im Whiteboard
 
-**Feature-Zweig:** fix-consistent-text-rendering
+**Feature-Zweig:** feature-fix-text-rendering-size-consistency
 
 ## Text folgt jetzt der Größe seines Textfelds
 
@@ -8,4 +8,4 @@ Beim Ändern der Größe eines Textfelds wird die Schrift mitskaliert, und der E
 
 ## Commits
 
-- [f8cb00b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f8cb00b372006025107bbca859b13cfd6ab02c2e)
+- [bda0607](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bda06077e64c41e9fac15910b9592a4bed55d8ab)

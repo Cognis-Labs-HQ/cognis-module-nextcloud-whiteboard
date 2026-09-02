@@ -1,6 +1,6 @@
 # ホワイトボードのテキストサイズを統一
 
-**機能ブランチ:** fix-consistent-text-rendering
+**機能ブランチ:** feature-fix-text-rendering-size-consistency
 
 ## テキストがテキストボックスのサイズに追従
 
@@ -8,4 +8,4 @@
 
 ## コミット
 
-- [f8cb00b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f8cb00b372006025107bbca859b13cfd6ab02c2e)
+- [bda0607](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bda06077e64c41e9fac15910b9592a4bed55d8ab)

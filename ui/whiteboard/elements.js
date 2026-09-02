@@ -130,6 +130,7 @@ export function buildTextElement(point, text, strokeColor) {
         1,
         {
             text,
+            autoSize: true,
             fontSize: 28,
             fontFamily: "sans-serif",
             fontWeight: "400",
@@ -137,6 +138,17 @@ export function buildTextElement(point, text, strokeColor) {
             textDecoration: "none",
         },
     );
+}
+
+export function getTextBoxDimensions(text, fontSize, measureWidth) {
+    const lines = String(text).split("\n");
+    return {
+        width: Math.max(
+            1,
+            ...lines.map((line) => Math.ceil(measureWidth(line))),
+        ),
+        height: Math.max(1, lines.length * fontSize),
+    };
 }
 
 export function buildImageElement(point, dataUrl, dimensions = {}) {
@@ -363,6 +375,10 @@ export function scaleElementToBounds(element, nextBounds) {
         width: Math.max(1, nextBounds.width),
         height: Math.max(1, nextBounds.height),
     };
+    if (element.type === "text") {
+        patch.fontSize = Math.max(1, (element.fontSize ?? 16) * scaleY);
+        patch.autoSize = false;
+    }
     if (Array.isArray(element.points)) {
         patch.points = element.points.map(([pointX, pointY]) => {
             const scaledX = (element.x + pointX - originalBounds.x) * scaleX;

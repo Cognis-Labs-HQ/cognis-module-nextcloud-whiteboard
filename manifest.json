@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.118",
+    "version": "2.3.121",
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
@@ -270,11 +270,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "a1022f738347e9770745b0daf5b3413dfe7c424c28b0043c6aef714bebf74a26"
+            "sha256": "59a8509059d98b3e15c3ef75be525bc43ce66b9198752cfee05b974ab30c5f48"
         },
         {
             "path": "package.json",
-            "sha256": "1ea29e717b89de41ee24bd38075ae31bb7053b1f8c685cd3d287546abfa6e331"
+            "sha256": "ffb6fe907f7b1bf90230d118223211156d2f63a7fd83f8e0590af482f1de6799"
         },
         {
             "path": "routes.json",
@@ -322,7 +322,7 @@
         },
         {
             "path": "tests/elements-snapshot.test.js",
-            "sha256": "2823ecf5d9c2246e033ffc086302f81db40fc3225fe1e560923210e18b93ebbe"
+            "sha256": "40802448e1e7290b05733affc7934cf73c05e5db7f1721b10a481e60f2d70ad3"
         },
         {
             "path": "tests/language-keys.test.js",
@@ -610,7 +610,7 @@
         },
         {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "c577edce498ecc76523ce4f3447a329c0e90153d1f3364e73e5890ce4fd49a6a"
+            "sha256": "b74d06cf269daf96a7e94b860eb26ea57973e812c9d30cf47c749e5df7411dd7"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",
@@ -626,7 +626,7 @@
         },
         {
             "path": "ui/whiteboard/elements.js",
-            "sha256": "ac59dbc04263b7870b4506d62bbdb800fbdac8845cbc98febcf710d12e1e5eec"
+            "sha256": "30403e342e6130165e41751011986ad1c2ac361c3367c8afaf0baf5d1121d352"
         },
         {
             "path": "ui/whiteboard/render-scene.js",
@@ -654,7 +654,7 @@
         },
         {
             "path": "ui/whiteboard/text-tools.js",
-            "sha256": "ab2fc9ec0d2b310aef45ffd99f5b9d74f877bfcec63bd3632161026b39f87983"
+            "sha256": "d7e7035e20ed97fd32086028fadeb25004e55019c17005b9f5b0040b73252417"
         }
     ]
 }

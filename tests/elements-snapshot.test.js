@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mergeElementsSnapshots } from "../api/reuse/elements-snapshot.js";
-import { bumpElementVersionPast } from "../ui/whiteboard/elements.js";
+import {
+    bumpElementVersionPast,
+    getTextBoxDimensions,
+    scaleElementToBounds,
+} from "../ui/whiteboard/elements.js";
 
 test("snapshot merge preserves concurrent changes from different users", () => {
     const aliceShape = { id: "alice", version: 1, versionNonce: 1 };
@@ -40,4 +44,35 @@ test("history revisions advance past the synchronized element", () => {
 
     assert.equal(restored.version, 8);
     assert.equal(Number.isInteger(restored.versionNonce), true);
+});
+
+test("resizing a text box scales its rendered font with its height", () => {
+    const resized = scaleElementToBounds(
+        {
+            id: "text",
+            type: "text",
+            x: 10,
+            y: 20,
+            width: 160,
+            height: 56,
+            fontSize: 28,
+            version: 1,
+        },
+        { x: 10, y: 20, width: 320, height: 112 },
+    );
+
+    assert.equal(resized.fontSize, 56);
+    assert.equal(resized.width, 320);
+    assert.equal(resized.height, 112);
+    assert.equal(resized.autoSize, false);
+});
+
+test("automatically sized text boxes use only the rendered text dimensions", () => {
+    const dimensions = getTextBoxDimensions(
+        "test",
+        28,
+        (text) => text.length * 14,
+    );
+
+    assert.deepEqual(dimensions, { width: 56, height: 28 });
 });

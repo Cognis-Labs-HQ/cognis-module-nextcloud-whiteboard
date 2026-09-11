@@ -4,17 +4,15 @@ import { getFirstStageResult } from "./reuse/flow-helpers.js";
 import { checkHttpLiveness } from "./reuse/http-liveness.js";
 import { registerWhiteboardShareFlowHooks } from "./share-hooks.js";
 import { registerWhiteboardImageRoutes } from "./image-routes.js";
-import { registerWhiteboardConfigRoutes } from "./config-routes.js";
 import { resolveExpiry } from "./config-values.js";
 import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
 import { loadCanvasElements } from "./reuse/canvas-loader.js";
 import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
 import { createWhiteboardModuleApi } from "./reuse/module-api.js";
 import {
-    createWhiteboardEnableTest,
-    registerWhiteboardEnableTestRoute,
-} from "./enable-test.js";
-const LIVENESS_TIMEOUT_MS = 5000;
+    registerWhiteboardConfigurationApi,
+    WHITEBOARD_LIVENESS_TIMEOUT_MS,
+} from "./reuse/configuration-api.js";
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 const initializedRuntimeContexts = new WeakSet();
 const MODULE_ID = "nextcloud-whiteboard";
@@ -25,12 +23,10 @@ const WHITEBOARD_STYLESHEETS = [
 
 import {
     buildCognisWhiteboardUrl,
-    createProfileIdentityCapability,
     createProfileStoreCapability,
     registerStoredOrigin,
     resolveParticipantHandles,
     resolveRequesterUsername,
-    resolveStore,
     resolveWhiteboardUserAccess,
 } from "./access.js";
 
@@ -77,13 +73,7 @@ export function registerUi(ctx) {
 
 export function registerApiRoutes(router, ctx) {
     const requireAuth = ctx.getCapability("auth:requireAuth");
-    const dbExecutor = ctx.getCapability("db:executor");
     const profileStore = createProfileStoreCapability(ctx);
-    const profileIdentity = createProfileIdentityCapability(ctx);
-    const log = ctx.getCapability("logging:log");
-    const registerScriptOrigins = ctx.getCapability(
-        "auth:registerPageScriptOrigins",
-    );
     const resolveShareGuestAccess = ctx.getCapability(
         "share:resolveGuestAccess",
     );
@@ -105,31 +95,8 @@ export function registerApiRoutes(router, ctx) {
     const registerNamespace = ctx.getCapability("files:registerNamespace");
     const createNamespaceClient = ctx.getCapability("files:namespace");
 
-    if (!dbExecutor) {
-        const unavailablePayload = (res) =>
-            sendError(
-                res,
-                503,
-                "service_unavailable",
-                "Nextcloud Whiteboard dependencies are unavailable.",
-            );
-
-        router.get(
-            "/api/v1/modules/nextcloud-whiteboard/config",
-            async (_req, res) => {
-                unavailablePayload(res);
-            },
-            { access: { minRole: "admin" }, allowWhenDisabled: true },
-        );
-
-        router.put(
-            "/api/v1/modules/nextcloud-whiteboard/config",
-            async (_req, res) => {
-                unavailablePayload(res);
-            },
-            { access: { minRole: "admin" }, allowWhenDisabled: true },
-        );
-
+    const configurationApi = registerWhiteboardConfigurationApi(router, ctx);
+    if (!configurationApi) {
         router.get(
             "/api/v1/modules/nextcloud-whiteboard/ping",
             async (_req, res) => {
@@ -143,30 +110,10 @@ export function registerApiRoutes(router, ctx) {
         );
         return;
     }
-
-    const store = resolveStore(dbExecutor, log, profileIdentity);
-    const runEnableTest = createWhiteboardEnableTest({
-        store,
-        checkHttpLiveness,
-        timeoutMs: LIVENESS_TIMEOUT_MS,
-    });
-    ctx.getCapability("system:ctx")?.contributePublicCapability?.(
-        "module:nextcloud-whiteboard:enableTest",
-        runEnableTest,
+    const { store, profileIdentity, log } = configurationApi;
+    const registerScriptOrigins = ctx.getCapability(
+        "auth:registerPageScriptOrigins",
     );
-    registerWhiteboardEnableTestRoute({
-        router,
-        runEnableTest,
-        sendError,
-        sendJson,
-    });
-
-    registerWhiteboardConfigRoutes(router, {
-        requireAuth,
-        store,
-        registerScriptOrigins,
-        log,
-    });
 
     const runtimeContext = systemCtx ?? ctx;
     const shouldInitializeRuntime =
@@ -253,7 +200,7 @@ export function registerApiRoutes(router, ctx) {
                 return;
             }
             const liveness = await checkHttpLiveness(config.serverUrl, {
-                timeoutMs: LIVENESS_TIMEOUT_MS,
+                timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
             });
             const websocketAuthToken = store.mintSessionToken(
                 config,

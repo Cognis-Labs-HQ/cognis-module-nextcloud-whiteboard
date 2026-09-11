@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { registerApiRoutes } from "../api/index.js";
+import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../api/reuse/configuration-api.js";
 import { NextcloudWhiteboardStore } from "../api/store.js";
 
 import { issueAccessToken, requireTestAuth } from "./reuse/auth.js";
@@ -186,6 +187,17 @@ test("nextcloud whiteboard config endpoint reads and persists configuration", as
     );
     assert.equal(emptyResponse.json().data.serverUrl, "");
     assert.equal(emptyResponse.json().data.apiKeyConfigured, false);
+});
+
+test("nextcloud whiteboard preflight uses the shared liveness timeout", () => {
+    const apiSource = readFileSync(
+        new URL("../api/index.js", import.meta.url),
+        "utf8",
+    );
+
+    assert.equal(WHITEBOARD_LIVENESS_TIMEOUT_MS, 5000);
+    assert.match(apiSource, /timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS/);
+    assert.doesNotMatch(apiSource, /\bLIVENESS_TIMEOUT_MS\b/);
 });
 
 function decodeJwtPayload(token) {

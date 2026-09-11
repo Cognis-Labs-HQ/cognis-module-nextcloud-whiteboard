@@ -63,7 +63,22 @@ test("browser code obtains reusable host resources through ui:reuse", () => {
         )
         .map((path) => relative(ROOT, path));
 
-    assert.deepEqual(directImports, ["ui/reuse/host-resources.js"]);
+    assert.deepEqual(directImports, []);
+});
+
+test("browser context and styles respect module validation boundaries", () => {
+    const hostResources = readFileSync(
+        resolve(ROOT, "ui/reuse/host-resources.js"),
+        "utf8",
+    );
+    const whiteboardStyles = readFileSync(
+        resolve(ROOT, "ui/styles/whiteboards.css"),
+        "utf8",
+    );
+
+    assert.match(hostResources, /Symbol\.for\("cognis\.uiCtx"\)/);
+    assert.doesNotMatch(hostResources, /\/static\/reuse\//);
+    assert.doesNotMatch(whiteboardStyles, /\.btn-cancel\b/);
 });
 
 test("CSS source contains no comments", () => {

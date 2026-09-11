@@ -31,6 +31,11 @@ test("module manifest requires the Cognis authentication gateway", () => {
     assert.ok(manifest.requiresCapabilities.includes("ui:reuse"));
 });
 
+test("module manifest isolates its disabled lifecycle API", () => {
+    assert.equal(manifest.entrypoints.api, "./api/index.js");
+    assert.equal(manifest.entrypoints.disabledApi, "./api/disabled.js");
+});
+
 test("module manifest excludes changelog entries from packaged hashes", () => {
     assert.equal(
         manifest.files.some(({ path }) => path.startsWith("changelog/")),

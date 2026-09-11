@@ -9,7 +9,10 @@ import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
 import { loadCanvasElements } from "./reuse/canvas-loader.js";
 import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
 import { createWhiteboardModuleApi } from "./reuse/module-api.js";
-import { registerWhiteboardConfigurationApi } from "./reuse/configuration-api.js";
+import {
+    registerWhiteboardConfigurationApi,
+    WHITEBOARD_LIVENESS_TIMEOUT_MS,
+} from "./reuse/configuration-api.js";
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 const initializedRuntimeContexts = new WeakSet();
 const MODULE_ID = "nextcloud-whiteboard";
@@ -197,7 +200,7 @@ export function registerApiRoutes(router, ctx) {
                 return;
             }
             const liveness = await checkHttpLiveness(config.serverUrl, {
-                timeoutMs: LIVENESS_TIMEOUT_MS,
+                timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
             });
             const websocketAuthToken = store.mintSessionToken(
                 config,

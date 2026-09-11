@@ -18,8 +18,12 @@ Automatisierte Tests bestätigen den Manifest-Einstiegspunkt und stellen sicher,
 
 Der Whiteboard-Browser bezieht den UI-Kontext des Hosts nun aus dessen öffentlicher globaler Fähigkeitsregistrierung, statt einen internen Cognis-Pfad zu importieren. Die Schaltfläche zum Leeren verwendet jetzt eine moduleigene Stilklasse. Damit sind beide Prüfverstöße behoben, die die Aktivierung blockiert haben.
 
+## Erreichbarkeitsprüfung vor dem Start verfügbar halten
+
+Die Laufzeitroute für die Vorabprüfung importiert nun ausdrücklich das gemeinsame Zeitlimit für die Erreichbarkeitsprüfung. Dadurch entsteht nach der Auslagerung der Konfigurationsregistrierung kein Referenzfehler mehr. Ein Regressionstest bestätigt, dass die Route das gemeinsame Zeitlimit verwendet.
+
 ## Commits
 
-- [c419a3d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c419a3d499a9ab4668e23225f42587862d6beb45)
+- [b725331](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b725331e48adff3f25bdd40447b22f41a2d2045b)
 
-- [2c6ec86](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/2c6ec86d1e83b4a5157972e4877ed343390ab221)
+- [7e22cba](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7e22cbaf70bd8f0184b000e757ac1c268059645f)

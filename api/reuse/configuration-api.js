@@ -7,7 +7,7 @@ import {
 import { checkHttpLiveness } from "./http-liveness.js";
 import { sendError, sendJson } from "./http.js";
 
-const LIVENESS_TIMEOUT_MS = 5000;
+export const WHITEBOARD_LIVENESS_TIMEOUT_MS = 5000;
 
 export function registerWhiteboardConfigurationApi(router, ctx) {
     const dbExecutor = ctx.getCapability("db:executor");
@@ -37,7 +37,7 @@ export function registerWhiteboardConfigurationApi(router, ctx) {
     const runEnableTest = createWhiteboardEnableTest({
         store,
         checkHttpLiveness,
-        timeoutMs: LIVENESS_TIMEOUT_MS,
+        timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
     });
     ctx.getCapability("system:ctx")?.contributePublicCapability?.(
         "module:nextcloud-whiteboard:enableTest",

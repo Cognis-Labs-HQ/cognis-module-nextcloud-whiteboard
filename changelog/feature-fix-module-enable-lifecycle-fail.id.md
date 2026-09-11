@@ -18,8 +18,12 @@ Cakupan otomatis mengonfirmasi titik masuk manifes dan memastikan pendaftaran sa
 
 Browser Whiteboard kini memperoleh konteks UI host dari registri kapabilitas global publiknya, bukan dengan mengimpor jalur internal Cognis. Kontrol untuk membersihkan papan kini menggunakan kelas gaya milik modul sehingga kedua pelanggaran validasi yang menghalangi aktivasi telah dihapus.
 
+## Menjaga pemeriksaan keterjangkauan pramulai tetap tersedia
+
+Rute pramulai waktu proses kini mengimpor batas waktu keterjangkauan bersama secara eksplisit sehingga tidak terjadi galat referensi setelah pendaftaran konfigurasi dipisahkan. Cakupan regresi memastikan rute menggunakan batas waktu bersama tersebut.
+
 ## Komit
 
-- [c419a3d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c419a3d499a9ab4668e23225f42587862d6beb45)
+- [b725331](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b725331e48adff3f25bdd40447b22f41a2d2045b)
 
-- [2c6ec86](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/2c6ec86d1e83b4a5157972e4877ed343390ab221)
+- [7e22cba](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7e22cbaf70bd8f0184b000e757ac1c268059645f)

@@ -1,6 +1,6 @@
 # Zuverlässiger Aktivierungslebenszyklus für Whiteboard
 
-**Feature-Zweig:** feature-align-module-enable-lifecycle
+**Feature-Zweig:** feature-fix-module-enable-lifecycle-fail
 
 ## Konfiguration vor der Aktivierung isolieren
 

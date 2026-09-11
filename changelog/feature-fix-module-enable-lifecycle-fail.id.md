@@ -1,6 +1,6 @@
 # Siklus Aktivasi Whiteboard yang Andal
 
-**Cabang Fitur:** feature-align-module-enable-lifecycle
+**Cabang Fitur:** feature-fix-module-enable-lifecycle-fail
 
 ## Mengisolasi konfigurasi praaktivasi
 

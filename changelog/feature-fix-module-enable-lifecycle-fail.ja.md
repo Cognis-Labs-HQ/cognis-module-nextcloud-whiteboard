@@ -1,6 +1,6 @@
 # 安定したホワイトボード有効化ライフサイクル
 
-**機能ブランチ:** feature-align-module-enable-lifecycle
+**機能ブランチ:** feature-fix-module-enable-lifecycle-fail
 
 ## 有効化前の設定処理を分離
 

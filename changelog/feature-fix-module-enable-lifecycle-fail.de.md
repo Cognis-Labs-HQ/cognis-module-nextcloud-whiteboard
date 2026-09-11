@@ -14,6 +14,12 @@ Die aktivierten und deaktivierten API-Einstiegspunkte verwenden dieselbe Konfigu
 
 Automatisierte Tests bestätigen den Manifest-Einstiegspunkt und stellen sicher, dass die Registrierung im deaktivierten Zustand nur Routen vor der Aktivierung bereitstellt, ohne Laufzeitfähigkeiten für Dateien oder Freigaben anzufordern.
 
+## Verschärfte Modulgrenzenprüfung bestehen
+
+Der Whiteboard-Browser bezieht den UI-Kontext des Hosts nun aus dessen öffentlicher globaler Fähigkeitsregistrierung, statt einen internen Cognis-Pfad zu importieren. Die Schaltfläche zum Leeren verwendet jetzt eine moduleigene Stilklasse. Damit sind beide Prüfverstöße behoben, die die Aktivierung blockiert haben.
+
 ## Commits
 
-- [8d61422](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/8d61422c80b020af8d4734b7bc52e213b83da5d0)
+- [c419a3d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c419a3d499a9ab4668e23225f42587862d6beb45)
+
+- [2c6ec86](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/2c6ec86d1e83b4a5157972e4877ed343390ab221)

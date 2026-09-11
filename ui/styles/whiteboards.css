@@ -538,7 +538,7 @@ body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
     min-width: 4.75rem;
 }
 
-.whiteboard-canvas-wrap .whiteboard-tool.btn-cancel {
+.whiteboard-canvas-wrap .whiteboard-tool--cancel {
     text-decoration: none;
 }
 

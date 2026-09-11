@@ -14,6 +14,12 @@ Nextcloud Whiteboard は、無効状態で設定ルートと有効化テスト�
 
 自動テストでマニフェストのエントリーポイントを確認し、無効時の登録が実行時のファイル機能や共有機能を要求せず、有効化前のルートだけを公開することを保証します。
 
+## 厳格化されたモジュール境界検証に対応
+
+Whiteboard のブラウザーコードは、Cognis の内部パスをインポートせず、公開グローバル機能レジストリからホストの UI コンテキストを取得するようになりました。ボード消去コントロールもモジュール所有のスタイルクラスを使用し、有効化を妨げていた 2 件の検証違反を解消しました。
+
 ## コミット
 
-- [8d61422](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/8d61422c80b020af8d4734b7bc52e213b83da5d0)
+- [c419a3d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c419a3d499a9ab4668e23225f42587862d6beb45)
+
+- [2c6ec86](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/2c6ec86d1e83b4a5157972e4877ed343390ab221)

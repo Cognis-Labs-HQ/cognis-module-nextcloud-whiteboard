@@ -14,6 +14,12 @@ Titik masuk API aktif dan nonaktif menggunakan lapisan pendaftaran konfigurasi y
 
 Cakupan otomatis mengonfirmasi titik masuk manifes dan memastikan pendaftaran saat nonaktif hanya membuka rute praaktivasi tanpa meminta kapabilitas berkas atau berbagi waktu proses.
 
+## Lulus validasi batas modul yang diperketat
+
+Browser Whiteboard kini memperoleh konteks UI host dari registri kapabilitas global publiknya, bukan dengan mengimpor jalur internal Cognis. Kontrol untuk membersihkan papan kini menggunakan kelas gaya milik modul sehingga kedua pelanggaran validasi yang menghalangi aktivasi telah dihapus.
+
 ## Komit
 
-- [8d61422](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/8d61422c80b020af8d4734b7bc52e213b83da5d0)
+- [c419a3d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c419a3d499a9ab4668e23225f42587862d6beb45)
+
+- [2c6ec86](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/2c6ec86d1e83b4a5157972e4877ed343390ab221)

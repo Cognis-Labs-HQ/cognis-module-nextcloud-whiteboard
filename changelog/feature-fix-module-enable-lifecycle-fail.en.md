@@ -14,6 +14,12 @@ Enabled and disabled API entrypoints use the same configuration registration lay
 
 Automated coverage confirms the manifest entrypoint and ensures disabled registration exposes only pre-enablement routes without requesting runtime file or sharing capabilities.
 
+## Pass tightened module boundary validation
+
+The Whiteboard browser obtains the host UI context from its public global capability registry instead of importing a Cognis internal path. The clear-board control now uses a module-owned style class, removing both validation violations that blocked enablement.
+
 ## Commits
 
-- [8d61422](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/8d61422c80b020af8d4734b7bc52e213b83da5d0)
+- [c419a3d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c419a3d499a9ab4668e23225f42587862d6beb45)
+
+- [2c6ec86](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/2c6ec86d1e83b4a5157972e4877ed343390ab221)

@@ -891,6 +891,23 @@ test("previous whiteboards scroll within the start panel", async () => {
     assert.match(boardList ?? "", /scrollbar-gutter:\s*stable/);
 });
 
+test("previous Whiteboards render without a redundant history popup", async () => {
+    const [appSource, renderSource, toolbarSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/app/render.js",
+            "../ui/app/canvas-toolbar.js",
+        ].map((relativePath) =>
+            readFile(new URL(relativePath, import.meta.url), "utf8"),
+        ),
+    );
+
+    assert.match(renderSource, /class="whiteboard-overlay-board-list"/);
+    assert.doesNotMatch(renderSource, /whiteboard-(?:start-)?history/);
+    assert.doesNotMatch(appSource, /openHistoryPopup|history-popup\.js/);
+    assert.doesNotMatch(toolbarSource, /\bonHistory\b|whiteboard-history/);
+});
+
 test("canvas selection clicks do not report content changes", async () => {
     const source = await readFile(
         new URL("../ui/whiteboard/canvas.js", import.meta.url),

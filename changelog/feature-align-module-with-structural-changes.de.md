@@ -46,6 +46,10 @@ Die interne Modul-API, der Aktivierungstest, das Öffnen von Fenstern, die Einbe
 
 Die Liste der vorherigen Whiteboards belegt jetzt die verbleibende Zeile des Startpanels und scrollt bei jeder Listengröße vertikal. Minimale Grid-Größen und abgeschnittener Panel-Überlauf halten Boardzeilen auch in niedrigen Komponentenfenstern innerhalb des abgerundeten Panels; ein stabiler Scrollleistenbereich verhindert horizontale Layoutverschiebungen.
 
+## Redundantes Verlaufs-Popup entfernen
+
+Das Startpanel zeigt bereits jedes vorherige Whiteboard als direkt auswählbare Zeile an. Daher wurden die doppelte Schaltfläche „Whiteboard-Verlauf“ und ihr nicht interaktives Popup entfernt. Auch die Werkzeugleiste der aktiven Arbeitsfläche bietet dieses Popup ohne Ziel nicht mehr an; dadurch entfallen der Fehler der undefinierten Popup-Capability sowie ungenutzter Code, Texte, Styles und Symbole.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -57,3 +61,4 @@ Die Liste der vorherigen Whiteboards belegt jetzt die verbleibende Zeile des Sta
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
+- [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)

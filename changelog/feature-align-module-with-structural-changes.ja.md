@@ -46,6 +46,10 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 
 以前の Whiteboard 一覧が開始パネルの残りの行を使用し、一覧の件数にかかわらず縦方向にスクロールするようになりました。Grid の最小サイズとパネルのオーバーフロー制限により、低いコンポーネントウィンドウでもボード行が角丸パネル内に収まり、安定したスクロールバー領域によって横方向のレイアウト移動も防ぎます。
 
+## 重複する履歴ポップアップを削除
+
+開始パネルには以前の Whiteboard が直接選択できる行としてすでにすべて表示されるため、重複する Whiteboard 履歴ボタンと操作できないポップアップを削除しました。アクティブな Canvas のツールバーからも同じ行き止まりのポップアップを取り除き、未定義の Popup Capability エラーと未使用のコード、文字列、スタイル、アイコンを解消しました。
+
 ## コミット
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -57,3 +61,4 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
+- [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)

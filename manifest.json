@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.133",
+    "version": "2.3.134",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -279,11 +279,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "acb924a3c04219976946195e7bdc01a0048658827b8ad26a7f331103ce71f0ee"
+            "sha256": "96dc59c13a2fb86cc9b4641d6b685813f5270456768d89b9dbc40d7d014cfc13"
         },
         {
             "path": "package.json",
-            "sha256": "78e2ea2267ac05938b8242abad8dea45d0cf0a32bc991c24ff9c8460b428ad0d"
+            "sha256": "5f5da314d666346f493bc651adeb28408a1c813136635f501999d180627ec779"
         },
         {
             "path": "routes.json",
@@ -387,7 +387,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "33ccba9c37903f995ed3ff5f6b0eb912386e7c115e859dd8d1c9373696a274f6"
+            "sha256": "594127452a691436df094809477a32462b9761d64f987c2f61e5bcdbbc1f4d54"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -407,7 +407,7 @@
         },
         {
             "path": "ui/app/canvas-toolbar.js",
-            "sha256": "22e304e4a10749110d1388f19243533da716c0eb39763758c0018029c3e1a2fc"
+            "sha256": "3997cc6c9a222feb30dcb169e08359541139d5a77fec3f5e136e9ba64eae9361"
         },
         {
             "path": "ui/app/clear-canvas.js",
@@ -418,12 +418,8 @@
             "sha256": "7d8c78ecb23c65e86a2303dc654accc4dd431f78d1054a8888d7f46c982ccf68"
         },
         {
-            "path": "ui/app/history-popup.js",
-            "sha256": "fa48bc9ba84e91eea4cdfcc5275c3bcde0a227747326699225674ac461e8cd90"
-        },
-        {
             "path": "ui/app/index.js",
-            "sha256": "e5854ac3275995abae79a0b2bc16a82e58243de82a5163b5b60d7f8c93ea38af"
+            "sha256": "79523a9c72d8bf18be4e79fac0d53c68a994d41bc0951dd6eda89f03143a49f8"
         },
         {
             "path": "ui/app/overlay.js",
@@ -443,7 +439,7 @@
         },
         {
             "path": "ui/app/render.js",
-            "sha256": "90d6363defc23262f3367c6f959b031e5835245904c354216ba35cb6f3d6b3c0"
+            "sha256": "ad46e07fa7296483b2e912c9e346dc6df953c55259eabc293de6b590b0dd4f90"
         },
         {
             "path": "ui/app/reuse/scene-updates.js",
@@ -467,19 +463,19 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "98f163dfec26335e459706ac0b5f6ac0c917e91edffc8057e9c973aff35cf31f"
+            "sha256": "9ed6cbb7a55fee6aacfff8b55c8e74fe37ff1ba2d666147b87aaaed9f96d8cf8"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "6dd37cdeb9776df342f9451d6d1d4ede31f24f8ab2fb8e219c5e85e15fd9fb91"
+            "sha256": "415b163d8f0613d3eee45995f81241977f65c827efaa4fb19cac734aefdb19cb"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "bf7bb03aeba136167d31cd41387a49592f51caf91d3dd70d34a67e50aae535bd"
+            "sha256": "e6673fae11effe5b97e02576fe252eeb7748c4f352ea6cc3679ff5b7cc194b92"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "1f84cbe02ec85a8015a5ad26049e47a7c334e6210eb65a3e24830d50e7d28553"
+            "sha256": "a3016fb9fa7ef9f08dea961385c2e3a57a64b86fb21b4f648890601ab76b53ac"
         },
         {
             "path": "ui/navbar.js",
@@ -524,14 +520,6 @@
         {
             "path": "ui/reuse/assets/eraser-light.svg",
             "sha256": "7be23c84fcf6cfacdc8501fedcda23110dc1bffa7386a62313dd9d1a525b7528"
-        },
-        {
-            "path": "ui/reuse/assets/history-dark.svg",
-            "sha256": "4460af01e6417c7bd7837b94f8e3de2c6866d7ccb68b6c3e1502e55ef29a9a89"
-        },
-        {
-            "path": "ui/reuse/assets/history-light.svg",
-            "sha256": "d8f6f111e24140b944435e9d4e47de468404f4b32e32fae3c03cb996d2686ee0"
         },
         {
             "path": "ui/reuse/assets/line-dark.svg",
@@ -623,7 +611,7 @@
         },
         {
             "path": "ui/styles/whiteboards.css",
-            "sha256": "d351e60f01b60e7d89d25ed58122cef4dff7b331c75aed36f8feb4d123f43e74"
+            "sha256": "43c073d2bcdb917bf4b5e397cf9e017fb21f5823ff0b5028600c312634dc5688"
         },
         {
             "path": "ui/whiteboard/canvas-events.js",

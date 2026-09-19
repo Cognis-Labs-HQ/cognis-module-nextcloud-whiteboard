@@ -42,6 +42,10 @@ Jitsi Meet dapat memuat pabrik kanvas Whiteboard secara andal setelah backend me
 
 API modul internal, pengujian pengaktifan, pembukaan jendela, penyematan, verifikasi papan, keanggotaan, penghapusan, dan gateway peramban kini semuanya memakai ruang nama kapabilitas `whiteboard:`. ID modul, jalur rute, ID hook alur, dan nama perintah CLI tetap `nextcloud-whiteboard` karena semuanya mengidentifikasi modul, bukan kontrak kapabilitasnya.
 
+## Pertahankan Whiteboard sebelumnya di dalam panel
+
+Daftar Whiteboard sebelumnya kini menempati baris panel awal yang tersisa dan menggulir secara vertikal untuk setiap ukuran daftar. Ukuran minimum grid dan luapan panel yang dipotong menjaga baris papan di dalam panel membulat bahkan pada jendela komponen yang pendek, sedangkan ruang bilah gulir yang stabil mencegah pergeseran tata letak horizontal.
+
 ## Komit
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -52,3 +56,4 @@ API modul internal, pengujian pengaktifan, pembukaan jendela, penyematan, verifi
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
+- [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)

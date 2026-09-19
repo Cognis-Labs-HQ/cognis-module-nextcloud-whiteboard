@@ -42,6 +42,10 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 
 内部モジュール API、有効化テスト、ウィンドウ起動、埋め込み、ボード検証、メンバーシップ、削除、ブラウザーゲートウェイは、すべて `whiteboard:` Capability 名前空間を使用するようになりました。モジュール ID、ルートパス、フローフック ID、CLI コマンド名は Capability 契約ではなくモジュール自体を識別するため、`nextcloud-whiteboard` のままです。
 
+## 以前の Whiteboard をパネル内に保持
+
+以前の Whiteboard 一覧が開始パネルの残りの行を使用し、一覧の件数にかかわらず縦方向にスクロールするようになりました。Grid の最小サイズとパネルのオーバーフロー制限により、低いコンポーネントウィンドウでもボード行が角丸パネル内に収まり、安定したスクロールバー領域によって横方向のレイアウト移動も防ぎます。
+
 ## コミット
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -52,3 +56,4 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
+- [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)

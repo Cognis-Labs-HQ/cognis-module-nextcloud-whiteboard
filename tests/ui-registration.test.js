@@ -869,6 +869,28 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     );
 });
 
+test("previous whiteboards scroll within the start panel", async () => {
+    const stylesSource = await readFile(
+        new URL("../ui/styles/whiteboards.css", import.meta.url),
+        "utf8",
+    );
+    const panel = stylesSource.match(
+        /\.whiteboard-canvas-wrap \.whiteboard-start-panel\s*\{([^}]*)\}/,
+    )?.[1];
+    const boardList = stylesSource.match(
+        /\.whiteboard-canvas-wrap \.whiteboard-overlay-board-list\s*\{([^}]*)\}/,
+    )?.[1];
+
+    assert.match(
+        panel ?? "",
+        /grid-template-rows:\s*auto auto minmax\(0, 1fr\)/,
+    );
+    assert.match(panel ?? "", /overflow:\s*hidden/);
+    assert.match(boardList ?? "", /min-height:\s*0/);
+    assert.match(boardList ?? "", /overflow-y:\s*auto/);
+    assert.match(boardList ?? "", /scrollbar-gutter:\s*stable/);
+});
+
 test("canvas selection clicks do not report content changes", async () => {
     const source = await readFile(
         new URL("../ui/whiteboard/canvas.js", import.meta.url),

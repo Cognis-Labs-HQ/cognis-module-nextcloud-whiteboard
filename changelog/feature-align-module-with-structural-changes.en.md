@@ -42,6 +42,10 @@ Jitsi Meet can reliably load the Whiteboard canvas factory after its backend det
 
 The internal module API, enablement test, window spawning, embedding, board verification, membership, deletion, and browser gateway now all use the `whiteboard:` capability namespace. Module IDs, route paths, flow-hook IDs, and CLI command names remain `nextcloud-whiteboard` because they identify the module rather than its capability contract.
 
+## Keep previous Whiteboards inside the panel
+
+The previous-Whiteboards list now owns the remaining start-panel row and scrolls vertically at every list size. Minimum grid sizing and clipped panel overflow keep board rows inside the rounded panel even in short component windows, while a stable scrollbar gutter prevents horizontal layout shifts.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -52,3 +56,4 @@ The internal module API, enablement test, window spawning, embedding, board veri
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
+- [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)

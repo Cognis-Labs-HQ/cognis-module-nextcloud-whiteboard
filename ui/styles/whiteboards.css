@@ -467,8 +467,11 @@ body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
     border-radius: 1rem;
     display: grid;
     gap: 1rem;
+    grid-template-rows: auto auto minmax(0, 1fr);
     max-height: min(32rem, 80%);
     max-width: min(42rem, 90%);
+    min-height: 0;
+    overflow: hidden;
     padding: 1rem;
     width: 100%;
 }
@@ -494,14 +497,10 @@ body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
     display: grid;
     gap: 0.5rem;
     max-height: 14rem;
-    padding-top: 0.75rem;
-}
-
-.whiteboard-canvas-wrap
-    .whiteboard-overlay-board-list[data-count]:not([data-count="0"]):not(
-        [data-count="1"]
-    ):not([data-count="2"]):not([data-count="3"]):not([data-count="4"]) {
+    min-height: 0;
     overflow-y: auto;
+    padding-top: 0.75rem;
+    scrollbar-gutter: stable;
 }
 
 .whiteboard-canvas-wrap .whiteboard-overlay-board {

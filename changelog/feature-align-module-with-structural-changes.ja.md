@@ -6,13 +6,13 @@
 
 Nextcloud Whiteboard は、公開ケイパビリティと保護された共有フロー拡張を、スコープ化されたモジュールコンテキストを通じて登録するようになりました。これにより Cognis は提供機能の所有権を適用し、モジュールの無効化またはアンインストール時にすべての登録を確実に削除できます。
 
-## モジュール名前空間でケイパビリティを公開
+## 安定した Whiteboard ゲートウェイ契約を公開
 
-モジュール所有のケイパビリティ識別子はすべて `nextcloud-whiteboard:` 接頭辞を使用するようになりました。古いブートストラップ報告フックとシステムコンテキストへの直接アクセスを削除し、モジュール間連携を現在の外部モジュール契約に適合させました。
+サーバー統合では、`whiteboard:fetchBoardData`、`whiteboard:membership`、`whiteboard:deleteCanvas` を含む既存の `whiteboard:` Capability 名前空間を引き続き使用します。これにより、文書化されたモジュール API と一致し、Jitsi Meet のマッピング検証とメンバーシップ同期が復元されます。
 
-## 非特権のまま維持
+## 名前空間をまたぐ公開を明示的に宣言
 
-このモジュールが拡張する共有フローはセキュリティ上重要な Cognis フローではなく、公開するすべてのサーバー Capability は自身の `nextcloud-whiteboard:` 名前空間を使用します。そのためマニフェストは非特権のままとし、安定したブラウザー側の `whiteboard:uiGateway` 契約は専用 UI Provider を通じて Jitsi Meet から引き続き利用できます。
+Cognis では、モジュール ID の名前空間外に公開するモジュールに特権が必要になりました。そのためマニフェストは、既存の共有 `whiteboard:` ゲートウェイ契約を維持する目的に限定して特権を要求します。Capability の登録は引き続きスコープ化されたモジュールコンテキストを通じて所有者追跡されます。
 
 ## 有効化時の重複登録を回避
 
@@ -46,3 +46,4 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 - [b622ea5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b622ea5b9fcc7b978a1287b68c9e96aeff3b1b9d)
 - [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
+- [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)

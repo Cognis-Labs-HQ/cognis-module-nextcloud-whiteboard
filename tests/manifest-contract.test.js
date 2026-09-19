@@ -8,20 +8,20 @@ const manifest = JSON.parse(
 
 test("module manifest declares its supplied whiteboard capabilities", () => {
     assert.deepEqual(manifest.capabilities, [
-        "nextcloud-whiteboard:collaboration",
-        "nextcloud-whiteboard:access-control",
-        "nextcloud-whiteboard:getEmbedUrl",
-        "nextcloud-whiteboard:fetchBoardData",
-        "nextcloud-whiteboard:membership",
-        "nextcloud-whiteboard:deleteCanvas",
+        "whiteboard:collaboration",
+        "whiteboard:access-control",
+        "whiteboard:getEmbedUrl",
+        "whiteboard:fetchBoardData",
+        "whiteboard:membership",
+        "whiteboard:deleteCanvas",
     ]);
 });
 
-test("module remains unprivileged with module-owned server capabilities", () => {
-    assert.equal(manifest.privileged, undefined);
+test("module declares privilege for the stable Whiteboard gateway namespace", () => {
+    assert.equal(manifest.privileged, true);
     assert.ok(
         manifest.capabilities.every((capability) =>
-            capability.startsWith(`${manifest.id}:`),
+            capability.startsWith("whiteboard:"),
         ),
     );
 });

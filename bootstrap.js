@@ -88,16 +88,7 @@ export function bootstrapModule(ctx) {
         "nextcloud-whiteboard:spawnWhiteboardWindow",
         spawnWhiteboardWindow,
     );
-    ctx.contributePublicCapability(
-        "nextcloud-whiteboard:getEmbedUrl",
-        getEmbedUrl,
-    );
-    ctx.contributePublicCapability(
-        "nextcloud-whiteboard:fetchBoardData",
-        fetchBoardData,
-    );
-    ctx.contributePublicCapability(
-        "nextcloud-whiteboard:membership",
-        membership,
-    );
+    ctx.contributePublicCapability("whiteboard:getEmbedUrl", getEmbedUrl);
+    ctx.contributePublicCapability("whiteboard:fetchBoardData", fetchBoardData);
+    ctx.contributePublicCapability("whiteboard:membership", membership);
 }

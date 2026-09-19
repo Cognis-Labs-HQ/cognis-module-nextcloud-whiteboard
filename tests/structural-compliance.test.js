@@ -96,11 +96,11 @@ test("manifest dependencies use UUID references", () => {
     assert.ok(manifest.requires.every((reference) => uuid.test(reference)));
 });
 
-test("module-owned capabilities use the module namespace", () => {
+test("public capabilities use the declared Whiteboard gateway namespace", () => {
     const manifest = JSON.parse(readFileSync(resolve(ROOT, "manifest.json")));
     assert.ok(
         manifest.capabilities.every((capability) =>
-            capability.startsWith(`${manifest.id}:`),
+            capability.startsWith("whiteboard:"),
         ),
     );
     for (const path of ["bootstrap.js", ...sourceFiles()]) {
@@ -108,9 +108,14 @@ test("module-owned capabilities use the module namespace", () => {
         for (const match of source.matchAll(
             /contributePublicCapability\(\s*["']([^"']+)/g,
         )) {
-            assert.match(match[1], /^nextcloud-whiteboard:/, path);
+            assert.match(
+                match[1],
+                /^(?:nextcloud-whiteboard|whiteboard):/,
+                path,
+            );
         }
     }
+    assert.equal(manifest.privileged, true);
 });
 
 test("external module metadata and declared files are consistent", () => {

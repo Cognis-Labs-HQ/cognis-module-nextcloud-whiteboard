@@ -6,13 +6,13 @@
 
 Nextcloud Whiteboard registriert öffentliche Fähigkeiten und geschützte Erweiterungen der Freigabeabläufe jetzt über seinen bereichsgebundenen Modulkontext. Cognis kann dadurch die Eigentümerschaft der Einträge durchsetzen und alle Registrierungen beim Deaktivieren oder Deinstallieren zuverlässig entfernen.
 
-## Fähigkeiten im Modulnamensraum veröffentlichen
+## Stabilen Whiteboard-Gateway-Vertrag veröffentlichen
 
-Alle moduleigenen Fähigkeitskennungen verwenden jetzt das Präfix `nextcloud-whiteboard:`. Der veraltete Bootstrap-Berichtshook und der direkte Zugriff auf den Systemkontext wurden entfernt, sodass die modulübergreifende Zusammenarbeit dem aktuellen Vertrag für externe Module entspricht.
+Serverintegrationen verwenden weiterhin den etablierten Capability-Namensraum `whiteboard:`, einschließlich `whiteboard:fetchBoardData`, `whiteboard:membership` und `whiteboard:deleteCanvas`. Dies entspricht der dokumentierten Modul-API und stellt die Zuordnungsprüfung sowie die Mitgliedschaftssynchronisierung von Jitsi Meet wieder her.
 
-## Unprivilegiert bleiben
+## Namensraumübergreifende Veröffentlichung ausdrücklich deklarieren
 
-Die von diesem Modul erweiterten Freigabeabläufe sind keine sicherheitskritischen Cognis-Abläufe, und jede veröffentlichte Server-Capability verwendet den eigenen Namensraum `nextcloud-whiteboard:`. Das Manifest bleibt daher unprivilegiert, während der stabile browserseitige Vertrag `whiteboard:uiGateway` Jitsi Meet weiterhin über den dedizierten UI-Provider zur Verfügung steht.
+Cognis verlangt jetzt Privilegien, wenn ein Modul außerhalb seines Modul-ID-Namensraums veröffentlicht. Das Manifest fordert daher gezielt Privilegien an, um den etablierten gemeinsamen Gateway-Vertrag `whiteboard:` zu bewahren; die Capability-Registrierung bleibt über den bereichsgebundenen Modulkontext eigentümergebunden.
 
 ## Doppelte Registrierungen bei der Aktivierung vermeiden
 
@@ -46,3 +46,4 @@ Jitsi Meet kann die Whiteboard-Canvas-Factory zuverlässig laden, nachdem das Ba
 - [b622ea5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b622ea5b9fcc7b978a1287b68c9e96aeff3b1b9d)
 - [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
+- [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)

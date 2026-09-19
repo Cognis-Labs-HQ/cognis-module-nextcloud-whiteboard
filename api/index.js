@@ -170,7 +170,7 @@ export function registerApiRoutes(router, ctx) {
     });
     ctx.contributePublicCapability?.("nextcloud-whiteboard:api", moduleApi);
     ctx.contributePublicCapability?.(
-        "nextcloud-whiteboard:deleteCanvas",
+        "whiteboard:deleteCanvas",
         moduleApi.deleteCanvas,
     );
 

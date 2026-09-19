@@ -6,13 +6,13 @@
 
 Nextcloud Whiteboard now registers public capabilities and protected sharing-flow extensions through its scoped module context. Cognis can therefore enforce contribution ownership and remove every registration reliably when the module is disabled or uninstalled.
 
-## Publish capabilities in the module namespace
+## Publish the stable Whiteboard gateway contract
 
-All module-owned capability identifiers now use the `nextcloud-whiteboard:` prefix. The obsolete bootstrap reporting hook and direct access to the system context were removed, keeping cross-module cooperation within the current external-module contract.
+Server integrations now continue to use the established `whiteboard:` capability namespace, including `whiteboard:fetchBoardData`, `whiteboard:membership`, and `whiteboard:deleteCanvas`. This matches the documented module API and restores Jitsi Meet mapping verification and membership synchronization.
 
-## Remain unprivileged
+## Declare cross-namespace publication explicitly
 
-The sharing flows extended by this module are not security-sensitive Cognis flows, and every server capability it publishes uses its own `nextcloud-whiteboard:` namespace. The manifest therefore remains unprivileged, while the stable browser-side `whiteboard:uiGateway` contract stays available to Jitsi Meet through the dedicated UI provider.
+Cognis now requires privilege when a module publishes outside its module-ID namespace. The manifest therefore requests privilege specifically to preserve the established shared `whiteboard:` gateway contract; capability registration remains owner-tracked through the scoped module context.
 
 ## Avoid duplicate registrations during enablement
 
@@ -46,3 +46,4 @@ Jitsi Meet can reliably load the Whiteboard canvas factory after its backend det
 - [b622ea5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b622ea5b9fcc7b978a1287b68c9e96aeff3b1b9d)
 - [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
+- [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)

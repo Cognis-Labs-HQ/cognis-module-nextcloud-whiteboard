@@ -50,6 +50,10 @@ Die Liste der vorherigen Whiteboards belegt jetzt die verbleibende Zeile des Sta
 
 Das Startpanel zeigt bereits jedes vorherige Whiteboard als direkt auswählbare Zeile an. Daher wurden die doppelte Schaltfläche „Whiteboard-Verlauf“ und ihr nicht interaktives Popup entfernt. Auch die Werkzeugleiste der aktiven Arbeitsfläche bietet dieses Popup ohne Ziel nicht mehr an; dadurch entfallen der Fehler der undefinierten Popup-Capability sowie ungenutzter Code, Texte, Styles und Symbole.
 
+## Jitsi-Whiteboard-Prüfung wiederherstellen
+
+Das Modul veröffentlicht die deklarierten Capabilities `whiteboard:fetchBoardData` und `whiteboard:membership` nun direkt aus seiner initialisierten API-Instanz. Das Manifest deklariert außerdem die Beiträge für den Aktivierungstest und das Öffnen von Fenstern. Das Modul veröffentlicht oder sucht nicht mehr nach der nicht deklarierten Implementierungsfassade `whiteboard:api`, die den Bootstrap-Vorgang unterbrechen konnte, bevor Jitsi Meet den Prüfungsanbieter erkennen konnte.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -61,4 +65,5 @@ Das Startpanel zeigt bereits jedes vorherige Whiteboard als direkt auswählbare 
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
+- [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)

@@ -50,6 +50,10 @@ The previous-Whiteboards list now owns the remaining start-panel row and scrolls
 
 The start panel already presents every previous Whiteboard as a directly selectable row, so the duplicate Whiteboard History button and its non-interactive popup have been removed. The active-canvas toolbar no longer exposes the same dead-end popup, eliminating the undefined popup capability error and its unused code, strings, styles, and icons.
 
+## Restore Jitsi Whiteboard verification
+
+The module now publishes the declared `whiteboard:fetchBoardData` and `whiteboard:membership` capabilities directly from its initialized API instance. The manifest also declares its enablement-test and window-spawning contributions. The module no longer publishes or looks up the undeclared `whiteboard:api` implementation facade, which could interrupt bootstrap before Jitsi Meet could discover the verification provider.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -61,4 +65,5 @@ The start panel already presents every previous Whiteboard as a directly selecta
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
+- [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)

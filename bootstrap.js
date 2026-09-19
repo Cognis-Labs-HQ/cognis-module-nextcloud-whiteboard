@@ -33,15 +33,10 @@ export async function uninstallModule(ctx, { deleteContent }) {
 
 export function bootstrapModule(ctx) {
     registerUi(ctx);
-    registerApiRoutes(ctx.router, ctx);
+    const moduleApi = registerApiRoutes(ctx.router, ctx);
+    if (!moduleApi) return;
 
     const spawnWhiteboardWindow = async (options = {}) => {
-        const moduleApi = ctx.getCapability("whiteboard:api");
-        if (!moduleApi) {
-            throw new Error(
-                "Nextcloud Whiteboard API capability is unavailable.",
-            );
-        }
         return moduleApi.spawnWhiteboardWindow(options);
     };
 
@@ -54,32 +49,14 @@ export function bootstrapModule(ctx) {
     };
 
     const fetchBoardData = async (whiteboardId) => {
-        const moduleApi = ctx.getCapability("whiteboard:api");
-        if (!moduleApi) {
-            throw new Error(
-                "Nextcloud Whiteboard API capability is unavailable.",
-            );
-        }
         return moduleApi.fetchBoardData(whiteboardId);
     };
 
     const membership = {
         async add(input) {
-            const moduleApi = ctx.getCapability("whiteboard:api");
-            if (!moduleApi?.membership) {
-                throw new Error(
-                    "Nextcloud Whiteboard membership capability is unavailable.",
-                );
-            }
             return moduleApi.membership.add(input);
         },
         async remove(input) {
-            const moduleApi = ctx.getCapability("whiteboard:api");
-            if (!moduleApi?.membership) {
-                throw new Error(
-                    "Nextcloud Whiteboard membership capability is unavailable.",
-                );
-            }
             return moduleApi.membership.remove(input);
         },
     };

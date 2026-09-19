@@ -122,6 +122,27 @@ function createRouterCapture() {
     };
 }
 
+test("API registration returns its implementation without publishing a private facade", () => {
+    const contributions = [];
+    const moduleApi = registerApiRoutes(createRouterCapture(), {
+        contributePublicCapability(capabilityId, value) {
+            contributions.push({ capabilityId, value });
+        },
+        getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
+            if (key === "db:executor") return createMemoryDb();
+            if (key === "social:profile:identity") return testProfileIdentity;
+            return undefined;
+        },
+    });
+
+    assert.equal(typeof moduleApi.fetchBoardData, "function");
+    assert.deepEqual(
+        contributions.map(({ capabilityId }) => capabilityId),
+        ["whiteboard:enableTest", "whiteboard:deleteCanvas"],
+    );
+});
+
 test("nextcloud whiteboard config endpoint reads and persists configuration", async () => {
     const db = createMemoryDb();
     const router = createRouterCapture();

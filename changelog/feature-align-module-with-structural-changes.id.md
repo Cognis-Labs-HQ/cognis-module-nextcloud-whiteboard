@@ -50,6 +50,10 @@ Daftar Whiteboard sebelumnya kini menempati baris panel awal yang tersisa dan me
 
 Panel awal sudah menampilkan setiap Whiteboard sebelumnya sebagai baris yang dapat dipilih langsung, sehingga tombol Riwayat Whiteboard duplikat dan popup noninteraktifnya telah dihapus. Bilah alat kanvas aktif juga tidak lagi menyediakan popup buntu yang sama, sehingga galat kapabilitas popup yang tidak terdefinisi beserta kode, teks, gaya, dan ikon yang tidak digunakan turut dihilangkan.
 
+## Pulihkan verifikasi Whiteboard Jitsi
+
+Modul kini menerbitkan kapabilitas `whiteboard:fetchBoardData` dan `whiteboard:membership` yang dideklarasikan langsung dari instans API yang telah diinisialisasi. Manifes juga mendeklarasikan kontribusi pengujian pengaktifan dan pembukaan jendela. Modul tidak lagi menerbitkan atau mencari fasad implementasi `whiteboard:api` yang tidak dideklarasikan, yang dapat menghentikan bootstrap sebelum Jitsi Meet menemukan penyedia verifikasi.
+
 ## Komit
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -61,4 +65,5 @@ Panel awal sudah menampilkan setiap Whiteboard sebelumnya sebagai baris yang dap
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
 - [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
+- [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)

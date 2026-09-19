@@ -168,7 +168,6 @@ export function registerApiRoutes(router, ctx) {
         profileIdentity,
         log,
     });
-    ctx.contributePublicCapability?.("whiteboard:api", moduleApi);
     ctx.contributePublicCapability?.(
         "whiteboard:deleteCanvas",
         moduleApi.deleteCanvas,
@@ -830,6 +829,8 @@ export function registerApiRoutes(router, ctx) {
         },
         { access: { minRole: "user" } },
     );
+
+    return moduleApi;
 }
 
 export { MODULE_ID };

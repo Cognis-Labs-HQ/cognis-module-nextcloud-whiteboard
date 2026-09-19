@@ -18,7 +18,12 @@ The manifest now requests privileged status because the module extends Cognis sh
 
 Window spawning now has a single owner-tracked publisher, and sharing hooks are installed only once per scoped context. This prevents capability and flow conflicts from aborting module enablement.
 
+## Reuse the file namespace after re-enablement
+
+Enablement now probes the existing Whiteboard file namespace before attempting registration. A namespace retained by the Files gateway across disable and enable cycles is reused, while a fresh installation still registers it exactly once.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
 - [577aea4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/577aea490c999d2385b9d10d6e3f2f3f0e301256)
+- [55ecd5a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/55ecd5ade9a70ad7864e5fd9d73d27c7865f7ca1)

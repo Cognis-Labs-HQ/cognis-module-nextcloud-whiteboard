@@ -120,18 +120,25 @@ export function registerApiRoutes(router, ctx) {
         typeof runtimeContext === "object" &&
         runtimeContext !== null &&
         !initializedRuntimeContexts.has(runtimeContext);
-    if (shouldInitializeRuntime) {
-        registerNamespace?.({
-            id: "whiteboards",
-            ownerComponent: "nextcloud-whiteboard",
-            acl: { visibility: "private-group" },
-        });
-        initializedRuntimeContexts.add(runtimeContext);
-    }
-    const whiteboardFiles = createNamespaceClient?.({
+    if (shouldInitializeRuntime) initializedRuntimeContexts.add(runtimeContext);
+
+    const namespaceRequest = {
         namespaceId: "whiteboards",
         callerComponent: "nextcloud-whiteboard",
-    });
+    };
+    let whiteboardFiles;
+    if (createNamespaceClient) {
+        try {
+            whiteboardFiles = createNamespaceClient(namespaceRequest);
+        } catch {
+            registerNamespace?.({
+                id: "whiteboards",
+                ownerComponent: "nextcloud-whiteboard",
+                acl: { visibility: "private-group" },
+            });
+            whiteboardFiles = createNamespaceClient(namespaceRequest);
+        }
+    }
 
     const ensureShareFlowHooks = () => {
         if (initializedShareHookContexts.has(ctx)) return;

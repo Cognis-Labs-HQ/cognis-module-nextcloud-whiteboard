@@ -1009,19 +1009,33 @@ test("saved shared canvases reopen from one synchronized snapshot", async () => 
     assert.deepEqual(await store.getUserCopy(board.id, "bob"), sharedElements);
 });
 
-test("nextcloud whiteboard initializes runtime-owned resources once across route refreshes", () => {
-    const source = readFileSync(
-        new URL("../api/index.js", import.meta.url),
-        "utf8",
-    );
+test("nextcloud whiteboard reuses its registered file namespace after re-enablement", () => {
+    const db = createMemoryDb();
+    let namespaceRegistered = false;
+    let registrationCount = 0;
+    const namespaceClient = {};
+    const capabilities = {
+        "auth:requireAuth": requireTestAuth,
+        "db:executor": db,
+        "files:registerNamespace": () => {
+            if (namespaceRegistered) throw new Error("duplicate namespace");
+            namespaceRegistered = true;
+            registrationCount += 1;
+        },
+        "files:namespace": () => {
+            if (!namespaceRegistered) throw new Error("namespace unavailable");
+            return namespaceClient;
+        },
+        "social:profile:identity": testProfileIdentity,
+    };
+    const createContext = () => ({
+        getCapability(key) {
+            return capabilities[key];
+        },
+    });
 
-    assert.match(source, /const initializedRuntimeContexts = new WeakSet\(\)/);
-    assert.match(
-        source,
-        /if \(shouldInitializeRuntime\) \{[\s\S]*registerNamespace/,
-    );
-    assert.match(
-        source,
-        /if \(shouldInitializeRuntime\) \{[\s\S]*registerStoredOrigin/,
-    );
+    registerApiRoutes(createRouterCapture(), createContext());
+    registerApiRoutes(createRouterCapture(), createContext());
+
+    assert.equal(registrationCount, 1);
 });

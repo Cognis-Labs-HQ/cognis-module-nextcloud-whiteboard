@@ -17,8 +17,13 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
     ]);
 });
 
-test("module requests trusted privilege for protected share flow hooks", () => {
-    assert.equal(manifest.privileged, true);
+test("module remains unprivileged with module-owned server capabilities", () => {
+    assert.equal(manifest.privileged, undefined);
+    assert.ok(
+        manifest.capabilities.every((capability) =>
+            capability.startsWith(`${manifest.id}:`),
+        ),
+    );
 });
 
 test("module manifest separates core components from external modules", () => {

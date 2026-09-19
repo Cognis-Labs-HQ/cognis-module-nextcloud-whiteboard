@@ -10,9 +10,9 @@ Nextcloud Whiteboard kini mendaftarkan kapabilitas publik dan ekstensi alur berb
 
 Semua pengenal kapabilitas milik modul kini menggunakan awalan `nextcloud-whiteboard:`. Hook pelaporan bootstrap yang usang dan akses langsung ke konteks sistem telah dihapus agar kerja sama antarmodul mengikuti kontrak modul eksternal terkini.
 
-## Nyatakan integrasi terlindungi secara eksplisit
+## Tetap tanpa hak istimewa
 
-Manifest kini meminta status berhak istimewa karena modul memperluas alur berbagi Cognis. Instalasi resmi dapat diverifikasi terhadap sumber tepercaya dan hash berkas paketnya, sementara pengujian menjaga persyaratan ruang nama dan hak istimewa.
+Alur berbagi yang diperluas modul ini bukan alur Cognis yang sensitif terhadap keamanan, dan setiap kapabilitas server yang diterbitkannya memakai ruang nama `nextcloud-whiteboard:` miliknya sendiri. Karena itu manifest tetap tanpa hak istimewa, sedangkan kontrak sisi peramban `whiteboard:uiGateway` yang stabil tetap tersedia untuk Jitsi Meet melalui penyedia UI khusus.
 
 ## Hindari pendaftaran ganda saat pengaktifan
 
@@ -45,3 +45,4 @@ Jitsi Meet dapat memuat pabrik kanvas Whiteboard secara andal setelah backend me
 - [55ecd5a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/55ecd5ade9a70ad7864e5fd9d73d27c7865f7ca1)
 - [b622ea5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b622ea5b9fcc7b978a1287b68c9e96aeff3b1b9d)
 - [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)
+- [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)

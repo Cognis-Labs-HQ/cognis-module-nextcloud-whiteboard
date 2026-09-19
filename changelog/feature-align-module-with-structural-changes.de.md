@@ -10,9 +10,9 @@ Nextcloud Whiteboard registriert öffentliche Fähigkeiten und geschützte Erwei
 
 Alle moduleigenen Fähigkeitskennungen verwenden jetzt das Präfix `nextcloud-whiteboard:`. Der veraltete Bootstrap-Berichtshook und der direkte Zugriff auf den Systemkontext wurden entfernt, sodass die modulübergreifende Zusammenarbeit dem aktuellen Vertrag für externe Module entspricht.
 
-## Geschützte Integration ausdrücklich deklarieren
+## Unprivilegiert bleiben
 
-Das Manifest fordert jetzt den privilegierten Status an, da das Modul Freigabeabläufe von Cognis erweitert. Offizielle Installationen können anhand ihrer vertrauenswürdigen Quelle und der Hashwerte der Paketdateien überprüft werden; Tests sichern die Anforderungen an Namensraum und Privilegien ab.
+Die von diesem Modul erweiterten Freigabeabläufe sind keine sicherheitskritischen Cognis-Abläufe, und jede veröffentlichte Server-Capability verwendet den eigenen Namensraum `nextcloud-whiteboard:`. Das Manifest bleibt daher unprivilegiert, während der stabile browserseitige Vertrag `whiteboard:uiGateway` Jitsi Meet weiterhin über den dedizierten UI-Provider zur Verfügung steht.
 
 ## Doppelte Registrierungen bei der Aktivierung vermeiden
 
@@ -45,3 +45,4 @@ Jitsi Meet kann die Whiteboard-Canvas-Factory zuverlässig laden, nachdem das Ba
 - [55ecd5a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/55ecd5ade9a70ad7864e5fd9d73d27c7865f7ca1)
 - [b622ea5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b622ea5b9fcc7b978a1287b68c9e96aeff3b1b9d)
 - [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)
+- [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)

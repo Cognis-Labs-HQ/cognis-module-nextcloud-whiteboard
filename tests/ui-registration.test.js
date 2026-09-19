@@ -701,6 +701,20 @@ test("whiteboard capability discovery has a single provider registration", () =>
     assert.equal(navbarPlugins[0].providesCapabilities, undefined);
 });
 
+test("Jitsi receives the stable generic browser gateway contract", async () => {
+    const [providerSource, gatewaySource] = await Promise.all(
+        [
+            "../api/reuse/ui-provider.js",
+            "../ui/reuse/whiteboard-ui-gateway.js",
+        ].map((relativePath) =>
+            readFile(new URL(relativePath, import.meta.url), "utf8"),
+        ),
+    );
+
+    assert.match(providerSource, /"whiteboard:uiGateway"/);
+    assert.match(gatewaySource, /capabilityName = "whiteboard:uiGateway"/);
+});
+
 test("whiteboard component mounts the disposable canvas from focus state", async () => {
     const [appSource, navigationSource, renderSource] = await Promise.all(
         [

@@ -38,7 +38,6 @@ export function registerUi(ctx) {
     ctx.registerNavbarPlugin({
         scriptUrl: "/static/modules/nextcloud-whiteboard/navbar.js",
         access: { minRole: "user" },
-        providesCapabilities: ["whiteboard:uiGateway"],
     });
 
     ctx.registerSpaRoute({

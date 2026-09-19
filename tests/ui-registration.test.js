@@ -8,6 +8,7 @@ function captureUiRegistration() {
     const staticDirs = [];
     const pageExtensions = [];
     const navbarPlugins = [];
+    const capabilityProviders = [];
     const adminSections = [];
     registerUi({
         moduleRoot: "/tmp/nextcloud-whiteboard",
@@ -16,6 +17,9 @@ function captureUiRegistration() {
         },
         registerNavbarPlugin(plugin) {
             navbarPlugins.push(plugin);
+        },
+        registerCapabilityProvider(provider) {
+            capabilityProviders.push(provider);
         },
         registerSpaRoute(route) {
             spaRoutes.push(route);
@@ -32,6 +36,7 @@ function captureUiRegistration() {
         staticDirs,
         pageExtensions,
         navbarPlugins,
+        capabilityProviders,
         adminSections,
     };
 }
@@ -641,7 +646,7 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
     assert.match(appSource, /if \(signal\?\.aborted\) return/);
 });
 
-test("whiteboard navbar registers the canvas UI gateway", async () => {
+test("whiteboard registers one dedicated canvas UI gateway provider", async () => {
     const [navbarSource, gatewaySource, apiSource, providerSource] =
         await Promise.all(
             [
@@ -655,7 +660,7 @@ test("whiteboard navbar registers the canvas UI gateway", async () => {
                 ),
             ),
         );
-    assert.match(navbarSource, /whiteboard-ui-gateway\.js/);
+    assert.doesNotMatch(navbarSource, /whiteboard-ui-gateway\.js/);
     assert.match(
         apiSource + providerSource,
         /providesCapabilities: \["whiteboard:uiGateway"\]/,
@@ -680,6 +685,20 @@ test("whiteboard navbar registers the canvas UI gateway", async () => {
         /uiCtx\.capabilities\.contribute\(capabilityName, gateway\)/,
     );
     assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
+});
+
+test("whiteboard capability discovery has a single provider registration", () => {
+    const { capabilityProviders, navbarPlugins } = captureUiRegistration();
+
+    assert.deepEqual(capabilityProviders, [
+        {
+            scriptUrl:
+                "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js",
+            providesCapabilities: ["whiteboard:uiGateway"],
+        },
+    ]);
+    assert.equal(navbarPlugins.length, 1);
+    assert.equal(navbarPlugins[0].providesCapabilities, undefined);
 });
 
 test("whiteboard component mounts the disposable canvas from focus state", async () => {

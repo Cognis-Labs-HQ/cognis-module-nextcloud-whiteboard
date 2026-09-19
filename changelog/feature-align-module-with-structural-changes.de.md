@@ -38,6 +38,10 @@ Nextcloud Whiteboard deklariert `whiteboard:uiGateway` jetzt über genau einen d
 
 Jitsi Meet kann die Whiteboard-Canvas-Factory zuverlässig laden, nachdem das Backend die namensgebundenen Server-Capabilities erkannt hat. Dadurch stehen die Whiteboard-Schaltfläche und die Erstellung gemeinsamer Canvas in Meetingfenstern wieder zur Verfügung.
 
+## Einen Capability-Namensraum einheitlich verwenden
+
+Die interne Modul-API, der Aktivierungstest, das Öffnen von Fenstern, die Einbettung, die Board-Prüfung, die Mitgliedschaft, das Löschen und das Browser-Gateway verwenden jetzt einheitlich den Capability-Namensraum `whiteboard:`. Modul-IDs, Routenpfade, Flow-Hook-IDs und CLI-Befehlsnamen bleiben `nextcloud-whiteboard`, da sie das Modul und nicht seinen Capability-Vertrag bezeichnen.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -47,3 +51,4 @@ Jitsi Meet kann die Whiteboard-Canvas-Factory zuverlässig laden, nachdem das Ba
 - [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
+- [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)

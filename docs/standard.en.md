@@ -30,7 +30,7 @@ Resolve public capabilities from `ctx` instead of hard-coding another component'
 const getEmbedUrl = ctx.getCapability("whiteboard:getEmbedUrl");
 const fetchBoardData = ctx.getCapability("whiteboard:fetchBoardData");
 const spawnWhiteboardWindow = ctx.getCapability(
-    "nextcloud-whiteboard:spawnWhiteboardWindow",
+    "whiteboard:spawnWhiteboardWindow",
 );
 
 const url = getEmbedUrl(boardId, { instantCanvas: true });

@@ -38,6 +38,10 @@ Nextcloud Whiteboard now declares `whiteboard:uiGateway` through one dedicated c
 
 Jitsi Meet can reliably load the Whiteboard canvas factory after its backend detects the namespaced server capabilities, restoring the Whiteboard button and shared-canvas creation in meeting windows.
 
+## Use one capability namespace consistently
+
+The internal module API, enablement test, window spawning, embedding, board verification, membership, deletion, and browser gateway now all use the `whiteboard:` capability namespace. Module IDs, route paths, flow-hook IDs, and CLI command names remain `nextcloud-whiteboard` because they identify the module rather than its capability contract.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -47,3 +51,4 @@ Jitsi Meet can reliably load the Whiteboard canvas factory after its backend det
 - [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)
 - [554d48f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/554d48fcd21fb08f5c08c9f902e011047bb0c8f5)
 - [7c2d0f1](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c2d0f1f067ff7b81985168133645d6863b790cc)
+- [434d564](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/434d56417a6526813f6e6a5942c0e84f0d725c53)

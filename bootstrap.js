@@ -36,7 +36,7 @@ export function bootstrapModule(ctx) {
     registerApiRoutes(ctx.router, ctx);
 
     const spawnWhiteboardWindow = async (options = {}) => {
-        const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
+        const moduleApi = ctx.getCapability("whiteboard:api");
         if (!moduleApi) {
             throw new Error(
                 "Nextcloud Whiteboard API capability is unavailable.",
@@ -54,7 +54,7 @@ export function bootstrapModule(ctx) {
     };
 
     const fetchBoardData = async (whiteboardId) => {
-        const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
+        const moduleApi = ctx.getCapability("whiteboard:api");
         if (!moduleApi) {
             throw new Error(
                 "Nextcloud Whiteboard API capability is unavailable.",
@@ -65,7 +65,7 @@ export function bootstrapModule(ctx) {
 
     const membership = {
         async add(input) {
-            const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
+            const moduleApi = ctx.getCapability("whiteboard:api");
             if (!moduleApi?.membership) {
                 throw new Error(
                     "Nextcloud Whiteboard membership capability is unavailable.",
@@ -74,7 +74,7 @@ export function bootstrapModule(ctx) {
             return moduleApi.membership.add(input);
         },
         async remove(input) {
-            const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
+            const moduleApi = ctx.getCapability("whiteboard:api");
             if (!moduleApi?.membership) {
                 throw new Error(
                     "Nextcloud Whiteboard membership capability is unavailable.",
@@ -85,7 +85,7 @@ export function bootstrapModule(ctx) {
     };
 
     ctx.contributePublicCapability(
-        "nextcloud-whiteboard:spawnWhiteboardWindow",
+        "whiteboard:spawnWhiteboardWindow",
         spawnWhiteboardWindow,
     );
     ctx.contributePublicCapability("whiteboard:getEmbedUrl", getEmbedUrl);

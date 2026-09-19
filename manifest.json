@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.131",
+    "version": "2.3.132",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -175,7 +175,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "bd164aac4c8645687293064ea54cd388e9db59a24f8e3c436e7a796ed4b90824"
+            "sha256": "99191199d2be06ac2946af420f27f01a6d2a05580bff40e642d0689e232b61cf"
         },
         {
             "path": "api/reuse/canvas-deletion.js",
@@ -191,7 +191,7 @@
         },
         {
             "path": "api/reuse/configuration-api.js",
-            "sha256": "8ebf772663754e760278d9c65df5864d4113843d9ba01b03b4a9b68d1ff9dd1c"
+            "sha256": "2ca0fd86e45581f96f0618a56f6c2bf5dc55c617257bcc077a110b024c9eb241"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -255,7 +255,7 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "db1b0b0b0c6c90183c6ef0bcfd11eea93501fb8a14a9ca7002e5cdb9148eac49"
+            "sha256": "12831e1d06ffdbd9412b8a047a824fe5f8c67ae9ef4dedfae344562328e4ab47"
         },
         {
             "path": "cli/index.js",
@@ -263,27 +263,27 @@
         },
         {
             "path": "docs/standard.de.md",
-            "sha256": "a1412ba3c88abfa796ba675ff66008fc31f11908143ad17301fba4851bba0c83"
+            "sha256": "2b2a9a5a8efdb7909ee58f81df2a72337878ee232963301df796dbe53825c94a"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "e4a0bdd6efce634a23310b9e696a692c596a79e91949886a87aa845db8067334"
+            "sha256": "944655d42041c837a7e27ce416a708aa6737849d432e8d0efd70a7884d8703f1"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "865aab3651a30926bb34796c712bbe5fb432a337914386d9ea11b68ef6dc7edc"
+            "sha256": "00dea1b149af5e0c3056294cfa93b54fc12ba2ec5219e2cb5fe4963badb5a895"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "72a8129a182ad5a44079b2e74e685620d26cc3dd8dcc0bec09d45901478b8ef0"
+            "sha256": "a9a5bccd95ae6f9077e17794cec7b64c10c079833bed53a7702130212a22eb2b"
         },
         {
             "path": "package-lock.json",
-            "sha256": "88f23a8eaf50518c6adadb4214765bc96a7cdc290c31e82eacf11a1f82133308"
+            "sha256": "0858250076fa68dc4eef63b5987e6c5572e812a25f2bca3f96b8f2c27c7bb978"
         },
         {
             "path": "package.json",
-            "sha256": "d07e8ef33cca3da6d3535a83c53a1099752e9fde1b2687aa8855ccf27ad45ef0"
+            "sha256": "1c024700af962c7800bd1c2cd38eb8ace09f0574da24d6712dea7efb8aa6ecd6"
         },
         {
             "path": "routes.json",
@@ -311,7 +311,7 @@
         },
         {
             "path": "tests/canvas-deletion.test.js",
-            "sha256": "b3d2c54f6db952fabec9242c40c49bd4ab14df6d6cc49b4a3c44ed5a4cc4927d"
+            "sha256": "dd2d0c0bb06f7e961abe9a72bcb1f4dea780d9c05c63304b7f5b05add91e9991"
         },
         {
             "path": "tests/canvas-membership.test.js",
@@ -383,7 +383,7 @@
         },
         {
             "path": "tests/structural-compliance.test.js",
-            "sha256": "7f9dbdfded1120404bc164806f1f0c70611d0213b9883ed1e7cf36a22f5be85a"
+            "sha256": "8b67054ee3ce64ad888bc7ea6302bffc56b31df60eab4b39008d8b7263575057"
         },
         {
             "path": "tests/ui-registration.test.js",

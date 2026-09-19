@@ -108,11 +108,7 @@ test("public capabilities use the declared Whiteboard gateway namespace", () => 
         for (const match of source.matchAll(
             /contributePublicCapability\(\s*["']([^"']+)/g,
         )) {
-            assert.match(
-                match[1],
-                /^(?:nextcloud-whiteboard|whiteboard):/,
-                path,
-            );
+            assert.match(match[1], /^whiteboard:/, path);
         }
     }
     assert.equal(manifest.privileged, true);

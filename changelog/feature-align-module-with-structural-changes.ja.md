@@ -1,6 +1,6 @@
-# スコープ化され検証可能なホワイトボード統合
+# Whiteboard を構造変更に適合
 
-**機能ブランチ:** feature-align-module-ownership-contract
+**機能ブランチ:** feature-align-module-with-structural-changes
 
 ## 所有者を追跡できるモジュール提供機能を使用
 
@@ -22,8 +22,26 @@ Nextcloud Whiteboard は、公開ケイパビリティと保護された共有�
 
 有効化時に、登録を試みる前に既存の Whiteboard ファイル名前空間を確認するようになりました。ファイルゲートウェイが無効化と有効化の間も保持する名前空間は再利用され、新規インストールでは引き続き一度だけ登録されます。
 
+## 非表示になった保存ラベルの領域を解放
+
+保存確認が消える際に、テキスト領域、内側の余白、要素間の間隔も折りたたむようになりました。ラベル幅の見えない空白を残さず、成功チェックがツールバーの端へ滑らかに戻ります。
+
+## ローカライズされたラベルのアニメーションを維持
+
+保存テキストをオーバーフローに対応したアニメーション領域で囲み、対応するすべての言語のラベルが隣接する操作部品を切り取らずに展開および折りたためるようにしました。
+
+## ブラウザーゲートウェイを一度だけ公開
+
+Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Provider だけで宣言するようになりました。ナビゲーションバーは同じ Provider を宣言またはインポートしなくなり、所有者保護された UI Registry での重複登録を防ぎます。
+
+## Jitsi Meet コントロールを復元
+
+バックエンドが名前空間付きサーバー Capability を検出した後、Jitsi Meet は Whiteboard の Canvas Factory を確実に読み込めるようになり、ミーティングウィンドウの Whiteboard ボタンと共有 Canvas の作成が復元されます。
+
 ## コミット
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
 - [577aea4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/577aea490c999d2385b9d10d6e3f2f3f0e301256)
 - [55ecd5a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/55ecd5ade9a70ad7864e5fd9d73d27c7865f7ca1)
+- [b622ea5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b622ea5b9fcc7b978a1287b68c9e96aeff3b1b9d)
+- [ada67ca](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/ada67ca7ed874031661d172af3c6ad279eca3a30)

@@ -14,6 +14,11 @@ Alle moduleigenen Fähigkeitskennungen verwenden jetzt das Präfix `nextcloud-wh
 
 Das Manifest fordert jetzt den privilegierten Status an, da das Modul Freigabeabläufe von Cognis erweitert. Offizielle Installationen können anhand ihrer vertrauenswürdigen Quelle und der Hashwerte der Paketdateien überprüft werden; Tests sichern die Anforderungen an Namensraum und Privilegien ab.
 
+## Doppelte Registrierungen bei der Aktivierung vermeiden
+
+Das Öffnen von Fenstern hat jetzt genau einen eigentümergebundenen Herausgeber, und Freigabe-Hooks werden pro bereichsgebundenem Kontext nur einmal installiert. Dadurch brechen Konflikte bei Fähigkeiten und Abläufen die Modulaktivierung nicht mehr ab.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
+- [577aea4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/577aea490c999d2385b9d10d6e3f2f3f0e301256)

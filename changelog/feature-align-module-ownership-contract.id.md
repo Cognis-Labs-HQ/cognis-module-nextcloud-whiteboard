@@ -14,6 +14,11 @@ Semua pengenal kapabilitas milik modul kini menggunakan awalan `nextcloud-whiteb
 
 Manifest kini meminta status berhak istimewa karena modul memperluas alur berbagi Cognis. Instalasi resmi dapat diverifikasi terhadap sumber tepercaya dan hash berkas paketnya, sementara pengujian menjaga persyaratan ruang nama dan hak istimewa.
 
+## Hindari pendaftaran ganda saat pengaktifan
+
+Pembukaan jendela kini memiliki satu penerbit yang terlacak pemiliknya, dan hook berbagi hanya dipasang sekali untuk setiap konteks tercakup. Hal ini mencegah konflik kapabilitas dan alur menggagalkan pengaktifan modul.
+
 ## Komit
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
+- [577aea4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/577aea490c999d2385b9d10d6e3f2f3f0e301256)

@@ -14,6 +14,11 @@ Nextcloud Whiteboard は、公開ケイパビリティと保護された共有�
 
 このモジュールは Cognis の共有フローを拡張するため、マニフェストで特権ステータスを要求するようになりました。公式インストールは信頼済みの配布元とパッケージファイルのハッシュに基づいて検証でき、テストによって名前空間と特権の要件が維持されます。
 
+## 有効化時の重複登録を回避
+
+ウィンドウ起動機能の所有者追跡対象の公開元を一つにし、共有フックをスコープ化されたコンテキストごとに一度だけ登録するようにしました。これにより、ケイパビリティやフローの競合によってモジュールの有効化が中断されることを防ぎます。
+
 ## コミット
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
+- [577aea4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/577aea490c999d2385b9d10d6e3f2f3f0e301256)

@@ -622,6 +622,36 @@ test("nextcloud whiteboard registers share hooks on its scoped ctx flow", () => 
     });
 });
 
+test("nextcloud whiteboard registers scoped share hooks only once", () => {
+    const db = createMemoryDb();
+    const router = createRouterCapture();
+    const extensions = [];
+    const flow = {
+        exists(name) {
+            return ["mint-share-token", "resolve-share-token"].includes(name);
+        },
+        extend(flowName, stageName, options) {
+            extensions.push({ flowName, stageName, id: options.id });
+        },
+    };
+    const ctx = {
+        flow,
+        getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
+            if (key === "auth:requireAuth") return requireTestAuth;
+            if (key === "db:executor") return db;
+            return undefined;
+        },
+    };
+
+    registerApiRoutes(router, ctx);
+    const initialExtensionCount = extensions.length;
+    registerApiRoutes(createRouterCapture(), ctx);
+
+    assert.ok(initialExtensionCount > 0);
+    assert.equal(extensions.length, initialExtensionCount);
+});
+
 test("nextcloud whiteboard share hooks reject share guests managing links", async () => {
     const db = createMemoryDb();
     const store = new NextcloudWhiteboardStore({

@@ -15,6 +15,7 @@ import {
 } from "./reuse/configuration-api.js";
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 const initializedRuntimeContexts = new WeakSet();
+const initializedShareHookContexts = new WeakSet();
 const MODULE_ID = "nextcloud-whiteboard";
 const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
@@ -132,7 +133,14 @@ export function registerApiRoutes(router, ctx) {
         callerComponent: "nextcloud-whiteboard",
     });
 
-    const ensureShareFlowHooks = () =>
+    const ensureShareFlowHooks = () => {
+        if (initializedShareHookContexts.has(ctx)) return;
+        if (
+            !ctx.flow?.exists?.("mint-share-token") ||
+            !ctx.flow?.exists?.("resolve-share-token")
+        ) {
+            return;
+        }
         registerWhiteboardShareFlowHooks({
             ctx,
             store,
@@ -141,6 +149,8 @@ export function registerApiRoutes(router, ctx) {
             resolveShareGuestId,
             whiteboardStylesheets: WHITEBOARD_STYLESHEETS,
         });
+        initializedShareHookContexts.add(ctx);
+    };
     if (shouldInitializeRuntime) {
         ensureShareFlowHooks();
         void registerStoredOrigin({ store, registerScriptOrigins, log });
@@ -156,10 +166,6 @@ export function registerApiRoutes(router, ctx) {
     ctx.contributePublicCapability?.(
         "nextcloud-whiteboard:deleteCanvas",
         moduleApi.deleteCanvas,
-    );
-    ctx.contributePublicCapability?.(
-        "nextcloud-whiteboard:spawnWhiteboardWindow",
-        moduleApi.spawnWhiteboardWindow,
     );
 
     router.get(

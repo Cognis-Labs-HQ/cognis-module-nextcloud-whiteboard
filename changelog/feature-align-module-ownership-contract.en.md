@@ -14,6 +14,11 @@ All module-owned capability identifiers now use the `nextcloud-whiteboard:` pref
 
 The manifest now requests privileged status because the module extends Cognis sharing flows. Official installations can be verified against their trusted source and packaged file hashes, while tests guard the namespace and privilege requirements.
 
+## Avoid duplicate registrations during enablement
+
+Window spawning now has a single owner-tracked publisher, and sharing hooks are installed only once per scoped context. This prevents capability and flow conflicts from aborting module enablement.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
+- [577aea4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/577aea490c999d2385b9d10d6e3f2f3f0e301256)

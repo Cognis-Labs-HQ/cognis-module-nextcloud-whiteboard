@@ -806,11 +806,19 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     assert.match(stylesSource, /@container \(max-width: 44rem\)/);
     assert.match(
         stylesSource,
-        /\.whiteboard-saved-pill\s*\{[^}]*display: inline-block[^}]*visibility: hidden/s,
+        /\.whiteboard-saved-pill\s*\{[^}]*display: inline-grid[^}]*grid-template-columns: minmax\(0, 0fr\)[^}]*visibility: hidden/s,
     );
     assert.match(
         stylesSource,
         /:has\(\.whiteboard-save-confirmed\)[^{]*\.whiteboard-saved-pill\s*\{[^}]*visibility: visible/s,
+    );
+    assert.match(
+        stylesSource,
+        /@keyframes whiteboard-saved-pill[\s\S]*grid-template-columns: minmax\(0, 1fr\)[\s\S]*grid-template-columns: minmax\(0, 0fr\)/,
+    );
+    assert.match(
+        renderSource,
+        /class="whiteboard-saved-pill"><span>\$\{escapeHtml/,
     );
     assert.match(
         disposableSaveSource,

@@ -539,7 +539,7 @@ test("nextcloud whiteboard presence route handles store failures without server-
     );
 });
 
-test("nextcloud whiteboard registers share hooks on system ctx flow", () => {
+test("nextcloud whiteboard registers share hooks on its scoped ctx flow", () => {
     const db = createMemoryDb();
     const router = createRouterCapture();
     const extensions = [];
@@ -565,6 +565,7 @@ test("nextcloud whiteboard registers share hooks on system ctx flow", () => {
     };
 
     registerApiRoutes(router, {
+        flow: systemCtx.flow,
         getCapability(key) {
             if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
@@ -655,6 +656,7 @@ test("nextcloud whiteboard share hooks reject share guests managing links", asyn
     };
 
     registerApiRoutes(createRouterCapture(), {
+        flow: systemCtx.flow,
         getCapability(key) {
             if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
@@ -741,6 +743,7 @@ test("nextcloud whiteboard share hooks preserve direct participant sessions with
     };
 
     registerApiRoutes(createRouterCapture(), {
+        flow: systemCtx.flow,
         getCapability(key) {
             if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;

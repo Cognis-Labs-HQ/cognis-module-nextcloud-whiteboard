@@ -8,13 +8,17 @@ const manifest = JSON.parse(
 
 test("module manifest declares its supplied whiteboard capabilities", () => {
     assert.deepEqual(manifest.capabilities, [
-        "whiteboard:collaboration",
-        "whiteboard:access-control",
-        "whiteboard:getEmbedUrl",
-        "whiteboard:fetchBoardData",
-        "whiteboard:membership",
-        "whiteboard:deleteCanvas",
+        "nextcloud-whiteboard:collaboration",
+        "nextcloud-whiteboard:access-control",
+        "nextcloud-whiteboard:getEmbedUrl",
+        "nextcloud-whiteboard:fetchBoardData",
+        "nextcloud-whiteboard:membership",
+        "nextcloud-whiteboard:deleteCanvas",
     ]);
+});
+
+test("module requests trusted privilege for protected share flow hooks", () => {
+    assert.equal(manifest.privileged, true);
 });
 
 test("module manifest separates core components from external modules", () => {

@@ -35,12 +35,8 @@ export function bootstrapModule(ctx) {
     registerUi(ctx);
     registerApiRoutes(ctx.router, ctx);
 
-    const systemCtx = ctx.getCapability("system:ctx");
-
     const spawnWhiteboardWindow = async (options = {}) => {
-        const moduleApi = systemCtx?.getCapability?.(
-            "nextcloud-whiteboard:api",
-        );
+        const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
         if (!moduleApi) {
             throw new Error(
                 "Nextcloud Whiteboard API capability is unavailable.",
@@ -58,9 +54,7 @@ export function bootstrapModule(ctx) {
     };
 
     const fetchBoardData = async (whiteboardId) => {
-        const moduleApi = systemCtx?.getCapability?.(
-            "nextcloud-whiteboard:api",
-        );
+        const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
         if (!moduleApi) {
             throw new Error(
                 "Nextcloud Whiteboard API capability is unavailable.",
@@ -71,9 +65,7 @@ export function bootstrapModule(ctx) {
 
     const membership = {
         async add(input) {
-            const moduleApi = systemCtx?.getCapability?.(
-                "nextcloud-whiteboard:api",
-            );
+            const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
             if (!moduleApi?.membership) {
                 throw new Error(
                     "Nextcloud Whiteboard membership capability is unavailable.",
@@ -82,9 +74,7 @@ export function bootstrapModule(ctx) {
             return moduleApi.membership.add(input);
         },
         async remove(input) {
-            const moduleApi = systemCtx?.getCapability?.(
-                "nextcloud-whiteboard:api",
-            );
+            const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
             if (!moduleApi?.membership) {
                 throw new Error(
                     "Nextcloud Whiteboard membership capability is unavailable.",
@@ -98,22 +88,16 @@ export function bootstrapModule(ctx) {
         "nextcloud-whiteboard:spawnWhiteboardWindow",
         spawnWhiteboardWindow,
     );
-    ctx.contributePublicCapability("whiteboard:getEmbedUrl", getEmbedUrl);
-    ctx.contributePublicCapability("whiteboard:fetchBoardData", fetchBoardData);
-    ctx.contributePublicCapability("whiteboard:membership", membership);
-
-    ctx.flow.extend(
-        "bootstrap-platform",
-        "register-flows",
-        { id: "nextcloud-whiteboard-module:bootstrap-registration" },
-        () => ({
-            moduleId: "nextcloud-whiteboard",
-            registeredCapabilities: [
-                "nextcloud-whiteboard:spawnWhiteboardWindow",
-                "whiteboard:getEmbedUrl",
-                "whiteboard:fetchBoardData",
-                "whiteboard:membership",
-            ],
-        }),
+    ctx.contributePublicCapability(
+        "nextcloud-whiteboard:getEmbedUrl",
+        getEmbedUrl,
+    );
+    ctx.contributePublicCapability(
+        "nextcloud-whiteboard:fetchBoardData",
+        fetchBoardData,
+    );
+    ctx.contributePublicCapability(
+        "nextcloud-whiteboard:membership",
+        membership,
     );
 }

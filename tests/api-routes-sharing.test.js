@@ -287,6 +287,7 @@ test("nextcloud whiteboard share route accepts issue-token flow result", async (
         },
     };
     registerApiRoutes(router, {
+        flow: systemCtx.flow,
         getCapability(key) {
             if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;

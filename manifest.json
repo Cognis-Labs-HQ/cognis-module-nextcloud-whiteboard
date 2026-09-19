@@ -2,16 +2,17 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.124",
+    "version": "2.3.125",
+    "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
     "capabilities": [
-        "whiteboard:collaboration",
-        "whiteboard:access-control",
-        "whiteboard:getEmbedUrl",
-        "whiteboard:fetchBoardData",
-        "whiteboard:membership",
-        "whiteboard:deleteCanvas"
+        "nextcloud-whiteboard:collaboration",
+        "nextcloud-whiteboard:access-control",
+        "nextcloud-whiteboard:getEmbedUrl",
+        "nextcloud-whiteboard:fetchBoardData",
+        "nextcloud-whiteboard:membership",
+        "nextcloud-whiteboard:deleteCanvas"
     ],
     "entrypoints": {
         "bootstrap": "./bootstrap.js",
@@ -89,7 +90,6 @@
         "share:resolveUserAccess",
         "social:profileStore",
         "social:profile:identity",
-        "system:ctx",
         "ui:reuse",
         "ui:profileAvatarRenderer",
         "share:uiGateway",
@@ -175,7 +175,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "3eef2fcb2694018555c6548a0b6ea425dffb4a08656016f0d66ab709b290ddf9"
+            "sha256": "d0f646e69a86c3ddfab4b1e53d311183276a58e62310ef7ee93591797cc5f3e0"
         },
         {
             "path": "api/reuse/canvas-deletion.js",
@@ -191,7 +191,7 @@
         },
         {
             "path": "api/reuse/configuration-api.js",
-            "sha256": "7f2ff957248b7b27bdb7842842a5c968ec0f252ee251fe1f53f526e07e45d41f"
+            "sha256": "8ebf772663754e760278d9c65df5864d4113843d9ba01b03b4a9b68d1ff9dd1c"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -255,7 +255,7 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "e8befac7716619200184f793c68fcea978c598de802366c0552ae870761447c0"
+            "sha256": "9119696d9e78d620e1cbe56e6ad48fb51775eb51fa83b78f8725f7a4c2daba93"
         },
         {
             "path": "cli/index.js",
@@ -279,11 +279,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "a6a1496ac47712dadfd5695189ccdd117850d7031467a03f05058d6392829672"
+            "sha256": "08f65d5878b026bf4ae9ccd0a1e3c11b06637341c7297703137353aac9a87cd6"
         },
         {
             "path": "package.json",
-            "sha256": "81cc0d09931184abdcf202ee411fdcfb19c7db3e4d0ba4637924040de681797d"
+            "sha256": "20dcee4767ef6de68315baa9933519cd031a566290618ddba8bc0ef16860a521"
         },
         {
             "path": "routes.json",
@@ -303,15 +303,15 @@
         },
         {
             "path": "tests/api-routes-sharing.test.js",
-            "sha256": "842d494d98203b979952cecca6cc20204dcabf6c304f692433a07b27e67b7cbf"
+            "sha256": "1d619bd9506f9ed9c467c32870aa10c4e223e7fb924016343d9e78be413a7ca5"
         },
         {
             "path": "tests/api-routes.test.js",
-            "sha256": "1a539d649feab7e26f83531fb13ae1ac9a658ab939a7a5a64d613244e562957c"
+            "sha256": "c1d3842862d22a588d3e105339a1cd2c09ac5714a1d84aeb1b2038cc5677915e"
         },
         {
             "path": "tests/canvas-deletion.test.js",
-            "sha256": "60ac05b41c005ebc57276f21d60fbcb5e4906242b3bf65c1983fa31fbcf49e7b"
+            "sha256": "ad4d270bad48c6d3a8e262674c21391c549499b4c2524787a43e35fdffa1dd6f"
         },
         {
             "path": "tests/canvas-membership.test.js",
@@ -347,7 +347,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "5d592e1b5a7d21464d6e4f2b27a5f67efe4843c5fdac3df98745b83774ecbe42"
+            "sha256": "fa4a3a7ee53a1503500b8ce09fc6512b30761a522470a258b50741f87065308d"
         },
         {
             "path": "tests/overlay.test.js",
@@ -383,7 +383,7 @@
         },
         {
             "path": "tests/structural-compliance.test.js",
-            "sha256": "20b2586218b898d5b0c2bdd5a8fccda1458bb605943b7555e6106d005cbfe2cf"
+            "sha256": "3ab5c55fc21ac6c7849f7c5a2a8b8d76ca44766b5b3d5d0390d805430f287063"
         },
         {
             "path": "tests/ui-registration.test.js",

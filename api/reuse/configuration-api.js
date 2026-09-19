@@ -39,8 +39,8 @@ export function registerWhiteboardConfigurationApi(router, ctx) {
         checkHttpLiveness,
         timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
     });
-    ctx.getCapability("system:ctx")?.contributePublicCapability?.(
-        "module:nextcloud-whiteboard:enableTest",
+    ctx.contributePublicCapability?.(
+        "nextcloud-whiteboard:enableTest",
         runEnableTest,
     );
     registerWhiteboardEnableTestRoute({

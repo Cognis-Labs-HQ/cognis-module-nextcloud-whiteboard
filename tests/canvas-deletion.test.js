@@ -132,7 +132,7 @@ test("canvas deletion capability is published for orchestrators", async () => {
     );
     assert.match(
         source,
-        /"whiteboard:deleteCanvas",\s*moduleApi\.deleteCanvas/,
+        /"nextcloud-whiteboard:deleteCanvas",\s*moduleApi\.deleteCanvas/,
     );
 });
 

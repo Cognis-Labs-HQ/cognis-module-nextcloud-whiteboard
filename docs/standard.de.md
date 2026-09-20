@@ -35,6 +35,7 @@ const spawnWhiteboardWindow = ctx.getCapability(
 
 const url = getEmbedUrl(boardId, { instantCanvas: true });
 const board = await fetchBoardData(boardId);
+// board.createdByAccountId ist die kanonische Cognis-Konto-ID.
 await spawnWhiteboardWindow({ whiteboardId: board.id });
 ```
 

@@ -231,6 +231,40 @@ test("whiteboard spawning uses the host profile identity normalizer", async () =
     assert.equal(result.access.owner, "canonical-alice");
 });
 
+test("board data exposes its canonical owner account ID", async () => {
+    const moduleApi = createWhiteboardModuleApi({
+        store: {
+            async ensureSchema() {},
+            async getWhiteboardById() {
+                return {
+                    id: "canvas-1",
+                    title: "Planning",
+                    createdBy: "alice",
+                    createdAt: "created",
+                    updatedAt: "updated",
+                };
+            },
+        },
+        profileStore: {},
+        profileIdentity: {
+            async resolveAccountId(handle) {
+                assert.equal(handle, "alice");
+                return "oidc:canonical-alice";
+            },
+        },
+    });
+
+    assert.deepEqual(await moduleApi.fetchBoardData("canvas-1"), {
+        id: "canvas-1",
+        title: "Planning",
+        embedUrl: "/whiteboard?id=canvas-1",
+        createdBy: "alice",
+        createdByAccountId: "oidc:canonical-alice",
+        createdAt: "created",
+        updatedAt: "updated",
+    });
+});
+
 test("legacy canvas membership controls are removed", async () => {
     const sources = await Promise.all(
         [

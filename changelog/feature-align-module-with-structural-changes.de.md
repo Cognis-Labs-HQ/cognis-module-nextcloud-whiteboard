@@ -66,6 +66,10 @@ Die für Jitsi bestimmten Capabilities `whiteboard:fetchBoardData`, `whiteboard:
 
 Die initialisierte Whiteboard-API wird genau einmal unter der moduleigenen Capability `nextcloud-whiteboard:api` gespeichert. Bootstrap löst genau diese Instanz auf und veröffentlicht die vier etablierten `whiteboard:`-Verträge, die Jitsi Meet verwendet. Es gibt einen internen Registrierungspfad und einen öffentlichen Integrationspfad, ohne Fallback oder alternatives Registrierungsverhalten.
 
+## Kanonische Whiteboard-Eigentümeridentitäten bereitstellen
+
+Die Board-Prüfung gibt nun `createdByAccountId` zusätzlich zum gespeicherten Nextcloud-Handle zurück. Der Wert wird über die aktuelle Identitäts-Capability von Social Profile aufgelöst und entspricht damit dem kanonischen Modell für externe Konten aus Cognis PR #225; `createdBy` bleibt für Nextcloud sowie bestehende Titel- und Erstellerprüfungen von Jitsi erhalten.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -84,3 +88,4 @@ Die initialisierte Whiteboard-API wird genau einmal unter der moduleigenen Capab
 - [17d692b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17d692b66644d9cde959ac1728d62efa8d67c3a7)
 - [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
+- [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)

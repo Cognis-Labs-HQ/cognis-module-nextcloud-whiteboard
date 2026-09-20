@@ -66,6 +66,10 @@ Kapabilitas `whiteboard:fetchBoardData`, `whiteboard:membership`, dan `whiteboar
 
 API Whiteboard yang telah diinisialisasi disimpan satu kali di bawah kapabilitas milik modul `nextcloud-whiteboard:api`. Bootstrap menemukan instans yang sama persis dan menerbitkan empat kontrak `whiteboard:` yang telah digunakan Jitsi Meet. Hanya ada satu jalur pendaftaran internal dan satu jalur integrasi publik, tanpa fallback atau perilaku pendaftaran alternatif.
 
+## Sediakan identitas pemilik Whiteboard kanonis
+
+Verifikasi papan kini mengembalikan `createdByAccountId` bersama handle Nextcloud yang tersimpan. Nilai tersebut diselesaikan melalui kapabilitas identitas Social Profile saat ini agar selaras dengan model akun eksternal kanonis Cognis PR #225, sementara `createdBy` tetap tersedia untuk Nextcloud serta pemeriksaan judul dan pembuat Jitsi yang sudah ada.
+
 ## Komit
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -84,3 +88,4 @@ API Whiteboard yang telah diinisialisasi disimpan satu kali di bawah kapabilitas
 - [17d692b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17d692b66644d9cde959ac1728d62efa8d67c3a7)
 - [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
+- [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)

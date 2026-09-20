@@ -52,6 +52,9 @@ export function createProfileIdentityCapability(ctx) {
         resolveAccountHandle(...args) {
             return requireProfileIdentity().resolveAccountHandle(...args);
         },
+        resolveAccountId(...args) {
+            return requireProfileIdentity().resolveAccountId(...args);
+        },
     };
 }
 

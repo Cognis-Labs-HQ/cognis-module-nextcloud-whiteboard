@@ -82,11 +82,15 @@ export function createWhiteboardModuleApi({
                 String(whiteboardId ?? ""),
             );
             if (!whiteboard) return null;
+            const createdByAccountId = await profileIdentity.resolveAccountId(
+                whiteboard.createdBy,
+            );
             return {
                 id: whiteboard.id,
                 title: whiteboard.title,
                 embedUrl: buildCognisWhiteboardUrl(whiteboard.id),
                 createdBy: whiteboard.createdBy,
+                createdByAccountId,
                 createdAt: whiteboard.createdAt,
                 updatedAt: whiteboard.updatedAt,
             };

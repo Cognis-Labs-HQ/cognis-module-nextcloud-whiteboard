@@ -147,8 +147,8 @@ test("window spawning capability has only one owner-tracked publisher", async ()
     ]);
     const capability =
         /contributePublicCapability(?:\?\.)?\([\s\S]{0,80}?["']whiteboard:spawnWhiteboardWindow["']/g;
-    assert.equal(apiSource.match(capability)?.length ?? 0, 0);
-    assert.equal(bootstrapSource.match(capability)?.length ?? 0, 1);
+    assert.equal(apiSource.match(capability)?.length ?? 0, 1);
+    assert.equal(bootstrapSource.match(capability)?.length ?? 0, 0);
 });
 
 test("canvas deletion sanitizes and logs storage failures", async () => {

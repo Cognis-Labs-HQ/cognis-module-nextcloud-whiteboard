@@ -28,7 +28,7 @@ test("module declares privilege for the stable Whiteboard gateway namespace", ()
     );
 });
 
-test("bootstrap publishes only declared Whiteboard integration capabilities", async () => {
+test("API registration publishes only declared Whiteboard integration capabilities", async () => {
     const [apiSource, bootstrapSource] = await Promise.all([
         readFile(new URL("../api/index.js", import.meta.url), "utf8"),
         readFile(new URL("../bootstrap.js", import.meta.url), "utf8"),
@@ -37,16 +37,12 @@ test("bootstrap publishes only declared Whiteboard integration capabilities", as
         apiSource,
         /contributePublicCapability\?\.\("whiteboard:api"/,
     );
-    assert.doesNotMatch(bootstrapSource, /getCapability\("whiteboard:api"\)/);
-    assert.match(
-        bootstrapSource,
-        /const moduleApi = registerApiRoutes\(ctx\.router, ctx\)/,
-    );
+    assert.doesNotMatch(bootstrapSource, /contributePublicCapability/);
     for (const capability of [
         "whiteboard:fetchBoardData",
         "whiteboard:membership",
     ]) {
-        assert.match(bootstrapSource, new RegExp(`"${capability}"`));
+        assert.match(apiSource, new RegExp(`"${capability}"`));
         assert.ok(manifest.capabilities.includes(capability));
     }
 });

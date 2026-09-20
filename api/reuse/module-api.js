@@ -21,6 +21,10 @@ export function createWhiteboardModuleApi({
             profileIdentity,
             log,
         }),
+        getEmbedUrl(whiteboardId, options = {}) {
+            if (!whiteboardId) return null;
+            return buildCognisWhiteboardUrl(whiteboardId, options);
+        },
         async spawnWhiteboardWindow(options = {}) {
             await store.ensureSchema();
             const createdBy = profileIdentity.normalizeHandleKey(

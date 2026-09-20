@@ -92,10 +92,11 @@ export async function resolveParticipantHandles(
 
 export function buildCognisWhiteboardUrl(
     whiteboardId,
-    { instantCanvas = false } = {},
+    { instantCanvas = false, disposable = false } = {},
 ) {
     const params = new URLSearchParams({ id: whiteboardId });
     if (instantCanvas) params.set("instantCanvas", "1");
+    if (disposable) params.set("disposable", "1");
     return `/whiteboard?${params.toString()}`;
 }
 

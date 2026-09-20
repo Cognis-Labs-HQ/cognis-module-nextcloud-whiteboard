@@ -58,6 +58,10 @@ Modul kini menerbitkan kapabilitas `whiteboard:fetchBoardData` dan `whiteboard:m
 
 Daftar Whiteboard tersimpan kini dapat bertambah hingga dua kali tinggi maksimum sebelumnya sebelum mulai menggulir secara vertikal. Lebih banyak papan terbaru dapat terlihat sekaligus, sementara luapan pada jendela yang lebih pendek tetap dibatasi.
 
+## Terbitkan kontrak server Jitsi bersama penyedia API
+
+Kapabilitas `whiteboard:fetchBoardData`, `whiteboard:membership`, dan `whiteboard:deleteCanvas` untuk Jitsi kini dikontribusikan bersama pada saat penyedia API Whiteboard dibuat. Bootstrap hanya menginisialisasi UI dan pendaftaran API, selaras dengan struktur integrasi Jitsi Meet terbaru serta mencegah kontrak verifikasi terlewat ketika rute Whiteboard langsung tetap tersedia.
+
 ## Komit
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -72,3 +76,4 @@ Daftar Whiteboard tersimpan kini dapat bertambah hingga dua kali tinggi maksimum
 - [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)
 - [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)
+- [a7ec3f9](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a7ec3f9084dfbbb45543e087ca9931ca0a970712)

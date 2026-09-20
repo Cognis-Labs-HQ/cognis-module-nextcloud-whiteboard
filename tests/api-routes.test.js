@@ -139,7 +139,33 @@ test("API registration returns its implementation without publishing a private f
     assert.equal(typeof moduleApi.fetchBoardData, "function");
     assert.deepEqual(
         contributions.map(({ capabilityId }) => capabilityId),
-        ["whiteboard:enableTest", "whiteboard:deleteCanvas"],
+        [
+            "whiteboard:enableTest",
+            "whiteboard:deleteCanvas",
+            "whiteboard:spawnWhiteboardWindow",
+            "whiteboard:getEmbedUrl",
+            "whiteboard:fetchBoardData",
+            "whiteboard:membership",
+        ],
+    );
+    assert.equal(
+        contributions.find(
+            ({ capabilityId }) => capabilityId === "whiteboard:fetchBoardData",
+        )?.value,
+        moduleApi.fetchBoardData,
+    );
+    assert.equal(
+        contributions.find(
+            ({ capabilityId }) => capabilityId === "whiteboard:membership",
+        )?.value,
+        moduleApi.membership,
+    );
+    assert.equal(
+        moduleApi.getEmbedUrl("canvas-1", {
+            instantCanvas: true,
+            disposable: true,
+        }),
+        "/whiteboard?id=canvas-1&instantCanvas=1&disposable=1",
     );
 });
 

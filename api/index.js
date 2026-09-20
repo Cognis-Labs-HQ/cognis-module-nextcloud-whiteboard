@@ -172,6 +172,22 @@ export function registerApiRoutes(router, ctx) {
         "whiteboard:deleteCanvas",
         moduleApi.deleteCanvas,
     );
+    ctx.contributePublicCapability?.(
+        "whiteboard:spawnWhiteboardWindow",
+        moduleApi.spawnWhiteboardWindow,
+    );
+    ctx.contributePublicCapability?.(
+        "whiteboard:getEmbedUrl",
+        moduleApi.getEmbedUrl,
+    );
+    ctx.contributePublicCapability?.(
+        "whiteboard:fetchBoardData",
+        moduleApi.fetchBoardData,
+    );
+    ctx.contributePublicCapability?.(
+        "whiteboard:membership",
+        moduleApi.membership,
+    );
 
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/ping",

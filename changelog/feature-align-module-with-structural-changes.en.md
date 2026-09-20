@@ -58,6 +58,10 @@ The module now publishes the declared `whiteboard:fetchBoardData` and `whiteboar
 
 The saved-Whiteboard list can now grow to twice its previous maximum height before vertical scrolling begins, making more recent boards visible at once while preserving bounded overflow in shorter windows.
 
+## Publish the Jitsi server contract with the API provider
+
+The Jitsi-facing `whiteboard:fetchBoardData`, `whiteboard:membership`, and `whiteboard:deleteCanvas` capabilities are now contributed together at the point where the Whiteboard API provider is created. Bootstrap only initializes UI and API registration, matching the latest Jitsi Meet integration structure and preventing the verification contract from being omitted while direct Whiteboard routes remain available.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -72,3 +76,4 @@ The saved-Whiteboard list can now grow to twice its previous maximum height befo
 - [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)
 - [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)
+- [a7ec3f9](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a7ec3f9084dfbbb45543e087ca9931ca0a970712)

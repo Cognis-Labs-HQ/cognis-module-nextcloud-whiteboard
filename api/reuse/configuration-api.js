@@ -6,6 +6,7 @@ import {
 } from "../enable-test.js";
 import { checkHttpLiveness } from "./http-liveness.js";
 import { sendError, sendJson } from "./http.js";
+import { contributeModuleCapability } from "./capability-registration.js";
 
 export const WHITEBOARD_LIVENESS_TIMEOUT_MS = 5000;
 
@@ -39,7 +40,7 @@ export function registerWhiteboardConfigurationApi(router, ctx) {
         checkHttpLiveness,
         timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
     });
-    ctx.contributePublicCapability?.("whiteboard:enableTest", runEnableTest);
+    contributeModuleCapability(ctx, "whiteboard:enableTest", runEnableTest);
     registerWhiteboardEnableTestRoute({
         router,
         runEnableTest,

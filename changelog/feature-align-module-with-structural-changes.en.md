@@ -62,6 +62,10 @@ The saved-Whiteboard list can now grow to twice its previous maximum height befo
 
 The Jitsi-facing `whiteboard:fetchBoardData`, `whiteboard:membership`, and `whiteboard:deleteCanvas` capabilities are now contributed together at the point where the Whiteboard API provider is created. Bootstrap only initializes UI and API registration, matching the latest Jitsi Meet integration structure and preventing the verification contract from being omitted while direct Whiteboard routes remain available.
 
+## Use the scoped capability registry
+
+Server integrations now register through the module context’s `capabilities.contribute` registry, matching the current Cognis and Jitsi Meet module contract. The legacy public-contribution method remains only as a compatibility fallback, so Jitsi’s scoped `getCapability` lookup can resolve the Whiteboard verification provider on the deployed runtime.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -77,3 +81,4 @@ The Jitsi-facing `whiteboard:fetchBoardData`, `whiteboard:membership`, and `whit
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)
 - [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)
 - [a7ec3f9](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a7ec3f9084dfbbb45543e087ca9931ca0a970712)
+- [17d692b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17d692b66644d9cde959ac1728d62efa8d67c3a7)

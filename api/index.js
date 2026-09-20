@@ -9,6 +9,7 @@ import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
 import { loadCanvasElements } from "./reuse/canvas-loader.js";
 import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
 import { createWhiteboardModuleApi } from "./reuse/module-api.js";
+import { contributeModuleCapability } from "./reuse/capability-registration.js";
 import {
     registerWhiteboardConfigurationApi,
     WHITEBOARD_LIVENESS_TIMEOUT_MS,
@@ -168,23 +169,28 @@ export function registerApiRoutes(router, ctx) {
         profileIdentity,
         log,
     });
-    ctx.contributePublicCapability?.(
+    contributeModuleCapability(
+        ctx,
         "whiteboard:deleteCanvas",
         moduleApi.deleteCanvas,
     );
-    ctx.contributePublicCapability?.(
+    contributeModuleCapability(
+        ctx,
         "whiteboard:spawnWhiteboardWindow",
         moduleApi.spawnWhiteboardWindow,
     );
-    ctx.contributePublicCapability?.(
+    contributeModuleCapability(
+        ctx,
         "whiteboard:getEmbedUrl",
         moduleApi.getEmbedUrl,
     );
-    ctx.contributePublicCapability?.(
+    contributeModuleCapability(
+        ctx,
         "whiteboard:fetchBoardData",
         moduleApi.fetchBoardData,
     );
-    ctx.contributePublicCapability?.(
+    contributeModuleCapability(
+        ctx,
         "whiteboard:membership",
         moduleApi.membership,
     );

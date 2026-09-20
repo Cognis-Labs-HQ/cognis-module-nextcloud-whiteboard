@@ -125,8 +125,10 @@ function createRouterCapture() {
 test("API registration returns its implementation without publishing a private facade", () => {
     const contributions = [];
     const moduleApi = registerApiRoutes(createRouterCapture(), {
-        contributePublicCapability(capabilityId, value) {
-            contributions.push({ capabilityId, value });
+        capabilities: {
+            contribute(capabilityId, value) {
+                contributions.push({ capabilityId, value });
+            },
         },
         getCapability(key) {
             if (key === "auth:requireAuth") return requireTestAuth;

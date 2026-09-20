@@ -467,7 +467,7 @@ body[data-theme="dark"] .whiteboard-canvas-wrap .whiteboard-tool-icon--clear {
     border-top: 1px solid var(--border, #d8dee9);
     display: grid;
     gap: 0.5rem;
-    max-height: 14rem;
+    max-height: 28rem;
     min-height: 0;
     overflow-y: auto;
     padding-top: 0.75rem;

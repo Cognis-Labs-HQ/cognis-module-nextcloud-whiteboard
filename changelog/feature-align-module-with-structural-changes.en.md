@@ -54,6 +54,10 @@ The start panel already presents every previous Whiteboard as a directly selecta
 
 The module now publishes the declared `whiteboard:fetchBoardData` and `whiteboard:membership` capabilities directly from its initialized API instance. The manifest also declares its enablement-test and window-spawning contributions. The module no longer publishes or looks up the undeclared `whiteboard:api` implementation facade, which could interrupt bootstrap before Jitsi Meet could discover the verification provider.
 
+## Show more saved Whiteboards
+
+The saved-Whiteboard list can now grow to twice its previous maximum height before vertical scrolling begins, making more recent boards visible at once while preserving bounded overflow in shorter windows.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -67,3 +71,4 @@ The module now publishes the declared `whiteboard:fetchBoardData` and `whiteboar
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
 - [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)
+- [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)

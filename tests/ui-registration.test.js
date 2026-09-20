@@ -887,6 +887,7 @@ test("previous whiteboards scroll within the start panel", async () => {
     );
     assert.match(panel ?? "", /overflow:\s*hidden/);
     assert.match(boardList ?? "", /min-height:\s*0/);
+    assert.match(boardList ?? "", /max-height:\s*28rem/);
     assert.match(boardList ?? "", /overflow-y:\s*auto/);
     assert.match(boardList ?? "", /scrollbar-gutter:\s*stable/);
 });

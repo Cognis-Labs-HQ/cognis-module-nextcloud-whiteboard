@@ -54,6 +54,10 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 
 モジュールは、宣言済みの `whiteboard:fetchBoardData` および `whiteboard:membership` Capability を、初期化済み API インスタンスから直接公開するようになりました。Manifest には有効化テストとウィンドウ生成の Contribution も宣言します。未宣言の実装ファサード `whiteboard:api` は公開も参照もしないため、Jitsi Meet が検証プロバイダーを検出する前にブートストラップが中断される問題を防ぎます。
 
+## 保存済み Whiteboard をより多く表示
+
+保存済み Whiteboard 一覧は、縦スクロールが始まるまで従来の最大高さの 2 倍まで広がるようになりました。低いウィンドウでのオーバーフロー制限を維持しながら、最近のボードを一度により多く表示できます。
+
 ## コミット
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -67,3 +71,4 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
 - [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)
+- [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)

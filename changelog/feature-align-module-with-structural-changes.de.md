@@ -54,6 +54,10 @@ Das Startpanel zeigt bereits jedes vorherige Whiteboard als direkt auswählbare 
 
 Das Modul veröffentlicht die deklarierten Capabilities `whiteboard:fetchBoardData` und `whiteboard:membership` nun direkt aus seiner initialisierten API-Instanz. Das Manifest deklariert außerdem die Beiträge für den Aktivierungstest und das Öffnen von Fenstern. Das Modul veröffentlicht oder sucht nicht mehr nach der nicht deklarierten Implementierungsfassade `whiteboard:api`, die den Bootstrap-Vorgang unterbrechen konnte, bevor Jitsi Meet den Prüfungsanbieter erkennen konnte.
 
+## Mehr gespeicherte Whiteboards anzeigen
+
+Die Liste gespeicherter Whiteboards kann nun auf die doppelte bisherige Maximalhöhe anwachsen, bevor sie vertikal scrollt. Dadurch sind mehr zuletzt verwendete Arbeitsflächen gleichzeitig sichtbar, während der Überlauf in niedrigeren Fenstern weiterhin begrenzt bleibt.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -67,3 +71,4 @@ Das Modul veröffentlicht die deklarierten Capabilities `whiteboard:fetchBoardDa
 - [b34069a](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b34069ab3c09a29b4916517aee8e0fb757abcba4)
 - [27a12c2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/27a12c2eacbf2354bd02a58818bcd158fdc88210)
 - [20350c7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/20350c7fb16536c0a795cb1bd8c4f4b88239848f)
+- [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)

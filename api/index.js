@@ -9,7 +9,6 @@ import { resolveDisposableCanvas } from "./reuse/disposable-canvas.js";
 import { loadCanvasElements } from "./reuse/canvas-loader.js";
 import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
 import { createWhiteboardModuleApi } from "./reuse/module-api.js";
-import { contributeModuleCapability } from "./reuse/capability-registration.js";
 import {
     registerWhiteboardConfigurationApi,
     WHITEBOARD_LIVENESS_TIMEOUT_MS,
@@ -169,30 +168,10 @@ export function registerApiRoutes(router, ctx) {
         profileIdentity,
         log,
     });
-    contributeModuleCapability(
-        ctx,
+    ctx.capabilities?.contribute?.("nextcloud-whiteboard:api", moduleApi);
+    ctx.contributePublicCapability?.(
         "whiteboard:deleteCanvas",
         moduleApi.deleteCanvas,
-    );
-    contributeModuleCapability(
-        ctx,
-        "whiteboard:spawnWhiteboardWindow",
-        moduleApi.spawnWhiteboardWindow,
-    );
-    contributeModuleCapability(
-        ctx,
-        "whiteboard:getEmbedUrl",
-        moduleApi.getEmbedUrl,
-    );
-    contributeModuleCapability(
-        ctx,
-        "whiteboard:fetchBoardData",
-        moduleApi.fetchBoardData,
-    );
-    contributeModuleCapability(
-        ctx,
-        "whiteboard:membership",
-        moduleApi.membership,
     );
 
     router.get(

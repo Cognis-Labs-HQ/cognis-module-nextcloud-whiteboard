@@ -62,9 +62,9 @@ Daftar Whiteboard tersimpan kini dapat bertambah hingga dua kali tinggi maksimum
 
 Kapabilitas `whiteboard:fetchBoardData`, `whiteboard:membership`, dan `whiteboard:deleteCanvas` untuk Jitsi kini dikontribusikan bersama pada saat penyedia API Whiteboard dibuat. Bootstrap hanya menginisialisasi UI dan pendaftaran API, selaras dengan struktur integrasi Jitsi Meet terbaru serta mencegah kontrak verifikasi terlewat ketika rute Whiteboard langsung tetap tersedia.
 
-## Pertahankan kapabilitas lintas modul tetap publik
+## Pulihkan topologi penyedia Jitsi yang telah terbukti
 
-Integrasi server untuk Jitsi kini mengutamakan `contributePublicCapability` karena `ctx.capabilities.contribute` adalah permukaan pendaftaran lokal modul dan tidak boleh menjadi jalur utama bagi penyedia yang digunakan modul lain. Registri terbatas hanya dipertahankan sebagai fallback kompatibilitas agar pencarian `getCapability` milik Jitsi dapat menemukan penyedia verifikasi Whiteboard.
+API Whiteboard yang telah diinisialisasi disimpan satu kali di bawah kapabilitas milik modul `nextcloud-whiteboard:api`. Bootstrap menemukan instans yang sama persis dan menerbitkan empat kontrak `whiteboard:` yang telah digunakan Jitsi Meet. Hanya ada satu jalur pendaftaran internal dan satu jalur integrasi publik, tanpa fallback atau perilaku pendaftaran alternatif.
 
 ## Komit
 
@@ -83,3 +83,4 @@ Integrasi server untuk Jitsi kini mengutamakan `contributePublicCapability` kare
 - [a7ec3f9](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a7ec3f9084dfbbb45543e087ca9931ca0a970712)
 - [17d692b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17d692b66644d9cde959ac1728d62efa8d67c3a7)
 - [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)
+- [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)

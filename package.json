@@ -1,6 +1,6 @@
 {
     "name": "@cognis/module-nextcloud-whiteboard",
-    "version": "2.3.139",
+    "version": "2.3.140",
     "private": false,
     "type": "module",
     "scripts": {

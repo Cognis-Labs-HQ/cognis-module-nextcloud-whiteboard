@@ -34,4 +34,26 @@ export async function uninstallModule(ctx, { deleteContent }) {
 export function bootstrapModule(ctx) {
     registerUi(ctx);
     registerApiRoutes(ctx.router, ctx);
+
+    const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
+    if (!moduleApi) {
+        throw new Error("Nextcloud Whiteboard API capability is unavailable.");
+    }
+
+    ctx.contributePublicCapability(
+        "whiteboard:spawnWhiteboardWindow",
+        moduleApi.spawnWhiteboardWindow,
+    );
+    ctx.contributePublicCapability(
+        "whiteboard:getEmbedUrl",
+        moduleApi.getEmbedUrl,
+    );
+    ctx.contributePublicCapability(
+        "whiteboard:fetchBoardData",
+        moduleApi.fetchBoardData,
+    );
+    ctx.contributePublicCapability(
+        "whiteboard:membership",
+        moduleApi.membership,
+    );
 }

@@ -28,21 +28,20 @@ test("module declares privilege for the stable Whiteboard gateway namespace", ()
     );
 });
 
-test("API registration publishes only declared Whiteboard integration capabilities", async () => {
+test("bootstrap publishes the declared Jitsi integration capabilities", async () => {
     const [apiSource, bootstrapSource] = await Promise.all([
         readFile(new URL("../api/index.js", import.meta.url), "utf8"),
         readFile(new URL("../bootstrap.js", import.meta.url), "utf8"),
     ]);
-    assert.doesNotMatch(
+    assert.match(
         apiSource,
-        /contributePublicCapability\?\.\("whiteboard:api"/,
+        /ctx\.capabilities\?\.contribute\?\.\("nextcloud-whiteboard:api", moduleApi\)/,
     );
-    assert.doesNotMatch(bootstrapSource, /contributePublicCapability/);
     for (const capability of [
         "whiteboard:fetchBoardData",
         "whiteboard:membership",
     ]) {
-        assert.match(apiSource, new RegExp(`"${capability}"`));
+        assert.match(bootstrapSource, new RegExp(`"${capability}"`));
         assert.ok(manifest.capabilities.includes(capability));
     }
 });

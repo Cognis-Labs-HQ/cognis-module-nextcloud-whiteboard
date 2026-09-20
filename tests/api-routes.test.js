@@ -122,11 +122,17 @@ function createRouterCapture() {
     };
 }
 
-test("API registration returns its implementation without publishing a private facade", () => {
-    const contributions = [];
+test("API registration keeps its facade scoped and publishes route capabilities", () => {
+    const privateContributions = [];
+    const publicContributions = [];
     const moduleApi = registerApiRoutes(createRouterCapture(), {
+        capabilities: {
+            contribute(capabilityId, value) {
+                privateContributions.push({ capabilityId, value });
+            },
+        },
         contributePublicCapability(capabilityId, value) {
-            contributions.push({ capabilityId, value });
+            publicContributions.push({ capabilityId, value });
         },
         getCapability(key) {
             if (key === "auth:requireAuth") return requireTestAuth;
@@ -138,27 +144,13 @@ test("API registration returns its implementation without publishing a private f
 
     assert.equal(typeof moduleApi.fetchBoardData, "function");
     assert.deepEqual(
-        contributions.map(({ capabilityId }) => capabilityId),
-        [
-            "whiteboard:enableTest",
-            "whiteboard:deleteCanvas",
-            "whiteboard:spawnWhiteboardWindow",
-            "whiteboard:getEmbedUrl",
-            "whiteboard:fetchBoardData",
-            "whiteboard:membership",
-        ],
+        privateContributions.map(({ capabilityId }) => capabilityId),
+        ["nextcloud-whiteboard:api"],
     );
-    assert.equal(
-        contributions.find(
-            ({ capabilityId }) => capabilityId === "whiteboard:fetchBoardData",
-        )?.value,
-        moduleApi.fetchBoardData,
-    );
-    assert.equal(
-        contributions.find(
-            ({ capabilityId }) => capabilityId === "whiteboard:membership",
-        )?.value,
-        moduleApi.membership,
+    assert.equal(privateContributions[0].value, moduleApi);
+    assert.deepEqual(
+        publicContributions.map(({ capabilityId }) => capabilityId),
+        ["whiteboard:enableTest", "whiteboard:deleteCanvas"],
     );
     assert.equal(
         moduleApi.getEmbedUrl("canvas-1", {

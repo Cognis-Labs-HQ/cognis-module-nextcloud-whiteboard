@@ -1,8 +1,8 @@
 export function contributeModuleCapability(ctx, capabilityId, value) {
-    const contribute = ctx.capabilities?.contribute;
-    if (typeof contribute === "function") {
-        contribute.call(ctx.capabilities, capabilityId, value);
+    const contributePublic = ctx.contributePublicCapability;
+    if (typeof contributePublic === "function") {
+        contributePublic.call(ctx, capabilityId, value);
         return;
     }
-    ctx.contributePublicCapability?.(capabilityId, value);
+    ctx.capabilities?.contribute?.(capabilityId, value);
 }

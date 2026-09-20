@@ -62,9 +62,9 @@ Die Liste gespeicherter Whiteboards kann nun auf die doppelte bisherige Maximalh
 
 Die für Jitsi bestimmten Capabilities `whiteboard:fetchBoardData`, `whiteboard:membership` und `whiteboard:deleteCanvas` werden nun gemeinsam an der Stelle beigesteuert, an der der Whiteboard-API-Anbieter erstellt wird. Bootstrap initialisiert nur noch UI und API-Registrierung. Dies entspricht der neuesten Jitsi-Meet-Integrationsstruktur und verhindert, dass der Prüfungsvertrag fehlt, obwohl direkte Whiteboard-Routen verfügbar bleiben.
 
-## Die bereichsgebundene Capability-Registry verwenden
+## Modulübergreifende Capabilities öffentlich halten
 
-Serverintegrationen registrieren sich nun über die Registry `capabilities.contribute` des Modulkontexts und entsprechen damit dem aktuellen Vertrag von Cognis und Jitsi Meet. Die ältere öffentliche Beitragsmethode bleibt nur als Kompatibilitätsfallback erhalten, sodass die bereichsgebundene `getCapability`-Abfrage von Jitsi den Whiteboard-Prüfungsanbieter in der bereitgestellten Laufzeit auflösen kann.
+Die für Jitsi bestimmten Serverintegrationen bevorzugen nun `contributePublicCapability`, da `ctx.capabilities.contribute` die modullokale Registrierungsoberfläche ist und nicht als primärer Pfad für Anbieter dienen darf, die ein anderes Modul nutzt. Die bereichsgebundene Registry bleibt nur als Kompatibilitätsfallback erhalten, damit die `getCapability`-Abfrage von Jitsi den Whiteboard-Prüfungsanbieter erkennen kann.
 
 ## Commits
 
@@ -82,3 +82,4 @@ Serverintegrationen registrieren sich nun über die Registry `capabilities.contr
 - [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)
 - [a7ec3f9](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a7ec3f9084dfbbb45543e087ca9931ca0a970712)
 - [17d692b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17d692b66644d9cde959ac1728d62efa8d67c3a7)
+- [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)

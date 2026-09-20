@@ -62,9 +62,9 @@ Nextcloud Whiteboard は `whiteboard:uiGateway` を一つの専用 Capability Pr
 
 Jitsi 向けの `whiteboard:fetchBoardData`、`whiteboard:membership`、`whiteboard:deleteCanvas` Capability を、Whiteboard API プロバイダーの生成時にまとめて提供するようになりました。Bootstrap は UI と API の登録だけを初期化し、最新の Jitsi Meet 統合構造に合わせます。これにより、Whiteboard の直接ルートが利用できる一方で検証契約だけが欠落する状態を防ぎます。
 
-## スコープ付き Capability レジストリを使用
+## モジュール間 Capability を公開状態に保つ
 
-サーバー統合は、現在の Cognis および Jitsi Meet のモジュール契約に合わせて、モジュールコンテキストの `capabilities.contribute` レジストリから登録するようになりました。従来の公開 Contribution メソッドは互換性フォールバックとしてのみ残し、デプロイ済みランタイムで Jitsi のスコープ付き `getCapability` 参照が Whiteboard 検証プロバイダーを解決できるようにします。
+Jitsi 向けサーバー統合は `contributePublicCapability` を優先するようになりました。`ctx.capabilities.contribute` はモジュールローカルの登録面であり、別モジュールが利用するプロバイダーの主要経路には使用しません。スコープ付きレジストリは互換性フォールバックとしてのみ残し、Jitsi の `getCapability` 参照が Whiteboard 検証プロバイダーを検出できるようにします。
 
 ## コミット
 
@@ -82,3 +82,4 @@ Jitsi 向けの `whiteboard:fetchBoardData`、`whiteboard:membership`、`whitebo
 - [17a3387](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17a3387f0845b0dfd067d10f8ae45d5cea6cc8c6)
 - [a7ec3f9](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a7ec3f9084dfbbb45543e087ca9931ca0a970712)
 - [17d692b](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/17d692b66644d9cde959ac1728d62efa8d67c3a7)
+- [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)

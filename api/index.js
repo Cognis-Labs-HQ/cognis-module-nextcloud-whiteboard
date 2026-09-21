@@ -168,11 +168,6 @@ export function registerApiRoutes(router, ctx) {
         profileIdentity,
         log,
     });
-    ctx.contributePublicCapability?.(
-        "whiteboard:deleteCanvas",
-        moduleApi.deleteCanvas,
-    );
-
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/ping",
         async (_req, res) => {

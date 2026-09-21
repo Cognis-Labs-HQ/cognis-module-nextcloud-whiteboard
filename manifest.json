@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.142",
+    "version": "2.3.143",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -177,7 +177,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "a775cde0165841eca1c9529b2a30e0b789cd0bdf9bbfefed242ce8ea887b6f05"
+            "sha256": "101a38f312cb85d94c851d2af7e05b83ef8c4f100f9ad38f3ae87bda4baee78b"
         },
         {
             "path": "api/reuse/canvas-deletion.js",
@@ -257,7 +257,7 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "a0043da593ea0647400596bafaedcd820d8870bb046c07ecd19117623b115c01"
+            "sha256": "fa00aca3bf1a364eed3b1d00061ce956aa4c96aa944560d4bdefb1a0eeb7c187"
         },
         {
             "path": "cli/index.js",
@@ -281,11 +281,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "a79afc41492c7486b8530d911275b85e955e31544eea3076965795a3d1549f35"
+            "sha256": "57560f19abd05cc78b08726d002c343ccfe780c37173b9d5e5bdb90572815291"
         },
         {
             "path": "package.json",
-            "sha256": "cd9ac0c91b3fc8a83e8409dc533dfdb5ad2186aa3d7687411e71794769bf73cb"
+            "sha256": "39506ae87a6ef5e521271a59a428ad600f446d7c65e79aec001fb347567a2da7"
         },
         {
             "path": "routes.json",
@@ -309,15 +309,15 @@
         },
         {
             "path": "tests/api-routes.test.js",
-            "sha256": "ebf169560ba19f615753e5aa636821410a12b3bf793a61b2f1b06098e81b9f61"
+            "sha256": "ee641e22e16716bbbb04c382615cf05831781e28bef9d695b4615b6a8c3b1134"
         },
         {
             "path": "tests/bootstrap-capabilities.test.js",
-            "sha256": "334c3710419951d5a8bee1df675b79acd6393e135d6f9a4e72fdb9e60efed3c3"
+            "sha256": "56869aee60fc1b17938e012c83b96d25027ea9ffb845c9ee73d3fd17762894da"
         },
         {
             "path": "tests/canvas-deletion.test.js",
-            "sha256": "c8633bfbb4a5dce462f425cb228b1452eea0f66a62f0e477a7c6fa11450d88c8"
+            "sha256": "ab27348ab040f771f0b18e6463fa0c9d753ca08c23b7c63c64f198e9f1ccbb73"
         },
         {
             "path": "tests/canvas-membership.test.js",

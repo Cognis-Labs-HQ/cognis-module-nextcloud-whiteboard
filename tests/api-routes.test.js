@@ -146,7 +146,7 @@ test("API registration returns its implementation without publishing a facade", 
     assert.deepEqual(privateContributions, []);
     assert.deepEqual(
         publicContributions.map(({ capabilityId }) => capabilityId),
-        ["whiteboard:enableTest", "whiteboard:deleteCanvas"],
+        ["whiteboard:enableTest"],
     );
     assert.equal(
         moduleApi.getEmbedUrl("canvas-1", {

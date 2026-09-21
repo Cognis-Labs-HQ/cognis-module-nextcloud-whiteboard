@@ -4,26 +4,25 @@ import test from "node:test";
 import { bootstrapModule } from "../bootstrap.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
 
-test("bootstrap exposes the initialized API through the Jitsi contracts", () => {
+function createRuntime({ hideCapabilityId } = {}) {
     const capabilities = new Map([
         ["auth:requireAuth", () => null],
         ["db:executor", {}],
         ["social:profile:identity", testProfileIdentity],
     ]);
+    const events = [];
     const publicCapabilities = new Map();
     const registerRoute = () => {};
+    const registerUi = () => events.push("ui");
     const ctx = {
         moduleRoot: "/modules/nextcloud-whiteboard",
-        capabilities: {
-            contribute(capabilityId, value) {
-                capabilities.set(capabilityId, value);
-            },
-        },
         contributePublicCapability(capabilityId, value) {
+            events.push(capabilityId);
             capabilities.set(capabilityId, value);
             publicCapabilities.set(capabilityId, value);
         },
         getCapability(capabilityId) {
+            if (capabilityId === hideCapabilityId) return undefined;
             return capabilities.get(capabilityId);
         },
         flow: { exists: () => false },
@@ -33,22 +32,42 @@ test("bootstrap exposes the initialized API through the Jitsi contracts", () => 
             post: registerRoute,
             put: registerRoute,
         },
-        registerAdminSection() {},
-        registerCapabilityProvider() {},
-        registerNavbarPlugin() {},
-        registerSpaRoute() {},
-        registerStaticDir() {},
+        registerAdminSection: registerUi,
+        registerCapabilityProvider: registerUi,
+        registerNavbarPlugin: registerUi,
+        registerSpaRoute: registerUi,
+        registerStaticDir: registerUi,
     };
+    return { ctx, events, publicCapabilities };
+}
 
-    bootstrapModule(ctx);
+test("bootstrap verifies Jitsi contracts before exposing the UI", () => {
+    const runtime = createRuntime();
 
-    assert.equal(capabilities.has("nextcloud-whiteboard:api"), false);
+    bootstrapModule(runtime.ctx);
+
     assert.equal(
-        typeof publicCapabilities.get("whiteboard:fetchBoardData"),
+        typeof runtime.publicCapabilities.get("whiteboard:fetchBoardData"),
         "function",
     );
     assert.equal(
-        typeof publicCapabilities.get("whiteboard:membership")?.add,
+        typeof runtime.publicCapabilities.get("whiteboard:membership")?.add,
         "function",
     );
+    assert.ok(
+        runtime.events.indexOf("whiteboard:fetchBoardData") <
+            runtime.events.indexOf("ui"),
+    );
+});
+
+test("bootstrap withholds UI when Jitsi cannot resolve verification", () => {
+    const runtime = createRuntime({
+        hideCapabilityId: "whiteboard:fetchBoardData",
+    });
+
+    assert.throws(
+        () => bootstrapModule(runtime.ctx),
+        /Whiteboard capability whiteboard:fetchBoardData is unavailable/,
+    );
+    assert.equal(runtime.events.includes("ui"), false);
 });

@@ -128,11 +128,11 @@ test("canvas deletion removes dependent records transactionally", async () => {
 
 test("canvas deletion capability is published for orchestrators", async () => {
     const source = await import("node:fs/promises").then((fs) =>
-        fs.readFile(new URL("../api/index.js", import.meta.url), "utf8"),
+        fs.readFile(new URL("../bootstrap.js", import.meta.url), "utf8"),
     );
     assert.match(
         source,
-        /"whiteboard:deleteCanvas",\s*moduleApi\.deleteCanvas/,
+        /\["whiteboard:deleteCanvas",\s*moduleApi\.deleteCanvas\]/,
     );
 });
 
@@ -145,8 +145,7 @@ test("window spawning capability has only one owner-tracked publisher", async ()
             fs.readFile(new URL("../bootstrap.js", import.meta.url), "utf8"),
         ),
     ]);
-    const capability =
-        /contributePublicCapability\([\s\S]{0,80}?["']whiteboard:spawnWhiteboardWindow["']/g;
+    const capability = /["']whiteboard:spawnWhiteboardWindow["']/g;
     assert.equal(apiSource.match(capability)?.length ?? 0, 0);
     assert.equal(bootstrapSource.match(capability)?.length ?? 0, 1);
 });

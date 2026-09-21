@@ -70,6 +70,10 @@ Pendaftaran API kini mengembalikan API Whiteboard yang telah diinisialisasi lang
 
 Verifikasi papan kini mengembalikan `createdByAccountId` bersama handle Nextcloud yang tersimpan. Nilai tersebut diselesaikan melalui kapabilitas identitas Social Profile saat ini agar selaras dengan model akun eksternal kanonis Cognis PR #225, sementara `createdBy` tetap tersedia untuk Nextcloud serta pemeriksaan judul dan pembuat Jitsi yang sudah ada.
 
+## Verifikasi penyedia server sebelum menampilkan UI Whiteboard
+
+Bootstrap kini menerbitkan dan membaca kembali setiap kapabilitas server untuk Jitsi sebelum mendaftarkan kontribusi UI Whiteboard apa pun. Konflik pendaftaran atau kontrak `whiteboard:fetchBoardData` yang hilang menghasilkan log server terstruktur khusus kapabilitas dan membatalkan pengaktifan sebelum penyedia browser muncul. Hal ini mencegah keadaan menyesatkan ketika pembuatan kanvas berhasil tetapi verifikasi pemetaan sisi server tidak dapat dijalankan.
+
 ## Komit
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -90,3 +94,4 @@ Verifikasi papan kini mengembalikan `createdByAccountId` bersama handle Nextclou
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
 - [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)
 - [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)
+- [4176de7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4176de76b0c457180096d97b4fc675f8b8d8403e)

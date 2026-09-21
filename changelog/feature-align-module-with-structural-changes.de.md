@@ -70,6 +70,10 @@ Die API-Registrierung gibt die initialisierte Whiteboard-API nun direkt an Boots
 
 Die Board-Prüfung gibt nun `createdByAccountId` zusätzlich zum gespeicherten Nextcloud-Handle zurück. Der Wert wird über die aktuelle Identitäts-Capability von Social Profile aufgelöst und entspricht damit dem kanonischen Modell für externe Konten aus Cognis PR #225; `createdBy` bleibt für Nextcloud sowie bestehende Titel- und Erstellerprüfungen von Jitsi erhalten.
 
+## Serveranbieter vor der Whiteboard-UI prüfen
+
+Bootstrap veröffentlicht und liest nun jede für Jitsi bestimmte Server-Capability zurück, bevor eine Whiteboard-UI-Komponente registriert wird. Ein Registrierungskonflikt oder ein fehlender Vertrag `whiteboard:fetchBoardData` erzeugt einen Capability-spezifischen strukturierten Serverlog und bricht die Aktivierung ab, bevor der Browseranbieter erscheinen kann. Dadurch kann die irreführende Situation nicht mehr entstehen, in der die Canvas-Erstellung gelingt, aber die serverseitige Zuordnungsprüfung nicht ausgeführt werden kann.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -90,3 +94,4 @@ Die Board-Prüfung gibt nun `createdByAccountId` zusätzlich zum gespeicherten N
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
 - [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)
 - [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)
+- [4176de7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4176de76b0c457180096d97b4fc675f8b8d8403e)

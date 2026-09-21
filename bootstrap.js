@@ -32,26 +32,41 @@ export async function uninstallModule(ctx, { deleteContent }) {
 }
 
 export function bootstrapModule(ctx) {
-    registerUi(ctx);
     const moduleApi = registerApiRoutes(ctx.router, ctx);
     if (!moduleApi) {
         throw new Error("Nextcloud Whiteboard API capability is unavailable.");
     }
 
-    ctx.contributePublicCapability(
-        "whiteboard:spawnWhiteboardWindow",
-        moduleApi.spawnWhiteboardWindow,
-    );
-    ctx.contributePublicCapability(
-        "whiteboard:getEmbedUrl",
-        moduleApi.getEmbedUrl,
-    );
-    ctx.contributePublicCapability(
-        "whiteboard:fetchBoardData",
-        moduleApi.fetchBoardData,
-    );
-    ctx.contributePublicCapability(
-        "whiteboard:membership",
-        moduleApi.membership,
-    );
+    const publicCapabilities = new Map([
+        ["whiteboard:deleteCanvas", moduleApi.deleteCanvas],
+        ["whiteboard:spawnWhiteboardWindow", moduleApi.spawnWhiteboardWindow],
+        ["whiteboard:getEmbedUrl", moduleApi.getEmbedUrl],
+        ["whiteboard:fetchBoardData", moduleApi.fetchBoardData],
+        ["whiteboard:membership", moduleApi.membership],
+    ]);
+    for (const [capabilityId, value] of publicCapabilities) {
+        try {
+            ctx.contributePublicCapability(capabilityId, value);
+        } catch (error) {
+            ctx.log?.("error", "Whiteboard capability registration failed.", {
+                component: "nextcloud-whiteboard-module",
+                operation: "register_public_capability",
+                capabilityId,
+            });
+            throw error;
+        }
+    }
+    for (const [capabilityId, value] of publicCapabilities) {
+        if (ctx.getCapability(capabilityId) === value) continue;
+        ctx.log?.("error", "Whiteboard capability verification failed.", {
+            component: "nextcloud-whiteboard-module",
+            operation: "verify_public_capability",
+            capabilityId,
+        });
+        throw new Error(
+            `Whiteboard capability ${capabilityId} is unavailable.`,
+        );
+    }
+
+    registerUi(ctx);
 }

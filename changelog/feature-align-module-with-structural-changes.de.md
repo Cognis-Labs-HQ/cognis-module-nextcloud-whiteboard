@@ -64,7 +64,7 @@ Die für Jitsi bestimmten Capabilities `whiteboard:fetchBoardData`, `whiteboard:
 
 ## Die bewährte Jitsi-Anbieterstruktur wiederherstellen
 
-Die initialisierte Whiteboard-API wird genau einmal unter der moduleigenen Capability `nextcloud-whiteboard:api` gespeichert. Bootstrap löst genau diese Instanz auf und veröffentlicht die vier etablierten `whiteboard:`-Verträge, die Jitsi Meet verwendet. Es gibt einen internen Registrierungspfad und einen öffentlichen Integrationspfad, ohne Fallback oder alternatives Registrierungsverhalten.
+Die API-Registrierung gibt die initialisierte Whiteboard-API nun direkt an Bootstrap zurück, das sofort die vier etablierten `whiteboard:`-Verträge für Jitsi Meet veröffentlicht. Es wird keine temporäre interne Capability mehr registriert oder aufgelöst; dadurch entfällt der Aktivierungsfehler beim Auflösen von `nextcloud-whiteboard:api` über den bereichsgebundenen Hostkontext.
 
 ## Kanonische Whiteboard-Eigentümeridentitäten bereitstellen
 
@@ -89,3 +89,4 @@ Die Board-Prüfung gibt nun `createdByAccountId` zusätzlich zum gespeicherten N
 - [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
 - [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)
+- [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)

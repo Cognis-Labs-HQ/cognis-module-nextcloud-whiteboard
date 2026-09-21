@@ -64,7 +64,7 @@ Jitsi 向けの `whiteboard:fetchBoardData`、`whiteboard:membership`、`whitebo
 
 ## 実績のある Jitsi プロバイダー構成を復元
 
-初期化済み Whiteboard API を、モジュール所有の `nextcloud-whiteboard:api` Capability に一度だけ保存します。Bootstrap はその同一インスタンスを解決し、Jitsi Meet が利用する確立済みの 4 つの `whiteboard:` 契約を公開します。内部登録経路と公開統合経路はそれぞれ 1 つだけで、フォールバックや代替登録動作はありません。
+API 登録は初期化済み Whiteboard API を Bootstrap に直接返し、Bootstrap が Jitsi Meet 用の確立済み 4 つの `whiteboard:` 契約を直ちに公開するようになりました。一時的な内部 Capability の登録や参照を行わないため、スコープ付きホストコンテキストから `nextcloud-whiteboard:api` を解決していたことによる有効化エラーを解消します。
 
 ## 正規の Whiteboard 所有者 ID を公開
 
@@ -89,3 +89,4 @@ Jitsi 向けの `whiteboard:fetchBoardData`、`whiteboard:membership`、`whitebo
 - [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
 - [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)
+- [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)

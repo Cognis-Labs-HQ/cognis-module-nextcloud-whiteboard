@@ -122,7 +122,7 @@ function createRouterCapture() {
     };
 }
 
-test("API registration keeps its facade scoped and publishes route capabilities", () => {
+test("API registration returns its implementation without publishing a facade", () => {
     const privateContributions = [];
     const publicContributions = [];
     const moduleApi = registerApiRoutes(createRouterCapture(), {
@@ -143,11 +143,7 @@ test("API registration keeps its facade scoped and publishes route capabilities"
     });
 
     assert.equal(typeof moduleApi.fetchBoardData, "function");
-    assert.deepEqual(
-        privateContributions.map(({ capabilityId }) => capabilityId),
-        ["nextcloud-whiteboard:api"],
-    );
-    assert.equal(privateContributions[0].value, moduleApi);
+    assert.deepEqual(privateContributions, []);
     assert.deepEqual(
         publicContributions.map(({ capabilityId }) => capabilityId),
         ["whiteboard:enableTest", "whiteboard:deleteCanvas"],

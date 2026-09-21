@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.141",
+    "version": "2.3.142",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -177,7 +177,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "6e29d44d01670de3f455a5f1d8b9652faa18be3de6638ae51287311c84e14528"
+            "sha256": "a775cde0165841eca1c9529b2a30e0b789cd0bdf9bbfefed242ce8ea887b6f05"
         },
         {
             "path": "api/reuse/canvas-deletion.js",
@@ -257,7 +257,7 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "be58c70bfb1a5cfd16b27f2c8fb498d0fe85346e3337cd3391f7fcad5a232c1a"
+            "sha256": "a0043da593ea0647400596bafaedcd820d8870bb046c07ecd19117623b115c01"
         },
         {
             "path": "cli/index.js",
@@ -281,11 +281,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "2e9399281577aecf7321b6c77433299ab4beff9023893dd87f7b9646b2612cfa"
+            "sha256": "a79afc41492c7486b8530d911275b85e955e31544eea3076965795a3d1549f35"
         },
         {
             "path": "package.json",
-            "sha256": "a69eb891e95db32253af48f5ec2a24ff9512eec89a4c3fcd92172cbdb1fed866"
+            "sha256": "cd9ac0c91b3fc8a83e8409dc533dfdb5ad2186aa3d7687411e71794769bf73cb"
         },
         {
             "path": "routes.json",
@@ -309,11 +309,11 @@
         },
         {
             "path": "tests/api-routes.test.js",
-            "sha256": "b7f100f377470b9074ea869be1e9951b0eaf5f9a2e25999bcee2848920e1300a"
+            "sha256": "ebf169560ba19f615753e5aa636821410a12b3bf793a61b2f1b06098e81b9f61"
         },
         {
             "path": "tests/bootstrap-capabilities.test.js",
-            "sha256": "738febffb15f597f07fa4d98ead10b367172e33a668016411a87aab4c2ad3566"
+            "sha256": "334c3710419951d5a8bee1df675b79acd6393e135d6f9a4e72fdb9e60efed3c3"
         },
         {
             "path": "tests/canvas-deletion.test.js",
@@ -353,7 +353,7 @@
         },
         {
             "path": "tests/manifest-contract.test.js",
-            "sha256": "1fa0aa8fa03a35b065719d9b74509a9095e62080096dd6929a361cda1e4ddea1"
+            "sha256": "d674a1c7a1229e3dc832b7d5dd6a7a268df3066925e5fe1f2d4984bdd51a4b71"
         },
         {
             "path": "tests/overlay.test.js",

@@ -64,7 +64,7 @@ Kapabilitas `whiteboard:fetchBoardData`, `whiteboard:membership`, dan `whiteboar
 
 ## Pulihkan topologi penyedia Jitsi yang telah terbukti
 
-API Whiteboard yang telah diinisialisasi disimpan satu kali di bawah kapabilitas milik modul `nextcloud-whiteboard:api`. Bootstrap menemukan instans yang sama persis dan menerbitkan empat kontrak `whiteboard:` yang telah digunakan Jitsi Meet. Hanya ada satu jalur pendaftaran internal dan satu jalur integrasi publik, tanpa fallback atau perilaku pendaftaran alternatif.
+Pendaftaran API kini mengembalikan API Whiteboard yang telah diinisialisasi langsung ke Bootstrap, yang segera menerbitkan empat kontrak `whiteboard:` untuk Jitsi Meet. Tidak ada kapabilitas internal sementara yang didaftarkan atau dicari, sehingga kegagalan pengaktifan akibat penyelesaian `nextcloud-whiteboard:api` melalui konteks host terbatas dihilangkan.
 
 ## Sediakan identitas pemilik Whiteboard kanonis
 
@@ -89,3 +89,4 @@ Verifikasi papan kini mengembalikan `createdByAccountId` bersama handle Nextclou
 - [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
 - [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)
+- [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)

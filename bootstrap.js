@@ -33,9 +33,7 @@ export async function uninstallModule(ctx, { deleteContent }) {
 
 export function bootstrapModule(ctx) {
     registerUi(ctx);
-    registerApiRoutes(ctx.router, ctx);
-
-    const moduleApi = ctx.getCapability("nextcloud-whiteboard:api");
+    const moduleApi = registerApiRoutes(ctx.router, ctx);
     if (!moduleApi) {
         throw new Error("Nextcloud Whiteboard API capability is unavailable.");
     }

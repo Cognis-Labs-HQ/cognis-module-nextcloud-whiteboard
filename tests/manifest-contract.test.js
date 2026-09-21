@@ -33,9 +33,10 @@ test("bootstrap publishes the declared Jitsi integration capabilities", async ()
         readFile(new URL("../api/index.js", import.meta.url), "utf8"),
         readFile(new URL("../bootstrap.js", import.meta.url), "utf8"),
     ]);
+    assert.doesNotMatch(apiSource, /nextcloud-whiteboard:api/);
     assert.match(
-        apiSource,
-        /ctx\.capabilities\?\.contribute\?\.\("nextcloud-whiteboard:api", moduleApi\)/,
+        bootstrapSource,
+        /const moduleApi = registerApiRoutes\(ctx\.router, ctx\)/,
     );
     for (const capability of [
         "whiteboard:fetchBoardData",

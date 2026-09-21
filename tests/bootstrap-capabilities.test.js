@@ -42,14 +42,13 @@ test("bootstrap exposes the initialized API through the Jitsi contracts", () => 
 
     bootstrapModule(ctx);
 
-    const moduleApi = capabilities.get("nextcloud-whiteboard:api");
-    assert.ok(moduleApi);
+    assert.equal(capabilities.has("nextcloud-whiteboard:api"), false);
     assert.equal(
-        publicCapabilities.get("whiteboard:fetchBoardData"),
-        moduleApi.fetchBoardData,
+        typeof publicCapabilities.get("whiteboard:fetchBoardData"),
+        "function",
     );
     assert.equal(
-        publicCapabilities.get("whiteboard:membership"),
-        moduleApi.membership,
+        typeof publicCapabilities.get("whiteboard:membership")?.add,
+        "function",
     );
 });

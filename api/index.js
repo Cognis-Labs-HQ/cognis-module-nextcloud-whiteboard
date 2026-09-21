@@ -168,7 +168,6 @@ export function registerApiRoutes(router, ctx) {
         profileIdentity,
         log,
     });
-    ctx.capabilities?.contribute?.("nextcloud-whiteboard:api", moduleApi);
     ctx.contributePublicCapability?.(
         "whiteboard:deleteCanvas",
         moduleApi.deleteCanvas,

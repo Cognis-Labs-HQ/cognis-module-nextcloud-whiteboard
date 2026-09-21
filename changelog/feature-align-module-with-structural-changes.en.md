@@ -64,7 +64,7 @@ The Jitsi-facing `whiteboard:fetchBoardData`, `whiteboard:membership`, and `whit
 
 ## Restore the proven Jitsi provider topology
 
-The initialized Whiteboard API is stored once under the module-owned `nextcloud-whiteboard:api` capability. Bootstrap resolves that exact instance and publishes the four established `whiteboard:` contracts consumed by Jitsi Meet. There is one internal registration path and one public integration path, with no fallback or alternate registration behavior.
+API registration now returns the initialized Whiteboard API directly to Bootstrap, which immediately publishes the four established `whiteboard:` contracts consumed by Jitsi Meet. No temporary internal capability is registered or looked up, eliminating the enablement failure caused by resolving `nextcloud-whiteboard:api` through the scoped host context.
 
 ## Expose canonical Whiteboard owner identities
 
@@ -89,3 +89,4 @@ Board verification now returns `createdByAccountId` alongside the stored Nextclo
 - [d2c85fc](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d2c85fcc18c0f5eae4dd57de71d12ca5ecca5715)
 - [4e77310](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4e77310afdfd9633870a10aeb8358b9f820d1459)
 - [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)
+- [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)

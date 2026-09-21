@@ -6,7 +6,6 @@ import { createWhiteboardSearchCollector } from "./search-index.js";
 import { createWhiteboardStatusController } from "./status.js";
 import { openWhiteboardSharePopup } from "./share-popup.js";
 import { bindOverlayBoardSelection, setOverlayVisible } from "./overlay.js";
-import { openWhiteboardHistoryPopup } from "./history-popup.js";
 import { renderCanvasElement as renderWhiteboardCanvasElement } from "./render.js";
 import {
     API_BASE,
@@ -431,7 +430,6 @@ function bindCanvasToolbar(canvas) {
             savedElements = [];
         },
         onCreateBoard: createAndOpenBoard,
-        onHistory: openHistoryPopup,
         onRename: renameActiveBoard,
         onSelectionChange: () => composer?.refreshPresence?.(),
         translate: translateModuleString,
@@ -458,24 +456,6 @@ function openSharePopup() {
         canManageShares,
         openPopup: uiCtx.capabilities.get("share:openPopup"),
         reportError: reportClientError,
-        translate: translateModuleString,
-    });
-}
-
-async function openHistoryPopup() {
-    try {
-        await loadBoards();
-    } catch (error) {
-        reportClientError(
-            error,
-            "module.nextcloud_whiteboard.load_boards_failed",
-        );
-        return;
-    }
-    await openWhiteboardHistoryPopup({
-        boards,
-        escapeHtml,
-        openPopup,
         translate: translateModuleString,
     });
 }
@@ -658,10 +638,6 @@ function onCanvasRender() {
     withinMount("#whiteboard-start-new")?.addEventListener(
         "click",
         () => void createAndOpenBoard(),
-    );
-    withinMount("#whiteboard-start-history")?.addEventListener(
-        "click",
-        () => void openHistoryPopup(),
     );
     bindOverlayBoardSelection(pageMountRoot, boards, (board) => {
         void openBoard(board);

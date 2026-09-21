@@ -14,4 +14,13 @@ export const testProfileIdentity = {
             ),
         );
     },
+    async resolveAccountHandle(accountId) {
+        return this.normalizeHandleKey(
+            String(accountId).replace(/^account:/, ""),
+        );
+    },
+    async resolveAccountId(handle) {
+        const normalizedHandle = this.normalizeHandleKey(handle);
+        return normalizedHandle ? `account:${normalizedHandle}` : null;
+    },
 };

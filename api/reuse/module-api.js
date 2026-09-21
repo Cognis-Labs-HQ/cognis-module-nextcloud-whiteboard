@@ -21,6 +21,10 @@ export function createWhiteboardModuleApi({
             profileIdentity,
             log,
         }),
+        getEmbedUrl(whiteboardId, options = {}) {
+            if (!whiteboardId) return null;
+            return buildCognisWhiteboardUrl(whiteboardId, options);
+        },
         async spawnWhiteboardWindow(options = {}) {
             await store.ensureSchema();
             const createdBy = profileIdentity.normalizeHandleKey(
@@ -78,11 +82,15 @@ export function createWhiteboardModuleApi({
                 String(whiteboardId ?? ""),
             );
             if (!whiteboard) return null;
+            const createdByAccountId = await profileIdentity.resolveAccountId(
+                whiteboard.createdBy,
+            );
             return {
                 id: whiteboard.id,
                 title: whiteboard.title,
                 embedUrl: buildCognisWhiteboardUrl(whiteboard.id),
                 createdBy: whiteboard.createdBy,
+                createdByAccountId,
                 createdAt: whiteboard.createdAt,
                 updatedAt: whiteboard.updatedAt,
             };

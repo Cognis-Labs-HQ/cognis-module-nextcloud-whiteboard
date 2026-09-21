@@ -10,11 +10,41 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
     assert.deepEqual(manifest.capabilities, [
         "whiteboard:collaboration",
         "whiteboard:access-control",
+        "whiteboard:enableTest",
+        "whiteboard:spawnWhiteboardWindow",
         "whiteboard:getEmbedUrl",
         "whiteboard:fetchBoardData",
         "whiteboard:membership",
         "whiteboard:deleteCanvas",
     ]);
+});
+
+test("module declares privilege for the stable Whiteboard gateway namespace", () => {
+    assert.equal(manifest.privileged, true);
+    assert.ok(
+        manifest.capabilities.every((capability) =>
+            capability.startsWith("whiteboard:"),
+        ),
+    );
+});
+
+test("bootstrap publishes the declared Jitsi integration capabilities", async () => {
+    const [apiSource, bootstrapSource] = await Promise.all([
+        readFile(new URL("../api/index.js", import.meta.url), "utf8"),
+        readFile(new URL("../bootstrap.js", import.meta.url), "utf8"),
+    ]);
+    assert.doesNotMatch(apiSource, /nextcloud-whiteboard:api/);
+    assert.match(
+        bootstrapSource,
+        /const moduleApi = registerApiRoutes\(ctx\.router, ctx\)/,
+    );
+    for (const capability of [
+        "whiteboard:fetchBoardData",
+        "whiteboard:membership",
+    ]) {
+        assert.match(bootstrapSource, new RegExp(`"${capability}"`));
+        assert.ok(manifest.capabilities.includes(capability));
+    }
 });
 
 test("module manifest separates core components from external modules", () => {

@@ -30,11 +30,12 @@ Dapatkan capability publik dari `ctx`; jangan mengodekan route komponen lain ata
 const getEmbedUrl = ctx.getCapability("whiteboard:getEmbedUrl");
 const fetchBoardData = ctx.getCapability("whiteboard:fetchBoardData");
 const spawnWhiteboardWindow = ctx.getCapability(
-    "nextcloud-whiteboard:spawnWhiteboardWindow",
+    "whiteboard:spawnWhiteboardWindow",
 );
 
 const url = getEmbedUrl(boardId, { instantCanvas: true });
 const board = await fetchBoardData(boardId);
+// board.createdByAccountId adalah ID akun Cognis kanonis.
 await spawnWhiteboardWindow({ whiteboardId: board.id });
 ```
 

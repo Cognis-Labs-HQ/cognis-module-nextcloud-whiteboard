@@ -32,88 +32,29 @@ export async function uninstallModule(ctx, { deleteContent }) {
 }
 
 export function bootstrapModule(ctx) {
+    const moduleApi = registerApiRoutes(ctx.router, ctx);
+    if (!moduleApi) {
+        throw new Error("Nextcloud Whiteboard API capability is unavailable.");
+    }
+
+    const publicCapabilities = new Map([
+        ["whiteboard:deleteCanvas", moduleApi.deleteCanvas],
+        ["whiteboard:spawnWhiteboardWindow", moduleApi.spawnWhiteboardWindow],
+        ["whiteboard:getEmbedUrl", moduleApi.getEmbedUrl],
+        ["whiteboard:fetchBoardData", moduleApi.fetchBoardData],
+        ["whiteboard:membership", moduleApi.membership],
+    ]);
+    for (const [capabilityId, value] of publicCapabilities) {
+        try {
+            ctx.contributePublicCapability(capabilityId, value);
+        } catch (error) {
+            ctx.log?.("error", "Whiteboard capability registration failed.", {
+                component: "nextcloud-whiteboard-module",
+                operation: "register_public_capability",
+                capabilityId,
+            });
+            throw error;
+        }
+    }
     registerUi(ctx);
-    registerApiRoutes(ctx.router, ctx);
-
-    const systemCtx = ctx.getCapability("system:ctx");
-
-    const spawnWhiteboardWindow = async (options = {}) => {
-        const moduleApi = systemCtx?.getCapability?.(
-            "nextcloud-whiteboard:api",
-        );
-        if (!moduleApi) {
-            throw new Error(
-                "Nextcloud Whiteboard API capability is unavailable.",
-            );
-        }
-        return moduleApi.spawnWhiteboardWindow(options);
-    };
-
-    const getEmbedUrl = (whiteboardId, options = {}) => {
-        if (!whiteboardId) return null;
-        const params = new URLSearchParams({ id: whiteboardId });
-        if (options.instantCanvas === true) params.set("instantCanvas", "1");
-        if (options.disposable === true) params.set("disposable", "1");
-        return `/whiteboard?${params.toString()}`;
-    };
-
-    const fetchBoardData = async (whiteboardId) => {
-        const moduleApi = systemCtx?.getCapability?.(
-            "nextcloud-whiteboard:api",
-        );
-        if (!moduleApi) {
-            throw new Error(
-                "Nextcloud Whiteboard API capability is unavailable.",
-            );
-        }
-        return moduleApi.fetchBoardData(whiteboardId);
-    };
-
-    const membership = {
-        async add(input) {
-            const moduleApi = systemCtx?.getCapability?.(
-                "nextcloud-whiteboard:api",
-            );
-            if (!moduleApi?.membership) {
-                throw new Error(
-                    "Nextcloud Whiteboard membership capability is unavailable.",
-                );
-            }
-            return moduleApi.membership.add(input);
-        },
-        async remove(input) {
-            const moduleApi = systemCtx?.getCapability?.(
-                "nextcloud-whiteboard:api",
-            );
-            if (!moduleApi?.membership) {
-                throw new Error(
-                    "Nextcloud Whiteboard membership capability is unavailable.",
-                );
-            }
-            return moduleApi.membership.remove(input);
-        },
-    };
-
-    ctx.contributePublicCapability(
-        "nextcloud-whiteboard:spawnWhiteboardWindow",
-        spawnWhiteboardWindow,
-    );
-    ctx.contributePublicCapability("whiteboard:getEmbedUrl", getEmbedUrl);
-    ctx.contributePublicCapability("whiteboard:fetchBoardData", fetchBoardData);
-    ctx.contributePublicCapability("whiteboard:membership", membership);
-
-    ctx.flow.extend(
-        "bootstrap-platform",
-        "register-flows",
-        { id: "nextcloud-whiteboard-module:bootstrap-registration" },
-        () => ({
-            moduleId: "nextcloud-whiteboard",
-            registeredCapabilities: [
-                "nextcloud-whiteboard:spawnWhiteboardWindow",
-                "whiteboard:getEmbedUrl",
-                "whiteboard:fetchBoardData",
-                "whiteboard:membership",
-            ],
-        }),
-    );
 }

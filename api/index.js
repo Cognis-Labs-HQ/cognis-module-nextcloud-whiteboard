@@ -15,6 +15,7 @@ import {
 } from "./reuse/configuration-api.js";
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 const initializedRuntimeContexts = new WeakSet();
+const initializedShareHookContexts = new WeakSet();
 const MODULE_ID = "nextcloud-whiteboard";
 const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
@@ -37,7 +38,6 @@ export function registerUi(ctx) {
     ctx.registerNavbarPlugin({
         scriptUrl: "/static/modules/nextcloud-whiteboard/navbar.js",
         access: { minRole: "user" },
-        providesCapabilities: ["whiteboard:uiGateway"],
     });
 
     ctx.registerSpaRoute({
@@ -91,7 +91,6 @@ export function registerApiRoutes(router, ctx) {
             resolveShareDelegatedAccess,
         });
     const listSharesByResource = ctx.getCapability("share:listByResource");
-    const systemCtx = ctx.getCapability("system:ctx");
     const registerNamespace = ctx.getCapability("files:registerNamespace");
     const createNamespaceClient = ctx.getCapability("files:namespace");
 
@@ -115,33 +114,49 @@ export function registerApiRoutes(router, ctx) {
         "auth:registerPageScriptOrigins",
     );
 
-    const runtimeContext = systemCtx ?? ctx;
+    const runtimeContext = ctx;
     const shouldInitializeRuntime =
         typeof runtimeContext === "object" &&
         runtimeContext !== null &&
         !initializedRuntimeContexts.has(runtimeContext);
-    if (shouldInitializeRuntime) {
-        registerNamespace?.({
-            id: "whiteboards",
-            ownerComponent: "nextcloud-whiteboard",
-            acl: { visibility: "private-group" },
-        });
-        initializedRuntimeContexts.add(runtimeContext);
-    }
-    const whiteboardFiles = createNamespaceClient?.({
+    if (shouldInitializeRuntime) initializedRuntimeContexts.add(runtimeContext);
+
+    const namespaceRequest = {
         namespaceId: "whiteboards",
         callerComponent: "nextcloud-whiteboard",
-    });
+    };
+    let whiteboardFiles;
+    if (createNamespaceClient) {
+        try {
+            whiteboardFiles = createNamespaceClient(namespaceRequest);
+        } catch {
+            registerNamespace?.({
+                id: "whiteboards",
+                ownerComponent: "nextcloud-whiteboard",
+                acl: { visibility: "private-group" },
+            });
+            whiteboardFiles = createNamespaceClient(namespaceRequest);
+        }
+    }
 
-    const ensureShareFlowHooks = () =>
+    const ensureShareFlowHooks = () => {
+        if (initializedShareHookContexts.has(ctx)) return;
+        if (
+            !ctx.flow?.exists?.("mint-share-token") ||
+            !ctx.flow?.exists?.("resolve-share-token")
+        ) {
+            return;
+        }
         registerWhiteboardShareFlowHooks({
-            ctx: systemCtx ?? ctx,
+            ctx,
             store,
             profileStore,
             resolveWhiteboardUserAccess: resolveAccess,
             resolveShareGuestId,
             whiteboardStylesheets: WHITEBOARD_STYLESHEETS,
         });
+        initializedShareHookContexts.add(ctx);
+    };
     if (shouldInitializeRuntime) {
         ensureShareFlowHooks();
         void registerStoredOrigin({ store, registerScriptOrigins, log });
@@ -153,19 +168,6 @@ export function registerApiRoutes(router, ctx) {
         profileIdentity,
         log,
     });
-    ctx.getCapability("system:ctx")?.contributePublicCapability?.(
-        "nextcloud-whiteboard:api",
-        moduleApi,
-    );
-    ctx.getCapability("system:ctx")?.contributePublicCapability?.(
-        "whiteboard:deleteCanvas",
-        moduleApi.deleteCanvas,
-    );
-    ctx.getCapability("system:ctx")?.contributePublicCapability?.(
-        "nextcloud-whiteboard:spawnWhiteboardWindow",
-        moduleApi.spawnWhiteboardWindow,
-    );
-
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/ping",
         async (_req, res) => {
@@ -628,7 +630,7 @@ export function registerApiRoutes(router, ctx) {
             const claims = requireAuth(req, res, "user");
             if (!claims) return;
             ensureShareFlowHooks();
-            if (!systemCtx?.flow?.exists?.("mint-share-token")) {
+            if (!ctx.flow?.exists?.("mint-share-token")) {
                 sendError(
                     res,
                     503,
@@ -649,7 +651,7 @@ export function registerApiRoutes(router, ctx) {
                 );
                 return;
             }
-            const result = await systemCtx.flow.run("mint-share-token", {
+            const result = await ctx.flow.run("mint-share-token", {
                 resourceType: "whiteboard",
                 resourceId: whiteboardId,
                 claims,
@@ -680,7 +682,7 @@ export function registerApiRoutes(router, ctx) {
             const claims = requireAuth(req, res, "user");
             if (!claims) return;
             ensureShareFlowHooks();
-            if (!systemCtx?.flow?.exists?.("revoke-share-token")) {
+            if (!ctx.flow?.exists?.("revoke-share-token")) {
                 sendError(
                     res,
                     503,
@@ -690,7 +692,7 @@ export function registerApiRoutes(router, ctx) {
                 return;
             }
             const body = await readJson(req);
-            const result = await systemCtx.flow.run("revoke-share-token", {
+            const result = await ctx.flow.run("revoke-share-token", {
                 resourceType: "whiteboard",
                 resourceId: String(body.whiteboardId ?? "").trim(),
                 shareId: String(body.shareId ?? "").trim(),
@@ -822,6 +824,8 @@ export function registerApiRoutes(router, ctx) {
         },
         { access: { minRole: "user" } },
     );
+
+    return moduleApi;
 }
 
 export { MODULE_ID };

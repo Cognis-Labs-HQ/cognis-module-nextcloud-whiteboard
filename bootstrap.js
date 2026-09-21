@@ -56,17 +56,5 @@ export function bootstrapModule(ctx) {
             throw error;
         }
     }
-    for (const [capabilityId, value] of publicCapabilities) {
-        if (ctx.getCapability(capabilityId) === value) continue;
-        ctx.log?.("error", "Whiteboard capability verification failed.", {
-            component: "nextcloud-whiteboard-module",
-            operation: "verify_public_capability",
-            capabilityId,
-        });
-        throw new Error(
-            `Whiteboard capability ${capabilityId} is unavailable.`,
-        );
-    }
-
     registerUi(ctx);
 }

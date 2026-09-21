@@ -4,7 +4,7 @@ import test from "node:test";
 import { bootstrapModule } from "../bootstrap.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
 
-function createRuntime({ hideCapabilityId } = {}) {
+function createRuntime({ conflictingCapabilityId } = {}) {
     const capabilities = new Map([
         ["auth:requireAuth", () => null],
         ["db:executor", {}],
@@ -17,12 +17,14 @@ function createRuntime({ hideCapabilityId } = {}) {
     const ctx = {
         moduleRoot: "/modules/nextcloud-whiteboard",
         contributePublicCapability(capabilityId, value) {
+            if (capabilityId === conflictingCapabilityId) {
+                throw new Error("module_capability_conflict");
+            }
             events.push(capabilityId);
             capabilities.set(capabilityId, value);
             publicCapabilities.set(capabilityId, value);
         },
         getCapability(capabilityId) {
-            if (capabilityId === hideCapabilityId) return undefined;
             return capabilities.get(capabilityId);
         },
         flow: { exists: () => false },
@@ -60,14 +62,14 @@ test("bootstrap verifies Jitsi contracts before exposing the UI", () => {
     );
 });
 
-test("bootstrap withholds UI when Jitsi cannot resolve verification", () => {
+test("bootstrap withholds UI when a server capability conflicts", () => {
     const runtime = createRuntime({
-        hideCapabilityId: "whiteboard:fetchBoardData",
+        conflictingCapabilityId: "whiteboard:fetchBoardData",
     });
 
     assert.throws(
         () => bootstrapModule(runtime.ctx),
-        /Whiteboard capability whiteboard:fetchBoardData is unavailable/,
+        /module_capability_conflict/,
     );
     assert.equal(runtime.events.includes("ui"), false);
 });

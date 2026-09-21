@@ -70,9 +70,9 @@ API 登録は初期化済み Whiteboard API を Bootstrap に直接返し、Boot
 
 ボード検証は、保存済み Nextcloud ハンドルに加えて `createdByAccountId` を返すようになりました。この値は現在の Social Profile ID Capability で解決され、Cognis PR #225 の正規外部アカウントモデルに適合します。`createdBy` は Nextcloud と既存の Jitsi のタイトル・作成者検証のために維持されます。
 
-## Whiteboard UI 公開前にサーバープロバイダーを検証
+## Whiteboard UI 公開前にサーバープロバイダーを公開
 
-Bootstrap は Whiteboard の UI Contribution を登録する前に、Jitsi 向けのすべてのサーバー Capability を公開し、読み戻して検証するようになりました。登録競合または `whiteboard:fetchBoardData` 契約の欠落時には、Capability を特定した構造化サーバーログを記録し、ブラウザープロバイダーが現れる前に有効化を中止します。Canvas 作成は成功する一方でサーバー側のマッピング検証が実行できない、誤解を招く状態を防ぎます。
+Bootstrap は Whiteboard の UI Contribution を登録する前に、Jitsi 向けのすべてのサーバー Capability を公開するようになりました。登録例外時には Capability を特定した構造化サーバーログを記録し、ブラウザープロバイダーが現れる前に有効化を中止します。Cognis は所有者スコープの Contribution を Bootstrap 完了後に別のモジュールコンテキストへ公開するため、`getCapability` による即時の読み戻しは行いません。
 
 ## コミット
 
@@ -95,3 +95,4 @@ Bootstrap は Whiteboard の UI Contribution を登録する前に、Jitsi 向�
 - [f32d660](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f32d66062e536f658767dd9a2d6768087c252e8c)
 - [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)
 - [4176de7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4176de76b0c457180096d97b4fc675f8b8d8403e)
+- [60bc825](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/60bc825982b5388099fa332defa37a8b64759f4d)

@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.143",
+    "version": "2.3.144",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -257,7 +257,7 @@
         },
         {
             "path": "bootstrap.js",
-            "sha256": "fa00aca3bf1a364eed3b1d00061ce956aa4c96aa944560d4bdefb1a0eeb7c187"
+            "sha256": "3bfc4f08379904efa6a7ecb7f1210437e1ea288aa6c12933ad7f636b5d7dabf9"
         },
         {
             "path": "cli/index.js",
@@ -281,11 +281,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "57560f19abd05cc78b08726d002c343ccfe780c37173b9d5e5bdb90572815291"
+            "sha256": "7b26cf8da908654d13740e4efe034a53783eddfaa8606880b0cb78414cf74582"
         },
         {
             "path": "package.json",
-            "sha256": "39506ae87a6ef5e521271a59a428ad600f446d7c65e79aec001fb347567a2da7"
+            "sha256": "7855e86219318aa3fc7e399d167782b2e9a89dc0df44136510ad9a5d7d5f8dd5"
         },
         {
             "path": "routes.json",
@@ -313,7 +313,7 @@
         },
         {
             "path": "tests/bootstrap-capabilities.test.js",
-            "sha256": "56869aee60fc1b17938e012c83b96d25027ea9ffb845c9ee73d3fd17762894da"
+            "sha256": "994f3c654d74e58cc142bafb668acfe4c28bd7b47c95931ecbecedbdc9703f0c"
         },
         {
             "path": "tests/canvas-deletion.test.js",

@@ -100,5 +100,4 @@ Bootstrap は Whiteboard の UI Contribution を登録する前に、Jitsi 向�
 - [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)
 - [4176de7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4176de76b0c457180096d97b4fc675f8b8d8403e)
 - [60bc825](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/60bc825982b5388099fa332defa37a8b64759f4d)
-
 - [74b86ba](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/74b86ba125e991afe0f416a323d201a26383e302)

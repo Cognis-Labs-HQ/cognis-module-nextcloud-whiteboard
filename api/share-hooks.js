@@ -10,147 +10,164 @@ export function registerWhiteboardShareFlowHooks({
     resolveWhiteboardUserAccess,
     resolveShareGuestId,
     whiteboardStylesheets,
+    installedFlowIds = new Set(),
 }) {
     if (
-        !ctx.flow?.exists?.("mint-share-token") ||
-        !ctx.flow?.exists?.("resolve-share-token")
-    )
-        return;
-    ctx.flow.extend(
-        "mint-share-token",
-        "validate-resource",
-        { id: "nextcloud-whiteboard:validate-share-resource" },
-        async (stageCtx) => {
-            const input = stageCtx.input ?? {};
-            if (String(input.resourceType ?? "") !== "whiteboard")
-                return { valid: false, reason: "unsupported_resource_type" };
-            await store.ensureSchema();
-            const whiteboard = await store.getWhiteboardById(
-                String(input.resourceId ?? ""),
-            );
-            if (!whiteboard)
-                return { valid: false, reason: "resource_not_found" };
-            const claims = input.claims ?? {};
-            const ownerAccountId = String(
-                claims?.sub ?? input.ownerAccountId ?? "",
-            );
-            const isShareGuest =
-                typeof resolveShareGuestId === "function"
-                    ? Boolean(resolveShareGuestId(claims))
-                    : ownerAccountId.startsWith("share:");
-            if (!ownerAccountId || isShareGuest)
-                return { valid: false, reason: "account_owner_required" };
-            const access = await resolveWhiteboardUserAccess({
-                claims,
-                profileStore,
-                store,
-                whiteboardId: whiteboard.id,
-            });
-            if (!access.authorized)
-                return { valid: false, reason: "forbidden" };
-            return {
-                valid: true,
-                resourceType: "whiteboard",
-                resourceId: whiteboard.id,
-                ownerAccountId,
-            };
-        },
-    );
-    ctx.flow.extend(
-        "mint-share-token",
-        "authorize-minter",
-        { id: "nextcloud-whiteboard:authorize-share-minter" },
-        (stageCtx) => {
-            const resourceResult = getFirstMatchingStageResult(
-                stageCtx.stageResults,
-                "validate-resource",
-                (result) =>
-                    result?.valid === true &&
-                    result?.resourceType === "whiteboard",
-            );
-            return resourceResult?.valid
-                ? {
-                      authorized: true,
-                      ownerAccountId: resourceResult.ownerAccountId,
-                  }
-                : {
-                      authorized: false,
-                      reason: resourceResult?.reason ?? "invalid_resource",
-                  };
-        },
-    );
-    ctx.flow.extend(
-        "resolve-share-token",
-        "resolve-resource",
-        { id: "nextcloud-whiteboard:resolve-share-resource" },
-        async (stageCtx) => {
-            const tokenResult = getFirstStageResult(
-                stageCtx.stageResults,
-                "validate-token",
-            );
-            const token = tokenResult?.tokenRecord ?? null;
-            if (!tokenResult?.valid || token?.resourceType !== "whiteboard")
-                return { resolved: false, reason: "unsupported_resource_type" };
-            await store.ensureSchema();
-            const whiteboard = await store.getWhiteboardById(
-                String(token.resourceId ?? ""),
-            );
-            if (!whiteboard)
-                return { resolved: false, reason: "resource_not_found" };
-            return {
-                resolved: true,
-                resourceType: "whiteboard",
-                resourceId: whiteboard.id,
-                payload: {
-                    whiteboardId: whiteboard.id,
-                    title: whiteboard.title,
-                },
-            };
-        },
-    );
-    ctx.flow.extend(
-        "resolve-share-token",
-        "check-access",
-        { id: "nextcloud-whiteboard:check-share-access" },
-        async (stageCtx) => {
-            const resourceResult = getFirstMatchingStageResult(
-                stageCtx.stageResults,
-                "resolve-resource",
-                (result) =>
-                    result?.resolved === true &&
-                    result?.resourceType === "whiteboard",
-            );
-            if (!resourceResult?.resolved)
-                return {
-                    allowed: false,
-                    reason: resourceResult?.reason ?? "resource_not_found",
-                };
-            const tokenResult = getFirstStageResult(
-                stageCtx.stageResults,
-                "validate-token",
-            );
-            const tokenOwnerAccountId = String(
-                tokenResult?.tokenRecord?.ownerAccountId ?? "",
-            );
-            const requesterClaims = stageCtx.input?.requesterClaims;
-            const requesterAccountId = String(requesterClaims?.sub ?? "");
-            if (
-                requesterAccountId &&
-                requesterAccountId !== tokenOwnerAccountId
-            ) {
-                const directAccess = await resolveWhiteboardUserAccess({
-                    claims: requesterClaims,
+        ctx.flow?.exists?.("mint-share-token") &&
+        !installedFlowIds.has("mint-share-token")
+    ) {
+        ctx.flow.extend(
+            "mint-share-token",
+            "validate-resource",
+            { id: "nextcloud-whiteboard:validate-share-resource" },
+            async (stageCtx) => {
+                const input = stageCtx.input ?? {};
+                if (String(input.resourceType ?? "") !== "whiteboard")
+                    return {
+                        valid: false,
+                        reason: "unsupported_resource_type",
+                    };
+                await store.ensureSchema();
+                const whiteboard = await store.getWhiteboardById(
+                    String(input.resourceId ?? ""),
+                );
+                if (!whiteboard)
+                    return { valid: false, reason: "resource_not_found" };
+                const claims = input.claims ?? {};
+                const ownerAccountId = String(
+                    claims?.sub ?? input.ownerAccountId ?? "",
+                );
+                const isShareGuest =
+                    typeof resolveShareGuestId === "function"
+                        ? Boolean(resolveShareGuestId(claims))
+                        : ownerAccountId.startsWith("share:");
+                if (!ownerAccountId || isShareGuest)
+                    return { valid: false, reason: "account_owner_required" };
+                const access = await resolveWhiteboardUserAccess({
+                    claims,
                     profileStore,
                     store,
-                    whiteboardId: resourceResult.resourceId,
+                    whiteboardId: whiteboard.id,
                 });
-                if (directAccess.authorized)
-                    return { allowed: true, directAccess: true };
-            }
-            return { allowed: true };
-        },
-    );
-    if (ctx.flow.exists("construct-share-page")) {
+                if (!access.authorized)
+                    return { valid: false, reason: "forbidden" };
+                return {
+                    valid: true,
+                    resourceType: "whiteboard",
+                    resourceId: whiteboard.id,
+                    ownerAccountId,
+                };
+            },
+        );
+        ctx.flow.extend(
+            "mint-share-token",
+            "authorize-minter",
+            { id: "nextcloud-whiteboard:authorize-share-minter" },
+            (stageCtx) => {
+                const resourceResult = getFirstMatchingStageResult(
+                    stageCtx.stageResults,
+                    "validate-resource",
+                    (result) =>
+                        result?.valid === true &&
+                        result?.resourceType === "whiteboard",
+                );
+                return resourceResult?.valid
+                    ? {
+                          authorized: true,
+                          ownerAccountId: resourceResult.ownerAccountId,
+                      }
+                    : {
+                          authorized: false,
+                          reason: resourceResult?.reason ?? "invalid_resource",
+                      };
+            },
+        );
+        installedFlowIds.add("mint-share-token");
+    }
+    if (
+        ctx.flow?.exists?.("resolve-share-token") &&
+        !installedFlowIds.has("resolve-share-token")
+    ) {
+        ctx.flow.extend(
+            "resolve-share-token",
+            "resolve-resource",
+            { id: "nextcloud-whiteboard:resolve-share-resource" },
+            async (stageCtx) => {
+                const tokenResult = getFirstStageResult(
+                    stageCtx.stageResults,
+                    "validate-token",
+                );
+                const token = tokenResult?.tokenRecord ?? null;
+                if (!tokenResult?.valid || token?.resourceType !== "whiteboard")
+                    return {
+                        resolved: false,
+                        reason: "unsupported_resource_type",
+                    };
+                await store.ensureSchema();
+                const whiteboard = await store.getWhiteboardById(
+                    String(token.resourceId ?? ""),
+                );
+                if (!whiteboard)
+                    return { resolved: false, reason: "resource_not_found" };
+                return {
+                    resolved: true,
+                    resourceType: "whiteboard",
+                    resourceId: whiteboard.id,
+                    payload: {
+                        whiteboardId: whiteboard.id,
+                        title: whiteboard.title,
+                    },
+                };
+            },
+        );
+        ctx.flow.extend(
+            "resolve-share-token",
+            "check-access",
+            { id: "nextcloud-whiteboard:check-share-access" },
+            async (stageCtx) => {
+                const resourceResult = getFirstMatchingStageResult(
+                    stageCtx.stageResults,
+                    "resolve-resource",
+                    (result) =>
+                        result?.resolved === true &&
+                        result?.resourceType === "whiteboard",
+                );
+                if (!resourceResult?.resolved)
+                    return {
+                        allowed: false,
+                        reason: resourceResult?.reason ?? "resource_not_found",
+                    };
+                const tokenResult = getFirstStageResult(
+                    stageCtx.stageResults,
+                    "validate-token",
+                );
+                const tokenOwnerAccountId = String(
+                    tokenResult?.tokenRecord?.ownerAccountId ?? "",
+                );
+                const requesterClaims = stageCtx.input?.requesterClaims;
+                const requesterAccountId = String(requesterClaims?.sub ?? "");
+                if (
+                    requesterAccountId &&
+                    requesterAccountId !== tokenOwnerAccountId
+                ) {
+                    const directAccess = await resolveWhiteboardUserAccess({
+                        claims: requesterClaims,
+                        profileStore,
+                        store,
+                        whiteboardId: resourceResult.resourceId,
+                    });
+                    if (directAccess.authorized)
+                        return { allowed: true, directAccess: true };
+                }
+                return { allowed: true };
+            },
+        );
+        installedFlowIds.add("resolve-share-token");
+    }
+    if (
+        ctx.flow?.exists?.("construct-share-page") &&
+        !installedFlowIds.has("construct-share-page")
+    ) {
         ctx.flow.extend(
             "construct-share-page",
             "resolve-resource-renderer",
@@ -169,8 +186,12 @@ export function registerWhiteboardShareFlowHooks({
                 };
             },
         );
+        installedFlowIds.add("construct-share-page");
     }
-    if (ctx.flow.exists("revoke-share-token")) {
+    if (
+        ctx.flow?.exists?.("revoke-share-token") &&
+        !installedFlowIds.has("revoke-share-token")
+    ) {
         ctx.flow.extend(
             "revoke-share-token",
             "authorize-revocation",
@@ -218,5 +239,6 @@ export function registerWhiteboardShareFlowHooks({
                     : { authorized: false, reason: "forbidden" };
             },
         );
+        installedFlowIds.add("revoke-share-token");
     }
 }

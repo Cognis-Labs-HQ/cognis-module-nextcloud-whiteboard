@@ -74,6 +74,10 @@ Board verification now returns `createdByAccountId` alongside the stored Nextclo
 
 Bootstrap now publishes every Jitsi-facing server capability before registering any Whiteboard UI contribution. Registration exceptions produce a capability-specific structured server log and abort enablement before the browser provider can appear. It does not read contributions back through `getCapability`, because Cognis makes owner-scoped contributions visible to other module contexts only after bootstrap completes.
 
+## Make lifecycle registration retryable
+
+Runtime initialization is now marked complete only after fallible namespace and sharing-hook setup succeeds. Sharing hooks are tracked per flow so flows that become available later are installed without duplicating existing hooks, and capability-publication failures are logged with safe structured context before enablement stops.
+
 ## Commits
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -96,3 +100,5 @@ Bootstrap now publishes every Jitsi-facing server capability before registering 
 - [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)
 - [4176de7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4176de76b0c457180096d97b4fc675f8b8d8403e)
 - [60bc825](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/60bc825982b5388099fa332defa37a8b64759f4d)
+
+- [74b86ba](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/74b86ba125e991afe0f416a323d201a26383e302)

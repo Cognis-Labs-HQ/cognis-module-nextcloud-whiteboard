@@ -74,6 +74,10 @@ API 登録は初期化済み Whiteboard API を Bootstrap に直接返し、Boot
 
 Bootstrap は Whiteboard の UI Contribution を登録する前に、Jitsi 向けのすべてのサーバー Capability を公開するようになりました。登録例外時には Capability を特定した構造化サーバーログを記録し、ブラウザープロバイダーが現れる前に有効化を中止します。Cognis は所有者スコープの Contribution を Bootstrap 完了後に別のモジュールコンテキストへ公開するため、`getCapability` による即時の読み戻しは行いません。
 
+## ライフサイクル登録を再試行可能にする
+
+失敗する可能性がある名前空間と共有フックの設定が成功した後にのみ、ランタイム初期化を完了として記録するようにしました。共有フックをフローごとに追跡するため、後から利用可能になったフローを既存のフックと重複させずに登録できます。また、Capability の公開に失敗した場合は、有効化を停止する前に安全な構造化情報をログへ記録します。
+
 ## コミット
 
 - [5b3091d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/5b3091d251c64ff9989c5fefd259a08a683cc057)
@@ -96,3 +100,5 @@ Bootstrap は Whiteboard の UI Contribution を登録する前に、Jitsi 向�
 - [b56afbd](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b56afbd44570e6761d23c845abb8603f47b7ee79)
 - [4176de7](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/4176de76b0c457180096d97b4fc675f8b8d8403e)
 - [60bc825](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/60bc825982b5388099fa332defa37a8b64759f4d)
+
+- [74b86ba](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/74b86ba125e991afe0f416a323d201a26383e302)

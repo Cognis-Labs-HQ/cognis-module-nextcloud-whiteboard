@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.144",
+    "version": "2.3.145",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -177,7 +177,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "101a38f312cb85d94c851d2af7e05b83ef8c4f100f9ad38f3ae87bda4baee78b"
+            "sha256": "c70ea117256f4ff4fe94f113169d4fb5dfb6ca36efe46ef6dd97c9af646f36d5"
         },
         {
             "path": "api/reuse/canvas-deletion.js",
@@ -193,7 +193,7 @@
         },
         {
             "path": "api/reuse/configuration-api.js",
-            "sha256": "2ca0fd86e45581f96f0618a56f6c2bf5dc55c617257bcc077a110b024c9eb241"
+            "sha256": "13e46c4e66af82cf48d4e59d0af6d0723aec81954370cc73ab4ee7329bda51b8"
         },
         {
             "path": "api/reuse/disposable-canvas.js",
@@ -241,7 +241,7 @@
         },
         {
             "path": "api/share-hooks.js",
-            "sha256": "c697d1d0d783d67e3560dcc4868ad220895530e67d6a7f5d13440a3698d8c3e2"
+            "sha256": "9772d1525e10abe53eb34d0fda06aa284976386f91dd78ec16ffef1737c05499"
         },
         {
             "path": "api/store.js",
@@ -281,11 +281,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "7b26cf8da908654d13740e4efe034a53783eddfaa8606880b0cb78414cf74582"
+            "sha256": "ecc7fe541d826a1ca3d2e207b960a43c5eef1077a2f34ae0a496099ee4610df9"
         },
         {
             "path": "package.json",
-            "sha256": "7855e86219318aa3fc7e399d167782b2e9a89dc0df44136510ad9a5d7d5f8dd5"
+            "sha256": "ec52dc7a94f9924d92dc0e95676297b14f09f23f3b049ee071080d235eb55b31"
         },
         {
             "path": "routes.json",
@@ -346,6 +346,10 @@
         {
             "path": "tests/language-keys.test.js",
             "sha256": "eb7e8bfb5e815337d78bce5fb81efccad0f3053fe32e90b8441217ead78a646e"
+        },
+        {
+            "path": "tests/lifecycle-registration.test.js",
+            "sha256": "c60bb3bc72b8b809ffef95c1ec1c866771693418ffb58ee9c00d152ea50ef5aa"
         },
         {
             "path": "tests/localization-quality.test.js",

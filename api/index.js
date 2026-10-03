@@ -15,7 +15,7 @@ import {
 } from "./reuse/configuration-api.js";
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 const initializedRuntimeContexts = new WeakSet();
-const initializedShareHookContexts = new WeakSet();
+const initializedShareHooksByContext = new WeakMap();
 const MODULE_ID = "nextcloud-whiteboard";
 const WHITEBOARD_STYLESHEETS = [
     "/static/styles/page-builder.css",
@@ -119,8 +119,6 @@ export function registerApiRoutes(router, ctx) {
         typeof runtimeContext === "object" &&
         runtimeContext !== null &&
         !initializedRuntimeContexts.has(runtimeContext);
-    if (shouldInitializeRuntime) initializedRuntimeContexts.add(runtimeContext);
-
     const namespaceRequest = {
         namespaceId: "whiteboards",
         callerComponent: "nextcloud-whiteboard",
@@ -140,12 +138,10 @@ export function registerApiRoutes(router, ctx) {
     }
 
     const ensureShareFlowHooks = () => {
-        if (initializedShareHookContexts.has(ctx)) return;
-        if (
-            !ctx.flow?.exists?.("mint-share-token") ||
-            !ctx.flow?.exists?.("resolve-share-token")
-        ) {
-            return;
+        let installedFlowIds = initializedShareHooksByContext.get(ctx);
+        if (!installedFlowIds) {
+            installedFlowIds = new Set();
+            initializedShareHooksByContext.set(ctx, installedFlowIds);
         }
         registerWhiteboardShareFlowHooks({
             ctx,
@@ -154,12 +150,13 @@ export function registerApiRoutes(router, ctx) {
             resolveWhiteboardUserAccess: resolveAccess,
             resolveShareGuestId,
             whiteboardStylesheets: WHITEBOARD_STYLESHEETS,
+            installedFlowIds,
         });
-        initializedShareHookContexts.add(ctx);
     };
+    ensureShareFlowHooks();
     if (shouldInitializeRuntime) {
-        ensureShareFlowHooks();
         void registerStoredOrigin({ store, registerScriptOrigins, log });
+        initializedRuntimeContexts.add(runtimeContext);
     }
 
     const moduleApi = createWhiteboardModuleApi({

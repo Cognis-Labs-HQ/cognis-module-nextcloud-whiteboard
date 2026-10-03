@@ -8,6 +8,7 @@ function captureUiRegistration() {
     const staticDirs = [];
     const pageExtensions = [];
     const navbarPlugins = [];
+    const capabilityProviders = [];
     const adminSections = [];
     registerUi({
         moduleRoot: "/tmp/nextcloud-whiteboard",
@@ -16,6 +17,9 @@ function captureUiRegistration() {
         },
         registerNavbarPlugin(plugin) {
             navbarPlugins.push(plugin);
+        },
+        registerCapabilityProvider(provider) {
+            capabilityProviders.push(provider);
         },
         registerSpaRoute(route) {
             spaRoutes.push(route);
@@ -32,6 +36,7 @@ function captureUiRegistration() {
         staticDirs,
         pageExtensions,
         navbarPlugins,
+        capabilityProviders,
         adminSections,
     };
 }
@@ -641,7 +646,7 @@ test("whiteboard suspends realtime work while its tab is hidden", async () => {
     assert.match(appSource, /if \(signal\?\.aborted\) return/);
 });
 
-test("whiteboard navbar registers the canvas UI gateway", async () => {
+test("whiteboard registers one dedicated canvas UI gateway provider", async () => {
     const [navbarSource, gatewaySource, apiSource, providerSource] =
         await Promise.all(
             [
@@ -655,7 +660,7 @@ test("whiteboard navbar registers the canvas UI gateway", async () => {
                 ),
             ),
         );
-    assert.match(navbarSource, /whiteboard-ui-gateway\.js/);
+    assert.doesNotMatch(navbarSource, /whiteboard-ui-gateway\.js/);
     assert.match(
         apiSource + providerSource,
         /providesCapabilities: \["whiteboard:uiGateway"\]/,
@@ -680,6 +685,34 @@ test("whiteboard navbar registers the canvas UI gateway", async () => {
         /uiCtx\.capabilities\.contribute\(capabilityName, gateway\)/,
     );
     assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
+});
+
+test("whiteboard capability discovery has a single provider registration", () => {
+    const { capabilityProviders, navbarPlugins } = captureUiRegistration();
+
+    assert.deepEqual(capabilityProviders, [
+        {
+            scriptUrl:
+                "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js",
+            providesCapabilities: ["whiteboard:uiGateway"],
+        },
+    ]);
+    assert.equal(navbarPlugins.length, 1);
+    assert.equal(navbarPlugins[0].providesCapabilities, undefined);
+});
+
+test("Jitsi receives the stable generic browser gateway contract", async () => {
+    const [providerSource, gatewaySource] = await Promise.all(
+        [
+            "../api/reuse/ui-provider.js",
+            "../ui/reuse/whiteboard-ui-gateway.js",
+        ].map((relativePath) =>
+            readFile(new URL(relativePath, import.meta.url), "utf8"),
+        ),
+    );
+
+    assert.match(providerSource, /"whiteboard:uiGateway"/);
+    assert.match(gatewaySource, /capabilityName = "whiteboard:uiGateway"/);
 });
 
 test("whiteboard component mounts the disposable canvas from focus state", async () => {
@@ -806,11 +839,19 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
     assert.match(stylesSource, /@container \(max-width: 44rem\)/);
     assert.match(
         stylesSource,
-        /\.whiteboard-saved-pill\s*\{[^}]*display: inline-block[^}]*visibility: hidden/s,
+        /\.whiteboard-saved-pill\s*\{[^}]*display: inline-grid[^}]*grid-template-columns: minmax\(0, 0fr\)[^}]*visibility: hidden/s,
     );
     assert.match(
         stylesSource,
         /:has\(\.whiteboard-save-confirmed\)[^{]*\.whiteboard-saved-pill\s*\{[^}]*visibility: visible/s,
+    );
+    assert.match(
+        stylesSource,
+        /@keyframes whiteboard-saved-pill[\s\S]*grid-template-columns: minmax\(0, 1fr\)[\s\S]*grid-template-columns: minmax\(0, 0fr\)/,
+    );
+    assert.match(
+        renderSource,
+        /class="whiteboard-saved-pill"><span>\$\{escapeHtml/,
     );
     assert.match(
         disposableSaveSource,
@@ -826,6 +867,46 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
         renderSource,
         /\$\{disposable \|\| !showShare \? "" : `<span id="whiteboard-share-slot"/,
     );
+});
+
+test("previous whiteboards scroll within the start panel", async () => {
+    const stylesSource = await readFile(
+        new URL("../ui/styles/whiteboards.css", import.meta.url),
+        "utf8",
+    );
+    const panel = stylesSource.match(
+        /\.whiteboard-canvas-wrap \.whiteboard-start-panel\s*\{([^}]*)\}/,
+    )?.[1];
+    const boardList = stylesSource.match(
+        /\.whiteboard-canvas-wrap \.whiteboard-overlay-board-list\s*\{([^}]*)\}/,
+    )?.[1];
+
+    assert.match(
+        panel ?? "",
+        /grid-template-rows:\s*auto auto minmax\(0, 1fr\)/,
+    );
+    assert.match(panel ?? "", /overflow:\s*hidden/);
+    assert.match(boardList ?? "", /min-height:\s*0/);
+    assert.match(boardList ?? "", /max-height:\s*28rem/);
+    assert.match(boardList ?? "", /overflow-y:\s*auto/);
+    assert.match(boardList ?? "", /scrollbar-gutter:\s*stable/);
+});
+
+test("previous Whiteboards render without a redundant history popup", async () => {
+    const [appSource, renderSource, toolbarSource] = await Promise.all(
+        [
+            "../ui/app/index.js",
+            "../ui/app/render.js",
+            "../ui/app/canvas-toolbar.js",
+        ].map((relativePath) =>
+            readFile(new URL(relativePath, import.meta.url), "utf8"),
+        ),
+    );
+
+    assert.match(renderSource, /class="whiteboard-overlay-board-list"/);
+    assert.doesNotMatch(renderSource, /whiteboard-(?:start-)?history/);
+    assert.doesNotMatch(appSource, /openHistoryPopup|history-popup\.js/);
+    assert.doesNotMatch(toolbarSource, /\bonHistory\b|whiteboard-history/);
 });
 
 test("canvas selection clicks do not report content changes", async () => {

@@ -13,7 +13,6 @@ export function bindWhiteboardCanvasToolbar({
     onBindShareButton,
     onClear,
     onCreateBoard,
-    onHistory,
     onRename,
     onSelectionChange,
     translate,
@@ -23,8 +22,8 @@ export function bindWhiteboardCanvasToolbar({
     if (!toolbar || toolbar.dataset.bound === "true") return;
     toolbar.dataset.bound = "true";
     if (!withinMount("#whiteboard-tool-lock")) {
-        const historyButton = withinMount("#whiteboard-history");
-        historyButton?.insertAdjacentHTML(
+        const newButton = withinMount("#whiteboard-new");
+        newButton?.insertAdjacentHTML(
             "afterend",
             `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}"><span class="whiteboard-tool-icon whiteboard-tool-icon--lock" aria-hidden="true"></span></button>`,
         );
@@ -100,10 +99,6 @@ export function bindWhiteboardCanvasToolbar({
     withinMount("#whiteboard-new")?.addEventListener(
         "click",
         () => void onCreateBoard(),
-    );
-    withinMount("#whiteboard-history")?.addEventListener(
-        "click",
-        () => void onHistory(),
     );
     undoButton?.addEventListener("click", (event) => {
         event.preventDefault();

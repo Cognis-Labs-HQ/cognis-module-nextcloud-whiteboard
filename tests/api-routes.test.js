@@ -122,6 +122,41 @@ function createRouterCapture() {
     };
 }
 
+test("API registration returns its implementation without publishing a facade", () => {
+    const privateContributions = [];
+    const publicContributions = [];
+    const moduleApi = registerApiRoutes(createRouterCapture(), {
+        capabilities: {
+            contribute(capabilityId, value) {
+                privateContributions.push({ capabilityId, value });
+            },
+        },
+        contributePublicCapability(capabilityId, value) {
+            publicContributions.push({ capabilityId, value });
+        },
+        getCapability(key) {
+            if (key === "auth:requireAuth") return requireTestAuth;
+            if (key === "db:executor") return createMemoryDb();
+            if (key === "social:profile:identity") return testProfileIdentity;
+            return undefined;
+        },
+    });
+
+    assert.equal(typeof moduleApi.fetchBoardData, "function");
+    assert.deepEqual(privateContributions, []);
+    assert.deepEqual(
+        publicContributions.map(({ capabilityId }) => capabilityId),
+        ["whiteboard:enableTest"],
+    );
+    assert.equal(
+        moduleApi.getEmbedUrl("canvas-1", {
+            instantCanvas: true,
+            disposable: true,
+        }),
+        "/whiteboard?id=canvas-1&instantCanvas=1&disposable=1",
+    );
+});
+
 test("nextcloud whiteboard config endpoint reads and persists configuration", async () => {
     const db = createMemoryDb();
     const router = createRouterCapture();
@@ -539,7 +574,7 @@ test("nextcloud whiteboard presence route handles store failures without server-
     );
 });
 
-test("nextcloud whiteboard registers share hooks on system ctx flow", () => {
+test("nextcloud whiteboard registers share hooks on its scoped ctx flow", () => {
     const db = createMemoryDb();
     const router = createRouterCapture();
     const extensions = [];
@@ -565,6 +600,7 @@ test("nextcloud whiteboard registers share hooks on system ctx flow", () => {
     };
 
     registerApiRoutes(router, {
+        flow: systemCtx.flow,
         getCapability(key) {
             if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
@@ -621,6 +657,36 @@ test("nextcloud whiteboard registers share hooks on system ctx flow", () => {
     });
 });
 
+test("nextcloud whiteboard registers scoped share hooks only once", () => {
+    const db = createMemoryDb();
+    const router = createRouterCapture();
+    const extensions = [];
+    const flow = {
+        exists(name) {
+            return ["mint-share-token", "resolve-share-token"].includes(name);
+        },
+        extend(flowName, stageName, options) {
+            extensions.push({ flowName, stageName, id: options.id });
+        },
+    };
+    const ctx = {
+        flow,
+        getCapability(key) {
+            if (key === "social:profile:identity") return testProfileIdentity;
+            if (key === "auth:requireAuth") return requireTestAuth;
+            if (key === "db:executor") return db;
+            return undefined;
+        },
+    };
+
+    registerApiRoutes(router, ctx);
+    const initialExtensionCount = extensions.length;
+    registerApiRoutes(createRouterCapture(), ctx);
+
+    assert.ok(initialExtensionCount > 0);
+    assert.equal(extensions.length, initialExtensionCount);
+});
+
 test("nextcloud whiteboard share hooks reject share guests managing links", async () => {
     const db = createMemoryDb();
     const store = new NextcloudWhiteboardStore({
@@ -655,6 +721,7 @@ test("nextcloud whiteboard share hooks reject share guests managing links", asyn
     };
 
     registerApiRoutes(createRouterCapture(), {
+        flow: systemCtx.flow,
         getCapability(key) {
             if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
@@ -741,6 +808,7 @@ test("nextcloud whiteboard share hooks preserve direct participant sessions with
     };
 
     registerApiRoutes(createRouterCapture(), {
+        flow: systemCtx.flow,
         getCapability(key) {
             if (key === "social:profile:identity") return testProfileIdentity;
             if (key === "auth:requireAuth") return requireTestAuth;
@@ -976,19 +1044,33 @@ test("saved shared canvases reopen from one synchronized snapshot", async () => 
     assert.deepEqual(await store.getUserCopy(board.id, "bob"), sharedElements);
 });
 
-test("nextcloud whiteboard initializes runtime-owned resources once across route refreshes", () => {
-    const source = readFileSync(
-        new URL("../api/index.js", import.meta.url),
-        "utf8",
-    );
+test("nextcloud whiteboard reuses its registered file namespace after re-enablement", () => {
+    const db = createMemoryDb();
+    let namespaceRegistered = false;
+    let registrationCount = 0;
+    const namespaceClient = {};
+    const capabilities = {
+        "auth:requireAuth": requireTestAuth,
+        "db:executor": db,
+        "files:registerNamespace": () => {
+            if (namespaceRegistered) throw new Error("duplicate namespace");
+            namespaceRegistered = true;
+            registrationCount += 1;
+        },
+        "files:namespace": () => {
+            if (!namespaceRegistered) throw new Error("namespace unavailable");
+            return namespaceClient;
+        },
+        "social:profile:identity": testProfileIdentity,
+    };
+    const createContext = () => ({
+        getCapability(key) {
+            return capabilities[key];
+        },
+    });
 
-    assert.match(source, /const initializedRuntimeContexts = new WeakSet\(\)/);
-    assert.match(
-        source,
-        /if \(shouldInitializeRuntime\) \{[\s\S]*registerNamespace/,
-    );
-    assert.match(
-        source,
-        /if \(shouldInitializeRuntime\) \{[\s\S]*registerStoredOrigin/,
-    );
+    registerApiRoutes(createRouterCapture(), createContext());
+    registerApiRoutes(createRouterCapture(), createContext());
+
+    assert.equal(registrationCount, 1);
 });

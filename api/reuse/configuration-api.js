@@ -39,10 +39,19 @@ export function registerWhiteboardConfigurationApi(router, ctx) {
         checkHttpLiveness,
         timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
     });
-    ctx.getCapability("system:ctx")?.contributePublicCapability?.(
-        "module:nextcloud-whiteboard:enableTest",
-        runEnableTest,
-    );
+    try {
+        ctx.contributePublicCapability?.(
+            "whiteboard:enableTest",
+            runEnableTest,
+        );
+    } catch (error) {
+        log?.("error", "Whiteboard capability registration failed.", {
+            component: "nextcloud-whiteboard-module",
+            operation: "register_public_capability",
+            capabilityId: "whiteboard:enableTest",
+        });
+        throw error;
+    }
     registerWhiteboardEnableTestRoute({
         router,
         runEnableTest,

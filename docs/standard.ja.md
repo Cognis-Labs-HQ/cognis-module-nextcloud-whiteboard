@@ -30,11 +30,12 @@ Nextcloud Whiteboard モジュールは、独立した Nextcloud Whiteboard Sock
 const getEmbedUrl = ctx.getCapability("whiteboard:getEmbedUrl");
 const fetchBoardData = ctx.getCapability("whiteboard:fetchBoardData");
 const spawnWhiteboardWindow = ctx.getCapability(
-    "nextcloud-whiteboard:spawnWhiteboardWindow",
+    "whiteboard:spawnWhiteboardWindow",
 );
 
 const url = getEmbedUrl(boardId, { instantCanvas: true });
 const board = await fetchBoardData(boardId);
+// board.createdByAccountId は正規の Cognis アカウント ID です。
 await spawnWhiteboardWindow({ whiteboardId: board.id });
 ```
 

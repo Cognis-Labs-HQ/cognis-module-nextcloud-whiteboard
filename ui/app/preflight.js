@@ -1,3 +1,5 @@
+import { probeWebsocketAuthorization } from "./reuse/websocket-probe.js";
+
 export function createWhiteboardPreflightController({
     fetchPreflight,
     getMountRoot,
@@ -8,40 +10,17 @@ export function createWhiteboardPreflightController({
     translate,
 }) {
     let status = "idle";
+    let requestSequence = 0;
 
-    async function verifyWebsocketAuth(result) {
-        if (!result?.serverUrl || !result?.websocketAuthToken) return false;
-        const runtime = await loadSocketIo(
-            result.serverUrl,
-            getResourceLoader(),
-        );
-        const io = runtime.io;
-        return new Promise((resolve) => {
-            const socket = io(result.serverUrl, {
-                auth: { token: result.websocketAuthToken },
-                transports: ["websocket"],
-                reconnection: false,
-                timeout: 5000,
-            });
-            const finish = (passed) => {
-                socket.disconnect();
-                runtime.dispose();
-                resolve(passed);
-            };
-            const timer = window.setTimeout(() => finish(false), 5500);
-            socket.on("connect", () => {
-                window.clearTimeout(timer);
-                finish(true);
-            });
-            socket.on("connect_error", () => {
-                window.clearTimeout(timer);
-                finish(false);
-            });
-        });
-    }
-
-    async function run() {
+    async function run({ signal } = {}) {
         if (status === "running") return false;
+        if (signal?.aborted) return false;
+        const sequence = ++requestSequence;
+        const root = getMountRoot();
+        const isCurrent = () =>
+            !signal?.aborted &&
+            sequence === requestSequence &&
+            getMountRoot() === root;
         status = "running";
         setOverlayVisible(
             getMountRoot(),
@@ -50,8 +29,10 @@ export function createWhiteboardPreflightController({
         );
         let result;
         try {
-            result = await fetchPreflight();
+            result = await fetchPreflight({ signal });
+            if (!isCurrent()) return false;
         } catch (error) {
+            if (!isCurrent()) return false;
             status = "failed";
             const message =
                 error.code === "config_required"
@@ -72,9 +53,29 @@ export function createWhiteboardPreflightController({
             showToast(message, { variant: "error" });
             return false;
         }
-        const websocketAuthorized = await verifyWebsocketAuth(result).catch(
-            () => false,
-        );
+        let websocketAuthorized = false;
+        try {
+            const runtime = await loadSocketIo(
+                result.serverUrl,
+                getResourceLoader(),
+            );
+            if (!isCurrent()) {
+                runtime.dispose();
+                return false;
+            }
+            websocketAuthorized = await probeWebsocketAuthorization(
+                runtime,
+                result,
+                { signal },
+            );
+        } catch (error) {
+            if (!isCurrent()) return false;
+            console.error(
+                "[nextcloud-whiteboard] Websocket preflight failed.",
+                { errorName: error?.name },
+            );
+        }
+        if (!isCurrent()) return false;
         if (!websocketAuthorized) {
             status = "failed";
             const message = translate(
@@ -93,6 +94,7 @@ export function createWhiteboardPreflightController({
         run,
         setStatus: (nextStatus) => {
             status = nextStatus;
+            if (nextStatus === "idle") requestSequence += 1;
         },
     };
 }

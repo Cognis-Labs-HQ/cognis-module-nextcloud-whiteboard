@@ -16,6 +16,7 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
         "whiteboard:fetchBoardData",
         "whiteboard:membership",
         "whiteboard:deleteCanvas",
+        "whiteboard:uiGateway",
     ]);
 });
 
@@ -62,7 +63,7 @@ test("module manifest requires the Cognis authentication gateway", () => {
 });
 
 test("module manifest isolates its disabled lifecycle API", () => {
-    assert.equal(manifest.entrypoints.api, "./api/index.js");
+    assert.equal(manifest.entrypoints.bootstrap, "./bootstrap.js");
     assert.equal(manifest.entrypoints.disabledApi, "./api/disabled.js");
 });
 

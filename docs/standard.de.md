@@ -36,12 +36,24 @@ const spawnWhiteboardWindow = ctx.getCapability(
 const url = getEmbedUrl(boardId, { instantCanvas: true });
 const board = await fetchBoardData(boardId);
 // board.createdByAccountId ist die kanonische Cognis-Konto-ID.
-await spawnWhiteboardWindow({ whiteboardId: board.id });
+await spawnWhiteboardWindow({
+    title: "Shared canvas",
+    createdBy: ownerHandle,
+    participants: participantHandles,
+});
 ```
 
 `getEmbedUrl` liefert ohne Board-ID `null`. Die asynchronen Capabilities schlagen fehl, wenn die Modul-API nicht verfügbar ist oder der Aufrufer keinen Zugriff auf das angeforderte Board hat.
 
 ## Technische Spezifikation
+
+### Provider-eigene Darstellung und Aktions-Flows
+
+Der Browser bezieht `whiteboard:uiGateway` über den vom Host initialisierten ctx. `createCanvas({title, participantHandles})` und `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` liefern `{whiteboardId}`. `requestCanvasPage({signal})` liefert den Component-Page-Deskriptor; `openCanvas({whiteboardId, elementId, signal})` liefert dessen Fensterhandle. Der Aufrufer stellt sein Mount-Ziel bereit und verwirft das Handle beim Abbau. Whiteboard verwaltet Routenidentität, Darstellungsparameter, Transporttoken und Lebensdauer; Integrationen dürfen diese Details nicht nachbilden. Jeder Mount benötigt seine exakte Canvas-ID.
+
+Asynchrone Store-Aktionen des aktivierten Moduls führen über ctx eigene `nextcloud-whiteboard:*`-Flows mit `initialize-store` und `execute-action` aus. Fehlende Ergebnisse und inaktive Flows führen zu Fehlern. Die deaktivierte Konfiguration nutzt den injizierten Store direkt, da der Host keine Flows deaktivierter Module registriert. Authentifizierung und Validierung gehen Änderungen voraus; interne Store-Aufrufe erhalten Transaktionen. Board-Löschung und vollständige Bereinigung teilen einen kindzuerst geordneten Tabellenkatalog; Fehler rollen die vollständige Bereinigung zurück.
+
+Navigation bricht Transportprüfungen und ausstehende Szenen-Callbacks ab. Veraltete Sitzungs- und Skriptantworten öffnen keine verlassene Canvas erneut. Prüfungen geben Sockets, Listener, Timer und Skripthandles bei Erfolg, Fehler und Abbruch frei. Page-Composer-Stile bleiben Eigentum des Hosts.
 
 ### Architektur und Lebenszyklus
 
@@ -65,7 +77,7 @@ Das Modul erweitert, sofern vorhanden, `mint-share-token`, `resolve-share-token`
 
 Alle Routen beginnen mit `/api/v1/modules/nextcloud-whiteboard`:
 
-- `GET` und `POST /config` lesen und ändern die Administratorkonfiguration.
+- `GET` und `PUT` / `DELETE /config` lesen und ändern die Administratorkonfiguration.
 - `GET /ping` meldet die Modulbereitschaft.
 - `POST /admin/enable-test` führt den Aktivierungstest aus.
 - `GET /whiteboards` listet zugängliche Boards; Administratoren können alle abfragen.
@@ -76,7 +88,7 @@ Alle Routen beginnen mit `/api/v1/modules/nextcloud-whiteboard`:
 - `GET` und `POST /whiteboards/presence` lesen und aktualisieren Präsenz.
 - `POST /whiteboards/rename` benennt ein eigenes Board um.
 - `GET` und `POST /whiteboards/images` lesen und speichern Bilder im Modul-Namensraum.
-- `GET`, `POST` und `POST /share/delete` listen, erstellen und löschen Zugriffsregeln.
+- `GET /share`, `POST /share` und `POST /share/delete` listen, erstellen und löschen Zugriffsregeln.
 
 Grenzvalidierung begrenzt Anfragen, normalisiert Kennungen und autorisiert vor der Geschäftslogik. Fehlende Abhängigkeiten liefern „Service unavailable“; Betriebsfehler werden mit sicheren strukturierten Metadaten protokolliert.
 

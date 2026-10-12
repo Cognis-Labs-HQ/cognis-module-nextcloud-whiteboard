@@ -1,6 +1,7 @@
+import { withFlowRuntime } from "./reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import test from "node:test";
-import { registerApiRoutes } from "../api/index.js";
+import { registerApiRoutes as registerModuleRoutes } from "../api/index.js";
 import { registerWhiteboardConfigurationApi } from "../api/reuse/configuration-api.js";
 import { registerWhiteboardShareFlowHooks } from "../api/share-hooks.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
@@ -135,7 +136,12 @@ test("capability registration failures are logged with safe context", () => {
     };
 
     assert.throws(
-        () => registerWhiteboardConfigurationApi(createRouter(), ctx),
+        () =>
+            registerWhiteboardConfigurationApi(
+                createRouter(),
+                withFlowRuntime(ctx),
+                { enabled: true },
+            ),
         (error) => error === registrationError,
     );
     assert.deepEqual(logs, [
@@ -150,3 +156,7 @@ test("capability registration failures are logged with safe context", () => {
         },
     ]);
 });
+
+function registerApiRoutes(router, context) {
+    return registerModuleRoutes(router, withFlowRuntime(context));
+}

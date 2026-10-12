@@ -18,7 +18,6 @@ const initializedRuntimeContexts = new WeakSet();
 const initializedShareHooksByContext = new WeakMap();
 const MODULE_ID = "nextcloud-whiteboard";
 const WHITEBOARD_STYLESHEETS = [
-    "/static/styles/page-builder.css",
     "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
 ];
 
@@ -94,7 +93,9 @@ export function registerApiRoutes(router, ctx) {
     const registerNamespace = ctx.getCapability("files:registerNamespace");
     const createNamespaceClient = ctx.getCapability("files:namespace");
 
-    const configurationApi = registerWhiteboardConfigurationApi(router, ctx);
+    const configurationApi = registerWhiteboardConfigurationApi(router, ctx, {
+        enabled: true,
+    });
     if (!configurationApi) {
         router.get(
             "/api/v1/modules/nextcloud-whiteboard/ping",
@@ -127,7 +128,12 @@ export function registerApiRoutes(router, ctx) {
     if (createNamespaceClient) {
         try {
             whiteboardFiles = createNamespaceClient(namespaceRequest);
-        } catch {
+        } catch (error) {
+            log?.(
+                "error",
+                "Whiteboard file namespace acquisition failed; registering its namespace.",
+                { operation: "resolve_file_namespace", errorName: error?.name },
+            );
             registerNamespace?.({
                 id: "whiteboards",
                 ownerComponent: "nextcloud-whiteboard",
@@ -201,7 +207,7 @@ export function registerApiRoutes(router, ctx) {
             const liveness = await checkHttpLiveness(config.serverUrl, {
                 timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
             });
-            const websocketAuthToken = store.mintSessionToken(
+            const websocketAuthToken = await store.mintSessionToken(
                 config,
                 { id: `cognis-preflight-${claims.sub}` },
                 { id: claims.sub, name: claims.sub, readOnly: true },
@@ -299,7 +305,7 @@ export function registerApiRoutes(router, ctx) {
                 );
                 return;
             }
-            const token = store.mintSessionToken(config, whiteboard, {
+            const token = await store.mintSessionToken(config, whiteboard, {
                 id: username,
                 name: displayName,
             });

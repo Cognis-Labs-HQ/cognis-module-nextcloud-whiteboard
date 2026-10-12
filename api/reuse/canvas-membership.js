@@ -1,26 +1,7 @@
-class MembershipRequestError extends Error {}
-
-async function resolveVisibleAccountHandle(
-    profileStore,
-    profileIdentity,
-    accountId,
-    fieldName,
-) {
-    const normalizedAccountId = String(accountId ?? "").trim();
-    if (!normalizedAccountId) {
-        throw new MembershipRequestError(`${fieldName} is required.`);
-    }
-    const profile = await profileStore.getProfile(normalizedAccountId);
-    if (!profile?.handle || profile.visibility === "hidden") {
-        throw new MembershipRequestError(
-            `${fieldName} must identify a visible profile.`,
-        );
-    }
-    if (typeof profileIdentity?.resolveAccountHandle !== "function") {
-        throw new Error("Profile identity capability is unavailable.");
-    }
-    return profileIdentity.resolveAccountHandle(normalizedAccountId, fieldName);
-}
+import {
+    CanvasRequestError,
+    resolveVisibleAccountHandle,
+} from "./account-handle.js";
 
 export function createCanvasMembershipCapability({
     store,
@@ -31,7 +12,7 @@ export function createCanvasMembershipCapability({
     const resolveMutation = async (input) => {
         const whiteboardId = String(input?.whiteboardId ?? "").trim();
         if (!whiteboardId) {
-            throw new MembershipRequestError("whiteboardId is required.");
+            throw new CanvasRequestError("whiteboardId is required.");
         }
         await store.ensureSchema();
         const actorHandle = await resolveVisibleAccountHandle(
@@ -42,15 +23,15 @@ export function createCanvasMembershipCapability({
         );
         const whiteboard = await store.getWhiteboardById(whiteboardId);
         if (!whiteboard) {
-            throw new MembershipRequestError("Whiteboard not found.");
+            throw new CanvasRequestError("Whiteboard not found.");
         }
         if (whiteboard.createdBy !== actorHandle) {
-            throw new MembershipRequestError(
+            throw new CanvasRequestError(
                 "Only the whiteboard owner can change membership.",
             );
         }
         if (whiteboard.disposable) {
-            throw new MembershipRequestError(
+            throw new CanvasRequestError(
                 "Disposable whiteboard membership cannot be changed.",
             );
         }
@@ -67,7 +48,7 @@ export function createCanvasMembershipCapability({
         try {
             return await mutate();
         } catch (error) {
-            if (error instanceof MembershipRequestError) throw error;
+            if (error instanceof CanvasRequestError) throw error;
             const whiteboardId = String(input?.whiteboardId ?? "").trim();
             log?.("error", "Whiteboard membership mutation failed.", {
                 component: "nextcloud-whiteboard-module",
@@ -93,7 +74,7 @@ export function createCanvasMembershipCapability({
             return runMutation("remove", input, async () => {
                 const { whiteboard, userHandle } = await resolveMutation(input);
                 if (userHandle === whiteboard.createdBy) {
-                    throw new MembershipRequestError(
+                    throw new CanvasRequestError(
                         "The whiteboard owner cannot be removed.",
                     );
                 }

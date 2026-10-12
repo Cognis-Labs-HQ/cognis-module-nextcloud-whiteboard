@@ -34,7 +34,6 @@ import {
     hydratePresenceAvatars,
     renderWhiteboardPresenceEntry,
 } from "./presence.js";
-import { getPreparedDisposableCanvasId } from "../reuse/whiteboard-ui-gateway.js";
 import { syncBoardUrl } from "../reuse/board-navigation.js";
 import { createWhiteboardPreflightController } from "./preflight.js";
 
@@ -79,6 +78,8 @@ let hostNavigationAllowed = true;
 /** @type {Element | null} */
 let pageMountRoot = null;
 let runtimeDispose = null;
+let boardController = null;
+let mountSequence = 0;
 let shareControlDispose = null;
 const withinMount = (selector) =>
     pageMountRoot?.querySelector(selector) ?? null;
@@ -98,8 +99,8 @@ const {
     showToast,
 });
 const preflightController = createWhiteboardPreflightController({
-    fetchPreflight: () =>
-        apiFetchJson("/whiteboards/preflight", { method: "POST" }),
+    fetchPreflight: ({ signal } = {}) =>
+        apiFetchJson("/whiteboards/preflight", { method: "POST", signal }),
     getMountRoot: () => pageMountRoot,
     getResourceLoader: () => uiCtx.capabilities.get("ui:resourceLoader"),
     loadSocketIo,
@@ -126,10 +127,6 @@ const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
     translate: translateModuleString,
 });
 
-async function loadBoards() {
-    boards = await fetchWhiteboardList();
-}
-
 function reportCanvasLoadError(error, boardId, stage) {
     console.error("[nextcloud-whiteboard] whiteboard canvas load failed.", {
         boardId: String(boardId ?? ""),
@@ -147,11 +144,15 @@ function reportCanvasLoadError(error, boardId, stage) {
 }
 
 function teardownCanvas() {
+    boardController?.abort();
+    boardController = null;
+    preflightController.setStatus("idle");
     shareControlDispose?.();
     shareControlDispose = null;
     if (socketInstance) {
         try {
             socketInstance.cognisCleanup?.();
+            socketInstance.removeAllListeners();
             socketInstance.disconnect();
         } catch (error) {
             console.warn(
@@ -254,6 +255,7 @@ function connectSocket(io, session, canvas) {
         if (session.disposable) return;
         try {
             const saved = await saveWhiteboardElements(roomId, elements);
+            if (disposed || socketInstance !== socket) return;
             if (Array.isArray(saved?.elements)) {
                 canvas.applyElements(saved.elements);
             }
@@ -263,6 +265,7 @@ function connectSocket(io, session, canvas) {
                 "module.nextcloud_whiteboard.status_synced",
             );
         } catch (error) {
+            if (disposed || socketInstance !== socket) return;
             reportClientError(
                 error,
                 "module.nextcloud_whiteboard.status_sync_failed",
@@ -298,7 +301,16 @@ function connectSocket(io, session, canvas) {
         },
         EMIT_DEBOUNCE_MS,
     );
+    const removeVisibilityListener = socket.cognisCleanup;
+    let disposed = false;
+    socket.cognisCleanup = () => {
+        disposed = true;
+        persistChanges.cancel();
+        emitChanges.cancel();
+        removeVisibilityListener();
+    };
     canvas.onChange((elements, meta) => {
+        if (disposed) return;
         if (meta?.type === "image_rejected") {
             showToast(
                 translateModuleString(
@@ -527,8 +539,8 @@ async function renameActiveBoard() {
     titleEl.addEventListener("keydown", onKeydown);
 }
 
-async function runPreflightCheck() {
-    return preflightController.run();
+async function runPreflightCheck(signal) {
+    return preflightController.run({ signal });
 }
 
 async function openBoard(board) {
@@ -540,8 +552,13 @@ async function openBoard(board) {
         shareContext: activeShareContext,
     });
     teardownCanvas();
+    const controller = new AbortController();
+    boardController = controller;
+    const isCurrent = () =>
+        boardController === controller && !controller.signal.aborted;
     composer.refresh(buildElements());
-    const passed = await runPreflightCheck();
+    const passed = await runPreflightCheck(controller.signal);
+    if (!isCurrent()) return;
     if (!passed) return;
     setOverlayVisible(
         pageMountRoot,
@@ -550,12 +567,17 @@ async function openBoard(board) {
     );
     let session;
     try {
-        session = await fetchWhiteboardSession(board.id);
+        session = await fetchWhiteboardSession(board.id, {
+            signal: controller.signal,
+        });
+        if (!isCurrent()) return;
     } catch (error) {
+        if (!isCurrent()) return;
         reportCanvasLoadError(error, board.id, "session");
         return;
     }
     activeSession = session;
+    disposableCanvasMode = session.disposable === true;
     imageUploadMaxBytes = Number(
         session.imageUploadMaxBytes ?? imageUploadMaxBytes,
     );
@@ -569,10 +591,15 @@ async function openBoard(board) {
             session.serverUrl,
             uiCtx.capabilities.get("ui:resourceLoader"),
         );
+        if (!isCurrent()) {
+            runtime.dispose();
+            return;
+        }
         io = runtime.io;
         runtimeDispose?.();
         runtimeDispose = runtime.dispose;
     } catch (error) {
+        if (!isCurrent()) return;
         reportCanvasLoadError(error, board.id, "realtime-runtime");
         return;
     }
@@ -694,13 +721,21 @@ export async function mount(
     if (!(root instanceof Element)) {
         throw new TypeError("Whiteboard mount root must be an Element");
     }
+    if (signal?.aborted) return;
+    const sequence = ++mountSequence;
     pageMountRoot = root;
+    const isCurrentMount = () =>
+        !signal?.aborted &&
+        sequence === mountSequence &&
+        pageMountRoot === root;
     registerSearchIndex("nextcloud-whiteboard", collectWhiteboardSearchGroups);
-    i18n = await createI18n({
+    const mountedI18n = await createI18n({
         componentStringBaseUrls: [
             "/static/modules/nextcloud-whiteboard/languages",
         ],
     });
+    if (!isCurrentMount()) return;
+    i18n = mountedI18n;
     applyDocumentTitle(i18n, "module.nextcloud_whiteboard.page_title");
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
@@ -720,21 +755,21 @@ export async function mount(
             "1";
     disposableCanvasMode = Boolean(componentFocusState?.disposable);
     if (!activeShareContext) {
-        await loadBoards().catch((error) =>
+        try {
+            const loadedBoards = await fetchWhiteboardList();
+            if (!isCurrentMount()) return;
+            boards = loadedBoards;
+        } catch (error) {
+            if (!isCurrentMount()) return;
             reportClientError(
                 error,
                 "module.nextcloud_whiteboard.load_boards_failed",
-            ),
-        );
+            );
+        }
     }
-    if (signal?.aborted) return;
+    if (!isCurrentMount()) return;
     const initialBoardId =
         String(componentFocusState?.whiteboardId ?? "").trim() ||
-        getPreparedDisposableCanvasId({
-            resourceType: "meeting",
-            resourceId: componentFocusState?.meetingId,
-            allowLatest: embeddedComponentMode,
-        }) ||
         activeShareContext?.payload?.whiteboardId ||
         new URLSearchParams(window.location.search).get("id");
     if (initialBoardId) {
@@ -814,11 +849,14 @@ export async function mount(
     };
     signal?.addEventListener("abort", destroy, { once: true });
     await mountedComposer.init();
-    if (signal?.aborted) return;
+    if (!isCurrentMount()) {
+        destroy();
+        return;
+    }
 
     if (activeBoard) {
         await openBoard(activeBoard);
-        if (!signal?.aborted) mountedComposer.refreshPresence?.();
+        if (isCurrentMount()) mountedComposer.refreshPresence?.();
     } else if (integrationCanvasMode) {
         void createAndOpenBoard();
     }

@@ -1,45 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { registerUi } from "../api/index.js";
-
-function captureUiRegistration() {
-    const spaRoutes = [];
-    const staticDirs = [];
-    const pageExtensions = [];
-    const navbarPlugins = [];
-    const capabilityProviders = [];
-    const adminSections = [];
-    registerUi({
-        moduleRoot: "/tmp/nextcloud-whiteboard",
-        registerStaticDir(prefix, dir) {
-            staticDirs.push({ prefix, dir });
-        },
-        registerNavbarPlugin(plugin) {
-            navbarPlugins.push(plugin);
-        },
-        registerCapabilityProvider(provider) {
-            capabilityProviders.push(provider);
-        },
-        registerSpaRoute(route) {
-            spaRoutes.push(route);
-        },
-        registerPageExtension(pageId, element) {
-            pageExtensions.push({ pageId, element });
-        },
-        registerAdminSection(section) {
-            adminSections.push(section);
-        },
-    });
-    return {
-        spaRoutes,
-        staticDirs,
-        pageExtensions,
-        navbarPlugins,
-        capabilityProviders,
-        adminSections,
-    };
-}
+import { captureUiRegistration } from "./reuse/ui-registration.js";
 
 test("nextcloud whiteboard registers full SPA routing and boilerplate styles", () => {
     const { spaRoutes, pageExtensions } = captureUiRegistration();
@@ -55,7 +17,6 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
             "/static/modules/nextcloud-whiteboard/app/index.js",
         );
         assert.deepEqual(route.stylesheets, [
-            "/static/styles/page-builder.css",
             "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
         ]);
     }
@@ -774,23 +735,9 @@ test("whiteboard component mounts the disposable canvas from focus state", async
         appSource,
         /if \(pageMountRoot === root\) pageMountRoot = null/,
     );
-    assert.match(appSource, /getPreparedDisposableCanvasId\(\{/);
-    assert.match(appSource, /allowLatest: embeddedComponentMode/);
-});
-
-test("whiteboard gateway remembers prepared disposable canvases for component mounts", async () => {
-    const gatewaySource = await import("node:fs/promises").then((fs) =>
-        fs.readFile(
-            new URL("../ui/reuse/whiteboard-ui-gateway.js", import.meta.url),
-            "utf8",
-        ),
-    );
-    assert.match(gatewaySource, /const preparedCanvasIds = new Map\(\)/);
-    assert.match(gatewaySource, /preparedCanvasIds\.set\(/);
-    assert.match(gatewaySource, /latestPreparedCanvasId = whiteboardId/);
     assert.match(
-        gatewaySource,
-        /export function getPreparedDisposableCanvasId/,
+        appSource,
+        /disposableCanvasMode = session\.disposable === true/,
     );
 });
 

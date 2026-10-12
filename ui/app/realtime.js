@@ -1,15 +1,20 @@
 export function debounce(callback, delay) {
     let timer = null;
-    return (...args) => {
+    const run = (...args) => {
         clearTimeout(timer);
         timer = setTimeout(() => callback(...args), delay);
     };
+    run.cancel = () => {
+        clearTimeout(timer);
+        timer = null;
+    };
+    return run;
 }
 
 export function throttleLatest(callback, delay) {
     let timer = null;
     let lastArgs = null;
-    return (...args) => {
+    const run = (...args) => {
         if (!timer) {
             callback(...args);
         } else {
@@ -25,6 +30,12 @@ export function throttleLatest(callback, delay) {
             }
         }, delay);
     };
+    run.cancel = () => {
+        clearTimeout(timer);
+        timer = null;
+        lastArgs = null;
+    };
+    return run;
 }
 
 export async function loadSocketIo(serverUrl, resourceLoader) {

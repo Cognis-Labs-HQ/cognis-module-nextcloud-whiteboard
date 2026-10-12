@@ -36,12 +36,24 @@ const spawnWhiteboardWindow = ctx.getCapability(
 const url = getEmbedUrl(boardId, { instantCanvas: true });
 const board = await fetchBoardData(boardId);
 // board.createdByAccountId adalah ID akun Cognis kanonis.
-await spawnWhiteboardWindow({ whiteboardId: board.id });
+await spawnWhiteboardWindow({
+    title: "Shared canvas",
+    createdBy: ownerHandle,
+    participants: participantHandles,
+});
 ```
 
 `getEmbedUrl` mengembalikan `null` tanpa ID papan. Capability asinkron menolak saat API modul tidak tersedia atau pemanggil tidak berhak mengakses papan.
 
 ## Spesifikasi teknis
+
+### Presentasi milik provider dan flow aksi
+
+Browser memperoleh `whiteboard:uiGateway` melalui ctx yang diinisialisasi host. `createCanvas({title, participantHandles})` dan `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` mengembalikan `{whiteboardId}`. `requestCanvasPage({signal})` mengembalikan deskriptor component-page; `openCanvas({whiteboardId, elementId, signal})` mengembalikan handle jendelanya. Pemanggil menyediakan target pemasangan sendiri dan membuang handle saat pembongkaran. Whiteboard memiliki identitas rute, parameter presentasi, token transport dan masa hidup; integrasi tidak boleh membangun ulang detail tersebut. Setiap pemasangan memerlukan ID kanvas yang tepat.
+
+Aksi store asinkron saat aktif menjalankan flow `nextcloud-whiteboard:*` milik modul melalui ctx dengan tahap `initialize-store` dan `execute-action`. Hasil yang hilang dan flow tidak aktif menghasilkan kesalahan. Konfigurasi saat nonaktif memakai store yang diinjeksi langsung karena host tidak mendaftarkan flow modul nonaktif. Autentikasi dan validasi mendahului perubahan; panggilan store internal mempertahankan transaksi. Penghapusan papan dan seluruh data berbagi katalog tabel dengan anak lebih dahulu; kegagalan membatalkan seluruh pembersihan.
+
+Navigasi membatalkan pemeriksaan transport dan callback adegan tertunda. Respons sesi dan skrip yang usang tidak membuka kembali kanvas yang ditinggalkan. Pemeriksaan melepas socket, listener, timer dan handle skrip saat berhasil, gagal atau dibatalkan. Gaya page-composer tetap milik host.
 
 ### Arsitektur dan siklus hidup
 
@@ -65,7 +77,7 @@ Jika tersedia, modul memperluas `mint-share-token`, `resolve-share-token`, `cons
 
 Semua route berakar di `/api/v1/modules/nextcloud-whiteboard`:
 
-- `GET` dan `POST /config` membaca dan memperbarui konfigurasi administrator.
+- `GET` dan `PUT` / `DELETE /config` membaca dan memperbarui konfigurasi administrator.
 - `GET /ping` melaporkan kesiapan modul.
 - `POST /admin/enable-test` menjalankan pemeriksaan aktivasi administrator.
 - `GET /whiteboards` mencantumkan papan yang dapat diakses; scope administrator dapat mencantumkan semuanya.
@@ -76,7 +88,7 @@ Semua route berakar di `/api/v1/modules/nextcloud-whiteboard`:
 - `GET` dan `POST /whiteboards/presence` membaca dan memperbarui kehadiran.
 - `POST /whiteboards/rename` mengganti nama papan milik pengguna.
 - `GET` dan `POST /whiteboards/images` mengambil dan mengunggah gambar bernamespace.
-- `GET`, `POST`, dan `POST /share/delete` mencantumkan, membuat, dan menghapus akses papan.
+- `GET /share`, `POST /share`, dan `POST /share/delete` mencantumkan, membuat, dan menghapus akses papan.
 
 Validasi batas membatasi ukuran permintaan, menormalisasi pengenal, dan mengotorisasi sebelum logika bisnis. Dependensi yang tidak tersedia menghasilkan status layanan tidak tersedia; kegagalan operasional dicatat dengan metadata terstruktur yang aman.
 

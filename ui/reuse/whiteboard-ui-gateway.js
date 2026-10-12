@@ -6,24 +6,6 @@ const CREATE_CANVAS_URL =
     "/api/v1/modules/nextcloud-whiteboard/whiteboards/spawn";
 
 const capabilityName = "whiteboard:uiGateway";
-const preparedCanvasIds = new Map();
-let latestPreparedCanvasId = "";
-
-function resourceKey(resourceType, resourceId) {
-    return `${String(resourceType ?? "").trim()}:${String(resourceId ?? "").trim()}`;
-}
-
-export function getPreparedDisposableCanvasId({
-    resourceType,
-    resourceId,
-    allowLatest = false,
-} = {}) {
-    return (
-        preparedCanvasIds.get(resourceKey(resourceType, resourceId)) ??
-        (allowLatest ? latestPreparedCanvasId : "")
-    );
-}
-
 async function createCanvasRequest(body, failureMessage) {
     const response = await apiFetch(CREATE_CANVAS_URL, {
         method: "POST",
@@ -42,6 +24,44 @@ async function createCanvasRequest(body, failureMessage) {
 }
 
 const gateway = {
+    requestCanvasPage({ signal } = {}) {
+        signal?.throwIfAborted();
+        const request = uiCtx.capabilities.get("component-pages:request");
+        if (typeof request !== "function")
+            throw new Error("Canvas presentation is unavailable.");
+        return request({
+            componentUuid: "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
+            routeId: "module.nextcloud.whiteboard.canvas",
+            mode: "overlay",
+        });
+    },
+
+    openCanvas({ whiteboardId, elementId, signal } = {}) {
+        signal?.throwIfAborted();
+        const spawn = uiCtx.capabilities.get("component-pages:spawn");
+        if (typeof spawn !== "function" || !whiteboardId || !elementId)
+            throw new Error("Canvas presentation is unavailable.");
+        return spawn({
+            componentUuid: "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
+            routeId: "module.nextcloud.whiteboard.canvas",
+            mode: "overlay",
+            elementId,
+            context: {
+                whiteboardId,
+                instantCanvas: true,
+                frameless: true,
+                borderless: true,
+                contentScrolling: false,
+                layout: {
+                    borderless: true,
+                    fillParent: true,
+                    scrollOwner: "document",
+                },
+            },
+            signal,
+        });
+    },
+
     async createCanvas({ title, participantHandles } = {}) {
         return createCanvasRequest(
             {
@@ -68,12 +88,6 @@ const gateway = {
             },
             "Disposable canvas could not be created.",
         );
-        const { whiteboardId } = result;
-        preparedCanvasIds.set(
-            resourceKey(resourceType, resourceId),
-            whiteboardId,
-        );
-        latestPreparedCanvasId = whiteboardId;
         return result;
     },
 };

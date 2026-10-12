@@ -47,9 +47,10 @@ export async function spawnWhiteboard({ title, participants = [] } = {}) {
     });
 }
 
-export async function fetchWhiteboardSession(boardId) {
+export async function fetchWhiteboardSession(boardId, { signal } = {}) {
     return apiFetchJson(
         `/whiteboards/session?id=${encodeURIComponent(boardId)}`,
+        { signal },
     );
 }
 

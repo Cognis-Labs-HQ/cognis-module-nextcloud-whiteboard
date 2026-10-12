@@ -36,12 +36,24 @@ const spawnWhiteboardWindow = ctx.getCapability(
 const url = getEmbedUrl(boardId, { instantCanvas: true });
 const board = await fetchBoardData(boardId);
 // board.createdByAccountId は正規の Cognis アカウント ID です。
-await spawnWhiteboardWindow({ whiteboardId: board.id });
+await spawnWhiteboardWindow({
+    title: "Shared canvas",
+    createdBy: ownerHandle,
+    participants: participantHandles,
+});
 ```
 
 ボード ID がなければ `getEmbedUrl` は `null` を返します。モジュール API が利用不能な場合や、呼び出し元に対象ボードへのアクセス権がない場合、非同期 Capability は失敗します。
 
 ## 技術仕様
+
+### Provider が所有する表示とアクション Flow
+
+ブラウザーはホストが初期化した ctx から `whiteboard:uiGateway` を取得します。`createCanvas({title, participantHandles})` と `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` は `{whiteboardId}` を返します。`requestCanvasPage({signal})` は Component Page の記述子を、`openCanvas({whiteboardId, elementId, signal})` はウィンドウハンドルを返します。呼び出し元は自身のマウント先を指定し、終了時にハンドルを破棄します。Whiteboard がルート識別、表示設定、通信トークンと寿命を管理し、連携側はそれらを再構成しません。各マウントには正確なキャンバス ID が必要です。
+
+有効なモジュールの非同期 Store アクションは、ctx を通じて所有する `nextcloud-whiteboard:*` Flow の `initialize-store` と `execute-action` 段階を実行します。結果の欠落と無効な Flow はエラーになります。ホストは無効なモジュールの Flow を登録しないため、無効時の設定は注入された Store を直接使います。変更前に認証と検証を行い、内部 Store 呼び出しはトランザクションを維持します。ボード削除と全データ削除は子テーブル優先の共通カタログを使用し、全削除は失敗時にロールバックします。
+
+画面移動は通信検査と保留中のシーン処理を中止します。古いセッションやスクリプト応答は離れたキャンバスを再表示できません。検査は成功、失敗、中止のいずれでも Socket、Listener、Timer とスクリプトハンドルを解放します。Page Composer のスタイルはホストが管理します。
 
 ### アーキテクチャとライフサイクル
 
@@ -65,7 +77,7 @@ preflight エンドポイントはセッション開始前に構成、HTTP 到�
 
 ルートの基点は `/api/v1/modules/nextcloud-whiteboard` です。
 
-- `GET` / `POST /config` は管理者構成を取得・更新します。
+- `GET` / `PUT` / `DELETE /config` は管理者構成を取得・更新します。
 - `GET /ping` はモジュールの稼働状態を返します。
 - `POST /admin/enable-test` は管理者向け有効化検査を実行します。
 - `GET /whiteboards` はアクセス可能なボードを返し、管理者 scope では全件を返します。
@@ -76,7 +88,7 @@ preflight エンドポイントはセッション開始前に構成、HTTP 到�
 - `GET` / `POST /whiteboards/presence` はプレゼンスを取得・更新します。
 - `POST /whiteboards/rename` は所有ボードの名前を変更します。
 - `GET` / `POST /whiteboards/images` は名前空間付き画像を取得・アップロードします。
-- `GET`、`POST`、`POST /share/delete` はボードアクセスを一覧・作成・削除します。
+- `GET /share`、`POST /share`、`POST /share/delete` はボードアクセスを一覧・作成・削除します。
 
 境界検証はリクエストサイズを制限し、識別子を正規化してからビジネスロジックの前に認可します。依存関係が利用不能なら service unavailable を返し、運用障害は安全な構造化メタデータで記録します。
 

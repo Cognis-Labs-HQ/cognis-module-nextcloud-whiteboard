@@ -1,4 +1,7 @@
-class CanvasDeletionRequestError extends Error {}
+import {
+    CanvasRequestError,
+    resolveVisibleAccountHandle,
+} from "./account-handle.js";
 
 export function createCanvasDeletionCapability({
     store,
@@ -10,26 +13,22 @@ export function createCanvasDeletionCapability({
         const whiteboardId = String(input.whiteboardId ?? "").trim();
         const actorAccountId = String(input.actorAccountId ?? "").trim();
         if (!whiteboardId) {
-            throw new CanvasDeletionRequestError("whiteboardId is required.");
+            throw new CanvasRequestError("whiteboardId is required.");
         }
         if (!actorAccountId) {
-            throw new CanvasDeletionRequestError("actorAccountId is required.");
+            throw new CanvasRequestError("actorAccountId is required.");
         }
         try {
             await store.ensureSchema();
-            const profile = await profileStore.getProfile(actorAccountId);
-            if (!profile?.handle || profile.visibility === "hidden") {
-                throw new CanvasDeletionRequestError(
-                    "actorAccountId must identify a visible profile.",
-                );
-            }
-            const actorHandle = await profileIdentity.resolveAccountHandle(
+            const actorHandle = await resolveVisibleAccountHandle(
+                profileStore,
+                profileIdentity,
                 actorAccountId,
                 "actorAccountId",
             );
             const whiteboard = await store.getWhiteboardById(whiteboardId);
             if (!whiteboard) {
-                throw new CanvasDeletionRequestError("Whiteboard not found.");
+                throw new CanvasRequestError("Whiteboard not found.");
             }
             const actorOwnsCanvas = whiteboard.createdBy === actorHandle;
             const participants = actorOwnsCanvas
@@ -38,7 +37,7 @@ export function createCanvasDeletionCapability({
             const actorIsSoleParticipant =
                 participants.length === 1 && participants[0] === actorHandle;
             if (!actorOwnsCanvas && !actorIsSoleParticipant) {
-                throw new CanvasDeletionRequestError(
+                throw new CanvasRequestError(
                     "Only the whiteboard owner or sole participant can delete the canvas.",
                 );
             }
@@ -50,7 +49,7 @@ export function createCanvasDeletionCapability({
                 actorAccountId,
             });
         } catch (error) {
-            if (error instanceof CanvasDeletionRequestError) throw error;
+            if (error instanceof CanvasRequestError) throw error;
             log?.("error", "Whiteboard canvas deletion failed.", {
                 component: "nextcloud-whiteboard-module",
                 operation: "delete_canvas",

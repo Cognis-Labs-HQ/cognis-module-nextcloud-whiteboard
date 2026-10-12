@@ -1,3 +1,4 @@
+import { registerWhiteboardActions } from "./action-store.js";
 import { createProfileIdentityCapability, resolveStore } from "../access.js";
 import { registerWhiteboardConfigRoutes } from "../config-routes.js";
 import {
@@ -9,7 +10,11 @@ import { sendError, sendJson } from "./http.js";
 
 export const WHITEBOARD_LIVENESS_TIMEOUT_MS = 5000;
 
-export function registerWhiteboardConfigurationApi(router, ctx) {
+export function registerWhiteboardConfigurationApi(
+    router,
+    ctx,
+    { enabled = false } = {},
+) {
     const dbExecutor = ctx.getCapability("db:executor");
     if (!dbExecutor) {
         const unavailablePayload = (res) =>
@@ -33,17 +38,19 @@ export function registerWhiteboardConfigurationApi(router, ctx) {
     const requireAuth = ctx.getCapability("auth:requireAuth");
     const log = ctx.getCapability("logging:log");
     const profileIdentity = createProfileIdentityCapability(ctx);
-    const store = resolveStore(dbExecutor, log, profileIdentity);
+    const rawStore = resolveStore(dbExecutor, log, profileIdentity);
+    const store = enabled ? registerWhiteboardActions(ctx, rawStore) : rawStore;
     const runEnableTest = createWhiteboardEnableTest({
         store,
         checkHttpLiveness,
         timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
     });
     try {
-        ctx.contributePublicCapability?.(
-            "whiteboard:enableTest",
-            runEnableTest,
-        );
+        if (enabled)
+            ctx.contributePublicCapability?.(
+                "whiteboard:enableTest",
+                runEnableTest,
+            );
     } catch (error) {
         log?.("error", "Whiteboard capability registration failed.", {
             component: "nextcloud-whiteboard-module",

@@ -8,6 +8,14 @@ import {
 import { normalizeHttpUrl } from "./reuse/url-parts.js";
 import { mergeElementsSnapshots } from "./reuse/elements-snapshot.js";
 
+const WHITEBOARD_TABLES = [
+    "nextcloud_whiteboard_presence",
+    "nextcloud_whiteboard_snapshots",
+    "nextcloud_whiteboard_user_copies",
+    "nextcloud_whiteboard_access",
+    "nextcloud_whiteboards",
+];
+
 function normalizeSelectionElementIds(selection) {
     return Array.isArray(selection?.elementIds)
         ? selection.elementIds
@@ -299,29 +307,21 @@ export class NextcloudWhiteboardStore {
     }
 
     async deleteAllData() {
-        for (const table of [
-            "nextcloud_whiteboard_presence",
-            "nextcloud_whiteboard_snapshots",
-            "nextcloud_whiteboard_user_copies",
-            "nextcloud_whiteboard_access",
-            "nextcloud_whiteboards",
-            "nextcloud_whiteboard_config",
-        ]) {
-            await this.db.executeCommand({ option: "DELETE", table });
-        }
+        await this.db.transaction(async (executor) => {
+            for (const table of [
+                ...WHITEBOARD_TABLES,
+                "nextcloud_whiteboard_config",
+            ]) {
+                await executor.executeCommand({ option: "DELETE", table });
+            }
+        });
     }
 
     async deleteWhiteboard(id) {
         const whiteboardId = String(id ?? "").trim();
         if (!whiteboardId) return;
         await this.db.transaction(async (executor) => {
-            for (const table of [
-                "nextcloud_whiteboard_presence",
-                "nextcloud_whiteboard_snapshots",
-                "nextcloud_whiteboard_user_copies",
-                "nextcloud_whiteboard_access",
-                "nextcloud_whiteboards",
-            ]) {
+            for (const table of WHITEBOARD_TABLES) {
                 await executor.executeCommand({
                     option: "DELETE",
                     table,

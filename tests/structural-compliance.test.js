@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import { join, relative, resolve } from "node:path";
 
 const ROOT = resolve(import.meta.dirname, "..");
-const SCAN_ROOTS = ["api", "ui", "cli", "tooling"]
+const SCAN_ROOTS = ["api", "ui", "cli", "tooling", "tests"]
     .map((path) => resolve(ROOT, path))
     .filter((path) => statSync(path).isDirectory());
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs", ".css", ".html"]);
@@ -19,8 +19,11 @@ function walk(directory) {
 }
 
 function sourceFiles() {
-    return SCAN_ROOTS.flatMap(walk).filter((path) =>
-        [...SOURCE_EXTENSIONS].some((extension) => path.endsWith(extension)),
+    return [resolve(ROOT, "bootstrap.js"), ...SCAN_ROOTS.flatMap(walk)].filter(
+        (path) =>
+            [...SOURCE_EXTENSIONS].some((extension) =>
+                path.endsWith(extension),
+            ),
     );
 }
 
@@ -78,7 +81,10 @@ test("browser context and styles respect module validation boundaries", () => {
 
     assert.match(hostResources, /Symbol\.for\("cognis\.uiCtx"\)/);
     assert.doesNotMatch(hostResources, /\/static\/reuse\//);
-    assert.doesNotMatch(whiteboardStyles, /\.btn-cancel\b/);
+    assert.doesNotMatch(
+        whiteboardStyles,
+        /\.(?:btn-(?:confirm|cancel|neutral|animated)|page-shell|page-sidebar|widget-card|theme-select)\b/,
+    );
 });
 
 test("CSS source contains no comments", () => {

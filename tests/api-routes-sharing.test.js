@@ -1,6 +1,7 @@
+import { withFlowRuntime } from "./reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import test from "node:test";
-import { registerApiRoutes } from "../api/index.js";
+import { registerApiRoutes as registerModuleRoutes } from "../api/index.js";
 import { NextcloudWhiteboardStore } from "../api/store.js";
 import { resolveWhiteboardUserAccess } from "../api/access.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
@@ -824,3 +825,7 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
         "nextcloud-whiteboard-api-key",
     );
 });
+
+function registerApiRoutes(router, context) {
+    return registerModuleRoutes(router, withFlowRuntime(context));
+}

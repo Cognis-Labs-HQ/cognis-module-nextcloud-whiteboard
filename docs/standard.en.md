@@ -36,12 +36,24 @@ const spawnWhiteboardWindow = ctx.getCapability(
 const url = getEmbedUrl(boardId, { instantCanvas: true });
 const board = await fetchBoardData(boardId);
 // board.createdByAccountId is the canonical Cognis account ID.
-await spawnWhiteboardWindow({ whiteboardId: board.id });
+await spawnWhiteboardWindow({
+    title: "Shared canvas",
+    createdBy: ownerHandle,
+    participants: participantHandles,
+});
 ```
 
 `getEmbedUrl` returns `null` without a board ID. The asynchronous capabilities reject when the module API is unavailable or the caller cannot access the requested board.
 
 ## Technical specification
+
+### Provider-owned presentation and action flows
+
+The browser resolves `whiteboard:uiGateway` from the host-initialized ctx. `createCanvas({title, participantHandles})` and `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` return `{whiteboardId}`. `requestCanvasPage({signal})` returns the host component-page descriptor; `openCanvas({whiteboardId, elementId, signal})` returns its window handle. The caller supplies its own mount target and discards the returned handle on teardown. Whiteboard owns route identity, presentation flags, transport tokens and disposal semantics; integrations must not reconstruct these details. Each mount requires its exact canvas ID.
+
+Enabled asynchronous store actions execute owned `nextcloud-whiteboard:*` flows with `initialize-store` and `execute-action` stages through ctx. Missing results and inactive flows fail explicitly. Disabled configuration uses the injected store directly because the host does not register disabled module flows. Authentication and validation precede mutations; internal store calls preserve transactions. Board deletion and full cleanup share a child-first table catalog, and full cleanup rolls back on failure.
+
+Navigation cancels transport probes and pending scene callbacks. Stale session and script responses cannot reopen a departed canvas. Probes release sockets, listeners, timers and script handles after success, failure or cancellation. Page-composer styles remain host-owned.
 
 ### Architecture and lifecycle
 
@@ -65,7 +77,7 @@ The module extends `mint-share-token`, `resolve-share-token`, `construct-share-p
 
 Routes are rooted at `/api/v1/modules/nextcloud-whiteboard`:
 
-- `GET` and `POST /config` read and update administrator configuration.
+- `GET` and `PUT` / `DELETE /config` read and update administrator configuration.
 - `GET /ping` reports module readiness.
 - `POST /admin/enable-test` performs the administrator enablement check.
 - `GET /whiteboards` lists accessible boards; administrator scope can list all boards.
@@ -76,7 +88,7 @@ Routes are rooted at `/api/v1/modules/nextcloud-whiteboard`:
 - `GET` and `POST /whiteboards/presence` read and update participant presence.
 - `POST /whiteboards/rename` renames an owned board.
 - `GET` and `POST /whiteboards/images` retrieve and upload namespaced images.
-- `GET`, `POST`, and `POST /share/delete` list, create, and delete board access entries.
+- `GET /share`, `POST /share`, and `POST /share/delete` list, create, and delete board access entries.
 
 Boundary validation limits request sizes, normalizes identifiers, and authorizes before business logic. Unavailable dependencies return a service-unavailable response; operational failures are logged with safe structured metadata.
 

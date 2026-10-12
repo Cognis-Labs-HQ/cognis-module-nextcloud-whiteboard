@@ -14,7 +14,7 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
         assert.ok(route, `${base} should be registered as a SPA route`);
         assert.equal(
             route.scriptUrl,
-            "/static/modules/nextcloud-whiteboard/app/index.js?revision=2.3.148",
+            "/static/modules/nextcloud-whiteboard/app/index.js?revision=2.3.149",
         );
         assert.deepEqual(route.stylesheets, [
             "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
@@ -65,9 +65,9 @@ test("nextcloud whiteboard disables page layout editing", async () => {
         fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(appSource, /allowCustomization:\s*false/);
-    assert.match(appSource, /contentScrolling:\s*true/);
-    assert.match(appSource, /borderless:\s*false/);
-    assert.doesNotMatch(appSource, /borderless:\s*embeddedComponentMode/);
+    assert.match(appSource, /contentScrolling:\s*!embeddedComponentMode/);
+    assert.match(appSource, /borderless:\s*embeddedComponentMode/);
+    assert.match(appSource, /frameless:\s*embeddedComponentMode/);
     assert.match(appSource, /frameless:\s*embeddedComponentMode/);
 });
 
@@ -654,7 +654,7 @@ test("whiteboard capability discovery has a single provider registration", () =>
     assert.deepEqual(capabilityProviders, [
         {
             scriptUrl:
-                "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js?revision=2.3.148",
+                "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js?revision=2.3.149",
             providesCapabilities: ["whiteboard:uiGateway"],
         },
     ]);
@@ -929,7 +929,7 @@ test("component whiteboards clamp the canvas grid to their parent height", async
     const appSource = await import("node:fs/promises").then((fs) =>
         fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
-    assert.match(appSource, /contentScrolling:\s*true/);
+    assert.match(appSource, /contentScrolling:\s*!embeddedComponentMode/);
 });
 
 test("whiteboard UI does not reach into page-shell-owned elements", async () => {

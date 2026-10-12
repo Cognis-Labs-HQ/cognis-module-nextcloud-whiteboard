@@ -468,7 +468,6 @@ export function createWhiteboardCanvas(
                 panState.offsetY - (event.clientY - panState.startY);
             scheduleRender();
             textTools.syncTextFormatMenu();
-            notifyTransientChange();
             return;
         }
         if (isDrawing) event.preventDefault();

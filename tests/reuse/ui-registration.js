@@ -1,3 +1,4 @@
+import { resolve } from "node:path";
 import { registerUi } from "../../api/index.js";
 
 export function captureUiRegistration() {
@@ -8,7 +9,7 @@ export function captureUiRegistration() {
     const capabilityProviders = [];
     const adminSections = [];
     registerUi({
-        moduleRoot: "/tmp/nextcloud-whiteboard",
+        moduleRoot: resolve(import.meta.dirname, "../.."),
         registerStaticDir(prefix, dir) {
             staticDirs.push({ prefix, dir });
         },

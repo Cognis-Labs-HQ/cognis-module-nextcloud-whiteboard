@@ -14,7 +14,7 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
         assert.ok(route, `${base} should be registered as a SPA route`);
         assert.equal(
             route.scriptUrl,
-            "/static/modules/nextcloud-whiteboard/app/index.js",
+            "/static/modules/nextcloud-whiteboard/app/index.js?revision=2.3.148",
         );
         assert.deepEqual(route.stylesheets, [
             "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
@@ -628,7 +628,7 @@ test("whiteboard registers one dedicated canvas UI gateway provider", async () =
     );
     assert.match(
         providerSource,
-        /registerCapabilityProvider\?\.\(\{[\s\S]*scriptUrl: GATEWAY_SCRIPT/,
+        /registerCapabilityProvider\?\.\(\{[\s\S]*scriptUrl: assetUrl/,
     );
     assert.match(providerSource, /whiteboard-ui-gateway\.js/);
     assert.match(
@@ -654,7 +654,7 @@ test("whiteboard capability discovery has a single provider registration", () =>
     assert.deepEqual(capabilityProviders, [
         {
             scriptUrl:
-                "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js",
+                "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js?revision=2.3.148",
             providesCapabilities: ["whiteboard:uiGateway"],
         },
     ]);

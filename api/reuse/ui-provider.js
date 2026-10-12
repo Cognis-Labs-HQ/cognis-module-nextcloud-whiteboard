@@ -1,9 +1,9 @@
-const GATEWAY_SCRIPT =
-    "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js";
+import { createWhiteboardUiAssetResolver } from "./ui-assets.js";
 
 export function registerWhiteboardUiProvider(ctx) {
+    const assetUrl = createWhiteboardUiAssetResolver(ctx.moduleRoot);
     ctx.registerCapabilityProvider?.({
-        scriptUrl: GATEWAY_SCRIPT,
+        scriptUrl: assetUrl("reuse/whiteboard-ui-gateway.js"),
         providesCapabilities: ["whiteboard:uiGateway"],
     });
 }

@@ -55,6 +55,8 @@ Aksi store asinkron saat aktif menjalankan flow `nextcloud-whiteboard:*` milik m
 
 Navigasi membatalkan pemeriksaan transport dan callback adegan tertunda. Respons sesi dan skrip yang usang tidak membuka kembali kanvas yang ditinggalkan. Pemeriksaan melepas socket, listener, timer dan handle skrip saat berhasil, gagal atau dibatalkan. Gaya page-composer tetap milik host.
 
+Whiteboard memberi URL entri browser yang terdaftar revisi paket terpasang dari manifest. Entri provider dan kanvas mendapat URL baru setelah pembaruan Whiteboard meskipun build Cognis tidak berubah. Pengujian kontrak browser menghubungkan graf modul lokal yang sebenarnya dan menolak ekspor bernama yang hilang sebelum rilis. Muat ulang halaman yang sudah terbuka setelah memperbarui modul aktif agar konteks browser memakai provider baru.
+
 ### Arsitektur dan siklus hidup
 
 `bootstrap.js` mendaftarkan UI dan API, menyumbangkan capability publik, dan memperluas `bootstrap-platform`. UI memakai page composer dan router host; API memiliki metadata papan, snapshot, kehadiran, konfigurasi, dan pembuatan sesi. Aktivasi mendaftarkan `/whiteboards`, `/whiteboard`, aset statis, navigasi, API, capability, dan hook flow berbagi; penonaktifan menghapus kontribusi dalam lingkup modul.

@@ -55,6 +55,8 @@ await spawnWhiteboardWindow({
 
 画面移動は通信検査と保留中のシーン処理を中止します。古いセッションやスクリプト応答は離れたキャンバスを再表示できません。検査は成功、失敗、中止のいずれでも Socket、Listener、Timer とスクリプトハンドルを解放します。Page Composer のスタイルはホストが管理します。
 
+Whiteboard は Manifest のインストール済みパッケージリビジョンを登録するブラウザー入口 URL に付けます。Cognis のビルドが同じでも、Whiteboard の更新後は Provider とキャンバスの入口に新しい URL が与えられます。ブラウザー契約テストは実際のローカルモジュールグラフをリンクし、名前付き Export の欠落をリリース前に検出します。有効なモジュールを更新した後、開いているページを再読み込みしてブラウザーコンテキストに新しい Provider を読み込んでください。
+
 ### アーキテクチャとライフサイクル
 
 `bootstrap.js` は UI と API を登録し、公開 Capability を提供して `bootstrap-platform` を拡張します。UI はホストの Page Composer とルーターを使用し、API はボードメタデータ、スナップショット、プレゼンス、構成、セッション生成を所有します。有効化時に `/whiteboards`、`/whiteboard`、静的アセット、ナビゲーション、API、Capability、共有 Flow フックが登録され、無効化時にモジュールスコープの登録が削除されます。

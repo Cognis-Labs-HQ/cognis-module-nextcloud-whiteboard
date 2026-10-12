@@ -1,3 +1,4 @@
+import { createWhiteboardUiAssetResolver } from "./reuse/ui-assets.js";
 import path from "node:path";
 import { hasMinRole, readJson, sendError, sendJson } from "./reuse/http.js";
 import { getFirstStageResult } from "./reuse/flow-helpers.js";
@@ -31,11 +32,12 @@ import {
 } from "./access.js";
 
 export function registerUi(ctx) {
+    const whiteboardUiAsset = createWhiteboardUiAssetResolver(ctx.moduleRoot);
     const moduleUiRoot = path.join(ctx.moduleRoot, "ui");
     ctx.registerStaticDir("", moduleUiRoot);
     registerWhiteboardUiProvider(ctx);
     ctx.registerNavbarPlugin({
-        scriptUrl: "/static/modules/nextcloud-whiteboard/navbar.js",
+        scriptUrl: whiteboardUiAsset("navbar.js"),
         access: { minRole: "user" },
     });
 
@@ -43,7 +45,7 @@ export function registerUi(ctx) {
         id: "module.nextcloud.whiteboard",
         pattern: "^/whiteboards$",
         base: "/whiteboards",
-        scriptUrl: "/static/modules/nextcloud-whiteboard/app/index.js",
+        scriptUrl: whiteboardUiAsset("app/index.js"),
         stylesheets: WHITEBOARD_STYLESHEETS,
         access: { minRole: "user" },
     });
@@ -52,7 +54,7 @@ export function registerUi(ctx) {
         id: "module.nextcloud.whiteboard.canvas",
         pattern: "^/whiteboard$",
         base: "/whiteboard",
-        scriptUrl: "/static/modules/nextcloud-whiteboard/app/index.js",
+        scriptUrl: whiteboardUiAsset("app/index.js"),
         stylesheets: WHITEBOARD_STYLESHEETS,
         access: { minRole: "user" },
         componentPage: {
@@ -64,7 +66,7 @@ export function registerUi(ctx) {
     ctx.registerAdminSection({
         id: "module-nextcloud-whiteboard",
         label: "module.nextcloud_whiteboard.name",
-        scriptUrl: "/static/modules/nextcloud-whiteboard/admin-section.js",
+        scriptUrl: whiteboardUiAsset("admin-section.js"),
         access: { minRole: "admin" },
         stringsBaseUrl: "/static/modules/nextcloud-whiteboard/languages",
     });

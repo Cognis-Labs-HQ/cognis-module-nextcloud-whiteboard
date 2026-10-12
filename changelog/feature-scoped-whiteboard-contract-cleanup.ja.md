@@ -12,6 +12,10 @@
 
 画面移動は通信検査と保留中のシーン処理を中止します。古いセッションやスクリプト応答は離れたキャンバスを再表示できません。検査は成功、失敗、中止のいずれでも Socket、Listener、Timer とスクリプトハンドルを解放します。Page Composer のスタイルはホストが管理します。
 
+## パッケージリビジョンを使うブラウザー入口
+
+Whiteboard は Manifest のインストール済みパッケージリビジョンを登録するブラウザー入口 URL に付けます。Cognis のビルドが同じでも、Whiteboard の更新後は Provider とキャンバスの入口に新しい URL が与えられます。ブラウザー契約テストは実際のローカルモジュールグラフをリンクし、名前付き Export の欠落をリリース前に検出します。有効なモジュールを更新した後、開いているページを再読み込みしてブラウザーコンテキストに新しい Provider を読み込んでください。
+
 ## コミット
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

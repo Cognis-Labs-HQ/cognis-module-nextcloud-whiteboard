@@ -55,6 +55,8 @@ Asynchrone Store-Aktionen des aktivierten Moduls führen über ctx eigene `nextc
 
 Navigation bricht Transportprüfungen und ausstehende Szenen-Callbacks ab. Veraltete Sitzungs- und Skriptantworten öffnen keine verlassene Canvas erneut. Prüfungen geben Sockets, Listener, Timer und Skripthandles bei Erfolg, Fehler und Abbruch frei. Page-Composer-Stile bleiben Eigentum des Hosts.
 
+Whiteboard versieht die registrierten Browser-Einstiegs-URLs mit der installierten Paketrevision aus seinem Manifest. Provider- und Canvas-Einstiege erhalten dadurch nach einem Whiteboard-Update neue URLs, auch wenn der Cognis-Build unverändert bleibt. Browser-Vertragstests verknüpfen die tatsächlichen lokalen Modulgraphen und verwerfen fehlende benannte Exporte vor der Veröffentlichung. Laden Sie eine bereits geöffnete Seite nach Aktualisierung eines aktivierten Moduls neu, damit ihr Browserkontext den neuen Provider verwendet.
+
 ### Architektur und Lebenszyklus
 
 `bootstrap.js` registriert UI und API, stellt öffentliche Capabilities bereit und erweitert `bootstrap-platform`. Die UI verwendet Page Composer und Router des Hosts; die API verwaltet Board-Metadaten, Snapshots, Präsenz, Konfiguration und Sitzungen. Beim Aktivieren werden `/whiteboards`, `/whiteboard`, statische Assets, Navigation, APIs, Capabilities und Freigabe-Hooks registriert; beim Deaktivieren werden die modulspezifischen Registrierungen entfernt.

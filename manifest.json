@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.147",
+    "version": "2.3.148",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -177,7 +177,7 @@
         },
         {
             "path": "api/index.js",
-            "sha256": "a9667e185f9aaa344be112b71ceb7dfb5ae06d5a4184b35c728f2b9767149734"
+            "sha256": "037e89db90c9fa624636f976da3a180419a70efc0b8253ffb80168f5b3dee5eb"
         },
         {
             "path": "api/reuse/account-handle.js",
@@ -240,8 +240,12 @@
             "sha256": "114abd33118e936fac4ce8575814af6c84c02613aacb6e37b420868227f4d4fd"
         },
         {
+            "path": "api/reuse/ui-assets.js",
+            "sha256": "e13ce96e8122c7d16974bd75277a8cf86ff8a47dc0638e7795e91e44742253cc"
+        },
+        {
             "path": "api/reuse/ui-provider.js",
-            "sha256": "ff122f65e6b6e721b07a8d5c0d7407f63469c63571f460276d69e69a1b07ae0f"
+            "sha256": "4806011ef3b4c95e54fc70d7ed78baa5970654e63b8486890b71ce26cf76fbf3"
         },
         {
             "path": "api/reuse/url-parts.js",
@@ -273,27 +277,27 @@
         },
         {
             "path": "docs/standard.de.md",
-            "sha256": "ccbbdb16e95b7fe8882fe1c65e7bc9bc85f2e9b95b39296c630dab2be6e931d4"
+            "sha256": "6224ab7ae2f4fc90b91aa3399fd0d6955d0b33190b332e66c28fc7baee3b9cd4"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "751858f7f7fe2ca632fac6f46f7e1f53136bf8de8271dfc7505d63d307439536"
+            "sha256": "f2c5d6c50645e41eafa94334aeb69160c96cdc005d44add1cab09a03dbf9bcbe"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "5da3e597d158db65996064f45b58a8817a3d0b62176bf9a8f8d17e9fe9305aa3"
+            "sha256": "c6423e1bb5c40a1144090aac1d80494283b848abea81f45ebd052be42da54261"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "89c775877c7526496838f07ce3e613317d8e799e566611718beb7b8907fd04c7"
+            "sha256": "41dd2fa90f454aa4246e73be1cc2d57a693c5f386ac89099c7d395bd45d54686"
         },
         {
             "path": "package-lock.json",
-            "sha256": "5f9c1d1ab4b8954b0e2a0942322fc934eaf87d1550d314d61521ed45bf4557cf"
+            "sha256": "e16a799933ac9a7e6904a1b5a721cb47e743ffc47c61a4a601c21bb7eab9277a"
         },
         {
             "path": "package.json",
-            "sha256": "955895929c29fe4c78f92ee93b8756ef2a57f44871c8c3dec4409861a953da22"
+            "sha256": "219e38a0c6d3972c3bb0859d47390dd75bd8638467edae94ac408869f7ca3fbb"
         },
         {
             "path": "routes.json",
@@ -329,7 +333,11 @@
         },
         {
             "path": "tests/bootstrap-capabilities.test.js",
-            "sha256": "df7975b9bca0b2a973ef466bb1cce539bc42cb7c671337ca868e318e795a39d1"
+            "sha256": "0b373465ceb9e63b87c03cc8881de3665631f976c1d851fd7e4dd54ac9057baf"
+        },
+        {
+            "path": "tests/browser-entry-contract.test.js",
+            "sha256": "b03057973a73f6f9874774981f3c73c14189ba8497940f4e53b68000b7feaed1"
         },
         {
             "path": "tests/canvas-deletion.test.js",
@@ -400,12 +408,16 @@
             "sha256": "0d8ab6b98d7ec1c1861ec22a8137556a9666a858b752f4f627411ab06692fc01"
         },
         {
+            "path": "tests/reuse/link-browser-module.mjs",
+            "sha256": "14b16593c3ea3638705b4cdd21a006cea26d4e0ef0dbb019b3befb94cccd1437"
+        },
+        {
             "path": "tests/reuse/profile-identity.js",
             "sha256": "044e07e225036197ba9b0bd86172c369d412064b6fce18aaac1996c6be81f3b7"
         },
         {
             "path": "tests/reuse/ui-registration.js",
-            "sha256": "00b44d56689f80f7fa1511186224057859624f516d7f03f2ff86f1e102bb9121"
+            "sha256": "3490ceb81026ebf3ae33b9addf7ca728f07cff167f3ae3d17ea4e1448cae776b"
         },
         {
             "path": "tests/scene-updates.test.js",
@@ -429,7 +441,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "d8eb23f36f1eb3727ced908424e98c9fe3af17d871fb3585b9dbe31bc7234755"
+            "sha256": "f44853fef1342274d4b0427cd2b313cf96ba6170e56d3497dee4a0e0b890b0d5"
         },
         {
             "path": "tests/websocket-lifecycle.test.js",

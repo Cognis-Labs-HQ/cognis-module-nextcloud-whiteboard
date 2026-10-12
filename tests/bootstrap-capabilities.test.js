@@ -1,3 +1,4 @@
+import { resolve } from "node:path";
 import { withFlowRuntime } from "./reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -16,7 +17,7 @@ function createRuntime({ conflictingCapabilityId } = {}) {
     const registerRoute = () => {};
     const registerUi = () => events.push("ui");
     const ctx = {
-        moduleRoot: "/modules/nextcloud-whiteboard",
+        moduleRoot: resolve(import.meta.dirname, ".."),
         contributePublicCapability(capabilityId, value) {
             if (capabilityId === conflictingCapabilityId) {
                 throw new Error("module_capability_conflict");

@@ -1,6 +1,6 @@
 export function registerCommands({ register, apiGet }) {
     register(
-        "nextcloud-whiteboard:ping",
+        "modules:nextcloud-whiteboard:ping",
         async ({ apiBaseUrl, getApiToken }) => {
             return apiGet(
                 apiBaseUrl,
@@ -9,14 +9,14 @@ export function registerCommands({ register, apiGet }) {
             );
         },
         {
-            usage: "cognisctl nextcloud-whiteboard:ping",
+            usage: "cognisctl modules:nextcloud-whiteboard:ping",
             description:
                 "Check whether the Nextcloud Whiteboard module is ready.",
         },
     );
 
     register(
-        "nextcloud-whiteboard:whiteboards",
+        "modules:nextcloud-whiteboard:whiteboards",
         async ({ apiBaseUrl, getApiToken }) => {
             return apiGet(
                 apiBaseUrl,
@@ -25,7 +25,7 @@ export function registerCommands({ register, apiGet }) {
             );
         },
         {
-            usage: "cognisctl nextcloud-whiteboard:whiteboards",
+            usage: "cognisctl modules:nextcloud-whiteboard:whiteboards",
             description: "List all Nextcloud Whiteboards for administrators.",
         },
     );

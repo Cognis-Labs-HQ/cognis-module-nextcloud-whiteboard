@@ -25,7 +25,7 @@ export function bindWhiteboardCanvasToolbar({
         const newButton = withinMount("#whiteboard-new");
         newButton?.insertAdjacentHTML(
             "afterend",
-            `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}" aria-label="${escapeHtml(translate("module.nextcloud_whiteboard.tool_lock"))}"><span class="whiteboard-tool-icon whiteboard-tool-icon--lock" aria-hidden="true"></span></button>`,
+            `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud.whiteboard.tool.lock"))}" aria-label="${escapeHtml(translate("module.nextcloud.whiteboard.tool.lock"))}"><span class="whiteboard-tool-icon whiteboard-tool-icon--lock" aria-hidden="true"></span></button>`,
         );
     }
     toolbar

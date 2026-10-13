@@ -6,7 +6,7 @@ import { createWhiteboardSearchCollector } from "./search-index.js";
 import { createWhiteboardStatusController } from "./status.js";
 import { openWhiteboardSharePopup } from "./share-popup.js";
 import { bindOverlayBoardSelection, setOverlayVisible } from "./overlay.js";
-import { renderCanvasElement as renderWhiteboardCanvasElement } from "./render.js";
+import { renderCanvasElement as renderWhiteboardCanvasElement } from "../templates/canvas.js";
 import {
     API_BASE,
     apiFetchJson,
@@ -135,9 +135,9 @@ function reportCanvasLoadError(error, boardId, stage) {
     });
     const detail = String(error?.message ?? "").trim();
     const message = detail
-        ? `${translateModuleString("module.nextcloud_whiteboard.canvas_load_failed")} ${detail}`
+        ? `${translateModuleString("module.nextcloud.whiteboard.canvas.load.failed")} ${detail}`
         : translateModuleString(
-              "module.nextcloud_whiteboard.canvas_load_failed",
+              "module.nextcloud.whiteboard.canvas.load.failed",
           );
     setOverlayVisible(pageMountRoot, true, message);
     showToast(message, { variant: "error" });
@@ -262,13 +262,13 @@ function connectSocket(io, session, canvas) {
             savedElements = canvas.getElements();
             setSyncStatus(
                 "synced",
-                "module.nextcloud_whiteboard.status_synced",
+                "module.nextcloud.whiteboard.status.synced",
             );
         } catch (error) {
             if (disposed || socketInstance !== socket) return;
             reportClientError(
                 error,
-                "module.nextcloud_whiteboard.status_sync_failed",
+                "module.nextcloud.whiteboard.status.sync.failed",
             );
         }
     }, EMIT_DEBOUNCE_MS);
@@ -278,13 +278,13 @@ function connectSocket(io, session, canvas) {
             if (!socket.connected || !joinedRoom) {
                 setSyncStatus(
                     "error",
-                    "module.nextcloud_whiteboard.status_sync_failed",
+                    "module.nextcloud.whiteboard.status.sync.failed",
                 );
                 return;
             }
             setSyncStatus(
                 "syncing",
-                "module.nextcloud_whiteboard.status_syncing",
+                "module.nextcloud.whiteboard.status.syncing",
             );
             socket.emit(
                 "server-broadcast",
@@ -295,7 +295,7 @@ function connectSocket(io, session, canvas) {
             if (session.disposable) {
                 setSyncStatus(
                     "idle",
-                    "module.nextcloud_whiteboard.status_unsaved",
+                    "module.nextcloud.whiteboard.status.unsaved",
                 );
             }
         },
@@ -314,7 +314,7 @@ function connectSocket(io, session, canvas) {
         if (meta?.type === "image_rejected") {
             showToast(
                 translateModuleString(
-                    "module.nextcloud_whiteboard.image_too_large",
+                    "module.nextcloud.whiteboard.image.too.large",
                 ).replace("{limit}", String(meta.limit)),
                 { variant: "error" },
             );
@@ -344,8 +344,8 @@ function connectSocket(io, session, canvas) {
         setSyncStatus(
             session.disposable && !session.saved ? "idle" : "synced",
             session.disposable && !session.saved
-                ? "module.nextcloud_whiteboard.status_unsaved"
-                : "module.nextcloud_whiteboard.status_synced",
+                ? "module.nextcloud.whiteboard.status.unsaved"
+                : "module.nextcloud.whiteboard.status.synced",
         );
         if (isDedicatedSyncer) emitSceneSnapshot();
         requestScene();
@@ -358,8 +358,8 @@ function connectSocket(io, session, canvas) {
             setSyncStatus(
                 session.disposable && !session.saved ? "idle" : "synced",
                 session.disposable && !session.saved
-                    ? "module.nextcloud_whiteboard.status_unsaved"
-                    : "module.nextcloud_whiteboard.status_synced",
+                    ? "module.nextcloud.whiteboard.status.unsaved"
+                    : "module.nextcloud.whiteboard.status.synced",
             );
         }
     });
@@ -418,12 +418,12 @@ async function createAndOpenBoard() {
             title: createRandomWhiteboardTitle(),
         });
     } catch (error) {
-        reportClientError(error, "module.nextcloud_whiteboard.spawn_failed");
+        reportClientError(error, "module.nextcloud.whiteboard.spawn.failed");
         return;
     }
     savedElements = [];
     showToast(
-        translateModuleString("module.nextcloud_whiteboard.created_success"),
+        translateModuleString("module.nextcloud.whiteboard.created.success"),
         {
             variant: "success",
         },
@@ -511,7 +511,7 @@ async function renameActiveBoard() {
             emitBoardRenamed(activeBoard.title);
             showToast(
                 translateModuleString(
-                    "module.nextcloud_whiteboard.rename_success",
+                    "module.nextcloud.whiteboard.rename.success",
                 ),
                 {
                     variant: "success",
@@ -520,7 +520,7 @@ async function renameActiveBoard() {
         } catch (error) {
             reportClientError(
                 error,
-                "module.nextcloud_whiteboard.rename_failed",
+                "module.nextcloud.whiteboard.rename.failed",
             );
             titleEl.textContent = activeBoard.title;
         }
@@ -563,7 +563,7 @@ async function openBoard(board) {
     setOverlayVisible(
         pageMountRoot,
         true,
-        translateModuleString("module.nextcloud_whiteboard.connecting"),
+        translateModuleString("module.nextcloud.whiteboard.connecting"),
     );
     let session;
     try {
@@ -624,7 +624,7 @@ async function openBoard(board) {
         teardownCanvas();
         return;
     }
-    setSyncStatus("syncing", "module.nextcloud_whiteboard.status_syncing");
+    setSyncStatus("syncing", "module.nextcloud.whiteboard.status.syncing");
     socketInstance = connectSocket(io, session, canvasInstance);
     composer?.refreshPresence?.();
     bindCanvasToolbar(canvasInstance);
@@ -697,7 +697,7 @@ function buildElements() {
         {
             id: "whiteboard-canvas",
             label: translateModuleString(
-                "module.nextcloud_whiteboard.canvas_window",
+                "module.nextcloud.whiteboard.canvas.window",
             ),
             pinned: true,
             gridSize: { default: [12, 5], min: [4, 4], max: "full" },
@@ -707,6 +707,8 @@ function buildElements() {
         },
     ];
 }
+
+let releasePageSearch;
 
 export async function mount(
     root,
@@ -728,7 +730,21 @@ export async function mount(
         !signal?.aborted &&
         sequence === mountSequence &&
         pageMountRoot === root;
-    registerSearchIndex("nextcloud-whiteboard", collectWhiteboardSearchGroups);
+    releasePageSearch?.();
+    const removeSearch = registerSearchIndex(
+        "nextcloud-whiteboard",
+        collectWhiteboardSearchGroups,
+    );
+    let searchReleased = false;
+    const releaseSearch = () => {
+        if (searchReleased) return;
+        searchReleased = true;
+        signal?.removeEventListener("abort", releaseSearch);
+        removeSearch();
+        if (releasePageSearch === releaseSearch) releasePageSearch = undefined;
+    };
+    releasePageSearch = releaseSearch;
+    signal?.addEventListener("abort", releaseSearch, { once: true });
     const mountedI18n = await createI18n({
         componentStringBaseUrls: [
             "/static/modules/nextcloud-whiteboard/languages",
@@ -736,7 +752,7 @@ export async function mount(
     });
     if (!isCurrentMount()) return;
     i18n = mountedI18n;
-    applyDocumentTitle(i18n, "module.nextcloud_whiteboard.page_title");
+    applyDocumentTitle(i18n, "module.nextcloud.whiteboard.page.title");
     activeShareContext =
         shareContext?.directAccess === true ? null : (shareContext ?? null);
     const componentFocusState = focusState?.context ?? focusState ?? null;
@@ -763,7 +779,7 @@ export async function mount(
             if (!isCurrentMount()) return;
             reportClientError(
                 error,
-                "module.nextcloud_whiteboard.load_boards_failed",
+                "module.nextcloud.whiteboard.load.boards.failed",
             );
         }
     }
@@ -776,7 +792,7 @@ export async function mount(
         activeBoard = {
             id: initialBoardId,
             title: translateModuleString(
-                "module.nextcloud_whiteboard.canvas_window",
+                "module.nextcloud.whiteboard.canvas.window",
             ),
         };
     }
@@ -813,10 +829,10 @@ export async function mount(
         i18n,
         pageContext: {
             title: translateModuleString(
-                "module.nextcloud_whiteboard.page_title",
+                "module.nextcloud.whiteboard.page.title",
             ),
             subtitle: translateModuleString(
-                "module.nextcloud_whiteboard.page_subtitle",
+                "module.nextcloud.whiteboard.page.subtitle",
             ),
         },
         showNavbar: !embeddedComponentMode && sharePageFlag("showNavbar", true),
@@ -832,6 +848,7 @@ export async function mount(
     const destroy = () => {
         if (destroyed) return;
         destroyed = true;
+        releaseSearch();
         signal?.removeEventListener("abort", destroy);
         mountedComposer.destroy();
         if (composer !== mountedComposer) return;
@@ -848,7 +865,12 @@ export async function mount(
         if (pageMountRoot === root) pageMountRoot = null;
     };
     signal?.addEventListener("abort", destroy, { once: true });
-    await mountedComposer.init();
+    try {
+        await mountedComposer.init();
+    } catch (error) {
+        destroy();
+        throw error;
+    }
     if (!isCurrentMount()) {
         destroy();
         return;

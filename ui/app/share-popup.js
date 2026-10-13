@@ -18,7 +18,7 @@ export async function openWhiteboardSharePopup({
                 {
                     id: "read",
                     label: translate(
-                        "module.nextcloud_whiteboard.share_permission_read",
+                        "module.nextcloud.whiteboard.share.permission.read",
                     ),
                     permissions: ["read"],
                     grantedCapabilities: ["whiteboard:read"],
@@ -26,7 +26,7 @@ export async function openWhiteboardSharePopup({
                 {
                     id: "write",
                     label: translate(
-                        "module.nextcloud_whiteboard.share_permission_write",
+                        "module.nextcloud.whiteboard.share.permission.write",
                     ),
                     permissions: ["read", "write"],
                     grantedCapabilities: [
@@ -35,87 +35,87 @@ export async function openWhiteboardSharePopup({
                     ],
                 },
             ],
-            title: translate("module.nextcloud_whiteboard.share_popup_title"),
+            title: translate("module.nextcloud.whiteboard.share.popup.title"),
             labels: {
-                empty: translate("module.nextcloud_whiteboard.share_empty"),
+                empty: translate("module.nextcloud.whiteboard.share.empty"),
                 untitled: translate(
-                    "module.nextcloud_whiteboard.share_untitled",
+                    "module.nextcloud.whiteboard.share.untitled",
                 ),
                 copyLink: translate(
-                    "module.nextcloud_whiteboard.share_copy_link",
+                    "module.nextcloud.whiteboard.share.copy.link",
                 ),
-                revoke: translate("module.nextcloud_whiteboard.share_revoke"),
+                revoke: translate("module.nextcloud.whiteboard.share.revoke"),
                 shareOptions: translate(
-                    "module.nextcloud_whiteboard.share_options_label",
+                    "module.nextcloud.whiteboard.share.options.label",
                 ),
                 permission: translate(
-                    "module.nextcloud_whiteboard.share_options_label",
+                    "module.nextcloud.whiteboard.share.options.label",
                 ),
                 accessMode: translate(
-                    "module.nextcloud_whiteboard.share_options_label",
+                    "module.nextcloud.whiteboard.share.options.label",
                 ),
                 readPermission: translate(
-                    "module.nextcloud_whiteboard.share_permission_read",
+                    "module.nextcloud.whiteboard.share.permission.read",
                 ),
                 writePermission: translate(
-                    "module.nextcloud_whiteboard.share_permission_write",
+                    "module.nextcloud.whiteboard.share.permission.write",
                 ),
                 mail: translate("ui.reuse.mail"),
-                label: translate("module.nextcloud_whiteboard.share_label"),
+                label: translate("module.nextcloud.whiteboard.share.label"),
                 labelPlaceholder: translate(
-                    "module.nextcloud_whiteboard.share_label_placeholder",
+                    "module.nextcloud.whiteboard.share.label.placeholder",
                 ),
                 expiryLabel: translate(
-                    "module.nextcloud_whiteboard.share_expiry_label",
+                    "module.nextcloud.whiteboard.share.expiry.label",
                 ),
                 password: translate(
-                    "module.nextcloud_whiteboard.share_password_optional",
+                    "module.nextcloud.whiteboard.share.password.optional",
                 ),
                 passwordPopupTitle: translate(
-                    "module.nextcloud_whiteboard.share_password_title",
+                    "module.nextcloud.whiteboard.share.password.title",
                 ),
                 passwordPopupLabel: translate(
-                    "module.nextcloud_whiteboard.share_password_instruction",
+                    "module.nextcloud.whiteboard.share.password.instruction",
                 ),
                 passwordPlaceholder: translate(
-                    "module.nextcloud_whiteboard.share_password_placeholder",
+                    "module.nextcloud.whiteboard.share.password.placeholder",
                 ),
                 cancel: translate("ui.reuse.cancel"),
-                confirm: translate("module.nextcloud_whiteboard.share_revoke"),
+                confirm: translate("module.nextcloud.whiteboard.share.revoke"),
                 deleteConfirmMessage: translate(
-                    "module.nextcloud_whiteboard.share_delete_prompt",
+                    "module.nextcloud.whiteboard.share.delete.prompt",
                 ),
                 statusActive: translate(
-                    "module.nextcloud_whiteboard.share_status_active",
+                    "module.nextcloud.whiteboard.share.status.active",
                 ),
                 statusExpired: translate(
-                    "module.nextcloud_whiteboard.share_status_expired",
+                    "module.nextcloud.whiteboard.share.status.expired",
                 ),
                 expiresAtLabel: translate(
-                    "module.nextcloud_whiteboard.share_expires_at_label",
+                    "module.nextcloud.whiteboard.share.expires.at.label",
                 ),
                 expiredAtLabel: translate(
-                    "module.nextcloud_whiteboard.share_expired_at_label",
+                    "module.nextcloud.whiteboard.share.expired.at.label",
                 ),
                 generateLink: translate(
-                    "module.nextcloud_whiteboard.share_generate_link",
+                    "module.nextcloud.whiteboard.share.generate.link",
                 ),
                 close: translate("ui.reuse.close"),
                 createFailed: translate(
-                    "module.nextcloud_whiteboard.share_create_failed",
+                    "module.nextcloud.whiteboard.share.create.failed",
                 ),
                 copySuccess: translate(
-                    "module.nextcloud_whiteboard.share_copy_success",
+                    "module.nextcloud.whiteboard.share.copy.success",
                 ),
                 copyFailed: translate(
-                    "module.nextcloud_whiteboard.share_copy_failed",
+                    "module.nextcloud.whiteboard.share.copy.failed",
                 ),
                 deleteFailed: translate(
-                    "module.nextcloud_whiteboard.share_delete_failed",
+                    "module.nextcloud.whiteboard.share.delete.failed",
                 ),
             },
         });
     } catch (error) {
-        reportError(error, "module.nextcloud_whiteboard.share_create_failed");
+        reportError(error, "module.nextcloud.whiteboard.share.create.failed");
     }
 }

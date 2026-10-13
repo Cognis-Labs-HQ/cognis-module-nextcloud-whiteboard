@@ -39,7 +39,7 @@ export function createWhiteboardStatusController({
         statusBox.dataset.status = syncStatus;
         statusBox.title =
             syncStatusMessage ||
-            translate("module.nextcloud_whiteboard.status_idle");
+            translate("module.nextcloud.whiteboard.status.idle");
         if (syncStatus === "synced") {
             statusBox.classList.remove("whiteboard-save-confirmed");
             void statusBox.offsetWidth;
@@ -78,10 +78,10 @@ export function createWhiteboardStatusController({
         );
         if (!rawMessage || genericSocketFailure) {
             return translate(
-                "module.nextcloud_whiteboard.connection_failed",
+                "module.nextcloud.whiteboard.connection.failed",
             ).replace("{server_url}", serverUrl);
         }
-        return `${translate("module.nextcloud_whiteboard.connect_error")}: ${rawMessage}`;
+        return `${translate("module.nextcloud.whiteboard.connect.error")}: ${rawMessage}`;
     }
 
     return {

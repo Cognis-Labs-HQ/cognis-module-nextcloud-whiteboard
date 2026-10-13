@@ -726,7 +726,7 @@ export function createWhiteboardCanvas(
     });
 
     const resizeObserver = new ResizeObserver(resizeCanvas);
-    resizeObserver.observe(canvasElement.parentElement ?? document.body);
+    resizeObserver.observe(canvasElement.parentElement ?? canvasElement);
     resizeCanvas();
 
     return {

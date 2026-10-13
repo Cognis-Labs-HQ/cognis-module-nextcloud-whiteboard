@@ -33,8 +33,8 @@ test("nextcloud whiteboard exposes its canvas as a component page", () => {
     );
 
     assert.deepEqual(canvasRoute?.componentPage, {
-        labelKey: "module.nextcloud_whiteboard.name",
-        descriptionKey: "module.nextcloud_whiteboard.description",
+        labelKey: "module.nextcloud.whiteboard.name",
+        descriptionKey: "module.nextcloud.whiteboard.description",
         modes: ["overlay", "fullscreen", "pip"],
     });
     assert.equal(
@@ -145,7 +145,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         ),
         import("node:fs/promises").then((fs) =>
             fs.readFile(
-                new URL("../ui/app/render.js", import.meta.url),
+                new URL("../ui/templates/canvas.js", import.meta.url),
                 "utf8",
             ),
         ),
@@ -192,7 +192,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     );
     assert.match(
         sharePopupSource,
-        /title:\s*translate\(["']module\.nextcloud_whiteboard\.share_popup_title["']\)/,
+        /title:\s*translate\(["']module\.nextcloud\.whiteboard\.share\.popup\.title["']\)/,
     );
     assert.match(sharePopupSource, /labels:\s*\{/);
     assert.match(
@@ -498,7 +498,7 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
         ),
         import("node:fs/promises").then((fs) =>
             fs.readFile(
-                new URL("../ui/app/render.js", import.meta.url),
+                new URL("../ui/templates/canvas.js", import.meta.url),
                 "utf8",
             ),
         ),
@@ -537,7 +537,7 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
     );
     assert.match(
         renderSource,
-        /toolButton\(tool, `module.nextcloud_whiteboard.tool_\$\{tool\}`, icon\(tool\)\)/,
+        /toolButton\(tool, `module.nextcloud.whiteboard.tool.\$\{tool\}`, icon\(tool\)\)/,
     );
     assert.match(
         renderSource,
@@ -647,7 +647,7 @@ test("whiteboard registers one dedicated canvas UI gateway provider", async () =
     assert.match(gatewaySource, /return \{ whiteboardId \}/);
     assert.match(
         gatewaySource,
-        /uiCtx\.capabilities\.contribute\(capabilityName, gateway\)/,
+        /uiCtx\.capabilities\.contribute\(capabilityName, actions\)/,
     );
     assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
 });
@@ -684,7 +684,7 @@ test("whiteboard component mounts the disposable canvas from focus state", async
         [
             "../ui/app/index.js",
             "../ui/reuse/board-navigation.js",
-            "../ui/app/render.js",
+            "../ui/templates/canvas.js",
         ].map((path) =>
             import("node:fs/promises").then((fs) =>
                 fs.readFile(new URL(path, import.meta.url), "utf8"),
@@ -765,7 +765,7 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
             [
                 "../ui/app/index.js",
                 "../ui/app/disposable-save.js",
-                "../ui/app/render.js",
+                "../ui/templates/canvas.js",
                 "../ui/styles/whiteboards.css",
             ].map((relativePath) =>
                 import("node:fs/promises").then((fs) =>
@@ -846,7 +846,7 @@ test("previous Whiteboards render without a redundant history popup", async () =
     const [appSource, renderSource, toolbarSource] = await Promise.all(
         [
             "../ui/app/index.js",
-            "../ui/app/render.js",
+            "../ui/templates/canvas.js",
             "../ui/app/canvas-toolbar.js",
         ].map((relativePath) =>
             readFile(new URL(relativePath, import.meta.url), "utf8"),

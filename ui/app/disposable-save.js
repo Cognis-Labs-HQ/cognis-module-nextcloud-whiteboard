@@ -21,7 +21,7 @@ export function createDisposableSaveControls({
         if (!statusBox) return;
         if (!withinMount("#whiteboard-save-copy")) {
             const label = escapeHtml(
-                translate("module.nextcloud_whiteboard.save_canvas"),
+                translate("module.nextcloud.whiteboard.save.canvas"),
             );
             statusBox.insertAdjacentHTML(
                 "beforebegin",
@@ -37,7 +37,7 @@ export function createDisposableSaveControls({
             try {
                 setSyncStatus(
                     "syncing",
-                    "module.nextcloud_whiteboard.status_syncing",
+                    "module.nextcloud.whiteboard.status.syncing",
                 );
                 const saved = await saveWhiteboardElements(
                     session.roomId,
@@ -52,12 +52,12 @@ export function createDisposableSaveControls({
                 setDisposableSaveDirty(session, false);
                 setSyncStatus(
                     "synced",
-                    "module.nextcloud_whiteboard.status_synced",
+                    "module.nextcloud.whiteboard.status.synced",
                 );
             } catch (error) {
                 reportClientError(
                     error,
-                    "module.nextcloud_whiteboard.status_sync_failed",
+                    "module.nextcloud.whiteboard.status.sync.failed",
                 );
             } finally {
                 saveButton.disabled = false;

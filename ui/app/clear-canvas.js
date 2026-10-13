@@ -8,8 +8,8 @@ const [{ escapeHtml }, { openPopup }] = await Promise.all([
 export async function confirmClearCanvas(translate) {
     return (
         (await openPopup({
-            title: translate("module.nextcloud_whiteboard.clear_board"),
-            body: `<p>${escapeHtml(translate("module.nextcloud_whiteboard.clear_confirm"))}</p>`,
+            title: translate("module.nextcloud.whiteboard.clear.board"),
+            body: `<p>${escapeHtml(translate("module.nextcloud.whiteboard.clear.confirm"))}</p>`,
             actions: [
                 {
                     id: "cancel",
@@ -18,7 +18,7 @@ export async function confirmClearCanvas(translate) {
                 },
                 {
                     id: "clear",
-                    label: translate("module.nextcloud_whiteboard.clear_board"),
+                    label: translate("module.nextcloud.whiteboard.clear.board"),
                     variant: "cancel",
                 },
             ],

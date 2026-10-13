@@ -33,7 +33,7 @@ export function createWhiteboardSearchCollector({
                 id: `whiteboard:${activeBoard.id}:contents`,
                 label:
                     activeBoard.title ||
-                    translate("module.nextcloud_whiteboard.canvas_window"),
+                    translate("module.nextcloud.whiteboard.canvas.window"),
                 showDescription: false,
                 showMatchSnippet: false,
                 url: `/whiteboard?id=${encodeURIComponent(activeBoard.id)}`,
@@ -43,7 +43,7 @@ export function createWhiteboardSearchCollector({
         }
         return [
             {
-                category: "module.nextcloud_whiteboard.search_category",
+                category: "module.nextcloud.whiteboard.search.category",
                 items,
             },
         ];

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { registerApiRoutes as registerModuleRoutes } from "../api/index.js";
 import { registerWhiteboardConfigurationApi } from "../api/reuse/configuration-api.js";
-import { registerWhiteboardShareFlowHooks } from "../api/share-hooks.js";
+import { registerWhiteboardShareFlowHooks } from "../api/sharing/hooks.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
 
 function createRouter() {

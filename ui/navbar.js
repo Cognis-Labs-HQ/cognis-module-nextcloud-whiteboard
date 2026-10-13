@@ -1,9 +1,11 @@
 import { reuse } from "./reuse/host-resources.js";
 
-const [{ apiFetch }, { registerSearchIndex }] = await Promise.all([
-    reuse.importModule("api-client.js"),
-    reuse.importModule("search-util/popup.js"),
-]);
+const [{ apiFetch }, { registerSearchIndex }, { createI18n }] =
+    await Promise.all([
+        reuse.importModule("api-client.js"),
+        reuse.importModule("search-util/popup.js"),
+        reuse.importModule("i18n.js"),
+    ]);
 const WHITEBOARD_API_BASE = "/api/v1/modules/nextcloud-whiteboard";
 
 async function fetchVisibleWhiteboards() {
@@ -39,8 +41,8 @@ function whiteboardFileSearchItem(board) {
 async function collectWhiteboardNavbarSearchGroups() {
     const pageItem = {
         id: "whiteboards-page",
-        label: "module.nextcloud_whiteboard.nav_label",
-        description: "module.nextcloud_whiteboard.search_pages",
+        label: "module.nextcloud.whiteboard.nav.label",
+        description: "module.nextcloud.whiteboard.search.pages",
         url: "/whiteboards",
         resultClass: "page",
         searchText: "Whiteboards Whiteboard files boards canvas",
@@ -51,31 +53,39 @@ async function collectWhiteboardNavbarSearchGroups() {
         .filter(Boolean);
     return [
         {
-            category: "module.nextcloud_whiteboard.search_pages",
+            category: "module.nextcloud.whiteboard.search.pages",
             items: [pageItem],
         },
         fileItems.length
             ? {
-                  category: "module.nextcloud_whiteboard.search_category",
+                  category: "module.nextcloud.whiteboard.search.category",
                   items: fileItems,
               }
             : null,
     ].filter(Boolean);
 }
 
-export function register({ addItem }) {
-    addItem?.({
-        id: "nextcloud-whiteboard",
-        label: "module.nextcloud_whiteboard.nav_label",
-        href: "/whiteboards",
-        access: { minRole: "user" },
+export async function mountProvider(ctx) {
+    const i18n = await createI18n({
+        componentStringBaseUrls: [
+            "/static/modules/nextcloud-whiteboard/languages",
+        ],
     });
+    ctx.signal.throwIfAborted();
+    const navbar = ctx.capabilities.get("ui:navbarLinks");
+    if (typeof navbar?.contribute !== "function")
+        throw new Error("Required UI capability unavailable: ui:navbarLinks");
+    const removeLink = navbar.contribute("nextcloud-whiteboard:whiteboards", {
+        label: i18n.t("module.nextcloud.whiteboard.nav.label"),
+        href: "/whiteboards",
+    });
+    const removeSearch = registerSearchIndex(
+        "nextcloud-whiteboard-navbar",
+        collectWhiteboardNavbarSearchGroups,
+        { componentId: "nextcloud-whiteboard" },
+    );
+    return () => {
+        removeSearch();
+        removeLink();
+    };
 }
-
-registerSearchIndex(
-    "nextcloud-whiteboard-navbar",
-    collectWhiteboardNavbarSearchGroups,
-    {
-        componentId: "nextcloud-whiteboard",
-    },
-);

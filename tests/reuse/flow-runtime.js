@@ -30,6 +30,15 @@ export function createFlowRuntime() {
 }
 
 export function withFlowRuntime(context) {
+    if (!context.registerDisposer) {
+        context.disposers = [];
+        context.registerDisposer = (dispose) => context.disposers.push(dispose);
+        context.dispose = () =>
+            context.disposers
+                .splice(0)
+                .reverse()
+                .forEach((dispose) => dispose());
+    }
     if (context.registerFlow) return context;
     const runtime = createFlowRuntime();
     const hostFlow = context.flow;

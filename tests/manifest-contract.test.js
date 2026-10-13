@@ -129,10 +129,10 @@ test("module manifest exposes localized preference metadata", () => {
         "/static/modules/nextcloud-whiteboard/languages",
     );
     for (const preference of manifest.ui.preferences) {
-        assert.match(preference.labelKey, /^module\.nextcloud_whiteboard\./);
+        assert.match(preference.labelKey, /^module\.nextcloud\.whiteboard\./);
         assert.match(
             preference.descriptionKey,
-            /^module\.nextcloud_whiteboard\./,
+            /^module\.nextcloud\.whiteboard\./,
         );
         assert.equal(preference.label, undefined);
         assert.equal(preference.description, undefined);

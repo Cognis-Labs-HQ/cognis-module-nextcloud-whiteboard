@@ -22,4 +22,4 @@ npm run check:manifest
 git diff --check
 ```
 
-Lesen Sie [`docs/standard.de.md`](docs/standard.de.md) für Konfiguration, Capabilities, Routen, Sicherheitsgrenzen und Betriebshinweise.
+Lesen Sie [`docs/index.de.md`](docs/index.de.md) für Konfiguration, Capabilities, Routen, Sicherheitsgrenzen und Betriebshinweise.

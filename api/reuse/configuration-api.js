@@ -1,10 +1,11 @@
+import { createOriginRegistrar } from "./origin-registration.js";
 import { registerWhiteboardActions } from "./action-store.js";
-import { createProfileIdentityCapability, resolveStore } from "../access.js";
-import { registerWhiteboardConfigRoutes } from "../config-routes.js";
+import { createProfileIdentityCapability, resolveStore } from "./access.js";
+import { registerWhiteboardConfigRoutes } from "../routes/config/index.js";
 import {
     createWhiteboardEnableTest,
     registerWhiteboardEnableTestRoute,
-} from "../enable-test.js";
+} from "../configuration/test.js";
 import { checkHttpLiveness } from "./http-liveness.js";
 import { sendError, sendJson } from "./http.js";
 
@@ -65,14 +66,13 @@ export function registerWhiteboardConfigurationApi(
         sendError,
         sendJson,
     });
+    const registerScriptOrigins = createOriginRegistrar(ctx);
     registerWhiteboardConfigRoutes(router, {
         requireAuth,
         store,
-        registerScriptOrigins: ctx.getCapability(
-            "auth:registerPageScriptOrigins",
-        ),
+        registerScriptOrigins,
         log,
     });
 
-    return { store, profileIdentity, log };
+    return { store, profileIdentity, log, registerScriptOrigins };
 }

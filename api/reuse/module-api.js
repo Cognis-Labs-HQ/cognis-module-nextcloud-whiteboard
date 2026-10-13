@@ -1,4 +1,4 @@
-import { buildCognisWhiteboardUrl } from "../access.js";
+import { buildCognisWhiteboardUrl } from "./access.js";
 import { createCanvasMembershipCapability } from "./canvas-membership.js";
 import { createCanvasDeletionCapability } from "./canvas-deletion.js";
 

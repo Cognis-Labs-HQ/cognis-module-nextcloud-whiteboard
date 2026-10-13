@@ -25,7 +25,7 @@ export function createWhiteboardPreflightController({
         setOverlayVisible(
             getMountRoot(),
             true,
-            translate("module.nextcloud_whiteboard.preflight_checking"),
+            translate("module.nextcloud.whiteboard.preflight.checking"),
         );
         let result;
         try {
@@ -37,9 +37,9 @@ export function createWhiteboardPreflightController({
             const message =
                 error.code === "config_required"
                     ? translate(
-                          "module.nextcloud_whiteboard.preflight_config_required",
+                          "module.nextcloud.whiteboard.preflight.config.required",
                       )
-                    : translate("module.nextcloud_whiteboard.preflight_failed");
+                    : translate("module.nextcloud.whiteboard.preflight.failed");
             setOverlayVisible(getMountRoot(), true, message);
             showToast(message, { variant: "error" });
             return false;
@@ -47,7 +47,7 @@ export function createWhiteboardPreflightController({
         if (!result?.alive) {
             status = "failed";
             const message = translate(
-                "module.nextcloud_whiteboard.preflight_unreachable",
+                "module.nextcloud.whiteboard.preflight.unreachable",
             );
             setOverlayVisible(getMountRoot(), true, message);
             showToast(message, { variant: "error" });
@@ -79,7 +79,7 @@ export function createWhiteboardPreflightController({
         if (!websocketAuthorized) {
             status = "failed";
             const message = translate(
-                "module.nextcloud_whiteboard.preflight_websocket_failed",
+                "module.nextcloud.whiteboard.preflight.websocket.failed",
             );
             setOverlayVisible(getMountRoot(), true, message);
             showToast(message, { variant: "error" });

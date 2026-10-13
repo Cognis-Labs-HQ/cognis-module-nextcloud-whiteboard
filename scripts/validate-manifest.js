@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { existsSync, lstatSync } from "node:fs";
 import { access, readFile } from "node:fs/promises";
+import { existsSync, lstatSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 
 const manifest = JSON.parse(await readFile("manifest.json", "utf8"));

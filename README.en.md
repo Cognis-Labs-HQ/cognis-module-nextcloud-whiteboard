@@ -22,4 +22,4 @@ npm run check:manifest
 git diff --check
 ```
 
-Read [`docs/standard.en.md`](docs/standard.en.md) for configuration, capabilities, routes, security boundaries, and operational guidance.
+Read [`docs/index.en.md`](docs/index.en.md) for configuration, capabilities, routes, security boundaries, and operational guidance.

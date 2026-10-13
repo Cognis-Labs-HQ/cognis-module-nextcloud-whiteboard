@@ -1,4 +1,4 @@
-import { reuse, uiCtx } from "./host-resources.js";
+import { reuse } from "./host-resources.js";
 
 const { apiFetch } = await reuse.importModule("api-client.js");
 
@@ -6,8 +6,9 @@ const CREATE_CANVAS_URL =
     "/api/v1/modules/nextcloud-whiteboard/whiteboards/spawn";
 
 const capabilityName = "whiteboard:uiGateway";
-async function createCanvasRequest(body, failureMessage) {
+async function createCanvasRequest(body, failureMessage, signal) {
     const response = await apiFetch(CREATE_CANVAS_URL, {
+        signal,
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body),
@@ -23,66 +24,83 @@ async function createCanvasRequest(body, failureMessage) {
     return { whiteboardId };
 }
 
-const gateway = {
-    requestCanvasPage({ signal } = {}) {
-        signal?.throwIfAborted();
-        const request = uiCtx.capabilities.get("component-pages:request");
-        if (typeof request !== "function")
-            throw new Error("Canvas presentation is unavailable.");
-        return request({
-            componentUuid: "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
-            routeId: "module.nextcloud.whiteboard.canvas",
-            mode: "overlay",
+export function mountProvider(uiCtx) {
+    const gateway = {
+        requestCanvasPage({ signal } = {}) {
+            uiCtx.signal.throwIfAborted();
+            signal?.throwIfAborted();
+            const request = uiCtx.capabilities.get("component-pages:request");
+            if (typeof request !== "function")
+                throw new Error("Canvas presentation is unavailable.");
+            return request({
+                componentUuid: "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
+                routeId: "module.nextcloud.whiteboard.canvas",
+                mode: "overlay",
+            });
+        },
+
+        openCanvas({ whiteboardId, elementId, signal } = {}) {
+            uiCtx.signal.throwIfAborted();
+            signal?.throwIfAborted();
+            const spawn = uiCtx.capabilities.get("component-pages:spawn");
+            if (typeof spawn !== "function" || !whiteboardId || !elementId)
+                throw new Error("Canvas presentation is unavailable.");
+            return spawn({
+                componentUuid: "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
+                routeId: "module.nextcloud.whiteboard.canvas",
+                mode: "overlay",
+                elementId,
+                borderless: true,
+                context: {
+                    whiteboardId,
+                    instantCanvas: true,
+                },
+                signal,
+            });
+        },
+
+        async createCanvas({ title, participantHandles } = {}) {
+            return createCanvasRequest(
+                {
+                    title,
+                    participants: participantHandles,
+                },
+                "Canvas could not be created.",
+                uiCtx.signal,
+            );
+        },
+
+        async createDisposableCanvas({
+            resourceType,
+            resourceId,
+            title,
+            participantHandles,
+        } = {}) {
+            const result = await createCanvasRequest(
+                {
+                    resourceType,
+                    resourceId,
+                    title,
+                    participants: participantHandles,
+                    disposable: true,
+                },
+                "Disposable canvas could not be created.",
+                uiCtx.signal,
+            );
+            return result;
+        },
+    };
+
+    const actions = {};
+    for (const [action, execute] of Object.entries(gateway)) {
+        const flowId = `nextcloud-whiteboard:${action}`;
+        uiCtx.registerFlow(flowId, ["execute"]);
+        uiCtx.extendFlow(flowId, "execute", { id: flowId }, async (stage) => {
+            uiCtx.signal.throwIfAborted();
+            stage.data.result = await execute(stage.input);
         });
-    },
-
-    openCanvas({ whiteboardId, elementId, signal } = {}) {
-        signal?.throwIfAborted();
-        const spawn = uiCtx.capabilities.get("component-pages:spawn");
-        if (typeof spawn !== "function" || !whiteboardId || !elementId)
-            throw new Error("Canvas presentation is unavailable.");
-        return spawn({
-            componentUuid: "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
-            routeId: "module.nextcloud.whiteboard.canvas",
-            mode: "overlay",
-            elementId,
-            borderless: true,
-            context: {
-                whiteboardId,
-                instantCanvas: true,
-            },
-            signal,
-        });
-    },
-
-    async createCanvas({ title, participantHandles } = {}) {
-        return createCanvasRequest(
-            {
-                title,
-                participants: participantHandles,
-            },
-            "Canvas could not be created.",
-        );
-    },
-
-    async createDisposableCanvas({
-        resourceType,
-        resourceId,
-        title,
-        participantHandles,
-    } = {}) {
-        const result = await createCanvasRequest(
-            {
-                resourceType,
-                resourceId,
-                title,
-                participants: participantHandles,
-                disposable: true,
-            },
-            "Disposable canvas could not be created.",
-        );
-        return result;
-    },
-};
-
-uiCtx.capabilities.contribute(capabilityName, gateway);
+        actions[action] = async (input) =>
+            (await uiCtx.runFlow(flowId, input)).data.result;
+    }
+    uiCtx.capabilities.contribute(capabilityName, actions);
+}

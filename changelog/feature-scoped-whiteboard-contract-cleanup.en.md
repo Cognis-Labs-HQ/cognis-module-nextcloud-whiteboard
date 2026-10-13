@@ -24,6 +24,10 @@ Embedded canvases use a borderless composer viewport with content scrolling disa
 
 Embedded canvas size containment prevents the drawing bitmap’s previous height from expanding the borderless component window. The toolbar and canvas share the actual host height without cropping or vertical scrolling. A Chromium regression checks mounting with an oversized bitmap and repeated container resizing. No Jitsi-specific or page-shell styles are required.
 
+## Pass embedded layout through the component-page contract
+
+`openCanvas` now sets `borderless: true` on the top-level component-page spawn request. Layout flags nested in canvas context were ignored by the host broker, leaving the nested page without fill-parent sizing and collapsing the contained canvas. Context now contains only the canvas identity and mode. Gateway tests verify the public request and returned borderless handle; the Chromium regression invokes the real gateway and renderer through a nested standards-mode mount.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

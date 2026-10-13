@@ -49,7 +49,7 @@ await spawnWhiteboardWindow({
 
 ### Provider が所有する表示とアクション Flow
 
-ブラウザーはホストが初期化した ctx から `whiteboard:uiGateway` を取得します。`createCanvas({title, participantHandles})` と `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` は `{whiteboardId}` を返します。`requestCanvasPage({signal})` は Component Page の記述子を、`openCanvas({whiteboardId, elementId, signal})` はウィンドウハンドルを返します。呼び出し元は自身のマウント先を指定し、終了時にハンドルを破棄します。Whiteboard がルート識別、表示設定、通信トークンと寿命を管理し、連携側はそれらを再構成しません。各マウントには正確なキャンバス ID が必要です。
+ブラウザーはホストが初期化した ctx から `whiteboard:uiGateway` を取得します。`createCanvas({title, participantHandles})` と `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` は `{whiteboardId}` を返します。`requestCanvasPage({signal})` は Component Page の記述子を、`openCanvas({whiteboardId, elementId, signal})` はウィンドウハンドルを返します。呼び出し元は自身のマウント先を指定し、終了時にハンドルを破棄します。Whiteboard がルート識別、表示設定、通信トークンと寿命を管理し、連携側はそれらを再構成しません。各マウントには正確なキャンバス ID が必要です。 プロバイダーはホストの生成契約の直下で枠なし表示を指定し、キャンバスのコンテキストには識別情報とモードだけを渡します。
 
 有効なモジュールの非同期 Store アクションは、ctx を通じて所有する `nextcloud-whiteboard:*` Flow の `initialize-store` と `execute-action` 段階を実行します。結果の欠落と無効な Flow はエラーになります。ホストは無効なモジュールの Flow を登録しないため、無効時の設定は注入された Store を直接使います。変更前に認証と検証を行い、内部 Store 呼び出しはトランザクションを維持します。ボード削除と全データ削除は子テーブル優先の共通カタログを使用し、全削除は失敗時にロールバックします。
 

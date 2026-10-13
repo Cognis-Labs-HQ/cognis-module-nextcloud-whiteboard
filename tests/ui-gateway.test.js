@@ -32,7 +32,7 @@ const capabilities = new Map([
         "component-pages:spawn",
         async (options) => {
             launches.push(options);
-            return { discard() {} };
+            return { borderless: options.borderless === true, discard() {} };
         },
     ],
 ]);
@@ -73,6 +73,8 @@ test("integration callers need only a canvas ID and their own mount target", asy
         signal,
     });
     assert.equal(typeof window.discard, "function");
+    assert.equal(window.borderless, true);
+    assert.equal(launches.at(-1).borderless, true);
     assert.equal(launches.at(-1).elementId, "integration-stage");
     assert.equal(launches.at(-1).context.whiteboardId, "canvas-1");
     assert.equal(launches.at(-1).routeId, "module.nextcloud.whiteboard.canvas");
@@ -80,7 +82,10 @@ test("integration callers need only a canvas ID and their own mount target", asy
         launches.at(-1).componentUuid,
         "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     );
-    assert.equal(launches.at(-1).context.instantCanvas, true);
+    assert.deepEqual(launches.at(-1).context, {
+        whiteboardId: "canvas-1",
+        instantCanvas: true,
+    });
     assert.equal(launches.at(-1).signal, signal);
 });
 

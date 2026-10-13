@@ -2,6 +2,59 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { chromium } from "playwright";
 
+let spawnRequest;
+const capabilities = new Map([
+    [
+        "ui:reuse",
+        {
+            loadStylesheets: () =>
+                assert.fail("The renderer should not load stylesheets"),
+            importModule: async () => ({
+                escapeHtml: String,
+                formatDateTime: String,
+            }),
+        },
+    ],
+    [
+        "component-pages:spawn",
+        async (request) => {
+            spawnRequest = request;
+            return { borderless: request.borderless === true };
+        },
+    ],
+]);
+globalThis[Symbol.for("cognis.uiCtx")] = {
+    capabilities: {
+        get: (name) => capabilities.get(name),
+        contribute: (name, value) => capabilities.set(name, value),
+    },
+};
+await import("../ui/reuse/whiteboard-ui-gateway.js");
+const { renderCanvasElement } = await import("../ui/app/render.js");
+await capabilities
+    .get("whiteboard:uiGateway")
+    .openCanvas({ whiteboardId: "board", elementId: "meeting-host" });
+const resources = await readFile(
+    new URL("../ui/languages/en/strings.xml", import.meta.url),
+    "utf8",
+);
+const labels = new Map(
+    [...resources.matchAll(/<string name="([^"]+)">([^<]*)<\/string>/g)].map(
+        (match) => [match[1], match[2]],
+    ),
+);
+const markup = renderCanvasElement({
+    activeBoard: { id: "board" },
+    activeSession: { canWrite: true },
+    boards: [],
+    canRenameActiveBoard: () => false,
+    preflightStatus: "passed",
+    syncStatus: "synced",
+    translate: (key) => labels.get(key) ?? key,
+    embedded: true,
+    integrationCanvasMode: true,
+    showShare: false,
+});
 const browser = await chromium.launch({
     executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
     headless: true,
@@ -12,17 +65,18 @@ try {
         new URL("../ui/styles/whiteboards.css", import.meta.url),
         "utf8",
     );
-    await page.setContent(`<style>
+    await page.setContent(`<!doctype html><style>
         * { box-sizing: border-box; }
         .host { display: grid; grid-template-rows: minmax(min-content, 1fr); }
-        .mounted-page { height: 100%; min-height: 100%; display: grid; grid-template-rows: minmax(min-content, 1fr); }
+        .mounted-page[data-fill-parent] { height: 100%; min-height: 100%; display: grid; grid-template-rows: minmax(min-content, 1fr); }
+        .mounted-page[data-fill-parent] .page-body { height: 100%; min-height: 0; }
         ${styles}
-    </style><div class="host"><div class="mounted-page">
-        <div class="whiteboard-canvas-wrap whiteboard-canvas-wrap--embedded">
-            <header class="whiteboard-toolbar" style="height:60px">Tools</header>
-            <div class="whiteboard-canvas-stage"><canvas id="whiteboard-canvas" style="height:2000px" height="2000"></canvas></div>
-        </div>
-    </div></div>`);
+    </style><div class="host"><div class="mounted-page" ${spawnRequest.borderless === true ? "data-fill-parent" : ""}><div class="page-body">${markup}</div></div></div>`);
+    await page.evaluate(() => {
+        const canvas = document.querySelector("canvas");
+        canvas.height = 2000;
+        canvas.style.height = "2000px";
+    });
     for (const [width, height] of [
         [900, 400],
         [420, 280],
@@ -50,7 +104,7 @@ try {
                     ).clientHeight,
                     canvasHeight: canvas.clientHeight,
                     toolbarHeight: document
-                        .querySelector("header")
+                        .querySelector(".whiteboard-toolbar")
                         .getBoundingClientRect().height,
                 };
             },
@@ -62,10 +116,9 @@ try {
             "Embedded content must not enlarge its host",
         );
         assert.equal(bounds.surfaceHeight, height);
-        assert.equal(
-            bounds.canvasHeight + bounds.toolbarHeight,
-            height,
-            "The toolbar and canvas must both fit, without clipping",
+        assert.ok(
+            Math.abs(bounds.canvasHeight + bounds.toolbarHeight - height) <= 1,
+            "The toolbar and canvas must fit within pixel rounding, without clipping",
         );
         assert.ok(bounds.canvasHeight > 0);
     }

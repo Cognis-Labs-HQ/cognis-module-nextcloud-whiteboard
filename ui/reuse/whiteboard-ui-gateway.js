@@ -46,17 +46,10 @@ const gateway = {
             routeId: "module.nextcloud.whiteboard.canvas",
             mode: "overlay",
             elementId,
+            borderless: true,
             context: {
                 whiteboardId,
                 instantCanvas: true,
-                frameless: true,
-                borderless: true,
-                contentScrolling: false,
-                layout: {
-                    borderless: true,
-                    fillParent: true,
-                    scrollOwner: "document",
-                },
             },
             signal,
         });

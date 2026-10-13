@@ -24,6 +24,10 @@ Kanvas tertanam memakai viewport composer tanpa bingkai dengan pengguliran konte
 
 Isolasi ukuran kanvas tertanam mencegah tinggi bitmap sebelumnya memperbesar jendela komponen tanpa bingkai. Bilah alat dan kanvas berbagi tinggi wadah sebenarnya tanpa pemotongan atau pengguliran vertikal. Uji regresi Chromium memeriksa pemasangan bitmap terlalu besar dan perubahan ukuran wadah berulang. Gaya khusus Jitsi atau kerangka halaman tidak diperlukan.
 
+## Kirim tata letak tertanam melalui kontrak halaman komponen
+
+`openCanvas` kini menempatkan `borderless: true` pada tingkat teratas permintaan spawn halaman komponen. Flag tata letak di dalam konteks kanvas diabaikan broker host, sehingga halaman bersarang tidak mendapat ukuran mengikuti induk dan kanvas terisolasi menyusut. Konteks hanya memuat identitas dan mode kanvas. Uji gateway memeriksa permintaan publik dan pegangan jendela tanpa bingkai; regresi Chromium memanggil gateway dan renderer sebenarnya dalam wadah bersarang bermode standar.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

@@ -24,6 +24,10 @@ Eingebettete Canvas verwenden einen randlosen Composer-Viewport ohne Inhaltsscro
 
 Größenbegrenzung des eingebetteten Canvas verhindert, dass die vorherige Bitmap-Höhe das randlose Komponentenfenster vergrößert. Werkzeugleiste und Canvas teilen die tatsächliche Host-Höhe ohne Abschneiden oder vertikales Scrollen. Ein Chromium-Regressionstest prüft eine übergroße Bitmap beim Einbinden und wiederholte Größenänderungen. Jitsi-spezifische oder Seitenschalen-Stile sind nicht erforderlich.
 
+## Eingebettetes Layout über den Komponentenvertrag übergeben
+
+`openCanvas` setzt `borderless: true` jetzt direkt in der Komponenten-Spawn-Anfrage. Im Canvas-Kontext verschachtelte Layoutangaben wurden vom Host ignoriert; dadurch fehlte der eingebetteten Seite die Größenanpassung an den Elternbereich und das gekapselte Canvas kollabierte. Der Kontext enthält nur noch Canvas-Identität und Modus. Gateway-Tests prüfen die öffentliche Anfrage und das randlose Fenster; der Chromium-Regressionstest verwendet das tatsächliche Gateway und Rendering in einem verschachtelten Standardmodus-Mount.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

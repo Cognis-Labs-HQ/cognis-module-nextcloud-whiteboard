@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud_whiteboard.name",
-    "version": "2.3.150",
+    "version": "2.3.151",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -277,27 +277,27 @@
         },
         {
             "path": "docs/standard.de.md",
-            "sha256": "124bc9fedb2abd11dda5c6f3172a488827699eddb6d33604f572e50ffb580719"
+            "sha256": "e3730f5c5ecdc608dcf01fbe4e9431d0bebf2cab1c89d4a47f905a16ad421f86"
         },
         {
             "path": "docs/standard.en.md",
-            "sha256": "7b1a62f6a1e7f568d4bbe2d528320de3de38395887ede47140d3b3e983f1e39f"
+            "sha256": "475b328144b47aa918c43311aeb4a06d5e9c3e235baf363714cb9ac0d0767456"
         },
         {
             "path": "docs/standard.id.md",
-            "sha256": "a2c2840a1f2093d7c0540a3d289b44ead0a401dcc5516237f76ff8392c100acc"
+            "sha256": "78d03a69f6e5374eae05c0e67bb8bad3b440b905b4649881a886d584f96c2fa4"
         },
         {
             "path": "docs/standard.ja.md",
-            "sha256": "aaa0fd7964996675843c43ce8fec798d6e71b7d93f83ef0109f3fd39b29e9aeb"
+            "sha256": "b58d385485e529f97316f98887b42c74a277777f61daa37e970437bf608f7f58"
         },
         {
             "path": "package-lock.json",
-            "sha256": "2ac078097327c0b62572933ddeb9de27e27788369e7815f4fe4aa5af80a4e0c8"
+            "sha256": "163ab41c68ad840e57c0f719fdda5ac5d4c4a5afd60b316b210f8228953e43f2"
         },
         {
             "path": "package.json",
-            "sha256": "58a5551693c3dc0dededb847ce1b2a52827d3cbc22072b33c85645a404a1dd32"
+            "sha256": "8cdd2de2d3ccb51cd30616069aacca9b33f835b6312b76264c73634f3cb16b4f"
         },
         {
             "path": "routes.json",
@@ -369,7 +369,7 @@
         },
         {
             "path": "tests/embedded-viewport.browser.js",
-            "sha256": "e317a3c8303c3da508d50268e3e521eb299c9894aa63409332dc5e6b0ef7a46d"
+            "sha256": "d6dfaad281cddfb72fdccfe1deeccd2445cb89e55a5a3c2d5ea9ee02a475e6b7"
         },
         {
             "path": "tests/language-keys.test.js",
@@ -441,11 +441,11 @@
         },
         {
             "path": "tests/ui-gateway.test.js",
-            "sha256": "ec91c735fa2ec719779038057871a2c6f7f6c9e99eae34c6f90a22cb9705a54b"
+            "sha256": "f77b0fd96c14327f0279207205f417b625cb637b16ab3a4ac0df7755304f7e73"
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "9aad5b4562c08b5926606cec0dc5d6ea6260fccdcd6305ec093d369eb47639eb"
+            "sha256": "71ca6d2b2b4daf164ff66bb82eb8c93d4e2d3c54ed8b15c8533e2f94118f7425"
         },
         {
             "path": "tests/viewport-pan.test.js",
@@ -677,7 +677,7 @@
         },
         {
             "path": "ui/reuse/whiteboard-ui-gateway.js",
-            "sha256": "bfec66f933462f2d3ce7e6d3f6340cf5d4b7ca99cec96002c36f9cb90a713230"
+            "sha256": "2cb7feb32b29aa82fcce82f8b2e92222220faf1d6b610f7723dfb3e5cabe24db"
         },
         {
             "path": "ui/styles/whiteboards.css",

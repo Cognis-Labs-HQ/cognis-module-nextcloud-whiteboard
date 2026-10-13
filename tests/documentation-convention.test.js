@@ -14,11 +14,13 @@ const CHANGELOG_LABELS = {
 };
 
 function markdownFiles(directory) {
-    return readdirSync(directory).flatMap((name) => {
-        const path = resolve(directory, name);
-        if (statSync(path).isDirectory()) return markdownFiles(path);
-        return name.endsWith(".md") ? [path] : [];
-    });
+    return readdirSync(directory)
+        .filter((name) => name !== "changelog")
+        .flatMap((name) => {
+            const path = resolve(directory, name);
+            if (statSync(path).isDirectory()) return markdownFiles(path);
+            return name.endsWith(".md") ? [path] : [];
+        });
 }
 
 function headingLevels(path) {
@@ -73,7 +75,7 @@ test("every documentation topic has one variant per supported language", () => {
 });
 
 test("localized changelogs identify their branch and linked commits", () => {
-    const changelogs = markdownFiles(resolve(ROOT, "changelog"));
+    const changelogs = markdownFiles(resolve(ROOT, "docs/changelog"));
     for (const path of changelogs) {
         const match = /\.([a-z]{2})\.md$/.exec(path);
         assert.ok(match, `${relative(ROOT, path)} must have a language suffix`);
@@ -93,9 +95,9 @@ test("localized changelogs identify their branch and linked commits", () => {
 });
 
 test("temporary work changelogs are not retained", () => {
-    const temporaryChangelogs = readdirSync(resolve(ROOT, "changelog")).filter(
-        (name) => /^work\.(?:de|en|id|ja)\.md$/.test(name),
-    );
+    const temporaryChangelogs = readdirSync(
+        resolve(ROOT, "docs/changelog"),
+    ).filter((name) => /^work\.(?:de|en|id|ja)\.md$/.test(name));
 
     assert.deepEqual(temporaryChangelogs, []);
 });

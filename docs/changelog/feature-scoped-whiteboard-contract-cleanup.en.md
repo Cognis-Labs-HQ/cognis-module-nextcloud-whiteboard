@@ -28,6 +28,10 @@ Embedded canvas size containment prevents the drawing bitmap’s previous height
 
 `openCanvas` now sets `borderless: true` on the top-level component-page spawn request. Layout flags nested in canvas context were ignored by the host broker, leaving the nested page without fill-parent sizing and collapsing the contained canvas. Context now contains only the canvas identity and mode. Gateway tests verify the public request and returned borderless handle; the Chromium regression invokes the real gateway and renderer through a nested standards-mode mount.
 
+## Template contributor standard
+
+Synchronize AGENTS.md with the external-module template while retaining domain-specific rules. Adopt the canonical release-note location and preserve historical content and permanent module identity.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)
@@ -36,5 +40,4 @@ Embedded canvas size containment prevents the drawing bitmap’s previous height
 - [c818b40](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c818b40db5010cb220cb54ffd23bc45940539f44)
 
 - [05e253c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/05e253c37054f54197c4f79511f722ef96df4631)
-
 - [6ea9026](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/6ea902628f55686585e8f709ff0ddf79a1632a83)

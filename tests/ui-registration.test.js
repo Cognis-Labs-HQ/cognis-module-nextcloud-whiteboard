@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import test from "node:test";
+const moduleVersion = JSON.parse(
+    readFileSync(new URL("../manifest.json", import.meta.url), "utf8"),
+).version;
 import { captureUiRegistration } from "./reuse/ui-registration.js";
 
 test("nextcloud whiteboard registers full SPA routing and boilerplate styles", () => {
@@ -14,7 +18,7 @@ test("nextcloud whiteboard registers full SPA routing and boilerplate styles", (
         assert.ok(route, `${base} should be registered as a SPA route`);
         assert.equal(
             route.scriptUrl,
-            "/static/modules/nextcloud-whiteboard/app/index.js?revision=2.3.151",
+            `/static/modules/nextcloud-whiteboard/app/index.js?revision=${moduleVersion}`,
         );
         assert.deepEqual(route.stylesheets, [
             "/static/modules/nextcloud-whiteboard/styles/whiteboards.css",
@@ -653,8 +657,7 @@ test("whiteboard capability discovery has a single provider registration", () =>
 
     assert.deepEqual(capabilityProviders, [
         {
-            scriptUrl:
-                "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js?revision=2.3.151",
+            scriptUrl: `/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js?revision=${moduleVersion}`,
             providesCapabilities: ["whiteboard:uiGateway"],
         },
     ]);

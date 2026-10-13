@@ -69,7 +69,7 @@ test("module manifest isolates its disabled lifecycle API", () => {
 
 test("module manifest excludes changelog entries from packaged hashes", () => {
     assert.equal(
-        manifest.files.some(({ path }) => path.startsWith("changelog/")),
+        manifest.files.some(({ path }) => path.startsWith("docs/changelog/")),
         false,
     );
 });

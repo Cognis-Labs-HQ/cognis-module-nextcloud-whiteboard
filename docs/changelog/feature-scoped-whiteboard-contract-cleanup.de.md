@@ -28,6 +28,10 @@ Größenbegrenzung des eingebetteten Canvas verhindert, dass die vorherige Bitma
 
 `openCanvas` setzt `borderless: true` jetzt direkt in der Komponenten-Spawn-Anfrage. Im Canvas-Kontext verschachtelte Layoutangaben wurden vom Host ignoriert; dadurch fehlte der eingebetteten Seite die Größenanpassung an den Elternbereich und das gekapselte Canvas kollabierte. Der Kontext enthält nur noch Canvas-Identität und Modus. Gateway-Tests prüfen die öffentliche Anfrage und das randlose Fenster; der Chromium-Regressionstest verwendet das tatsächliche Gateway und Rendering in einem verschachtelten Standardmodus-Mount.
 
+## Beitragsstandard der Vorlage
+
+AGENTS.md mit der externen Modulvorlage synchronisieren und Domänenregeln beibehalten. Den kanonischen Release-Verzeichnispfad übernehmen; historische Inhalte und dauerhafte Modulidentität erhalten.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)
@@ -36,5 +40,4 @@ Größenbegrenzung des eingebetteten Canvas verhindert, dass die vorherige Bitma
 - [c818b40](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c818b40db5010cb220cb54ffd23bc45940539f44)
 
 - [05e253c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/05e253c37054f54197c4f79511f722ef96df4631)
-
 - [6ea9026](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/6ea902628f55686585e8f709ff0ddf79a1632a83)

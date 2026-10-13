@@ -28,6 +28,10 @@ Whiteboard は Manifest のインストール済みパッケージリビジョ�
 
 `openCanvas` はコンポーネントページの生成リクエスト直下で `borderless: true` を指定します。キャンバスのコンテキスト内に入れたレイアウト指定はホストに読み取られず、親領域に合わせるサイズ指定が付かないため、サイズを封じ込めたキャンバスが縮んでいました。コンテキストにはキャンバスの識別情報とモードだけを残します。Gateway テストは公開リクエストと枠なしウィンドウを確認し、Chromium 回帰テストは実際の Gateway と描画を入れ子の標準モード領域で実行します。
 
+## テンプレートの開発指針
+
+ドメイン固有の規則を保持して AGENTS.md を外部モジュールテンプレートに同期します。リリース文書を標準の配置に移し、過去の内容と永久的なモジュール識別情報を保持します。
+
 ## コミット
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)
@@ -36,5 +40,4 @@ Whiteboard は Manifest のインストール済みパッケージリビジョ�
 - [c818b40](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c818b40db5010cb220cb54ffd23bc45940539f44)
 
 - [05e253c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/05e253c37054f54197c4f79511f722ef96df4631)
-
 - [6ea9026](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/6ea902628f55686585e8f709ff0ddf79a1632a83)

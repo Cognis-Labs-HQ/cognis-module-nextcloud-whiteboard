@@ -28,6 +28,10 @@ Isolasi ukuran kanvas tertanam mencegah tinggi bitmap sebelumnya memperbesar jen
 
 `openCanvas` kini menempatkan `borderless: true` pada tingkat teratas permintaan spawn halaman komponen. Flag tata letak di dalam konteks kanvas diabaikan broker host, sehingga halaman bersarang tidak mendapat ukuran mengikuti induk dan kanvas terisolasi menyusut. Konteks hanya memuat identitas dan mode kanvas. Uji gateway memeriksa permintaan publik dan pegangan jendela tanpa bingkai; regresi Chromium memanggil gateway dan renderer sebenarnya dalam wadah bersarang bermode standar.
 
+## Standar kontributor templat
+
+Selaraskan AGENTS.md dengan templat modul eksternal sambil mempertahankan aturan domain. Gunakan lokasi catatan rilis kanonis dan pertahankan konten historis serta identitas modul permanen.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)
@@ -36,5 +40,4 @@ Isolasi ukuran kanvas tertanam mencegah tinggi bitmap sebelumnya memperbesar jen
 - [c818b40](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c818b40db5010cb220cb54ffd23bc45940539f44)
 
 - [05e253c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/05e253c37054f54197c4f79511f722ef96df4631)
-
 - [6ea9026](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/6ea902628f55686585e8f709ff0ddf79a1632a83)

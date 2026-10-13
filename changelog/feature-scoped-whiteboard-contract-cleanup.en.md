@@ -20,6 +20,10 @@ Whiteboard versions its registered browser entry URLs with the installed package
 
 Embedded canvases use a borderless composer viewport with content scrolling disabled. Middle-button dragging moves only the local viewport and does not publish scene changes, persist snapshots or alter synchronization status.
 
+## Fit the embedded canvas to its host
+
+Embedded canvas size containment prevents the drawing bitmap’s previous height from expanding the borderless component window. The toolbar and canvas share the actual host height without cropping or vertical scrolling. A Chromium regression checks mounting with an oversized bitmap and repeated container resizing. No Jitsi-specific or page-shell styles are required.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

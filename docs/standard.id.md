@@ -57,7 +57,7 @@ Navigasi membatalkan pemeriksaan transport dan callback adegan tertunda. Respons
 
 Whiteboard memberi URL entri browser yang terdaftar revisi paket terpasang dari manifest. Entri provider dan kanvas mendapat URL baru setelah pembaruan Whiteboard meskipun build Cognis tidak berubah. Pengujian kontrak browser menghubungkan graf modul lokal yang sebenarnya dan menolak ekspor bernama yang hilang sebelum rilis. Muat ulang halaman yang sudah terbuka setelah memperbarui modul aktif agar konteks browser memakai provider baru.
 
-Kanvas tertanam memakai viewport composer tanpa bingkai dengan pengguliran konten nonaktif. Menyeret dengan tombol tengah hanya memindahkan viewport lokal dan tidak menerbitkan perubahan adegan, menyimpan snapshot atau mengubah status sinkronisasi.
+Kanvas tertanam memakai viewport composer tanpa bingkai dengan pengguliran konten nonaktif. Permukaan tertanam mengisolasi ukuran intrinsik kanvas agar bilah alat dan area gambar sesuai dengan wadah, termasuk saat jendela rapat diperkecil atau diperbesar. Menyeret dengan tombol tengah hanya memindahkan viewport lokal dan tidak menerbitkan perubahan adegan, menyimpan snapshot atau mengubah status sinkronisasi.
 
 ### Arsitektur dan siklus hidup
 

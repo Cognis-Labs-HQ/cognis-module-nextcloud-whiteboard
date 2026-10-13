@@ -23,6 +23,7 @@
 }
 
 .whiteboard-canvas-wrap--embedded {
+    contain: size;
     block-size: 100%;
     max-height: 100%;
 }

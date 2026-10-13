@@ -20,6 +20,10 @@ Whiteboard versieht die registrierten Browser-Einstiegs-URLs mit der installiert
 
 Eingebettete Canvas verwenden einen randlosen Composer-Viewport ohne Inhaltsscrollen. Ziehen mit der mittleren Maustaste verschiebt nur die lokale Ansicht und veröffentlicht keine Szenenänderungen, speichert keine Snapshots und verändert den Synchronisationsstatus nicht.
 
+## Eingebettetes Canvas an den Host anpassen
+
+Größenbegrenzung des eingebetteten Canvas verhindert, dass die vorherige Bitmap-Höhe das randlose Komponentenfenster vergrößert. Werkzeugleiste und Canvas teilen die tatsächliche Host-Höhe ohne Abschneiden oder vertikales Scrollen. Ein Chromium-Regressionstest prüft eine übergroße Bitmap beim Einbinden und wiederholte Größenänderungen. Jitsi-spezifische oder Seitenschalen-Stile sind nicht erforderlich.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

@@ -57,7 +57,7 @@ Navigation cancels transport probes and pending scene callbacks. Stale session a
 
 Whiteboard versions its registered browser entry URLs with the installed package revision from its manifest. Provider and canvas entries therefore receive new URLs after a Whiteboard update even when the Cognis build is unchanged. Browser contract tests link the actual local module graphs and reject missing named exports before release. Reload an already open page after updating an enabled module so its browser context uses the new provider.
 
-Embedded canvases use a borderless composer viewport with content scrolling disabled. Middle-button dragging moves only the local viewport and does not publish scene changes, persist snapshots or alter synchronization status.
+Embedded canvases use a borderless composer viewport with content scrolling disabled. The embedded surface isolates its intrinsic canvas size so the toolbar and drawing area fit the host, including after the meeting window shrinks or expands. Middle-button dragging moves only the local viewport and does not publish scene changes, persist snapshots or alter synchronization status.
 
 ### Architecture and lifecycle
 

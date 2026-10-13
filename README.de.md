@@ -16,6 +16,8 @@ Benutzer können unter `/whiteboards` Boards erstellen und auswählen und anschl
 npm install
 npm run lint
 npm test
+npx playwright install chromium
+npm run test:browser
 npm run check:manifest
 git diff --check
 ```

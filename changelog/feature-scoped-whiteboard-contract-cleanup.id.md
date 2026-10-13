@@ -20,6 +20,10 @@ Whiteboard memberi URL entri browser yang terdaftar revisi paket terpasang dari 
 
 Kanvas tertanam memakai viewport composer tanpa bingkai dengan pengguliran konten nonaktif. Menyeret dengan tombol tengah hanya memindahkan viewport lokal dan tidak menerbitkan perubahan adegan, menyimpan snapshot atau mengubah status sinkronisasi.
 
+## Sesuaikan kanvas tertanam dengan wadahnya
+
+Isolasi ukuran kanvas tertanam mencegah tinggi bitmap sebelumnya memperbesar jendela komponen tanpa bingkai. Bilah alat dan kanvas berbagi tinggi wadah sebenarnya tanpa pemotongan atau pengguliran vertikal. Uji regresi Chromium memeriksa pemasangan bitmap terlalu besar dan perubahan ukuran wadah berulang. Gaya khusus Jitsi atau kerangka halaman tidak diperlukan.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

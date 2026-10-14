@@ -100,8 +100,8 @@
   <string name="module.nextcloud.whiteboard.share.permission.read">Read-Only</string>
   <string name="module.nextcloud.whiteboard.share.permission.write">Read + Write</string>
   <string name="module.nextcloud.whiteboard.name">Nextcloud Whiteboard</string>
-  <string name="module.nextcloud.whiteboard.summary">Collaborative whiteboards backed by Nextcloud.</string>
-  <string name="module.nextcloud.whiteboard.description">Create and share realtime whiteboards with Cognis access controls.</string>
+  <string name="module.nextcloud.whiteboard.summary">Create collaborative whiteboards in Cognis with Nextcloud.</string>
+  <string name="module.nextcloud.whiteboard.description">Draw and share live whiteboards with Cognis access controls and encrypted synchronization.</string>
   <string name="module.nextcloud.whiteboard.category.collaboration">Collaboration</string>
   <string name="module.nextcloud.whiteboard.nav.label">Whiteboards</string>
   <string name="module.nextcloud.whiteboard.search.pages">Pages</string>

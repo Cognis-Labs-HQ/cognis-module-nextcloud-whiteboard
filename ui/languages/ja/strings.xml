@@ -100,8 +100,8 @@
   <string name="module.nextcloud.whiteboard.share.permission.read">読み取り専用</string>
   <string name="module.nextcloud.whiteboard.share.permission.write">読み取り + 書き込み</string>
   <string name="module.nextcloud.whiteboard.name">Nextcloud ホワイトボード</string>
-  <string name="module.nextcloud.whiteboard.summary">Nextcloud を基盤とする共同ホワイトボード。</string>
-  <string name="module.nextcloud.whiteboard.description">Cognis のアクセス制御を使用してリアルタイムのホワイトボードを作成、共有します。</string>
+  <string name="module.nextcloud.whiteboard.summary">Nextcloud を使い、Cognis で共同作業用ホワイトボードを作成します。</string>
+  <string name="module.nextcloud.whiteboard.description">Cognis のアクセス制御と暗号化同期を使い、ライブホワイトボードに描画して共有します。</string>
   <string name="module.nextcloud.whiteboard.category.collaboration">コラボレーション</string>
   <string name="module.nextcloud.whiteboard.nav.label">ホワイトボード</string>
   <string name="module.nextcloud.whiteboard.search.pages">ページ</string>

@@ -40,6 +40,10 @@ Synchronize template guidance, domain route paths, localized integration documen
 
 Replace the marketplace banner with a Cognis + provider composition, keeping its branding within the central visible band and preserving the existing icon.
 
+## Consistent marketplace descriptions
+
+Use short action summaries and concrete feature descriptions across marketplace metadata, keeping localized meanings aligned.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

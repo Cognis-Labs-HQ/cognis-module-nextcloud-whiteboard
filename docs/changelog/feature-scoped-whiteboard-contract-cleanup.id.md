@@ -40,6 +40,10 @@ Sinkronkan panduan templat, jalur rute domain, dokumentasi integrasi terjemahan,
 
 Ganti banner Marketplace dengan komposisi Cognis + penyedia, tempatkan merek di pita tengah yang terlihat dan pertahankan ikon yang ada.
 
+## Deskripsi Marketplace yang konsisten
+
+Gunakan ringkasan tindakan singkat dan deskripsi fitur konkret pada metadata Marketplace dengan makna terjemahan yang selaras.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

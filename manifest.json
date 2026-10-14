@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.3.154",
+    "version": "2.3.155",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -342,11 +342,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "dbf609f004495f92ed453993651b886869dcc552744a9a1b189c9560a75f641c"
+            "sha256": "9489380957798940cf1bb41ef950dcdbf263e30fca8961535263e78538e22919"
         },
         {
             "path": "package.json",
-            "sha256": "257ee30d9421ba769b7c88af1a50b18597840a410ae078934e842808effeb1ba"
+            "sha256": "3a048e84552412bf8752bc19913fbd589fb37a60e954fa7e35db669c36f684b3"
         },
         {
             "path": "routes.json",
@@ -502,19 +502,19 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "3cdfd01717a95128c7f11a0fbfa4bad5a33018cafe0cfdbb1cc5b8b5fa7c8c7b"
+            "sha256": "54c9aa0133c02117ef94e2a085ef743637059785da34103f915c67f62ff3cce2"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "8c65a0b37177de358139c4fbf4f1d4f84f0cc294f7ba22a249d2370ab3e04c5d"
+            "sha256": "725d57fd37feb10cb0b1de116dab298f82005e6ed0b36d17dcb73ff70831be30"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "fed2b39440d59d7fe097c74a4e074b0e98ff2024d92da205023e4df671ba02f6"
+            "sha256": "2c36ff90dea6ffa4162ab5da34bdeb48b4968ce9f75d656dc89218585ea060df"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "7557594576b67e0fc4e834e2717cd3d6d7551aa93a2b88efb15123c2d6e97fd3"
+            "sha256": "6a29f4430f9286f6cf88771380d18b753d3fc16d2a013e170192661fb2b7532b"
         },
         {
             "path": "ui/navbar.js",

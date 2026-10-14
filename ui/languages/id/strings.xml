@@ -100,8 +100,8 @@
   <string name="module.nextcloud.whiteboard.share.permission.read">Hanya Baca</string>
   <string name="module.nextcloud.whiteboard.share.permission.write">Baca + Tulis</string>
   <string name="module.nextcloud.whiteboard.name">Papan Tulis Nextcloud</string>
-  <string name="module.nextcloud.whiteboard.summary">Papan tulis kolaboratif yang didukung oleh Nextcloud.</string>
-  <string name="module.nextcloud.whiteboard.description">Buat dan bagikan papan tulis waktu nyata dengan kontrol akses Cognis.</string>
+  <string name="module.nextcloud.whiteboard.summary">Buat papan tulis kolaboratif di Cognis dengan Nextcloud.</string>
+  <string name="module.nextcloud.whiteboard.description">Gambar dan bagikan papan tulis langsung dengan kontrol akses Cognis dan sinkronisasi terenkripsi.</string>
   <string name="module.nextcloud.whiteboard.category.collaboration">Kolaborasi</string>
   <string name="module.nextcloud.whiteboard.nav.label">Papan Tulis</string>
   <string name="module.nextcloud.whiteboard.search.pages">Halaman</string>

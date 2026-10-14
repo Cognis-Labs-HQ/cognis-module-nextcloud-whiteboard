@@ -40,6 +40,10 @@ Whiteboard は Manifest のインストール済みパッケージリビジョ�
 
 Marketplace バナーを Cognis とプロバイダーの構成へ置き換え、ブランドを中央の表示領域に収めます。既存のアイコンは維持します。
 
+## Marketplace の説明を統一する
+
+Marketplace のメタデータに短い操作概要と具体的な機能説明を使用し、翻訳の意味を揃えます。
+
 ## コミット
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

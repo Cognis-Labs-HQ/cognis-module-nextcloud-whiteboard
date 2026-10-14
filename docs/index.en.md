@@ -129,3 +129,7 @@ Canvas source changes and deletion also permit administrators verified through t
 ## Reusable canvas references
 
 `createCanvas` and `createDisposableCanvas` accept a generic `resourceType` and `resourceId`. Supplying both resolves one stored canvas reference; repeated and concurrent requests return the same authorized canvas without resetting its contents or membership. The database enforces uniqueness of the reference key. An existing canvas with a different disposal mode is a conflict, and unauthorized callers cannot reuse it. Omitting the reference when creating a persistent canvas creates a new independent canvas. Deleting a canvas removes its reference, permitting later recreation.
+
+## Direct Whiteboard pages without a navigation entry
+
+Whiteboards no longer contributes a navigation-menu link. The protected `/whiteboards` gallery and `/whiteboard` canvas URLs, canvas presentation gateway, administration section and searchable page/canvas entries remain available. The navbar plugin owns only its search index and removes it on teardown.

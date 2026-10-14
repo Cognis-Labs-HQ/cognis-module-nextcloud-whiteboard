@@ -56,6 +56,10 @@ Canvas source changes and deletion also permit administrators verified through t
 
 Release 2.3.157 — `createCanvas` and `createDisposableCanvas` accept a generic `resourceType` and `resourceId`. Supplying both resolves one stored canvas reference; repeated and concurrent requests return the same authorized canvas without resetting its contents or membership. The database enforces uniqueness of the reference key. An existing canvas with a different disposal mode is a conflict, and unauthorized callers cannot reuse it. Omitting the reference when creating a persistent canvas creates a new independent canvas. Deleting a canvas removes its reference, permitting later recreation.
 
+## Direct Whiteboard pages without a navigation entry
+
+Release 2.3.158 — Whiteboards no longer contributes a navigation-menu link. The protected `/whiteboards` gallery and `/whiteboard` canvas URLs, canvas presentation gateway, administration section and searchable page/canvas entries remain available. The navbar plugin owns only its search index and removes it on teardown.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

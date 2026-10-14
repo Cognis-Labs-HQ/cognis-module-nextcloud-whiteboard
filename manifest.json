@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.3.157",
+    "version": "2.3.158",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -97,7 +97,6 @@
         "ui:profileAvatarRenderer",
         "share:uiGateway",
         "ui:resourceLoader",
-        "ui:navbarLinks",
         "ui:scopedActions",
         "share:deleteResourceShares",
         "auth:accountStore"
@@ -358,27 +357,27 @@
         },
         {
             "path": "docs/index.de.md",
-            "sha256": "fbdc50161060f5690b649f7158d04b8c85ce5e290ef85542567890b6b836186b"
+            "sha256": "922efa89f8f2560816e31bc0c4bdb23498cdbf12216d14fb20e8616d25d465eb"
         },
         {
             "path": "docs/index.en.md",
-            "sha256": "0140f75c665c5a3045bd18d0a5647c77761902dd58c687918f98885f3a6421b3"
+            "sha256": "8ac6072bb6714e7e6e9988af4fd4294832bf6dc2bfa898cad46ad2ec0540c4b5"
         },
         {
             "path": "docs/index.id.md",
-            "sha256": "1e421b4536fe9e2d00160023289aae0a4c6f0e292819a9073670725e2ea24d43"
+            "sha256": "b783e02d335ac1c3d4b6e814fa1008f192b0dd4b4a6c51486818dfc43d777354"
         },
         {
             "path": "docs/index.ja.md",
-            "sha256": "fd46bd82414fc8a5a8f9cd11f569537ade7da3a3c7e31709cb823b17ae0889b6"
+            "sha256": "75e7fcdca2a587ecb95fa3f560dfa0d15f7e8c8dc85d6c668b7fc5d4fddc48d4"
         },
         {
             "path": "package-lock.json",
-            "sha256": "a8c23b08f74bf62ec23158bb9e51bb36281d923256f49e62ee1540334bb5eed4"
+            "sha256": "844c5941cbb174a24c22d25efa39f0e2ee2a0f8ce20588685da484e7177beb4f"
         },
         {
             "path": "package.json",
-            "sha256": "38dd33ae01905114f3265f44eb62ffd263b2ba51763cda2d2201429af55d998c"
+            "sha256": "27f66ac75395917918ab1ba2ea0f0374f19203578cd39c5ebf01d621f12e496f"
         },
         {
             "path": "routes.json",
@@ -427,6 +426,10 @@
         {
             "path": "tests/manifest-contract.test.js",
             "sha256": "1e5658e60128e8359a452e1f034a00edab2e68405e0c1ba7e92ef61fc6ec414d"
+        },
+        {
+            "path": "tests/navbar-navigation.test.js",
+            "sha256": "fff77f100ef1c674286de763cf7be14bb9e2c82d56edaada92bf8bc93b7a08df"
         },
         {
             "path": "tests/reuse/api-runtime.js",
@@ -554,7 +557,7 @@
         },
         {
             "path": "ui/navbar.js",
-            "sha256": "f45ee72405d5cee0d9679de65d4959480eaf8d6174715482232b9b54f78583d3"
+            "sha256": "31c6e76379aef7302964bc3f8afce7ca64b5418811522dd71008e3f5d1b7ab41"
         },
         {
             "path": "ui/reuse/assets/arrow-dark.svg",

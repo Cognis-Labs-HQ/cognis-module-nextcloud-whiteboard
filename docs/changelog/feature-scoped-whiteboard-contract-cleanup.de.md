@@ -56,6 +56,10 @@ Quellzuordnung und Löschung von Zeichenflächen erlauben auch Administratoren, 
 
 Ausgabe 2.3.157 — `createCanvas` und `createDisposableCanvas` akzeptieren einen allgemeinen `resourceType` und eine `resourceId`. Zusammen lösen sie eine gespeicherte Canvas-Verknüpfung auf; wiederholte und gleichzeitige Anfragen liefern dieselbe autorisierte Zeichenfläche, ohne Inhalte oder Mitgliedschaften zurückzusetzen. Die Datenbank erzwingt einen eindeutigen Referenzschlüssel. Eine vorhandene Zeichenfläche mit anderem Persistenzmodus führt zu einem Konflikt; unberechtigte Aufrufer dürfen sie nicht wiederverwenden. Ohne Verknüpfung entsteht bei dauerhaften Zeichenflächen eine neue unabhängige Zeichenfläche. Löschen entfernt die Verknüpfung und erlaubt eine spätere Neuerstellung.
 
+## Direkte Whiteboard-Seiten ohne Menüeintrag
+
+Ausgabe 2.3.158 — Whiteboards trägt keinen Navigationsmenü-Link mehr bei. Die geschützte Galerie `/whiteboards`, die Zeichenfläche `/whiteboard`, der Darstellungs-Gateway, der Verwaltungsbereich und durchsuchbare Seiten- und Canvas-Einträge bleiben verfügbar. Das Navbar-Plugin verwaltet nur seinen Suchindex und entfernt ihn beim Abbau.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

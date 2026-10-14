@@ -1,11 +1,9 @@
 import { reuse } from "./reuse/host-resources.js";
 
-const [{ apiFetch }, { registerSearchIndex }, { createI18n }] =
-    await Promise.all([
-        reuse.importModule("api-client.js"),
-        reuse.importModule("search-util/popup.js"),
-        reuse.importModule("i18n.js"),
-    ]);
+const [{ apiFetch }, { registerSearchIndex }] = await Promise.all([
+    reuse.importModule("api-client.js"),
+    reuse.importModule("search-util/popup.js"),
+]);
 const WHITEBOARD_API_BASE = "/api/v1/modules/nextcloud-whiteboard";
 
 async function fetchVisibleWhiteboards() {
@@ -66,26 +64,11 @@ async function collectWhiteboardNavbarSearchGroups() {
 }
 
 export async function mountProvider(ctx) {
-    const i18n = await createI18n({
-        componentStringBaseUrls: [
-            "/static/modules/nextcloud-whiteboard/languages",
-        ],
-    });
     ctx.signal.throwIfAborted();
-    const navbar = ctx.capabilities.get("ui:navbarLinks");
-    if (typeof navbar?.contribute !== "function")
-        throw new Error("Required UI capability unavailable: ui:navbarLinks");
-    const removeLink = navbar.contribute("nextcloud-whiteboard:whiteboards", {
-        label: i18n.t("module.nextcloud.whiteboard.nav.label"),
-        href: "/whiteboards",
-    });
     const removeSearch = registerSearchIndex(
         "nextcloud-whiteboard-navbar",
         collectWhiteboardNavbarSearchGroups,
         { componentId: "nextcloud-whiteboard" },
     );
-    return () => {
-        removeSearch();
-        removeLink();
-    };
+    return removeSearch;
 }

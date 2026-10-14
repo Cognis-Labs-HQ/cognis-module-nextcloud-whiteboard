@@ -54,6 +54,10 @@ Perubahan sumber dan penghapusan kanvas juga mengizinkan administrator yang dive
 
 Rilis 2.3.157 — `createCanvas` dan `createDisposableCanvas` menerima `resourceType` dan `resourceId` generik. Keduanya menyelesaikan satu referensi kanvas tersimpan; permintaan berulang dan bersamaan mengembalikan kanvas berizin yang sama tanpa mereset isi atau keanggotaan. Basis data memastikan kunci referensi unik. Kanvas yang sudah ada dengan mode persistensi berbeda menimbulkan konflik, dan pemanggil tanpa izin tidak dapat menggunakannya kembali. Membuat kanvas persisten tanpa referensi menghasilkan kanvas baru yang terpisah. Penghapusan kanvas menghapus referensinya sehingga kanvas dapat dibuat lagi.
 
+## Halaman Whiteboard langsung tanpa entri navigasi
+
+Rilis 2.3.158 — Whiteboards tidak lagi menambahkan tautan menu navigasi. Galeri terlindungi `/whiteboards` dan URL kanvas `/whiteboard`, gateway tampilan kanvas, bagian administrasi serta entri halaman dan kanvas yang dapat dicari tetap tersedia. Plugin navbar hanya memiliki indeks pencarian dan menghapusnya saat dibongkar.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

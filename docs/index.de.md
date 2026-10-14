@@ -129,3 +129,7 @@ Quellzuordnung und Löschung von Zeichenflächen erlauben auch Administratoren, 
 ## Wiederverwendbare Canvas-Verknüpfungen
 
 `createCanvas` und `createDisposableCanvas` akzeptieren einen allgemeinen `resourceType` und eine `resourceId`. Zusammen lösen sie eine gespeicherte Canvas-Verknüpfung auf; wiederholte und gleichzeitige Anfragen liefern dieselbe autorisierte Zeichenfläche, ohne Inhalte oder Mitgliedschaften zurückzusetzen. Die Datenbank erzwingt einen eindeutigen Referenzschlüssel. Eine vorhandene Zeichenfläche mit anderem Persistenzmodus führt zu einem Konflikt; unberechtigte Aufrufer dürfen sie nicht wiederverwenden. Ohne Verknüpfung entsteht bei dauerhaften Zeichenflächen eine neue unabhängige Zeichenfläche. Löschen entfernt die Verknüpfung und erlaubt eine spätere Neuerstellung.
+
+## Direkte Whiteboard-Seiten ohne Menüeintrag
+
+Whiteboards trägt keinen Navigationsmenü-Link mehr bei. Die geschützte Galerie `/whiteboards`, die Zeichenfläche `/whiteboard`, der Darstellungs-Gateway, der Verwaltungsbereich und durchsuchbare Seiten- und Canvas-Einträge bleiben verfügbar. Das Navbar-Plugin verwaltet nur seinen Suchindex und entfernt ihn beim Abbau.

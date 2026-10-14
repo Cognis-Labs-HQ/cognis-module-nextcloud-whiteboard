@@ -69,3 +69,4 @@ Release 2.3.157 — `createCanvas` and `createDisposableCanvas` accept a generic
 - [bd1f069](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bd1f069c5bc597469c0b06cc7377ab4b837d6902)
 - [b35f85d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b35f85daa2fd905fa6cf4efe2c1fc092f5c7bee5)
 - [c8ecbc2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c8ecbc2fb2c8471a95302e9c92aea69f767e7501)
+- [569cdc2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/569cdc2e3296f1d665b75bff1240f6738e084deb)

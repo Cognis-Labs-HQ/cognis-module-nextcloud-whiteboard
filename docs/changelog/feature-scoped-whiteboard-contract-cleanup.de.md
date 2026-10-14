@@ -74,3 +74,4 @@ Ausgabe 2.3.158 — Whiteboards trägt keinen Navigationsmenü-Link mehr bei. Di
 - [b35f85d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b35f85daa2fd905fa6cf4efe2c1fc092f5c7bee5)
 - [c8ecbc2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c8ecbc2fb2c8471a95302e9c92aea69f767e7501)
 - [569cdc2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/569cdc2e3296f1d665b75bff1240f6738e084deb)
+- [f90735c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f90735ca73e8df6644171083dd07f24e2d544515)

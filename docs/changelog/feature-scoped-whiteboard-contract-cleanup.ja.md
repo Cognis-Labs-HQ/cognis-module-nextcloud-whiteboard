@@ -84,3 +84,4 @@ Marketplace のメタデータに短い操作概要と具体的な機能説明�
 - [569cdc2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/569cdc2e3296f1d665b75bff1240f6738e084deb)
 - [f90735c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f90735ca73e8df6644171083dd07f24e2d544515)
 - [df1396f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/df1396fb4fb02272a31edcf9c274c2d3d5ba8e02)
+- [bad53a2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bad53a26a4d4fcc5dcb0ebefb30ef9dde7d37b31)

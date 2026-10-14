@@ -58,6 +58,10 @@ Rilis 2.3.157 — `createCanvas` dan `createDisposableCanvas` menerima `resource
 
 Rilis 2.3.158 — Whiteboards tidak lagi menambahkan tautan menu navigasi. Galeri terlindungi `/whiteboards` dan URL kanvas `/whiteboard`, gateway tampilan kanvas, bagian administrasi serta entri halaman dan kanvas yang dapat dicari tetap tersedia. Plugin navbar hanya memiliki indeks pencarian dan menghapusnya saat dibongkar.
 
+## Pemulihan kanvas hilang yang generik
+
+Rilis 2.3.159 — Metadata papan penyedia menampilkan resourceReference netral berisi resourceType dan resourceId. Integrasi memakai identitas publik ini tanpa mengetahui penyimpanan internal. Penghapusan melepaskan kunci referensi; permintaan pembuatan atau penyelesaian berizin berikutnya menghasilkan pengganti kosong. Halaman mandiri pengguna masuk yang menerima respons sesi not_found dapat membuat pengganti melalui referensi kanvas generik, memuatnya sekali serta memperbarui ID aktif dan URL. Tampilan berbagi atau tertanam tidak membuat pengganti tersendiri. Kegagalan izin dan layanan diteruskan, dan respons hilang berulang tidak memulai perulangan percobaan. Pemulihan berhasil menampilkan toast; penyelesaian penyedia dicatat tanpa kredensial.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

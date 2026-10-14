@@ -128,6 +128,7 @@ export function createWhiteboardModuleApi({
                 embedUrl: buildCognisWhiteboardUrl(whiteboard.id),
                 createdBy: whiteboard.createdBy,
                 createdByAccountId,
+                resourceReference: whiteboard.resourceReference ?? null,
                 createdAt: whiteboard.createdAt,
                 updatedAt: whiteboard.updatedAt,
             };

@@ -682,6 +682,11 @@ export function registerBoardRoutes(
                     externalPath: body.externalPath,
                 });
             }
+            log?.("info", "Whiteboard canvas reference resolved.", {
+                component: "nextcloud-whiteboard-module",
+                operation: "resolve_canvas_reference",
+                whiteboardId: whiteboard.id,
+            });
             sendJson(res, 200, {
                 data: {
                     whiteboard,

@@ -263,6 +263,7 @@ test("board data exposes its canonical owner account ID", async () => {
         embedUrl: "/whiteboard?id=canvas-1",
         createdBy: "alice",
         createdByAccountId: "oidc:canonical-alice",
+        resourceReference: null,
         createdAt: "created",
         updatedAt: "updated",
     });

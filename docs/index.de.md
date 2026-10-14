@@ -133,3 +133,7 @@ Quellzuordnung und Löschung von Zeichenflächen erlauben auch Administratoren, 
 ## Direkte Whiteboard-Seiten ohne Menüeintrag
 
 Whiteboards trägt keinen Navigationsmenü-Link mehr bei. Die geschützte Galerie `/whiteboards`, die Zeichenfläche `/whiteboard`, der Darstellungs-Gateway, der Verwaltungsbereich und durchsuchbare Seiten- und Canvas-Einträge bleiben verfügbar. Das Navbar-Plugin verwaltet nur seinen Suchindex und entfernt ihn beim Abbau.
+
+## Allgemeine Wiederherstellung fehlender Zeichenflächen
+
+Anbieter-Metadaten veröffentlichen eine neutrale resourceReference mit resourceType und resourceId. Integrationen verwenden diese öffentliche Identität ohne Kenntnis der Speicherung. Löschen entfernt den Referenzschlüssel; eine spätere autorisierte Auflösung oder Erstellung liefert einen leeren Ersatz. Eine angemeldete eigenständige Seite darf bei einem echten not_found-Sitzungsfehler einen Ersatz über eine allgemeine Canvas-Verknüpfung erstellen, einmal laden und aktive ID sowie URL aktualisieren. Geteilte und eingebettete Ansichten erstellen keinen unabhängigen Ersatz. Berechtigungs- und Dienstfehler werden weitergegeben; erneutes Fehlen startet keine Wiederholungsschleife. Erfolg wird per Toast gemeldet und die Anbieter-Auflösung ohne Zugangsdaten protokolliert.

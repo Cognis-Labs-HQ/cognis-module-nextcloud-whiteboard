@@ -60,6 +60,10 @@ Release 2.3.157 — `createCanvas` and `createDisposableCanvas` accept a generic
 
 Release 2.3.158 — Whiteboards no longer contributes a navigation-menu link. The protected `/whiteboards` gallery and `/whiteboard` canvas URLs, canvas presentation gateway, administration section and searchable page/canvas entries remain available. The navbar plugin owns only its search index and removes it on teardown.
 
+## Generic missing-canvas recovery
+
+Release 2.3.159 — Provider board metadata exposes a neutral resourceReference containing resourceType and resourceId. Integrations use this public identity without knowing storage mechanics. Deletion releases the stored reference key; a subsequent authorized create-or-resolve request supplies a blank replacement. A signed-in standalone page receiving an actual not_found session response can create a replacement under a generic canvas reference, load it once and update its active ID and URL. Shared/embedded views do not independently create replacements. Permission and service failures propagate, and a repeated missing response does not trigger a retry loop. Successful recovery shows a toast; provider resolution is logged without credentials.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

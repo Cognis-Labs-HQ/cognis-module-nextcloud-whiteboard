@@ -129,4 +129,5 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.deleted">キャンバスを削除しました。</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.failed">キャンバスを取得または更新できませんでした。</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.empty">キャンバスがありません。</string>
+  <string name="module.nextcloud.whiteboard.canvas.recreated">削除されたキャンバスを新しいキャンバスで置き換えました。</string>
 </resources>

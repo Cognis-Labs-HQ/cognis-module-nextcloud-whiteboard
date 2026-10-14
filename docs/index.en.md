@@ -133,3 +133,7 @@ Canvas source changes and deletion also permit administrators verified through t
 ## Direct Whiteboard pages without a navigation entry
 
 Whiteboards no longer contributes a navigation-menu link. The protected `/whiteboards` gallery and `/whiteboard` canvas URLs, canvas presentation gateway, administration section and searchable page/canvas entries remain available. The navbar plugin owns only its search index and removes it on teardown.
+
+## Generic missing-canvas recovery
+
+Provider board metadata exposes a neutral resourceReference containing resourceType and resourceId. Integrations use this public identity without knowing storage mechanics. Deletion releases the stored reference key; a subsequent authorized create-or-resolve request supplies a blank replacement. A signed-in standalone page receiving an actual not_found session response can create a replacement under a generic canvas reference, load it once and update its active ID and URL. Shared/embedded views do not independently create replacements. Permission and service failures propagate, and a repeated missing response does not trigger a retry loop. Successful recovery shows a toast; provider resolution is logged without credentials.

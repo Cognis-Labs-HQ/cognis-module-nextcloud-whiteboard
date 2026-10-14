@@ -60,6 +60,10 @@ Ausgabe 2.3.157 — `createCanvas` und `createDisposableCanvas` akzeptieren eine
 
 Ausgabe 2.3.158 — Whiteboards trägt keinen Navigationsmenü-Link mehr bei. Die geschützte Galerie `/whiteboards`, die Zeichenfläche `/whiteboard`, der Darstellungs-Gateway, der Verwaltungsbereich und durchsuchbare Seiten- und Canvas-Einträge bleiben verfügbar. Das Navbar-Plugin verwaltet nur seinen Suchindex und entfernt ihn beim Abbau.
 
+## Allgemeine Wiederherstellung fehlender Zeichenflächen
+
+Ausgabe 2.3.159 — Anbieter-Metadaten veröffentlichen eine neutrale resourceReference mit resourceType und resourceId. Integrationen verwenden diese öffentliche Identität ohne Kenntnis der Speicherung. Löschen entfernt den Referenzschlüssel; eine spätere autorisierte Auflösung oder Erstellung liefert einen leeren Ersatz. Eine angemeldete eigenständige Seite darf bei einem echten not_found-Sitzungsfehler einen Ersatz über eine allgemeine Canvas-Verknüpfung erstellen, einmal laden und aktive ID sowie URL aktualisieren. Geteilte und eingebettete Ansichten erstellen keinen unabhängigen Ersatz. Berechtigungs- und Dienstfehler werden weitergegeben; erneutes Fehlen startet keine Wiederholungsschleife. Erfolg wird per Toast gemeldet und die Anbieter-Auflösung ohne Zugangsdaten protokolliert.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

@@ -878,10 +878,17 @@ export class NextcloudWhiteboardStore {
 
     mapBoard(row) {
         if (!row) return null;
+        const [resourceType, resourceId] = row.reference_key
+            ? JSON.parse(String(row.reference_key))
+            : [];
         return {
             id: String(row.id),
             title: String(row.title),
             externalPath: String(row.external_path),
+            resourceReference:
+                resourceType && resourceId
+                    ? { resourceType, resourceId }
+                    : null,
             sourceType: row.source_type ?? null,
             sourceId: row.source_id ?? null,
             accessToken: String(row.access_token),

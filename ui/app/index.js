@@ -569,8 +569,33 @@ async function openBoard(board) {
     try {
         session = await fetchWhiteboardSession(board.id, {
             signal: controller.signal,
+            recoverMissing: hostNavigationAllowed && !activeShareContext,
+            title: board.title,
         });
         if (!isCurrent()) return;
+        if (session.recreated) {
+            activeBoard = {
+                ...board,
+                id: session.roomId,
+                title: session.title,
+            };
+            boards = [
+                ...boards.filter((entry) => entry.id !== board.id),
+                activeBoard,
+            ];
+            syncBoardUrl({
+                boardId: session.roomId,
+                hostNavigationAllowed,
+                integrationCanvasMode,
+                shareContext: activeShareContext,
+            });
+            showToast(
+                translateModuleString(
+                    "module.nextcloud.whiteboard.canvas.recreated",
+                ),
+                { variant: "success" },
+            );
+        }
     } catch (error) {
         if (!isCurrent()) return;
         reportCanvasLoadError(error, board.id, "session");

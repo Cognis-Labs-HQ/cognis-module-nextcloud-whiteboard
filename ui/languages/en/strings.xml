@@ -129,4 +129,5 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.deleted">Canvas deleted.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.failed">Canvases could not be loaded or updated.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.empty">No canvases found.</string>
+  <string name="module.nextcloud.whiteboard.canvas.recreated">The deleted canvas was replaced with a new canvas.</string>
 </resources>

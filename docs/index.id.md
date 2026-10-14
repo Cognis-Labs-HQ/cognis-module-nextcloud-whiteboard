@@ -133,3 +133,7 @@ Perubahan sumber dan penghapusan kanvas juga mengizinkan administrator yang dive
 ## Halaman Whiteboard langsung tanpa entri navigasi
 
 Whiteboards tidak lagi menambahkan tautan menu navigasi. Galeri terlindungi `/whiteboards` dan URL kanvas `/whiteboard`, gateway tampilan kanvas, bagian administrasi serta entri halaman dan kanvas yang dapat dicari tetap tersedia. Plugin navbar hanya memiliki indeks pencarian dan menghapusnya saat dibongkar.
+
+## Pemulihan kanvas hilang yang generik
+
+Metadata papan penyedia menampilkan resourceReference netral berisi resourceType dan resourceId. Integrasi memakai identitas publik ini tanpa mengetahui penyimpanan internal. Penghapusan melepaskan kunci referensi; permintaan pembuatan atau penyelesaian berizin berikutnya menghasilkan pengganti kosong. Halaman mandiri pengguna masuk yang menerima respons sesi not_found dapat membuat pengganti melalui referensi kanvas generik, memuatnya sekali serta memperbarui ID aktif dan URL. Tampilan berbagi atau tertanam tidak membuat pengganti tersendiri. Kegagalan izin dan layanan diteruskan, dan respons hilang berulang tidak memulai perulangan percobaan. Pemulihan berhasil menampilkan toast; penyelesaian penyedia dicatat tanpa kredensial.

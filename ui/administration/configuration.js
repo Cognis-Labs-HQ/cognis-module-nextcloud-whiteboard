@@ -1,4 +1,4 @@
-import { reuse } from "./reuse/host-resources.js";
+import { reuse } from "../reuse/host-resources.js";
 
 const [{ createI18n }, { openModuleSettingsPopup }] = await Promise.all([
     reuse.importModule("i18n.js"),

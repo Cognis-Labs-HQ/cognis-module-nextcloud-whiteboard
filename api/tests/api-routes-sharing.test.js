@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { withFlowRuntime } from "../../tests/reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -827,5 +828,6 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
 });
 
 function registerApiRoutes(router, context) {
+    context.moduleRoot ??= fileURLToPath(new URL("../../", import.meta.url));
     return registerModuleRoutes(router, withFlowRuntime(context));
 }

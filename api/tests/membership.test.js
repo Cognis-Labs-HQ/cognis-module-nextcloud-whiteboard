@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createProfileIdentityCapability } from "../reuse/access.js";
-import { createCanvasMembershipCapability } from "../reuse/canvas-membership.js";
-import { createWhiteboardModuleApi } from "../reuse/module-api.js";
+import { createCanvasMembershipCapability } from "../canvas/membership.js";
+import { createWhiteboardModuleApi } from "../reuse/capabilities.js";
 
 function createHarness() {
     const participants = new Set(["alice", "bob"]);
@@ -271,11 +271,9 @@ test("board data exposes its canonical owner account ID", async () => {
 
 test("legacy canvas membership controls are removed", async () => {
     const sources = await Promise.all(
-        [
-            "../index.js",
-            "../store.js",
-            "../../ui/reuse/whiteboard-ui-gateway.js",
-        ].map((path) => readFile(new URL(path, import.meta.url), "utf8")),
+        ["../index.js", "../store.js", "../../ui/reuse/gateway.js"].map(
+            (path) => readFile(new URL(path, import.meta.url), "utf8"),
+        ),
     );
     const combinedSource = sources.join("\n");
 

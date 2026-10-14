@@ -26,9 +26,10 @@ export function registerAdminCanvasRoutes(
                         activeUsers: presence
                             .filter(
                                 (entry) =>
+                                    entry.active &&
                                     Date.now() -
                                         new Date(entry.lastSeenAt).getTime() <
-                                    15000,
+                                        15000,
                             )
                             .map((entry) => entry.username),
                     };
@@ -43,7 +44,22 @@ export function registerAdminCanvasRoutes(
         async (req, res) => {
             const claims = requireAuth(req, res, "admin");
             if (!claims) return;
-            const body = await readJson(req);
+            let body;
+            try {
+                body = await readJson(req);
+            } catch (error) {
+                log?.("error", "Canvas deletion received malformed JSON.", {
+                    operation: "admin_delete_canvas",
+                    errorName: error?.name,
+                });
+                sendError(
+                    res,
+                    400,
+                    "invalid_json",
+                    "Request body must be valid JSON.",
+                );
+                return;
+            }
             const board = await store.getWhiteboardById(
                 typeof body?.whiteboardId === "string" ? body.whiteboardId : "",
             );

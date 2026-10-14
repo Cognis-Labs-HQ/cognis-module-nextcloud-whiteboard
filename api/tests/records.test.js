@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createCanvasRecordDeletion } from "../reuse/canvas-record-deletion.js";
+import { createCanvasRecordDeletion } from "../canvas/records.js";
 
 test("canvas deletion clears shares from every owner before deleting provider records", async () => {
     const calls = [];

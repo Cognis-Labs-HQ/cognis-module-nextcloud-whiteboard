@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mergeElementsSnapshots } from "../reuse/elements-snapshot.js";
+import { mergeElementsSnapshots } from "../canvas/snapshot.js";
 import {
     bumpElementVersionPast,
     getTextBoxDimensions,
     scaleElementToBounds,
-} from "../../ui/whiteboard/elements.js";
+} from "../../ui/canvas/elements.js";
 
 test("snapshot merge preserves concurrent changes from different users", () => {
     const aliceShape = { id: "alice", version: 1, versionNonce: 1 };

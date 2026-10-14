@@ -10,6 +10,7 @@ export function registerWhiteboardShareFlowHooks({
     resolveWhiteboardUserAccess,
     resolveShareGuestId,
     whiteboardStylesheets,
+    whiteboardUiAsset,
     installedFlowIds = new Set(),
 }) {
     if (
@@ -177,8 +178,7 @@ export function registerWhiteboardShareFlowHooks({
                 if (String(input.resourceType ?? "") !== "whiteboard")
                     return null;
                 return {
-                    mountScriptUrl:
-                        "/static/modules/nextcloud-whiteboard/app/index.js",
+                    mountScriptUrl: whiteboardUiAsset("app/index.js"),
                     stringsBaseUrl: [
                         "/static/modules/nextcloud-whiteboard/languages",
                     ],

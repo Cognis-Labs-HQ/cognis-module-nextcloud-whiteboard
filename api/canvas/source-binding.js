@@ -1,7 +1,7 @@
 import {
     CanvasRequestError,
     resolveVisibleAccountHandle,
-} from "./account-handle.js";
+} from "../reuse/account-handle.js";
 
 /** A canvas can belong to one integration source; repeated claims by that source are safe. */
 export function createCanvasSourceBinding({

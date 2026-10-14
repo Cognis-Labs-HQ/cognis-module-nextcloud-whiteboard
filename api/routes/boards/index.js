@@ -2,15 +2,15 @@ import { hasMinRole, readJson, sendError, sendJson } from "../../reuse/http.js";
 import { getFirstStageResult } from "../../reuse/flow-helpers.js";
 import { checkHttpLiveness } from "../../reuse/http-liveness.js";
 import { resolveExpiry } from "../../configuration/values.js";
-import { resolveResourceCanvas } from "../../reuse/resource-canvas.js";
-import { loadCanvasElements } from "../../reuse/canvas-loader.js";
+import { resolveResourceCanvas } from "../../canvas/resource.js";
+import { loadCanvasElements } from "../../canvas/loader.js";
 import { registerWhiteboardImageRoutes } from "../image/index.js";
 import {
     buildCognisWhiteboardUrl,
     resolveParticipantHandles,
     resolveRequesterUsername,
 } from "../../reuse/access.js";
-import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../../reuse/configuration-api.js";
+import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../../configuration/index.js";
 
 const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 

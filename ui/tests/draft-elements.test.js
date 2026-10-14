@@ -5,7 +5,7 @@ import {
     createRemoteDraftStore,
     createDrawingDraft,
     preserveDraftIdentity,
-} from "../whiteboard/reuse/draft-elements.js";
+} from "../canvas/reuse/drafts.js";
 import { decodeSceneMessage, encodeSceneMessage } from "../app/realtime.js";
 
 test("drawing drafts keep one collaborative identity through pointer movement", () => {

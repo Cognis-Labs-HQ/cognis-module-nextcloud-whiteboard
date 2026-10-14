@@ -3,8 +3,8 @@ import test from "node:test";
 import { execFileSync } from "node:child_process";
 import { readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
-import { createWhiteboardUiAssetResolver } from "../../api/reuse/ui-assets.js";
-import { registerWhiteboardUiProvider } from "../../api/reuse/ui-provider.js";
+import { createWhiteboardUiAssetResolver } from "../../api/reuse/assets.js";
+import { registerWhiteboardUiProvider } from "../../api/reuse/providers.js";
 
 const root = resolve(import.meta.dirname, "../..");
 const manifest = JSON.parse(readFileSync(resolve(root, "manifest.json")));
@@ -19,7 +19,7 @@ test("provider URLs follow the installed module revision rather than the host bu
     assert.equal(url.searchParams.get("revision"), manifest.version);
     assert.equal(
         url.pathname,
-        "/static/modules/nextcloud-whiteboard/reuse/whiteboard-ui-gateway.js",
+        "/static/modules/nextcloud-whiteboard/reuse/gateway.js",
     );
     assert.deepEqual(providers[0].providesCapabilities, [
         "whiteboard:uiGateway",
@@ -35,9 +35,9 @@ test("provider URLs follow the installed module revision rather than the host bu
 
 for (const entry of [
     "app/index.js",
-    "reuse/whiteboard-ui-gateway.js",
+    "reuse/gateway.js",
     "navbar.js",
-    "admin-section.js",
+    "administration/configuration.js",
 ]) {
     test(`browser entry ${entry} links its actual repository module graph`, () => {
         assert.doesNotThrow(() =>

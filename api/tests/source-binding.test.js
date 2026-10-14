@@ -69,7 +69,7 @@ test("concurrent canvas claims have one winner; unrelated releases cannot unbind
 
 test("canvas source capability authorizes its owner before changing bindings", async () => {
     const { createCanvasSourceBinding } =
-        await import("../reuse/canvas-source-binding.js");
+        await import("../canvas/source-binding.js");
     let changes = 0;
     const binding = createCanvasSourceBinding({
         profileStore: {
@@ -96,7 +96,7 @@ test("canvas source capability authorizes its owner before changing bindings", a
 
 test("a verified administrator can release an exact binding without impersonating its creator", async () => {
     const { createCanvasSourceBinding } =
-        await import("../reuse/canvas-source-binding.js");
+        await import("../canvas/source-binding.js");
     let released;
     const binding = createCanvasSourceBinding({
         resolveActorRole: async (id) => (id === "admin" ? "admin" : "user"),

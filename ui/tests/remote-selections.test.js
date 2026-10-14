@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import {
     buildRemoteSelections,
     retainVisibleElementIds,
-} from "../whiteboard/reuse/remote-selections.js";
+} from "../canvas/reuse/selections.js";
 
 test("remote selections preserve live collaborator interaction states", () => {
     const selections = buildRemoteSelections([

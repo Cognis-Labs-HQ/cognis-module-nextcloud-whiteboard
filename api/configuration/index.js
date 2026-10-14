@@ -1,13 +1,16 @@
-import { createOriginRegistrar } from "./origin-registration.js";
-import { registerWhiteboardActions } from "./action-store.js";
-import { createProfileIdentityCapability, resolveStore } from "./access.js";
+import { createOriginRegistrar } from "../reuse/origin-registration.js";
+import { registerWhiteboardActions } from "../reuse/action-store.js";
+import {
+    createProfileIdentityCapability,
+    resolveStore,
+} from "../reuse/access.js";
 import { registerWhiteboardConfigRoutes } from "../routes/config/index.js";
 import {
     createWhiteboardEnableTest,
     registerWhiteboardEnableTestRoute,
-} from "../configuration/test.js";
-import { checkHttpLiveness } from "./http-liveness.js";
-import { sendError, sendJson } from "./http.js";
+} from "./enablement.js";
+import { checkHttpLiveness } from "../reuse/http-liveness.js";
+import { sendError, sendJson } from "../reuse/http.js";
 
 export const WHITEBOARD_LIVENESS_TIMEOUT_MS = 5000;
 

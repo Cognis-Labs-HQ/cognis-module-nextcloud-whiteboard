@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { fileURLToPath } from "node:url";
 import { registerApiRoutes as registerModuleRoutes } from "../../api/index.js";
 import { withFlowRuntime } from "./flow-runtime.js";
 
@@ -7,7 +8,11 @@ export function createMemoryDb() {
     const primaryKeys = new Map();
     const applyWhere = (rows, where = []) =>
         rows.filter((row) =>
-            where.every((clause) => row[clause.column] === clause.value),
+            where.every((clause) =>
+                clause.operator === "IS NULL"
+                    ? row[clause.column] == null
+                    : row[clause.column] === clause.value,
+            ),
         );
     const db = {
         async ensureTable(definition) {
@@ -150,5 +155,6 @@ export function createJsonResponse() {
 }
 
 export function registerApiRoutes(router, context) {
+    context.moduleRoot ??= fileURLToPath(new URL("../../", import.meta.url));
     return registerModuleRoutes(router, withFlowRuntime(context));
 }

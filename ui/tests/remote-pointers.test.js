@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { renderRemotePointers } from "../whiteboard/reuse/remote-pointers.js";
+import { renderRemotePointers } from "../canvas/reuse/pointers.js";
 
 function createHarness() {
     const calls = [];

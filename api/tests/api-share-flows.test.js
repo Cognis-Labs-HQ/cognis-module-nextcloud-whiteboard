@@ -8,7 +8,7 @@ import {
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../reuse/configuration-api.js";
+import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../configuration/index.js";
 import { NextcloudWhiteboardStore } from "../store.js";
 
 import { issueAccessToken, requireTestAuth } from "../../tests/reuse/auth.js";
@@ -57,6 +57,22 @@ test("nextcloud whiteboard registers share hooks on its scoped ctx flow", () => 
         },
     });
 
+    const renderer = extensions.find(
+        (extension) => extension.id === "nextcloud-whiteboard:share-renderer",
+    );
+    const descriptor = renderer.handler({
+        input: { resourceType: "whiteboard" },
+    });
+    const version = JSON.parse(
+        readFileSync(new URL("../../manifest.json", import.meta.url), "utf8"),
+    ).version;
+    assert.equal(
+        new URL(
+            descriptor.mountScriptUrl,
+            "https://host.test",
+        ).searchParams.get("revision"),
+        version,
+    );
     assert.ok(
         extensions.some(
             (item) =>

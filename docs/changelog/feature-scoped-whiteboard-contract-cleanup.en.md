@@ -2,6 +2,10 @@
 
 **Feature Branch:** feature-scoped-whiteboard-contract-cleanup
 
+## Concern-based structure and safe canvas resolution
+
+Release 2.3.161 — Canvas implementation lives in `api/canvas/` and `ui/canvas/` with short filenames such as `source-binding.js`, `events.js` and `snapshot.js`. The runtime enablement probe is `api/configuration/enablement.js`; unit tests remain in `api/tests/`. Shared-page entries use the same revision-qualified asset resolver as ordinary routes. Administration excludes inactive presence and returns `invalid_json` for malformed deletion requests. A single authorized canvas at a canonical resource path receives an immutable reference assignment without changing its contents; ambiguous paths produce a conflict and a Troubled Canvases issue instead of selecting a record.
+
 ## Canvas administration diagnostics
 
 Release 2.3.160 — Canvas administration offers All Canvases, Active Canvases and Troubled Canvases, each with its own empty message. The troubled view lists canvases with missing owners or owner access, incomplete source bindings, or duplicate generic source bindings or resource references. Small issue pills explain each problem. Diagnostics use only Whiteboard-owned data; administration still requires administrator access and never returns canvas credentials.

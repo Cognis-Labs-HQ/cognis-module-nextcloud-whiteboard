@@ -1,9 +1,9 @@
-import { createCanvasRecordDeletion } from "./canvas-record-deletion.js";
-import { createCanvasSourceBinding } from "./canvas-source-binding.js";
+import { createCanvasRecordDeletion } from "../canvas/records.js";
+import { createCanvasSourceBinding } from "../canvas/source-binding.js";
 import { buildCognisWhiteboardUrl } from "./access.js";
-import { createCanvasMembershipCapability } from "./canvas-membership.js";
-import { createCanvasDeletionCapability } from "./canvas-deletion.js";
-import { resolveResourceCanvas } from "./resource-canvas.js";
+import { createCanvasMembershipCapability } from "../canvas/membership.js";
+import { createCanvasDeletionCapability } from "../canvas/deletion.js";
+import { resolveResourceCanvas } from "../canvas/resource.js";
 
 export function createWhiteboardModuleApi({
     store,

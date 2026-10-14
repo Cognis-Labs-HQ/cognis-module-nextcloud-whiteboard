@@ -1,8 +1,9 @@
+import { fileURLToPath } from "node:url";
 import { withFlowRuntime } from "./reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { registerApiRoutes as registerModuleRoutes } from "../api/index.js";
-import { registerWhiteboardConfigurationApi } from "../api/reuse/configuration-api.js";
+import { registerWhiteboardConfigurationApi } from "../api/configuration/index.js";
 import { registerWhiteboardShareFlowHooks } from "../api/sharing/hooks.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
 
@@ -73,6 +74,7 @@ test("runtime initialization retries after namespace setup fails", () => {
     let registrationAttempts = 0;
     const extensions = [];
     const ctx = {
+        moduleRoot: fileURLToPath(new URL("../", import.meta.url)),
         flow: {
             exists(flowId) {
                 return ["mint-share-token", "resolve-share-token"].includes(
@@ -120,6 +122,7 @@ test("capability registration failures are logged with safe context", () => {
     const logs = [];
     const registrationError = new Error("sensitive registration details");
     const ctx = {
+        moduleRoot: fileURLToPath(new URL("../", import.meta.url)),
         contributePublicCapability() {
             throw registrationError;
         },

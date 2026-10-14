@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { Readable } from "node:stream";
-import { registerAdminCanvasRoutes } from "../routes/admin-canvases/index.js";
+import { registerAdminCanvasRoutes } from "../routes/administration/index.js";
 
 function fixture() {
     const handlers = new Map();
@@ -36,6 +36,11 @@ function fixture() {
                 },
                 listPresence: async () => [
                     { username: "owner", active: true, lastSeenAt: new Date() },
+                    {
+                        username: "departed",
+                        active: false,
+                        lastSeenAt: new Date(),
+                    },
                 ],
                 listParticipants: async () => ["owner"],
                 getWhiteboardById: async () => ({
@@ -100,4 +105,15 @@ test("administrator deletion revokes canvas shares before removing saved canvas 
     assert.equal(harness.response.status, 200);
     assert.equal(harness.calls[0][0], "shares");
     assert.deepEqual(harness.calls[1], ["delete", "board"]);
+});
+
+test("malformed canvas deletion JSON returns a stable client error without deleting data", async () => {
+    const harness = fixture();
+    harness.authorize();
+    await harness.handlers.get(
+        "/api/v1/modules/nextcloud-whiteboard/admin/canvases/delete",
+    )(Readable.from(["{invalid"]), harness.response);
+    assert.equal(harness.response.status, 400);
+    assert.equal(harness.response.body.error.code, "invalid_json");
+    assert.deepEqual(harness.calls, []);
 });

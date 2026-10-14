@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createElementHistory } from "../whiteboard/reuse/element-history.js";
+import { createElementHistory } from "../canvas/reuse/history.js";
 
 test("element history records, undoes, and redoes changed elements", () => {
     const applied = [];

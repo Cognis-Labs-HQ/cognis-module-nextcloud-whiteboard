@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.3.160",
+    "version": "2.3.161",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -121,7 +121,7 @@
         },
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "c0616d3824fe840b962ac22c824ebad8e23e06a16dbe64ed4aeaa13cf84e024f"
+            "sha256": "635b5772c87c5e2ed485b42ed1835e66789612d48c015847d26ee18882d07991"
         },
         {
             "path": ".gitignore",
@@ -157,11 +157,43 @@
         },
         {
             "path": "api/administration/canvases.js",
-            "sha256": "15eb80af31e515af128eb341102429395cd5cef65f804bae709454be209f6927"
+            "sha256": "10ce798095130eb0da9088177790ac765bfd501d3d576f52936822c1797c7797"
         },
         {
-            "path": "api/configuration/test.js",
+            "path": "api/canvas/deletion.js",
+            "sha256": "afb5ab36417732295973639d6835360a93bdb00566568a673484a633596eb6a9"
+        },
+        {
+            "path": "api/canvas/loader.js",
+            "sha256": "16f430a0562132ef2213db4e5d7ae4ba94fb20ed801c3703913a30952162f1f6"
+        },
+        {
+            "path": "api/canvas/membership.js",
+            "sha256": "0cda8175e3951f6b725b7da7386b7d2ab483365c46eba0ba9a891ea2d42afb3a"
+        },
+        {
+            "path": "api/canvas/records.js",
+            "sha256": "7eeeedb828e60a64b4c4f04363bdcc2ae0953f66113fd9881f3fa09b5ecee8a1"
+        },
+        {
+            "path": "api/canvas/resource.js",
+            "sha256": "57edceaa34bc92ef126b4b1e46975a157444ceb3fc1fa31bd96e380228945c53"
+        },
+        {
+            "path": "api/canvas/snapshot.js",
+            "sha256": "b5284d1cd3acf4ac8b0f94db1d6e06a4cda3e00944c0bd37dec8fd8e89495c9a"
+        },
+        {
+            "path": "api/canvas/source-binding.js",
+            "sha256": "f3a6d377b42ba45ecd36479752a7d17cc8f13ce49eb57f58961e1e0bd4e3b051"
+        },
+        {
+            "path": "api/configuration/enablement.js",
             "sha256": "3cef60fef54de72b9e823e8bfe3a38a4f302565637e2d35c1fc53ba08015416d"
+        },
+        {
+            "path": "api/configuration/index.js",
+            "sha256": "16948836913b97e5a9ba05ebc560e1b59764a51912710eb560098ea63afbf065"
         },
         {
             "path": "api/configuration/values.js",
@@ -169,11 +201,11 @@
         },
         {
             "path": "api/disabled.js",
-            "sha256": "60ea699d787b9b5911fe7e79358a447bffb262406f9e1be8ef868dc25d936b0c"
+            "sha256": "e970da923e956bb832b9dba48e4571021d5f1587dc64df2616d4ea9afd28555e"
         },
         {
             "path": "api/index.js",
-            "sha256": "88000952473e4b8e8d034f3ca5246af979308c268cd689c6ae4dd728c25ad529"
+            "sha256": "672c300a6744dff526133ea000c562b95cc64536b4c7f9e8738b262c1336f186"
         },
         {
             "path": "api/reuse/access.js",
@@ -185,35 +217,15 @@
         },
         {
             "path": "api/reuse/action-store.js",
-            "sha256": "424cf925133cca1ab5d27ebdd63c51b7f8b3fbfdc1f1ed9dc90ff9adc59e6707"
+            "sha256": "bc3c06cdcfbfd310c08deffc0f570cb021d20991b0d583bfdf71229709bda081"
         },
         {
-            "path": "api/reuse/canvas-deletion.js",
-            "sha256": "6616457b1036af87d21f0c8473b047348497866fd0c1e15626881e30af7ce909"
+            "path": "api/reuse/assets.js",
+            "sha256": "e13ce96e8122c7d16974bd75277a8cf86ff8a47dc0638e7795e91e44742253cc"
         },
         {
-            "path": "api/reuse/canvas-loader.js",
-            "sha256": "5a39bc3b1cb6cb25a0b2576ef34d374669eaa38ce13678999665495c86d8f2d5"
-        },
-        {
-            "path": "api/reuse/canvas-membership.js",
-            "sha256": "bf3a382d505756f5d2af17e983b36ad548fc178322beac7275fffc6b583a0974"
-        },
-        {
-            "path": "api/reuse/canvas-record-deletion.js",
-            "sha256": "7eeeedb828e60a64b4c4f04363bdcc2ae0953f66113fd9881f3fa09b5ecee8a1"
-        },
-        {
-            "path": "api/reuse/canvas-source-binding.js",
-            "sha256": "7d6ba2045a5122b45cefcaf8b394c1d67c10d376c73b0ba82c69dceec4c18142"
-        },
-        {
-            "path": "api/reuse/configuration-api.js",
-            "sha256": "3033adb1e04437d755cbf85d5eb4d80660591abafd86c5949985530f7b856108"
-        },
-        {
-            "path": "api/reuse/elements-snapshot.js",
-            "sha256": "b5284d1cd3acf4ac8b0f94db1d6e06a4cda3e00944c0bd37dec8fd8e89495c9a"
+            "path": "api/reuse/capabilities.js",
+            "sha256": "c2e7c110a9aff335e2618bf48861cc6c9dbb652ae943923c410305d3697cca38"
         },
         {
             "path": "api/reuse/flow-helpers.js",
@@ -232,44 +244,32 @@
             "sha256": "479233fca29899437ee3e5b43e4198389247e063ba875581bf80996b0c7e4616"
         },
         {
-            "path": "api/reuse/module-api.js",
-            "sha256": "6ff0013894d1f5ee978d3cae3ce0875904d39e2a7774a5feb7716a38e23a085d"
-        },
-        {
             "path": "api/reuse/origin-registration.js",
             "sha256": "cf4090be5f1fc00086dff26962eb9acb21c7c489e3d3bc7e80cee17f3457a367"
+        },
+        {
+            "path": "api/reuse/providers.js",
+            "sha256": "f014e1e53baf84607688db468feeb92667109fab3d05549f801a573e96ed886f"
         },
         {
             "path": "api/reuse/random-token.js",
             "sha256": "a9d482781606326681f2d07d8cc191b35b5817274072731e5c556e8fc59c6e48"
         },
         {
-            "path": "api/reuse/resource-canvas.js",
-            "sha256": "63352c36302e8b4cfe06d17f866738d97b6fb1e78d46436b119f74c1451b231d"
-        },
-        {
             "path": "api/reuse/text-normalizers.js",
             "sha256": "114abd33118e936fac4ce8575814af6c84c02613aacb6e37b420868227f4d4fd"
-        },
-        {
-            "path": "api/reuse/ui-assets.js",
-            "sha256": "e13ce96e8122c7d16974bd75277a8cf86ff8a47dc0638e7795e91e44742253cc"
-        },
-        {
-            "path": "api/reuse/ui-provider.js",
-            "sha256": "4806011ef3b4c95e54fc70d7ed78baa5970654e63b8486890b71ce26cf76fbf3"
         },
         {
             "path": "api/reuse/url-parts.js",
             "sha256": "e19215eacdecc43c2af3e3dc60a616216e81f799ca94c19022f901f5e21fcf3b"
         },
         {
-            "path": "api/routes/admin-canvases/index.js",
-            "sha256": "c8cb75f1826b25b087f876c59dd77658f94fcbfae3224e01fad865b6642dd4fc"
+            "path": "api/routes/administration/index.js",
+            "sha256": "4a11d1099966d75c4c377eb20b0347fc9e4845bf2015542e66e09303fd3d5702"
         },
         {
             "path": "api/routes/boards/index.js",
-            "sha256": "2fcd39a1bd0f3638875ee441e0be396e4d87dd86df887ed4a43124baec6f004e"
+            "sha256": "30fe28f7e18caa375dd692d5c6714c8354bdfd2f76f249d1126247696b842d95"
         },
         {
             "path": "api/routes/config/index.js",
@@ -281,55 +281,47 @@
         },
         {
             "path": "api/sharing/hooks.js",
-            "sha256": "8afa66f0b1f75c7406a2363c4aa6dbd819465f8c57718c57815ad64be89b4519"
+            "sha256": "0a3096119975b2e5cb6876d063c87673966907ec4e8b829b54e85be232072a85"
         },
         {
             "path": "api/store.js",
-            "sha256": "1a769bb579bf9a58367fc1ad6cd9f3ace292b7d86eb85007e744c3e45946ffeb"
+            "sha256": "d29b3b40e0310e0072636e120bf46113542d71d1889223622710376c20182309"
         },
         {
-            "path": "api/tests/admin-canvases.test.js",
-            "sha256": "6409f358bd80405ec21805b608d3bcc82b8262ea33066dbd923a28523c14889c"
+            "path": "api/tests/administration.test.js",
+            "sha256": "2bc46c30fa5300e758897edfb5501ba4307bd8abb9ac01b688c023b2844960c2"
         },
         {
             "path": "api/tests/api-routes-sharing.test.js",
-            "sha256": "b4d7ed93e7b82e95d2e0253326e26c9a2423333aca7559d060ca5f63d3054d2c"
+            "sha256": "ababfb06c01ffd52d87c23b5ad040c391831dbea16ba71c7bbefe6e5f0973162"
         },
         {
             "path": "api/tests/api-routes.test.js",
-            "sha256": "a048c1c4e01a3a79f25fcce72d9930684877c75bad6c92fd2bf99aee3c3a7baa"
+            "sha256": "e85d07f69e8fce4aa0d2e06f2c4127e7dab0178b6052aa67de43ff8dcb3f63aa"
         },
         {
             "path": "api/tests/api-share-flows.test.js",
-            "sha256": "42ebe8f0b9e01c9dac3c1c39de3f14411aaba59c58cfb78962d58b2f440a8ccc"
+            "sha256": "01b359aac03d41c6c9c51a8ef15ec636f40f1cfd2c5edf89a2e90b6987630729"
         },
         {
-            "path": "api/tests/canvas-deletion.test.js",
-            "sha256": "44b56a412eb3dfc3c51b8af5efcb74435e1300e22c7b62334d485704c8178182"
+            "path": "api/tests/deletion.test.js",
+            "sha256": "571ddf30ee13f15d88639bfc9b8d2f59abd1eac317ce3ad913bccca8d6585dde"
         },
         {
-            "path": "api/tests/canvas-diagnostics.test.js",
+            "path": "api/tests/diagnostics.test.js",
             "sha256": "d830477333386dd50d8266caa75c7c5b69ef233a64ed2ce6b16bc26c70dce223"
-        },
-        {
-            "path": "api/tests/canvas-membership.test.js",
-            "sha256": "40edc0c37acc5c23b19924ed9a5ef7acdfcf1513b1b27626201ecb4fa792de94"
-        },
-        {
-            "path": "api/tests/canvas-record-deletion.test.js",
-            "sha256": "ac4d426527eee91f94763fcc8c157222ec4edd5e7586a2d012026f8d1650721c"
-        },
-        {
-            "path": "api/tests/canvas-source-binding.test.js",
-            "sha256": "be2abf0aab016d6f02a9e15a814a3dc474c1bf4d26da2d56766f0bc202bb12b9"
         },
         {
             "path": "api/tests/disabled-api.test.js",
             "sha256": "45bd93cd82db34aad5ef122e6375c51655d4bbb2edc98fda246ac4532bfe16ea"
         },
         {
-            "path": "api/tests/elements-snapshot.test.js",
-            "sha256": "669306115a29351c26aa2bd53c46fe337cb541507c58038bb45c1655ce7fffc3"
+            "path": "api/tests/manifest-targets.test.js",
+            "sha256": "ead5d55842241939d629b43556cb20f87590b6a6c4b8cd5ae3c3dd4a8f188dd6"
+        },
+        {
+            "path": "api/tests/membership.test.js",
+            "sha256": "7e957818ca1ea2bc6134de106dc85731e01c1539e277283030b316d102e809a9"
         },
         {
             "path": "api/tests/module-structure.test.js",
@@ -340,8 +332,20 @@
             "sha256": "a40680bd182d1e95aa85c7ddd68ba20e3ee2f89b4600bea84167c5abde5942bd"
         },
         {
-            "path": "api/tests/resource-canvas.test.js",
-            "sha256": "f08598a7539b22277a9de0350cf328e711690a1efab7171fad6b28665c3b74ef"
+            "path": "api/tests/records.test.js",
+            "sha256": "8750501f6a36093376408624d4578ffbe368f3410379d835b654d73d658cae7c"
+        },
+        {
+            "path": "api/tests/resource.test.js",
+            "sha256": "b0f09357d041c7f5a9a7d4a516e6e25dbed4e66be5a9493f3198b4595f6460ef"
+        },
+        {
+            "path": "api/tests/snapshot.test.js",
+            "sha256": "01d2e315cf97043a6660a154d40f922a0f2d8a8b572a15e2b4da58b77092cc8b"
+        },
+        {
+            "path": "api/tests/source-binding.test.js",
+            "sha256": "e3cb63b39eb59c12806b7826794baf52cf084e38c358db5578bdde130e33c960"
         },
         {
             "path": "api/tests/store.test.js",
@@ -365,27 +369,27 @@
         },
         {
             "path": "docs/index.de.md",
-            "sha256": "bc2625a6f30de9ccae273ebcf947104b61bce5361d8f1d458b41a4bce5240a99"
+            "sha256": "27f89d09b39e05b7d80bbcf04863f4c790ebfc4bb92eeae6a865dd8b2d8ce5f4"
         },
         {
             "path": "docs/index.en.md",
-            "sha256": "86f9c98a64cc4e17144366ab68b7cfc810a7054285cc5a671b31381a99e3b405"
+            "sha256": "0637fe0451ec0d7daaa0676f04a98003c85ef2c113f829bc9578f8b26fcdad80"
         },
         {
             "path": "docs/index.id.md",
-            "sha256": "495b7663a6fcb68984b7db0a751324051207a0316252c792c4a8ec5d992afd4a"
+            "sha256": "33b3bc9585713b19f0d39264b4604e9cc474bcd900cb41aa60ba2f62a1cc2c35"
         },
         {
             "path": "docs/index.ja.md",
-            "sha256": "d5e3ee0889cdfdfb5ae5adb3f5120aac030537ee1fda60c001a5af807e3456c6"
+            "sha256": "834d9adcf4086a1bdcbd955ddf9a5a1c57a67785c98529173ea210d56a493243"
         },
         {
             "path": "package-lock.json",
-            "sha256": "75fa8dc17a74cb7afcfa4474c9f1d61e13041805c7ea4cf40041a220b75eb3c8"
+            "sha256": "657c8c9ef6a2ab7859281a545a105d61d12fb94a5130b10e400c88f4ce16de0f"
         },
         {
             "path": "package.json",
-            "sha256": "74f1e756e90e21a305cedae63b7e7eb8e47d60b11828c7a506950eac3ec0b056"
+            "sha256": "7adc7965ff009155690570586e5bb6cb50afaa617684a9e10689bac9a7dede29"
         },
         {
             "path": "routes.json",
@@ -401,7 +405,7 @@
         },
         {
             "path": "scripts/validate-manifest.js",
-            "sha256": "c1981f7bfb7842fc6536047a52839d2fdd79764dfd3924bf42a81843576272fe"
+            "sha256": "944205e7335ee60ee6db1404e20c36733da8536ca594c76efbca1f130443b298"
         },
         {
             "path": "tests/action-flows.test.js",
@@ -425,7 +429,7 @@
         },
         {
             "path": "tests/lifecycle-registration.test.js",
-            "sha256": "953feb2aac94567236c790075ec3508345e04559a232a3a3c1855241f39e975e"
+            "sha256": "97fa65384d8734a74f571a662d6e409ca4d881a7c9a5dc174c1fb05f64917fe6"
         },
         {
             "path": "tests/localization-quality.test.js",
@@ -441,7 +445,7 @@
         },
         {
             "path": "tests/reuse/api-runtime.js",
-            "sha256": "7706ad0364ded9df5cc6087bbc16fd2c48faa2e410194a015cd631f1527554b7"
+            "sha256": "d239be4aa279cd62ca2766fb088a0b7341fbe1b35f6c0a9009851edbdfecbd16"
         },
         {
             "path": "tests/reuse/auth.js",
@@ -469,7 +473,7 @@
         },
         {
             "path": "tests/ui-registration.test.js",
-            "sha256": "ae7b4cef531089ddc429285c06487a46e4277b0dc8a43c61109b6fc0aaba93a2"
+            "sha256": "9e371742a9280cab61f14907cc2d92b0c21da9ce40235253b971e3ac1e7c968b"
         },
         {
             "path": "tooling/scripts/lint-placeholder.mjs",
@@ -480,32 +484,24 @@
             "sha256": "fff2e006b2709345baafe18b4147c00541cd3f83d78ff113bb82032f2abcb45f"
         },
         {
-            "path": "ui/admin-canvases.js",
-            "sha256": "509d279eb15d8fcc5f98842092c35f88b1708ab9ccdb5c6a04bb16b9df420e87"
+            "path": "ui/administration/canvases.js",
+            "sha256": "cd0576395e92bdda576dbb76dfbf218a8fc85f87206f365f1d3d9a4b9dbdcf7a"
         },
         {
-            "path": "ui/admin-section.js",
-            "sha256": "72134791b03c3fea9e42e2492b7b010959656421ad17892ed7de74aef6c5a8a1"
+            "path": "ui/administration/configuration.js",
+            "sha256": "5c00fad5d81ce12fb6531a58c700afe89f53e1404ca200a02a66c606a53d0b08"
         },
         {
             "path": "ui/app/api.js",
             "sha256": "f3d7bb2fb2f68f0bcddc8e9c07bad6cca77627450396b645f674658852859ae7"
         },
         {
-            "path": "ui/app/canvas-toolbar.js",
-            "sha256": "039b0fbe39e9027e83502df82fd740495ca6aae87fe02cd4685dab0d56be642f"
-        },
-        {
-            "path": "ui/app/clear-canvas.js",
+            "path": "ui/app/clear.js",
             "sha256": "e57611d64f13d138c820c273d7790917f7fc3e977a4f7da3758c3e95f81da799"
         },
         {
-            "path": "ui/app/disposable-save.js",
-            "sha256": "8185ef17e0c3d16e7617387e03c6daa8b3d027e97bdfc13d8c7d41df4bf1e243"
-        },
-        {
             "path": "ui/app/index.js",
-            "sha256": "533923097d6ef7fe3390de39ec60eecad53c1752d6d5925006b1d0c1ac854589"
+            "sha256": "a3e6d833f7aed91b7c55d4d41d86be1f20f2e2c2ef675f2535b6715207af7fe3"
         },
         {
             "path": "ui/app/overlay.js",
@@ -524,7 +520,7 @@
             "sha256": "a198535e452760a08b5bd0effde090e261b5aeb7b7dbc0c26410503132705d78"
         },
         {
-            "path": "ui/app/reuse/scene-updates.js",
+            "path": "ui/app/reuse/updates.js",
             "sha256": "d934685e883daf71857357f66483bf66406569b79ff1875be50c1bed87460689"
         },
         {
@@ -532,11 +528,15 @@
             "sha256": "eedc61a88f9f5a9f299748576e747fcd95308d8ec51cba9454f0e9003354ef40"
         },
         {
-            "path": "ui/app/search-index.js",
+            "path": "ui/app/save.js",
+            "sha256": "8185ef17e0c3d16e7617387e03c6daa8b3d027e97bdfc13d8c7d41df4bf1e243"
+        },
+        {
+            "path": "ui/app/search.js",
             "sha256": "51dd4b7da63b88898f41dfcf5b0674b6a6b9da4c30b151f93db8516cfb1196af"
         },
         {
-            "path": "ui/app/share-popup.js",
+            "path": "ui/app/sharing.js",
             "sha256": "df98468ec4e41569f9c5017b2bdfc54156dd226731fed160b395af709143689b"
         },
         {
@@ -544,24 +544,72 @@
             "sha256": "8565a893c334b6063c39124901f071b749a140c5abc027b74c300ad41b4ff5a0"
         },
         {
+            "path": "ui/app/toolbar.js",
+            "sha256": "182a73d61bb27fe0878759ab1faf6906100753de783d1c3e81dae2feb9e08259"
+        },
+        {
+            "path": "ui/canvas/clipboard.js",
+            "sha256": "1951b99d397605b23d303c830f9775773eb02573b7c20ad68e31c7de765a8c2d"
+        },
+        {
+            "path": "ui/canvas/elements.js",
+            "sha256": "30403e342e6130165e41751011986ad1c2ac361c3367c8afaf0baf5d1121d352"
+        },
+        {
+            "path": "ui/canvas/events.js",
+            "sha256": "796e2fd951577ff2c5220d3ac74ac3a489442b5084ae28bc01d3f097f4b68a22"
+        },
+        {
+            "path": "ui/canvas/index.js",
+            "sha256": "008679742e9cdf9a008aa02b3fdc5074f83da4a182dbb344a941e87571506813"
+        },
+        {
+            "path": "ui/canvas/render.js",
+            "sha256": "651ea35d316936755f2557c26d1291c218c938457c9f8ddee08c5bd5e8a8de8c"
+        },
+        {
+            "path": "ui/canvas/reuse/drafts.js",
+            "sha256": "f40200c4a8c75916517de3b3833e48fc7af477cecdbb477b56ace04bffd477c6"
+        },
+        {
+            "path": "ui/canvas/reuse/history.js",
+            "sha256": "213a33046e70206996b8ffab677e276f6c4b3764a493bedd6662bef0d9015698"
+        },
+        {
+            "path": "ui/canvas/reuse/pointers.js",
+            "sha256": "1c8ed10ce73e3fae9a6ad71486f6c47b30674aca5b4bfadcc5c42a0be3fff9ad"
+        },
+        {
+            "path": "ui/canvas/reuse/selections.js",
+            "sha256": "6b052a86043006508e7a6522809236c699d08ab7066f9270230916bc926aee74"
+        },
+        {
+            "path": "ui/canvas/reuse/sync.js",
+            "sha256": "e94e3b12f90fa944b9018001c136aa003f542019cd1145f2e71b7b983ba139e4"
+        },
+        {
+            "path": "ui/canvas/text.js",
+            "sha256": "d7e7035e20ed97fd32086028fadeb25004e55019c17005b9f5b0040b73252417"
+        },
+        {
             "path": "ui/index.html",
             "sha256": "0411b26be8411bba095773e254f178db0395e286526d7a677ebbf55da7cce848"
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "0a966bd5ef97fc7623c077d2ec3ffe13fdf36b7c2236f1b20b9c8fee576f61bf"
+            "sha256": "4b70f94c433159b6e5b474a30abd34088f2c20d05fac3aa650e2731967b93de5"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "d4c5440548b04d3032d13561a0458e698fa3a997106415e2e587e8118530dc1c"
+            "sha256": "0aa93a13647168a06d9b44371c2c9b1e08e5943838d3224d9b2783ff2f8d5ef8"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "7fcabba3b6688723c70d7bd26c6ae7f8837ead6ba042f4ff80e517455f6e191d"
+            "sha256": "ddc3df170f0249fe85e2c35199896091c364cb8b9b1b948596b2db1a52f7711f"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "9ddf09d8b95eead6130887971c4ee5cd8ae09cddb7a23c61d1d49cce4bc2012d"
+            "sha256": "9264472d8a8a08e039a0b9bf04dc1d4032ea17f820d15529d7a42e6e7961e154"
         },
         {
             "path": "ui/navbar.js",
@@ -680,23 +728,23 @@
             "sha256": "3b8156753d505642aede5c49b0ce70faddbe98f7aee2e4d3a8927561203f9efe"
         },
         {
-            "path": "ui/reuse/board-navigation.js",
-            "sha256": "25975e5acf6d48bb4c06bfd6f192b4d741970d7cf4df310dd09de4095554685b"
-        },
-        {
             "path": "ui/reuse/font-resources.js",
             "sha256": "dc742f4d9f7fff4d10e5e0aa0f3ee4f0cb4749e33b5069678587368507f3439c"
+        },
+        {
+            "path": "ui/reuse/gateway.js",
+            "sha256": "124622aa76538a1b3138f9aede7e68e66a46b757fe28c406e882eee6ede81b64"
         },
         {
             "path": "ui/reuse/host-resources.js",
             "sha256": "4be15a06c643ea919d17a87b90e1cb2e04b5aa8414a841926b5a87a6623456fc"
         },
         {
-            "path": "ui/reuse/whiteboard-ui-gateway.js",
-            "sha256": "124622aa76538a1b3138f9aede7e68e66a46b757fe28c406e882eee6ede81b64"
+            "path": "ui/reuse/navigation.js",
+            "sha256": "25975e5acf6d48bb4c06bfd6f192b4d741970d7cf4df310dd09de4095554685b"
         },
         {
-            "path": "ui/styles/admin-canvases.css",
+            "path": "ui/styles/administration.css",
             "sha256": "650f3383ce2b0b6e41d70e5826d99bbf5fbe7de2d646d49ffb86f5fc800283b7"
         },
         {
@@ -704,7 +752,7 @@
             "sha256": "048918e7b54a51e45678a26671cd4df4424788b2802d87f7f9e554153761797e"
         },
         {
-            "path": "ui/templates/admin-canvases.js",
+            "path": "ui/templates/administration.js",
             "sha256": "9211a81b01235dc7ec8e8e96dbfbc87080b5b85214c8f873bf000699684b3309"
         },
         {
@@ -713,11 +761,15 @@
         },
         {
             "path": "ui/tests/admin-canvases.test.js",
-            "sha256": "1928389ccdbc5c66d5b6fe80d868253473cfbe708ea4d7715000253f223cdf23"
+            "sha256": "b47592fcccbc9129d42f2fef0bf59b17603f00061d370c0496fe96ae987744b5"
+        },
+        {
+            "path": "ui/tests/administration.test.js",
+            "sha256": "02b173a03e871cd30dc75be8e4d86d2f1f3c245e77ed00947ab3fad796e0dbb3"
         },
         {
             "path": "ui/tests/browser-entry-contract.test.js",
-            "sha256": "fab81a1a5f31e534065675dacd88d1a448e12ee19c37e89ffec2278aa0ccb1b7"
+            "sha256": "2e0cbd3546c4eb5b4f13efa9af61a9e3c259d9725bad2c49a2c3fc2394e7384c"
         },
         {
             "path": "ui/tests/canvas-recovery.test.js",
@@ -725,15 +777,15 @@
         },
         {
             "path": "ui/tests/draft-elements.test.js",
-            "sha256": "daada0aa1c4bf713efa1c4f9d156c1d3b8f65debf77a95e7eaa885f61f00d964"
+            "sha256": "1244c2370e62b209f923a876e5ab61c439c83dffa9e6d4f7be833bc41f4fe7cc"
         },
         {
             "path": "ui/tests/element-history.test.js",
-            "sha256": "f418f5b6264e001564f21b79cea6a551b3257bfd59e53c367593d8a9d1aa065b"
+            "sha256": "3e32e3483c9c13af33720445dab18e6185f69f42a828276158f57751ba7e78c3"
         },
         {
             "path": "ui/tests/embedded-viewport.browser.js",
-            "sha256": "50c5a154321ff85d019d1ca176156534ca84086b1a4886222c701fcde7ab14b4"
+            "sha256": "1d972c6747949200beb126844d53e7e597e46d5939fd595da3114f823a8103d8"
         },
         {
             "path": "ui/tests/overlay.test.js",
@@ -741,11 +793,11 @@
         },
         {
             "path": "ui/tests/remote-pointers.test.js",
-            "sha256": "e969761e6cd886125f39c0d63d157c8ead83be83b0fdc26e53ac4f8e173fe8ee"
+            "sha256": "605ec0a6d9d98963602e50be11c969ece255550f517a9acbaf4d763f123440ec"
         },
         {
             "path": "ui/tests/remote-selections.test.js",
-            "sha256": "a0108e14c725dd37d02ce4de063fb8a8124031498995638b921102bd05b4955e"
+            "sha256": "c36efa46a1bbca5f5e23fe047178d0f08ed0d44a80eeaf992534c0831f466442"
         },
         {
             "path": "ui/tests/reuse/chromium.js",
@@ -757,7 +809,7 @@
         },
         {
             "path": "ui/tests/scene-updates.test.js",
-            "sha256": "38469e2919e8d4b27aae03bbd9b25094f5d7ea7c0db4c80dc5c27b8ee3093115"
+            "sha256": "6d5e7c6c607b387a975428c165e11a926eb33e475c7d027a67d0a8274c992153"
         },
         {
             "path": "ui/tests/status.test.js",
@@ -765,59 +817,15 @@
         },
         {
             "path": "ui/tests/ui-gateway.test.js",
-            "sha256": "491e14a75747791b17672ba1ef2e667e0cf587e0ba165dbfe144be826f012908"
+            "sha256": "eaebab178b24833cfa11b4778696ad802f9c99d485b1408dbd71ef1c85c3ab5e"
         },
         {
             "path": "ui/tests/viewport-pan.test.js",
-            "sha256": "0d86ceca051c3fbcb7ada987a14f093e79bbc28e2f916a1f7231d3adf9221cb6"
+            "sha256": "7ba13f5a1aa4f6d8d0652a791ccebe0b55a37db9119e25e7ef657da08580f6a9"
         },
         {
             "path": "ui/tests/websocket-lifecycle.test.js",
             "sha256": "b03489d87d521f608cf4b1928ba1a3835ce75632751b451168e3e3ec1ab61c2e"
-        },
-        {
-            "path": "ui/whiteboard/canvas-events.js",
-            "sha256": "796e2fd951577ff2c5220d3ac74ac3a489442b5084ae28bc01d3f097f4b68a22"
-        },
-        {
-            "path": "ui/whiteboard/canvas.js",
-            "sha256": "e0ebf279af87b54776518bcb3dd3679343f54df8a3bc44f69a9bbcd01a037cb5"
-        },
-        {
-            "path": "ui/whiteboard/clipboard-images.js",
-            "sha256": "1951b99d397605b23d303c830f9775773eb02573b7c20ad68e31c7de765a8c2d"
-        },
-        {
-            "path": "ui/whiteboard/elements.js",
-            "sha256": "30403e342e6130165e41751011986ad1c2ac361c3367c8afaf0baf5d1121d352"
-        },
-        {
-            "path": "ui/whiteboard/render-scene.js",
-            "sha256": "b11b2f5aa201b18a72f2179b1128f7041e050e4ed26e3cf35ce04a33907e877d"
-        },
-        {
-            "path": "ui/whiteboard/reuse/draft-elements.js",
-            "sha256": "f40200c4a8c75916517de3b3833e48fc7af477cecdbb477b56ace04bffd477c6"
-        },
-        {
-            "path": "ui/whiteboard/reuse/element-history.js",
-            "sha256": "213a33046e70206996b8ffab677e276f6c4b3764a493bedd6662bef0d9015698"
-        },
-        {
-            "path": "ui/whiteboard/reuse/element-sync.js",
-            "sha256": "e94e3b12f90fa944b9018001c136aa003f542019cd1145f2e71b7b983ba139e4"
-        },
-        {
-            "path": "ui/whiteboard/reuse/remote-pointers.js",
-            "sha256": "1c8ed10ce73e3fae9a6ad71486f6c47b30674aca5b4bfadcc5c42a0be3fff9ad"
-        },
-        {
-            "path": "ui/whiteboard/reuse/remote-selections.js",
-            "sha256": "6b052a86043006508e7a6522809236c699d08ab7066f9270230916bc926aee74"
-        },
-        {
-            "path": "ui/whiteboard/text-tools.js",
-            "sha256": "d7e7035e20ed97fd32086028fadeb25004e55019c17005b9f5b0040b73252417"
         }
     ]
 }

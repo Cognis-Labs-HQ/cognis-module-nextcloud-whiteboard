@@ -6,7 +6,7 @@ import {
     normalizeLeadingSlashPath,
 } from "./reuse/text-normalizers.js";
 import { normalizeHttpUrl } from "./reuse/url-parts.js";
-import { mergeElementsSnapshots } from "./reuse/elements-snapshot.js";
+import { mergeElementsSnapshots } from "./canvas/snapshot.js";
 
 const WHITEBOARD_TABLES = [
     "nextcloud_whiteboard_presence",
@@ -464,6 +464,34 @@ export class NextcloudWhiteboardStore {
             where: [{ column: "reference_key", value: referenceKey }],
         });
         return this.mapBoard(result.rows?.[0]);
+    }
+
+    async listWhiteboardsByExternalPath(externalPath) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboards",
+            where: [{ column: "external_path", value: externalPath }],
+        });
+        return (result.rows ?? []).map((row) => this.mapBoard(row));
+    }
+
+    async assignWhiteboardReference(whiteboardId, referenceKey) {
+        await this.db.executeCommand({
+            option: "UPDATE",
+            table: "nextcloud_whiteboards",
+            set: { reference_key: referenceKey },
+            where: [
+                { column: "id", value: whiteboardId },
+                { column: "reference_key", operator: "IS NULL" },
+            ],
+        });
+        const board = await this.getWhiteboardByReferenceKey(referenceKey);
+        if (board?.id !== whiteboardId)
+            throw Object.assign(
+                new Error("Canvas reference is already assigned."),
+                { status: 409, code: "resource_conflict" },
+            );
+        return board;
     }
 
     async bindWhiteboardSource({ whiteboardId, sourceType, sourceId }) {

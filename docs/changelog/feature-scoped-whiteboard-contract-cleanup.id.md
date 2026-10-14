@@ -2,6 +2,10 @@
 
 **Cabang Fitur:** feature-scoped-whiteboard-contract-cleanup
 
+## Struktur berdasarkan tanggung jawab dan resolusi kanvas aman
+
+Rilis 2.3.161 — Implementasi kanvas berada di `api/canvas/` dan `ui/canvas/` dengan nama singkat seperti `source-binding.js`, `events.js`, dan `snapshot.js`. Probe aktivasi runtime bernama `api/configuration/enablement.js`; unit test tetap di `api/tests/`. Entri halaman berbagi memakai resolver aset berkualifikasi revisi yang sama dengan rute biasa. Administrasi mengecualikan kehadiran tidak aktif dan mengembalikan `invalid_json` untuk permintaan penghapusan rusak. Satu kanvas berizin pada jalur sumber daya kanonis mendapat referensi tetap tanpa mengubah konten. Jalur ambigu menghasilkan konflik dan masalah pada Kanvas Bermasalah, bukan pemilihan catatan otomatis.
+
 ## Diagnostik administrasi kanvas
 
 Rilis 2.3.160 — Administrasi kanvas menyediakan Semua Kanvas, Kanvas Aktif, dan Kanvas Bermasalah dengan pesan kosong tersendiri. Tampilan bermasalah menampilkan kanvas tanpa pemilik atau akses pemilik, ikatan sumber tidak lengkap, atau ikatan sumber generik maupun referensi sumber daya duplikat. Pil masalah kecil menjelaskan setiap temuan. Diagnostik hanya menggunakan data milik Whiteboard. Administrasi tetap memerlukan akses administrator dan tidak mengembalikan kredensial kanvas.

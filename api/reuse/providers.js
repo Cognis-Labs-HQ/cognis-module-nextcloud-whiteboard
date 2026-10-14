@@ -1,9 +1,9 @@
-import { createWhiteboardUiAssetResolver } from "./ui-assets.js";
+import { createWhiteboardUiAssetResolver } from "./assets.js";
 
 export function registerWhiteboardUiProvider(ctx) {
     const assetUrl = createWhiteboardUiAssetResolver(ctx.moduleRoot);
     ctx.registerCapabilityProvider?.({
-        scriptUrl: assetUrl("reuse/whiteboard-ui-gateway.js"),
+        scriptUrl: assetUrl("reuse/gateway.js"),
         providesCapabilities: ["whiteboard:uiGateway"],
     });
 }

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createCanvasDeletionCapability } from "../reuse/canvas-deletion.js";
+import { createCanvasDeletionCapability } from "../canvas/deletion.js";
 import { NextcloudWhiteboardStore } from "../store.js";
 
 function createHarness() {

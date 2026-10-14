@@ -1,10 +1,10 @@
 import { reuse, uiCtx } from "../reuse/host-resources.js";
-import { createWhiteboardCanvas } from "../whiteboard/canvas.js";
-import { bindWhiteboardCanvasToolbar } from "./canvas-toolbar.js";
-import { createDisposableSaveControls } from "./disposable-save.js";
-import { createWhiteboardSearchCollector } from "./search-index.js";
+import { createWhiteboardCanvas } from "../canvas/index.js";
+import { bindWhiteboardCanvasToolbar } from "./toolbar.js";
+import { createDisposableSaveControls } from "./save.js";
+import { createWhiteboardSearchCollector } from "./search.js";
 import { createWhiteboardStatusController } from "./status.js";
-import { openWhiteboardSharePopup } from "./share-popup.js";
+import { openWhiteboardSharePopup } from "./sharing.js";
 import { bindOverlayBoardSelection, setOverlayVisible } from "./overlay.js";
 import { renderCanvasElement as renderWhiteboardCanvasElement } from "../templates/canvas.js";
 import {
@@ -26,7 +26,7 @@ import {
     loadSocketIo,
     throttleLatest,
 } from "./realtime.js";
-import { applyRemoteSceneUpdate } from "./reuse/scene-updates.js";
+import { applyRemoteSceneUpdate } from "./reuse/updates.js";
 import {
     applyRemotePresenceSelections,
     getPointerOffset,
@@ -34,7 +34,7 @@ import {
     hydratePresenceAvatars,
     renderWhiteboardPresenceEntry,
 } from "./presence.js";
-import { syncBoardUrl } from "../reuse/board-navigation.js";
+import { syncBoardUrl } from "../reuse/navigation.js";
 import { createWhiteboardPreflightController } from "./preflight.js";
 
 const [

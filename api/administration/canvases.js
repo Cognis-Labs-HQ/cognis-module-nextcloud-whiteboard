@@ -1,6 +1,7 @@
 export function diagnoseCanvases(boards) {
     const sourceCounts = new Map();
     const referenceCounts = new Map();
+    const pathCounts = new Map();
     const sourceKey = (board) =>
         board.sourceType && board.sourceId
             ? JSON.stringify([board.sourceType, board.sourceId])
@@ -16,6 +17,7 @@ export function diagnoseCanvases(boards) {
         for (const [counts, key] of [
             [sourceCounts, sourceKey(board)],
             [referenceCounts, referenceKey(board)],
+            [pathCounts, board.externalPath],
         ]) {
             if (key) counts.set(key, (counts.get(key) ?? 0) + 1);
         }
@@ -31,6 +33,8 @@ export function diagnoseCanvases(boards) {
             issues.push("duplicateSource");
         if (referenceCounts.get(referenceKey(board)) > 1)
             issues.push("duplicateReference");
+        if (pathCounts.get(board.externalPath) > 1)
+            issues.push("duplicatePath");
         return issues;
     };
 }

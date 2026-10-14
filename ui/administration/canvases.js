@@ -1,8 +1,8 @@
 import {
     renderCanvasRows,
     renderCanvasTable,
-} from "./templates/admin-canvases.js";
-import { reuse, uiCtx } from "./reuse/host-resources.js";
+} from "../templates/administration.js";
+import { reuse, uiCtx } from "../reuse/host-resources.js";
 
 const [{ openPopup }, { formatDateTime }, { ensurePageStylesheet }] =
     await Promise.all([
@@ -79,7 +79,7 @@ export function createAdminSection({ i18n, escapeHtml, showToast }) {
     }
     const reportFailure = (error) => {
         if (!root?.isConnected) return;
-        uiCtx.capabilities.get("ui:log")(
+        uiCtx.capabilities.get("ui:log")?.(
             "error",
             "Whiteboard administration failed.",
             {
@@ -93,7 +93,7 @@ export function createAdminSection({ i18n, escapeHtml, showToast }) {
         id: "whiteboard-canvases",
         label: label("title"),
         dataReady: ensurePageStylesheet(
-            "/static/modules/nextcloud-whiteboard/styles/admin-canvases.css",
+            "/static/modules/nextcloud-whiteboard/styles/administration.css",
         ),
         subComposerOptions: {
             allowCustomization: false,

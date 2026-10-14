@@ -1,4 +1,4 @@
-import { confirmClearCanvas } from "./clear-canvas.js";
+import { confirmClearCanvas } from "./clear.js";
 import {
     loadFontsCatalog,
     parseSavedFont,

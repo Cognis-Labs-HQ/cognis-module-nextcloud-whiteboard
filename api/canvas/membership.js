@@ -1,7 +1,7 @@
 import {
     CanvasRequestError,
     resolveVisibleAccountHandle,
-} from "./account-handle.js";
+} from "../reuse/account-handle.js";
 
 export function createCanvasMembershipCapability({
     store,

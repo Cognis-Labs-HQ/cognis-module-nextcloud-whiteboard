@@ -138,4 +138,5 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">Ikatan sumber tidak lengkap</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Ikatan sumber duplikat</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Referensi sumber daya duplikat</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Jalur kanvas duplikat</string>
 </resources>

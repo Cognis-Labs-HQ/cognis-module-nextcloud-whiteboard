@@ -1,12 +1,12 @@
-import { registerAdminCanvasRoutes } from "./routes/admin-canvases/index.js";
+import { registerAdminCanvasRoutes } from "./routes/administration/index.js";
 import { registerBoardRoutes } from "./routes/boards/index.js";
-import { createWhiteboardUiAssetResolver } from "./reuse/ui-assets.js";
+import { createWhiteboardUiAssetResolver } from "./reuse/assets.js";
 import path from "node:path";
 import { sendJson } from "./reuse/http.js";
 import { registerWhiteboardShareFlowHooks } from "./sharing/hooks.js";
-import { registerWhiteboardUiProvider } from "./reuse/ui-provider.js";
-import { createWhiteboardModuleApi } from "./reuse/module-api.js";
-import { registerWhiteboardConfigurationApi } from "./reuse/configuration-api.js";
+import { registerWhiteboardUiProvider } from "./reuse/providers.js";
+import { createWhiteboardModuleApi } from "./reuse/capabilities.js";
+import { registerWhiteboardConfigurationApi } from "./configuration/index.js";
 const initializedRuntimeContexts = new WeakSet();
 const initializedShareHooksByContext = new WeakMap();
 const MODULE_ID = "nextcloud-whiteboard";
@@ -55,20 +55,21 @@ export function registerUi(ctx) {
     ctx.registerAdminSection({
         id: "module-nextcloud-whiteboard-canvases",
         label: "module.nextcloud.whiteboard.admin.canvases.title",
-        scriptUrl: whiteboardUiAsset("admin-canvases.js"),
+        scriptUrl: whiteboardUiAsset("administration/canvases.js"),
         access: { minRole: "admin" },
         stringsBaseUrl: "/static/modules/nextcloud-whiteboard/languages",
     });
     ctx.registerAdminSection({
         id: "module-nextcloud-whiteboard",
         label: "module.nextcloud.whiteboard.name",
-        scriptUrl: whiteboardUiAsset("admin-section.js"),
+        scriptUrl: whiteboardUiAsset("administration/configuration.js"),
         access: { minRole: "admin" },
         stringsBaseUrl: "/static/modules/nextcloud-whiteboard/languages",
     });
 }
 
 export function registerApiRoutes(router, ctx) {
+    const whiteboardUiAsset = createWhiteboardUiAssetResolver(ctx.moduleRoot);
     const requireAuth = ctx.getCapability("auth:requireAuth");
     const profileStore = createProfileStoreCapability(ctx);
     const resolveShareGuestAccess = ctx.getCapability(
@@ -152,6 +153,7 @@ export function registerApiRoutes(router, ctx) {
             resolveWhiteboardUserAccess: resolveAccess,
             resolveShareGuestId,
             whiteboardStylesheets: WHITEBOARD_STYLESHEETS,
+            whiteboardUiAsset,
             installedFlowIds,
         });
     };

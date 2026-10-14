@@ -1,4 +1,4 @@
-import { sendError } from "./http.js";
+import { sendError } from "../reuse/http.js";
 
 export async function loadCanvasElements({
     store,

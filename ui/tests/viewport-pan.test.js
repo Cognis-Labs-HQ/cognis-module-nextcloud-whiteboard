@@ -21,7 +21,7 @@ globalThis.ResizeObserver = class {
     observe() {}
     disconnect() {}
 };
-const { createWhiteboardCanvas } = await import("../whiteboard/canvas.js");
+const { createWhiteboardCanvas } = await import("../canvas/index.js");
 
 test("middle-button panning moves the local viewport without publishing scene changes", () => {
     const canvas = new EventTarget();

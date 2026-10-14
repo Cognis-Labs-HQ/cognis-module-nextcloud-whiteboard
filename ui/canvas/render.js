@@ -5,7 +5,7 @@ import {
     getElementBounds,
     renderElement,
 } from "./elements.js";
-import { renderRemotePointers } from "./reuse/remote-pointers.js";
+import { renderRemotePointers } from "./reuse/pointers.js";
 
 export function renderWhiteboardScene({
     activeTool,

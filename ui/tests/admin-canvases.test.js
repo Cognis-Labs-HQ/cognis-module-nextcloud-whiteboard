@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
     renderCanvasRows,
     renderCanvasTable,
-} from "../templates/admin-canvases.js";
+} from "../templates/administration.js";
 
 const row = {
     id: "board",

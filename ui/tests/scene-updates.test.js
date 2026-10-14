@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { applyRemoteSceneUpdate } from "../app/reuse/scene-updates.js";
+import { applyRemoteSceneUpdate } from "../app/reuse/updates.js";
 
 test("in-flight drawing updates stay out of persistence and save state", () => {
     const applied = [];

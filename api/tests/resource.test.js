@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { NextcloudWhiteboardStore } from "../store.js";
-import { resolveResourceCanvas } from "../reuse/resource-canvas.js";
-import { createWhiteboardModuleApi } from "../reuse/module-api.js";
+import { resolveResourceCanvas } from "../canvas/resource.js";
+import { createWhiteboardModuleApi } from "../reuse/capabilities.js";
 import { registerWhiteboardActions } from "../reuse/action-store.js";
 import { createMemoryDb } from "../../tests/reuse/api-runtime.js";
 import { createFlowRuntime } from "../../tests/reuse/flow-runtime.js";
@@ -160,4 +160,57 @@ test("the public spawn contract reuses references and returns the stored owner a
     assert.equal(second.whiteboardId, first.whiteboardId);
     assert.equal(second.access.owner, "alice");
     assert.deepEqual(second.access.participants, ["alice", "bob"]);
+});
+
+for (const disposable of [false, true]) {
+    test(`resource assignment retains the existing ${disposable ? "disposable" : "persistent"} canvas addressed by its canonical path`, async () => {
+        const { store, runtime, resolve } = fixture();
+        const original = await store.createWhiteboard({
+            title: "Original",
+            createdBy: "alice",
+            participants: ["bob"],
+            externalPath: "/integrations/workspace/stable-id.whiteboard",
+            disposable,
+        });
+        const elements = [{ id: "retained", type: "rectangle" }];
+        await store.saveElementsSnapshot(original.id, elements);
+        const result = await resolve({ disposable, username: "bob" });
+        assert.equal(result.whiteboard.id, original.id);
+        assert.equal(result.whiteboard.createdBy, "alice");
+        assert.deepEqual(result.whiteboard.resourceReference, {
+            resourceType: "workspace",
+            resourceId: "stable-id",
+        });
+        assert.deepEqual(
+            await store.getElementsSnapshot(original.id),
+            elements,
+        );
+        assert.equal((await store.listWhiteboards()).length, 1);
+        assert.ok(
+            runtime.executions.includes(
+                "nextcloud-whiteboard:assignWhiteboardReference:execute-action",
+            ),
+        );
+    });
+}
+
+test("duplicate path records and unauthorized reference claims do not change stored canvases", async () => {
+    const { store, resolve } = fixture();
+    const input = {
+        title: "Saved",
+        createdBy: "alice",
+        participants: [],
+        externalPath: "/integrations/workspace/stable-id.whiteboard",
+    };
+    const first = await store.createWhiteboard(input);
+    assert.equal((await resolve({ username: "outsider" })).status, 403);
+    assert.equal(
+        (await store.getWhiteboardById(first.id)).resourceReference,
+        null,
+    );
+    await store.createWhiteboard(input);
+    assert.equal((await resolve()).status, 409);
+    const records = await store.listWhiteboards();
+    assert.equal(records.length, 2);
+    for (const record of records) assert.equal(record.resourceReference, null);
 });

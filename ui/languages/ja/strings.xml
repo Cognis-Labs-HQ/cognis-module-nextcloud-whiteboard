@@ -138,4 +138,5 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">参照元の関連付けが不完全です</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">参照元の関連付けが重複しています</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">リソース参照が重複しています</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">キャンバスのパスが重複しています</string>
 </resources>

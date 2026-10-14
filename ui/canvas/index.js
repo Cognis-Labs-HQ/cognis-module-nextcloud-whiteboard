@@ -9,22 +9,22 @@ import {
     isStrokeWidthApplicable,
     scaleElementToBounds,
 } from "./elements.js";
-import { renderWhiteboardScene } from "./render-scene.js";
+import { renderWhiteboardScene } from "./render.js";
 import { toFontFamilyValue } from "../reuse/font-resources.js";
-import { createWhiteboardTextTools, getCurrentAppFont } from "./text-tools.js";
-import { createClipboardImageHandler } from "./clipboard-images.js";
-import { bindWhiteboardCanvasEvents } from "./canvas-events.js";
-import * as drafts from "./reuse/draft-elements.js";
-import { createElementHistory } from "./reuse/element-history.js";
+import { createWhiteboardTextTools, getCurrentAppFont } from "./text.js";
+import { createClipboardImageHandler } from "./clipboard.js";
+import { bindWhiteboardCanvasEvents } from "./events.js";
+import * as drafts from "./reuse/drafts.js";
+import { createElementHistory } from "./reuse/history.js";
 import {
     applyElementHistorySnapshot,
     mergeRemoteElements,
-} from "./reuse/element-sync.js";
+} from "./reuse/sync.js";
 import {
     buildRemoteSelections,
     findVisibleElement,
     retainVisibleElementIds,
-} from "./reuse/remote-selections.js";
+} from "./reuse/selections.js";
 
 export function createWhiteboardCanvas(
     canvasElement,

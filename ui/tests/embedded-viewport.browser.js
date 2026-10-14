@@ -34,7 +34,7 @@ globalThis[Symbol.for("cognis.uiCtx")] = {
         contribute: (name, value) => capabilities.set(name, value),
     },
 };
-const { mountProvider } = await import("../reuse/whiteboard-ui-gateway.js");
+const { mountProvider } = await import("../reuse/gateway.js");
 const providerScope = createProviderScope(capabilities);
 mountProvider(providerScope);
 const { renderCanvasElement } = await import("../templates/canvas.js");

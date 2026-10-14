@@ -30,7 +30,16 @@ export async function resolveResourceCanvas({
         String(resourceType).trim().toLowerCase(),
         String(resourceId).trim(),
     ]);
-    const existing = await store.getWhiteboardByReferenceKey(referenceKey);
+    let existing = await store.getWhiteboardByReferenceKey(referenceKey);
+    let assignReference = false;
+    if (!existing) {
+        const candidates =
+            await store.listWhiteboardsByExternalPath(externalPath);
+        if (candidates.length > 1)
+            return { error: "resource_conflict", status: 409 };
+        existing = candidates[0];
+        assignReference = Boolean(existing);
+    }
     if (existing && existing.disposable !== disposable) {
         return { error: "resource_conflict", status: 409 };
     }
@@ -39,9 +48,20 @@ export async function resolveResourceCanvas({
             existing.id,
             username,
         );
-        return authorized
-            ? { whiteboard: existing }
-            : { error: "forbidden", status: 403 };
+        if (!authorized) return { error: "forbidden", status: 403 };
+        if (assignReference) {
+            try {
+                existing = await store.assignWhiteboardReference(
+                    existing.id,
+                    referenceKey,
+                );
+            } catch (error) {
+                if (error?.code === "resource_conflict")
+                    return { error: "resource_conflict", status: 409 };
+                throw error;
+            }
+        }
+        return { whiteboard: existing };
     }
     const whiteboard = await store.createWhiteboard({
         title,

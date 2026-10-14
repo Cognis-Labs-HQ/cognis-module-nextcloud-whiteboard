@@ -138,4 +138,5 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">Unvollständige Quellverknüpfung</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Doppelte Quellverknüpfung</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Doppelter Ressourcenverweis</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Doppelter Zeichenflächenpfad</string>
 </resources>

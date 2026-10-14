@@ -6,6 +6,8 @@ const ACTION_METHODS = [
     "deleteWhiteboard",
     "createWhiteboard",
     "getWhiteboardByReferenceKey",
+    "listWhiteboardsByExternalPath",
+    "assignWhiteboardReference",
     "getWhiteboardById",
     "getWhiteboardByExternalPath",
     "listWhiteboards",

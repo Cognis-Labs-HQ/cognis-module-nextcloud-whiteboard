@@ -138,4 +138,5 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">Incomplete source binding</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Duplicate source binding</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Duplicate resource reference</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Duplicate canvas path</string>
 </resources>

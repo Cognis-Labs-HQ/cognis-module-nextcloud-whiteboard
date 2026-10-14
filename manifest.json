@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.3.153",
+    "version": "2.3.154",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -310,7 +310,7 @@
         },
         {
             "path": "assets/banner.png",
-            "sha256": "45dd4406dc20616597a0117d1c8ec68330606b7258c68b52e636f475cd19ed1b"
+            "sha256": "c8049e073e174c4f212c3710a72ed4692debc7c9f6a20e965e62871f078072a6"
         },
         {
             "path": "assets/icon.png",
@@ -326,27 +326,27 @@
         },
         {
             "path": "docs/index.de.md",
-            "sha256": "746325f312c0f40ac65ffc9c0bdc3f63d302afc1e7ae7a0eb943b11bf565a7ff"
+            "sha256": "62ff76a145052450c38e7dd2a030247dc5f2a6e89ae99c51df73f3585687ac81"
         },
         {
             "path": "docs/index.en.md",
-            "sha256": "fac737d1c0c1d8cb085919f40d8a22ab8aa227de1a7626e53b2365e721b07cb7"
+            "sha256": "90200df1fb679c2b410217e7495b9b42ed7bb6ccd9df801f38516369ec79bd02"
         },
         {
             "path": "docs/index.id.md",
-            "sha256": "3ee109e20693ebc3f493e8ea6dfc10db67e675bcb2250d8bab56ef098adfaecc"
+            "sha256": "88250064f6754493aac5a695b17a831d989e6614ca36d5d5e97dd242c9e475f1"
         },
         {
             "path": "docs/index.ja.md",
-            "sha256": "109e2117879297dc033a2050eb049c4bb4bb2039aabb667efb6943641756f7a3"
+            "sha256": "22de376ef9848c2961973fb4af560899e85bc00f2720432a98a34acd54d19f5a"
         },
         {
             "path": "package-lock.json",
-            "sha256": "34a9e617c757c2f49f1074dd20fc5f30e671c5cf8dda70ba35a920f43ea68e6e"
+            "sha256": "dbf609f004495f92ed453993651b886869dcc552744a9a1b189c9560a75f641c"
         },
         {
             "path": "package.json",
-            "sha256": "e141e36780f5fd8c65b39eab5e3665943d08a68bf98eda8fc35bd71eaf5b477b"
+            "sha256": "257ee30d9421ba769b7c88af1a50b18597840a410ae078934e842808effeb1ba"
         },
         {
             "path": "routes.json",

@@ -36,6 +36,10 @@ AGENTS.md mit der externen Modulvorlage synchronisieren und Domänenregeln beibe
 
 Vorlagenrichtlinien, domänenspezifische Routenpfade, übersetzte Integrationsdokumentation, ausführbare Strukturprüfungen und endgültige Paket-Hashes synchronisieren. Öffentliche URLs und Modulidentität bleiben erhalten. Browserbeiträge folgen den Lebenszyklusverträgen des zuständigen Hosts.
 
+## Cognis- und Anbieterbild
+
+Das Marketplace-Banner erhält eine Kombination aus Cognis und Anbieter, deren Marken im mittigen sichtbaren Bereich bleiben. Das vorhandene Icon wird beibehalten.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

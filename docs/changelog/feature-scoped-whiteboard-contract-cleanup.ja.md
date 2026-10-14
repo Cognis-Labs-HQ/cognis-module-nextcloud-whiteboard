@@ -36,6 +36,10 @@ Whiteboard は Manifest のインストール済みパッケージリビジョ�
 
 テンプレートの指針、ドメイン別ルート、翻訳された統合文書、実行可能な構成チェック、最終パッケージハッシュを同期します。公開URLとモジュール識別子は維持します。ブラウザーの提供機能は担当ホストのライフサイクル契約に従います。
 
+## Cognis とプロバイダーの画像
+
+Marketplace バナーを Cognis とプロバイダーの構成へ置き換え、ブランドを中央の表示領域に収めます。既存のアイコンは維持します。
+
 ## コミット
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

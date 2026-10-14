@@ -114,4 +114,19 @@
   <string name="module.nextcloud.whiteboard.status.unsaved">Nicht gespeichert.</string>
   <string name="module.nextcloud.whiteboard.font.size">Schriftgröße</string>
   <string name="module.nextcloud.whiteboard.font.family">Schriftfamilie</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.title">Whiteboards</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.all">Alle Zeichenflächen</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.active">Aktiv</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.bound">Integrations-Zeichenflächen</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.canvas">Zeichenfläche</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.owner">Eigentümer</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.source">Quellzuordnung</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.participants">Aktive Benutzer</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.updated">Aktualisiert</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.actions">Aktionen</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.delete">Zeichenfläche löschen</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.confirm">Diese Zeichenfläche einschließlich gespeicherter Inhalte und Zugriffe löschen? Verbundene Benutzer verlieren den Zugriff.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.deleted">Zeichenfläche gelöscht.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.failed">Zeichenflächen konnten nicht geladen oder aktualisiert werden.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty">Keine Zeichenflächen gefunden.</string>
 </resources>

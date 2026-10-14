@@ -1,3 +1,5 @@
+import { createCanvasRecordDeletion } from "./canvas-record-deletion.js";
+import { createCanvasSourceBinding } from "./canvas-source-binding.js";
 import { buildCognisWhiteboardUrl } from "./access.js";
 import { createCanvasMembershipCapability } from "./canvas-membership.js";
 import { createCanvasDeletionCapability } from "./canvas-deletion.js";
@@ -7,9 +9,27 @@ export function createWhiteboardModuleApi({
     profileStore,
     profileIdentity,
     log,
+    listSharesByResource,
+    deleteResourceShares,
+    resolveActorRole,
 }) {
+    const deleteCanvasRecords = createCanvasRecordDeletion({
+        store,
+        listSharesByResource,
+        deleteResourceShares,
+    });
     return {
+        deleteCanvasRecords,
+        sourceBinding: createCanvasSourceBinding({
+            resolveActorRole,
+            store,
+            profileStore,
+            profileIdentity,
+            log,
+        }),
         deleteCanvas: createCanvasDeletionCapability({
+            resolveActorRole,
+            deleteCanvasRecords,
             store,
             profileStore,
             profileIdentity,

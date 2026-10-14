@@ -114,4 +114,19 @@
   <string name="module.nextcloud.whiteboard.status.unsaved">Belum disimpan.</string>
   <string name="module.nextcloud.whiteboard.font.size">Ukuran font</string>
   <string name="module.nextcloud.whiteboard.font.family">Jenis font</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.title">Papan tulis</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.all">Semua kanvas</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.active">Aktif</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.bound">Kanvas integrasi</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.canvas">Kanvas</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.owner">Pemilik</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.source">Pengikatan sumber</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.participants">Pengguna aktif</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.updated">Diperbarui</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.actions">Tindakan</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.delete">Hapus kanvas</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.confirm">Hapus kanvas ini, konten tersimpan, dan aksesnya? Pengguna yang terhubung akan kehilangan akses.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.deleted">Kanvas dihapus.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.failed">Kanvas tidak dapat dimuat atau diperbarui.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty">Tidak ada kanvas.</string>
 </resources>

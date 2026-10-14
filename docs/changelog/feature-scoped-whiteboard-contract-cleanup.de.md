@@ -44,6 +44,14 @@ Das Marketplace-Banner erhält eine Kombination aus Cognis und Anbieter, deren M
 
 Verwenden Sie kurze Aktionszusammenfassungen und konkrete Funktionsbeschreibungen in den Marketplace-Metadaten mit inhaltlich abgestimmten Übersetzungen.
 
+## Zeichenflächen-Verwaltung und Quellzuordnung
+
+Administration → Whiteboards zeigt alle Zeichenflächen mit Eigentümer, Quellzuordnung, aktiven Benutzern und Aktualisierungszeit. Die Filter Alle Zeichenflächen, Aktiv und Integrations-Zeichenflächen begrenzen die Ansicht. Administratives Löschen benötigt eine Bestätigung und widerruft Freigaben, bevor gespeicherte Inhalte, Präsenz, Teilnehmerzugriffe und Benutzerkopien gelöscht werden. Zugriffstokens werden nicht angezeigt. `whiteboard:sourceBinding` bietet `bind` und `release` mit `{whiteboardId, actorAccountId, sourceType, sourceId}`. Nur der Eigentümer darf die Zuordnung ändern. Eine bedingte Aktualisierung weist andere Quellen mit `source_conflict` zurück; dieselbe Quelle kann erneut zuordnen. Die Freigabe betrifft nur die passende Quelle, auch bei der Bereinigung historischer Mehrfachreferenzen. Die Operationen verwenden registrierte Speicher-Flows. Integrationen liefern eigene Quellenkennungen, ohne interne Speicherung oder Darstellung zu lesen.
+
+## Scoped Browser-Aktionen und verifizierte Administration
+
+Quellzuordnung und Löschung von Zeichenflächen erlauben auch Administratoren, die über den öffentlichen Vertrag `auth:accountStore` verifiziert werden. Vor dem Entfernen der Zeichenfläche werden ihre Freigaben sämtlicher Freigabeeigentümer widerrufen. Registrierte Server-Aktionen verwenden Camel Case nach dem unveränderlichen Modulpräfix.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

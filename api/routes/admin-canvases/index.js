@@ -1,0 +1,60 @@
+import { readJson, sendJson, sendError } from "../../reuse/http.js";
+
+export function registerAdminCanvasRoutes(
+    router,
+    { requireAuth, store, deleteCanvasRecords, log },
+) {
+    router.get(
+        "/api/v1/modules/nextcloud-whiteboard/admin/canvases",
+        async (req, res) => {
+            if (!requireAuth(req, res, "admin")) return;
+            const boards = await store.listWhiteboards();
+            const rows = await Promise.all(
+                boards.map(async (board) => {
+                    const presence = await store.listPresence(board.id);
+                    return {
+                        id: board.id,
+                        title: board.title,
+                        createdBy: board.createdBy,
+                        updatedAt: board.updatedAt,
+                        sourceType: board.sourceType,
+                        sourceId: board.sourceId,
+                        activeUsers: presence
+                            .filter(
+                                (entry) =>
+                                    Date.now() -
+                                        new Date(entry.lastSeenAt).getTime() <
+                                    15000,
+                            )
+                            .map((entry) => entry.username),
+                    };
+                }),
+            );
+            sendJson(res, 200, { data: rows });
+        },
+        { access: { minRole: "admin" } },
+    );
+    router.post(
+        "/api/v1/modules/nextcloud-whiteboard/admin/canvases/delete",
+        async (req, res) => {
+            const claims = requireAuth(req, res, "admin");
+            if (!claims) return;
+            const body = await readJson(req);
+            const board = await store.getWhiteboardById(
+                typeof body?.whiteboardId === "string" ? body.whiteboardId : "",
+            );
+            if (!board) {
+                sendError(res, 404, "not_found", "Canvas not found.");
+                return;
+            }
+            await deleteCanvasRecords(board.id);
+            log?.("info", "Administrator deleted a whiteboard canvas.", {
+                operation: "admin_delete_canvas",
+                whiteboardId: board.id,
+                accountId: claims.sub,
+            });
+            sendJson(res, 200, { data: { deleted: true } });
+        },
+        { access: { minRole: "admin" } },
+    );
+}

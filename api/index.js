@@ -1,3 +1,4 @@
+import { registerAdminCanvasRoutes } from "./routes/admin-canvases/index.js";
 import { registerBoardRoutes } from "./routes/boards/index.js";
 import { createWhiteboardUiAssetResolver } from "./reuse/ui-assets.js";
 import path from "node:path";
@@ -50,6 +51,13 @@ export function registerUi(ctx) {
             descriptionKey: "module.nextcloud.whiteboard.description",
             modes: ["overlay", "fullscreen", "pip"],
         },
+    });
+    ctx.registerAdminSection({
+        id: "module-nextcloud-whiteboard-canvases",
+        label: "module.nextcloud.whiteboard.admin.canvases.title",
+        scriptUrl: whiteboardUiAsset("admin-canvases.js"),
+        access: { minRole: "admin" },
+        stringsBaseUrl: "/static/modules/nextcloud-whiteboard/languages",
     });
     ctx.registerAdminSection({
         id: "module-nextcloud-whiteboard",
@@ -153,7 +161,15 @@ export function registerApiRoutes(router, ctx) {
         initializedRuntimeContexts.add(runtimeContext);
     }
 
+    const accountRoles = ctx.getCapability("auth:accountStore");
+    const resolveActorRole = async (accountId) => {
+        const account = await accountRoles?.getInfo(accountId);
+        return account?.enabled ? account.role : null;
+    };
     const moduleApi = createWhiteboardModuleApi({
+        resolveActorRole,
+        listSharesByResource,
+        deleteResourceShares: ctx.getCapability("share:deleteResourceShares"),
         store,
         profileStore,
         profileIdentity,
@@ -175,6 +191,12 @@ export function registerApiRoutes(router, ctx) {
         flow: ctx.flow,
     });
 
+    registerAdminCanvasRoutes(router, {
+        requireAuth,
+        store,
+        deleteCanvasRecords: moduleApi.deleteCanvasRecords,
+        log,
+    });
     return moduleApi;
 }
 

@@ -25,7 +25,30 @@ async function createCanvasRequest(body, failureMessage, signal) {
 }
 
 export function mountProvider(uiCtx) {
+    const registerScopedUiActions = uiCtx.capabilities.get("ui:scopedActions");
+    if (typeof registerScopedUiActions !== "function")
+        throw new Error("Scoped UI actions are unavailable.");
+    const requestAdministration = async (action, input) => {
+        const response = await apiFetch(
+            `/api/v1/modules/nextcloud-whiteboard/admin/canvases${action === "delete" ? "/delete" : ""}`,
+            {
+                signal: uiCtx.signal,
+                ...(action === "delete"
+                    ? {
+                          method: "POST",
+                          headers: { "content-type": "application/json" },
+                          body: JSON.stringify(input),
+                      }
+                    : {}),
+            },
+        );
+        if (!response.ok)
+            throw new Error("Canvas administration request failed.");
+        return (await response.json()).data;
+    };
     const gateway = {
+        listAdminCanvases: () => requestAdministration("list"),
+        deleteAdminCanvas: (input) => requestAdministration("delete", input),
         requestCanvasPage({ signal } = {}) {
             uiCtx.signal.throwIfAborted();
             signal?.throwIfAborted();
@@ -91,16 +114,10 @@ export function mountProvider(uiCtx) {
         },
     };
 
-    const actions = {};
-    for (const [action, execute] of Object.entries(gateway)) {
-        const flowId = `nextcloud-whiteboard:${action}`;
-        uiCtx.registerFlow(flowId, ["execute"]);
-        uiCtx.extendFlow(flowId, "execute", { id: flowId }, async (stage) => {
-            uiCtx.signal.throwIfAborted();
-            stage.data.result = await execute(stage.input);
-        });
-        actions[action] = async (input) =>
-            (await uiCtx.runFlow(flowId, input)).data.result;
-    }
+    const actions = registerScopedUiActions(
+        uiCtx,
+        "nextcloud-whiteboard",
+        gateway,
+    );
     uiCtx.capabilities.contribute(capabilityName, actions);
 }

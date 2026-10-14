@@ -8,6 +8,8 @@ export function createCanvasDeletionCapability({
     profileStore,
     profileIdentity,
     log,
+    deleteCanvasRecords,
+    resolveActorRole,
 }) {
     return async function deleteCanvas(input = {}) {
         const whiteboardId = String(input.whiteboardId ?? "").trim();
@@ -20,17 +22,22 @@ export function createCanvasDeletionCapability({
         }
         try {
             await store.ensureSchema();
-            const actorHandle = await resolveVisibleAccountHandle(
-                profileStore,
-                profileIdentity,
-                actorAccountId,
-                "actorAccountId",
-            );
+            const role = await resolveActorRole?.(actorAccountId);
+            const administrator = role === "admin" || role === "owner";
+            const actorHandle = administrator
+                ? ""
+                : await resolveVisibleAccountHandle(
+                      profileStore,
+                      profileIdentity,
+                      actorAccountId,
+                      "actorAccountId",
+                  );
             const whiteboard = await store.getWhiteboardById(whiteboardId);
             if (!whiteboard) {
                 throw new CanvasRequestError("Whiteboard not found.");
             }
-            const actorOwnsCanvas = whiteboard.createdBy === actorHandle;
+            const actorOwnsCanvas =
+                administrator || whiteboard.createdBy === actorHandle;
             const participants = actorOwnsCanvas
                 ? []
                 : await store.listParticipants(whiteboard.id);
@@ -41,7 +48,7 @@ export function createCanvasDeletionCapability({
                     "Only the whiteboard owner or sole participant can delete the canvas.",
                 );
             }
-            await store.deleteWhiteboard(whiteboard.id);
+            await deleteCanvasRecords(whiteboard.id);
             log?.("info", "Whiteboard canvas deleted.", {
                 component: "nextcloud-whiteboard-module",
                 operation: "delete_canvas",

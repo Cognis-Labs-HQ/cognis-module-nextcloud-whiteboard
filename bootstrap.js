@@ -39,6 +39,7 @@ export function bootstrapModule(ctx) {
 
     const publicCapabilities = new Map([
         ["whiteboard:deleteCanvas", moduleApi.deleteCanvas],
+        ["whiteboard:sourceBinding", moduleApi.sourceBinding],
         ["whiteboard:spawnWhiteboardWindow", moduleApi.spawnWhiteboardWindow],
         ["whiteboard:getEmbedUrl", moduleApi.getEmbedUrl],
         ["whiteboard:fetchBoardData", moduleApi.fetchBoardData],

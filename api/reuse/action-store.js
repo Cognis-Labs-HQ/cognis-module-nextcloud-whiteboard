@@ -8,6 +8,8 @@ const ACTION_METHODS = [
     "getWhiteboardById",
     "getWhiteboardByExternalPath",
     "listWhiteboards",
+    "bindWhiteboardSource",
+    "releaseWhiteboardSource",
     "listAccessibleWhiteboards",
     "renameWhiteboard",
     "listParticipants",
@@ -32,7 +34,7 @@ export function registerWhiteboardActions(ctx, store) {
     if (actionsByContext.has(ctx)) return actionsByContext.get(ctx);
     const actions = Object.create(store);
     for (const method of ACTION_METHODS) {
-        const flowId = `nextcloud-whiteboard:${method.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`;
+        const flowId = `nextcloud-whiteboard:${method}`;
         ctx.registerFlow({
             id: flowId,
             description: `Execute Whiteboard ${method}.`,

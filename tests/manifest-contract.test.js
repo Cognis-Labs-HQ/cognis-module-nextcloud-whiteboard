@@ -17,6 +17,7 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
         "whiteboard:membership",
         "whiteboard:deleteCanvas",
         "whiteboard:uiGateway",
+        "whiteboard:sourceBinding",
     ]);
 });
 

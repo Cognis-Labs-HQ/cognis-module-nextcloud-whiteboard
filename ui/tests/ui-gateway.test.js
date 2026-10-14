@@ -1,10 +1,14 @@
-import { createProviderScope } from "./reuse/provider-scope.js";
+import {
+    createProviderScope,
+    registerScopedUiActions,
+} from "./reuse/provider-scope.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
 const requests = [];
 const launches = [];
 const capabilities = new Map([
+    ["ui:scopedActions", registerScopedUiActions],
     [
         "ui:reuse",
         {
@@ -15,7 +19,11 @@ const capabilities = new Map([
                     return {
                         ok: true,
                         json: async () => ({
-                            data: { whiteboard: { id: "canvas-1" } },
+                            data: path.includes("admin/canvases")
+                                ? path.endsWith("/delete")
+                                    ? { deleted: true }
+                                    : [{ id: "canvas-1" }]
+                                : { whiteboard: { id: "canvas-1" } },
                         }),
                     };
                 },
@@ -116,7 +124,7 @@ test("same cached provider remounts and stale handles reject after disable", asy
     });
     const nextScope = createProviderScope(capabilities);
     mountProvider(nextScope);
-    assert.equal(nextScope.flows.size, 4);
+    assert.equal(nextScope.flows.size, 6);
     assert.deepEqual(
         await capabilities
             .get("whiteboard:uiGateway")
@@ -124,4 +132,22 @@ test("same cached provider remounts and stale handles reject after disable", asy
         { whiteboardId: "canvas-1" },
     );
     nextScope.dispose();
+});
+
+test("canvas administration executes provider flows and uses protected administration endpoints", async () => {
+    const scope = createProviderScope(capabilities);
+    capabilities.delete("whiteboard:uiGateway");
+    mountProvider(scope);
+    const actions = capabilities.get("whiteboard:uiGateway");
+    assert.deepEqual(await actions.listAdminCanvases(), [{ id: "canvas-1" }]);
+    await actions.deleteAdminCanvas({ whiteboardId: "canvas-1" });
+    assert.equal(
+        requests.at(-1).path,
+        "/api/v1/modules/nextcloud-whiteboard/admin/canvases/delete",
+    );
+    assert.equal(requests.at(-1).options.method, "POST");
+    assert.deepEqual(JSON.parse(requests.at(-1).options.body), {
+        whiteboardId: "canvas-1",
+    });
+    scope.dispose();
 });

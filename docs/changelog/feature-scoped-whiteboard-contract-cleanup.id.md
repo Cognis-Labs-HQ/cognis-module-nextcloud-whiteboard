@@ -44,6 +44,12 @@ Ganti banner Marketplace dengan komposisi Cognis + penyedia, tempatkan merek di 
 
 Gunakan ringkasan tindakan singkat dan deskripsi fitur konkret pada metadata Marketplace dengan makna terjemahan yang selaras.
 
+## Administrasi kanvas dan kepemilikan sumber
+
+Administrasi → Papan tulis menampilkan semua kanvas beserta pemilik, pengikatan sumber, pengguna aktif, dan waktu pembaruan. Filter Semua kanvas, Aktif, dan Kanvas integrasi mempersempit daftar. Penghapusan administrator membutuhkan konfirmasi dan mencabut berbagi sebelum menghapus snapshot, kehadiran, akses peserta, serta salinan pengguna. Token akses tidak ditampilkan. `whiteboard:sourceBinding` menyediakan `bind` dan `release` dengan `{whiteboardId, actorAccountId, sourceType, sourceId}`. Hanya pemilik kanvas dapat mengubah pengikatan; pembaruan bersyarat menolak sumber lain dengan `source_conflict`, sementara klaim ulang oleh sumber yang sama berhasil. Pelepasan mencocokkan sumber persis, termasuk saat membersihkan referensi duplikat lama. Operasi ini menggunakan alur penyimpanan terdaftar. Integrasi memberikan identitas sumber sendiri tanpa membaca mekanisme penyimpanan atau tampilan internal Whiteboard.
+
+Perubahan sumber dan penghapusan kanvas juga mengizinkan administrator yang diverifikasi melalui kontrak publik `auth:accountStore`. Penghapusan mencabut berbagi kanvas dari setiap pemilik berbagi sebelum menghapus catatan kanvas. Nama tindakan server terdaftar menggunakan camel case setelah awalan modul yang tetap.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

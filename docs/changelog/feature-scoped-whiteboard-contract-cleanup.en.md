@@ -44,6 +44,14 @@ Replace the marketplace banner with a Cognis + provider composition, keeping its
 
 Use short action summaries and concrete feature descriptions across marketplace metadata, keeping localized meanings aligned.
 
+## Canvas administration and source ownership
+
+Administration → Whiteboards lists every canvas with owner, source binding, active users and update time. All, Active and Integration canvases pill filters narrow the list. Administrator deletion requires confirmation and revokes canvas shares before deleting saved snapshots, presence, participant access and user copies. Access tokens are never returned in the administration listing. `whiteboard:sourceBinding` exposes `bind` and `release` with `{whiteboardId, actorAccountId, sourceType, sourceId}`. Only the canvas owner can change its binding; a conditional update rejects another source with `source_conflict`, and repeated claims by the same source succeed. Release matches the exact source, including cleanup of historical duplicate references. These operations use registered store flows. Integrations provide their own source identifiers without reading Whiteboard persistence or rendering internals.
+
+## Scoped browser actions and authoritative administration
+
+Canvas source changes and deletion also permit administrators verified through the public `auth:accountStore` contract. Deletion revokes every share owner’s canvas shares before removing canvas records. Registered server action names use camel case after the immutable module prefix.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

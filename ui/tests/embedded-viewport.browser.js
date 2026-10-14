@@ -1,10 +1,14 @@
-import { createProviderScope } from "./reuse/provider-scope.js";
+import {
+    createProviderScope,
+    registerScopedUiActions,
+} from "./reuse/provider-scope.js";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { openChromium } from "./reuse/chromium.js";
 
 let spawnRequest;
 const capabilities = new Map([
+    ["ui:scopedActions", registerScopedUiActions],
     [
         "ui:reuse",
         {

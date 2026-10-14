@@ -35,6 +35,7 @@ function createHarness() {
     };
     const deleteCanvas = createCanvasDeletionCapability({
         store,
+        deleteCanvasRecords: (id) => store.deleteWhiteboard(id),
         profileStore,
         profileIdentity: {
             async resolveAccountHandle(accountId) {

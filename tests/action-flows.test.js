@@ -29,11 +29,13 @@ test("all supported store operations execute declared owned stages", async () =>
     );
     for (const method of [...methods, "mintSessionToken"])
         assert.ok(Object.hasOwn(actions, method), method);
+    for (const flowId of ctx.flows.keys())
+        assert.match(flowId, /^nextcloud-whiteboard:[a-z][a-zA-Z]*$/);
     const config = await actions.getConfig();
     assert.equal(config.apiKeyConfigured, false);
     assert.deepEqual(ctx.executions, [
-        "nextcloud-whiteboard:get-config:initialize-store",
-        "nextcloud-whiteboard:get-config:execute-action",
+        "nextcloud-whiteboard:getConfig:initialize-store",
+        "nextcloud-whiteboard:getConfig:execute-action",
     ]);
     const board = await actions.createWhiteboard({
         title: "Shared board",

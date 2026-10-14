@@ -42,3 +42,17 @@ export function createProviderScope(capabilities) {
         },
     };
 }
+
+export function registerScopedUiActions(ctx, namespace, actions) {
+    const published = {};
+    for (const [action, execute] of Object.entries(actions)) {
+        const flowId = `${namespace}:${action}`;
+        ctx.registerFlow(flowId, ["execute"]);
+        ctx.extendFlow(flowId, "execute", { id: flowId }, async (stage) => {
+            stage.data.result = await execute(stage.input);
+        });
+        published[action] = async (input) =>
+            (await ctx.runFlow(flowId, input)).data.result;
+    }
+    return published;
+}

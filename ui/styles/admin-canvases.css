@@ -1,0 +1,14 @@
+.whiteboard-admin-filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.whiteboard-admin-filter-button {
+    border-radius: 999px;
+}
+
+.whiteboard-admin-filter-button[aria-pressed="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+}

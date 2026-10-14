@@ -149,6 +149,8 @@ export class NextcloudWhiteboardStore {
                 { name: "id", type: "text", primaryKey: true },
                 { name: "title", type: "text", notNull: true },
                 { name: "external_path", type: "text", notNull: true },
+                { name: "source_type", type: "text" },
+                { name: "source_id", type: "text" },
                 {
                     name: "access_token",
                     type: "text",
@@ -431,12 +433,54 @@ export class NextcloudWhiteboardStore {
         return this.mapBoard(result.rows?.[0]);
     }
 
+    async bindWhiteboardSource({ whiteboardId, sourceType, sourceId }) {
+        if (
+            !/^[a-z][a-z0-9:-]{0,99}$/.test(sourceType ?? "") ||
+            typeof sourceId !== "string" ||
+            !sourceId.trim() ||
+            sourceId.length > 200
+        )
+            throw new Error("Invalid canvas source binding.");
+        await this.db.executeCommand({
+            option: "UPDATE",
+            table: "nextcloud_whiteboards",
+            set: { source_type: sourceType, source_id: sourceId },
+            where: [
+                { column: "id", value: whiteboardId },
+                { column: "source_type", operator: "IS NULL" },
+                { column: "source_id", operator: "IS NULL" },
+            ],
+        });
+        const board = await this.getWhiteboardById(whiteboardId);
+        if (
+            !board ||
+            board.sourceType !== sourceType ||
+            board.sourceId !== sourceId
+        )
+            throw Object.assign(
+                new Error("Canvas is already bound to a different source."),
+                { status: 409, code: "source_conflict" },
+            );
+    }
+
+    async releaseWhiteboardSource({ whiteboardId, sourceType, sourceId }) {
+        await this.db.executeCommand({
+            option: "UPDATE",
+            table: "nextcloud_whiteboards",
+            set: { source_type: null, source_id: null },
+            where: [
+                { column: "id", value: whiteboardId },
+                { column: "source_type", value: sourceType },
+                { column: "source_id", value: sourceId },
+            ],
+        });
+    }
+
     async listWhiteboards() {
         const result = await this.db.executeCommand({
             option: "SELECT",
             table: "nextcloud_whiteboards",
             orderBy: [{ column: "updated_at", direction: "DESC" }],
-            limit: 200,
         });
         const boards = (result.rows ?? [])
             .map((row) => this.mapBoard(row))
@@ -805,6 +849,8 @@ export class NextcloudWhiteboardStore {
             id: String(row.id),
             title: String(row.title),
             externalPath: String(row.external_path),
+            sourceType: row.source_type ?? null,
+            sourceId: row.source_id ?? null,
             accessToken: String(row.access_token),
             createdBy: String(row.created_by),
             disposable: Number(row.disposable ?? 0) === 1,

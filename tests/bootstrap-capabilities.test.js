@@ -1,3 +1,5 @@
+import { resolve } from "node:path";
+import { withFlowRuntime } from "./reuse/flow-runtime.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -15,7 +17,7 @@ function createRuntime({ conflictingCapabilityId } = {}) {
     const registerRoute = () => {};
     const registerUi = () => events.push("ui");
     const ctx = {
-        moduleRoot: "/modules/nextcloud-whiteboard",
+        moduleRoot: resolve(import.meta.dirname, ".."),
         contributePublicCapability(capabilityId, value) {
             if (capabilityId === conflictingCapabilityId) {
                 throw new Error("module_capability_conflict");
@@ -46,7 +48,7 @@ function createRuntime({ conflictingCapabilityId } = {}) {
 test("bootstrap verifies Jitsi contracts before exposing the UI", () => {
     const runtime = createRuntime();
 
-    bootstrapModule(runtime.ctx);
+    bootstrapModule(withFlowRuntime(runtime.ctx));
 
     assert.equal(
         typeof runtime.publicCapabilities.get("whiteboard:fetchBoardData"),
@@ -68,7 +70,7 @@ test("bootstrap withholds UI when a server capability conflicts", () => {
     });
 
     assert.throws(
-        () => bootstrapModule(runtime.ctx),
+        () => bootstrapModule(withFlowRuntime(runtime.ctx)),
         /module_capability_conflict/,
     );
     assert.equal(runtime.events.includes("ui"), false);

@@ -1,0 +1,163 @@
+import { reuse } from "../reuse/host-resources.js";
+
+const [{ createI18n }, { openModuleSettingsPopup }] = await Promise.all([
+    reuse.importModule("i18n.js"),
+    reuse.importModule("module-settings-popup.js"),
+]);
+
+const API_BASE = "/api/v1/modules/nextcloud-whiteboard";
+
+export async function mount(root, { i18n: hostI18n } = {}) {
+    const i18n = await createI18n({
+        locale: hostI18n?.locale,
+        componentStringBaseUrls: [
+            "/static/modules/nextcloud-whiteboard/languages",
+        ],
+    });
+    const text = (key) => i18n.t(key) ?? key;
+    const configResponse = await fetch(`${API_BASE}/config`, {
+        credentials: "same-origin",
+        headers: { "content-type": "application/json" },
+    });
+    const configPayload = await configResponse.json().catch(() => ({}));
+    if (!configResponse.ok) {
+        throw new Error(configPayload?.error?.message ?? "Request failed.");
+    }
+    const config = configPayload.data;
+    root.innerHTML = "";
+    const form = document.createElement("form");
+    form.className = "whiteboard-admin";
+    const heading = document.createElement("h2");
+    heading.textContent = text("module.nextcloud.whiteboard.admin.title");
+    const serverUrlLabel = document.createElement("label");
+    const serverUrlText = document.createElement("span");
+    serverUrlText.textContent = text("module.nextcloud.whiteboard.server.url");
+    const serverUrlInput = document.createElement("input");
+    serverUrlInput.name = "serverUrl";
+    serverUrlInput.type = "url";
+    serverUrlInput.required = true;
+    serverUrlInput.value = config.serverUrl ?? "";
+    serverUrlLabel.append(serverUrlText, serverUrlInput);
+    const keyLabel = document.createElement("label");
+    const keyText = document.createElement("span");
+    keyText.textContent = text("module.nextcloud.whiteboard.api.key");
+    const keyInput = document.createElement("input");
+    keyInput.name = "apiKey";
+    keyInput.type = "password";
+    keyInput.required = true;
+    keyInput.autocomplete = "new-password";
+    keyLabel.append(keyText, keyInput);
+    const uploadLimitLabel = document.createElement("label");
+    const uploadLimitText = document.createElement("span");
+    uploadLimitText.textContent = text(
+        "module.nextcloud.whiteboard.image.upload.limit",
+    );
+    const uploadLimitInput = document.createElement("input");
+    uploadLimitInput.name = "imageUploadMaxBytes";
+    uploadLimitInput.type = "number";
+    uploadLimitInput.min = "0";
+    uploadLimitInput.step = "1024";
+    uploadLimitInput.value = config.imageUploadMaxBytes ?? 1048576;
+    uploadLimitLabel.append(uploadLimitText, uploadLimitInput);
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = text("ui.reuse.save");
+    form.append(
+        heading,
+        serverUrlLabel,
+        keyLabel,
+        uploadLimitLabel,
+        submitButton,
+    );
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const saveResponse = await fetch(`${API_BASE}/config`, {
+            credentials: "same-origin",
+            headers: { "content-type": "application/json" },
+            method: "PUT",
+            body: JSON.stringify({
+                serverUrl: formData.get("serverUrl"),
+                apiKey: formData.get("apiKey"),
+                imageUploadMaxBytes: formData.get("imageUploadMaxBytes"),
+            }),
+        });
+        if (!saveResponse.ok) {
+            const savePayload = await saveResponse.json().catch(() => ({}));
+            throw new Error(savePayload?.error?.message ?? "Request failed.");
+        }
+    });
+    root.append(form);
+}
+
+export async function openModuleConfigPopup({
+    i18n,
+    apiFetch,
+    openPopup,
+    showToast,
+    escapeHtml,
+    isEnabled,
+    setEnabled,
+}) {
+    const moduleI18n = await createI18n({
+        locale: i18n?.locale,
+        componentStringBaseUrls: [
+            "/static/modules/nextcloud-whiteboard/languages",
+        ],
+    });
+    return openModuleSettingsPopup({
+        i18n: moduleI18n,
+        apiFetch,
+        openPopup,
+        showToast,
+        escapeHtml,
+        loadUrl: "/api/v1/modules/nextcloud-whiteboard/config",
+        saveUrl: "/api/v1/modules/nextcloud-whiteboard/config",
+        titleKey: "module.nextcloud.whiteboard.admin.title",
+        noteKey: "module.nextcloud.whiteboard.admin.note",
+        loadFailedKey: "module.nextcloud.whiteboard.load.failed",
+        successKey: "module.nextcloud.whiteboard.save.success",
+        failedKey: "module.nextcloud.whiteboard.save.failed",
+        powerState: {
+            enabled: isEnabled === true,
+            labelKey: "ui.reuse.enable",
+            onChange: setEnabled,
+        },
+        enableTest: {
+            url: "/api/v1/modules/nextcloud-whiteboard/admin/enable-test",
+            failedKey: "module.nextcloud.whiteboard.enable.test.failed",
+        },
+        fields: [
+            {
+                id: "nextcloud-whiteboard-server-url",
+                configKey: "serverUrl",
+                labelKey: "module.nextcloud.whiteboard.server.url",
+                descriptionKey:
+                    "module.nextcloud.whiteboard.server.url.description",
+                placeholderKey:
+                    "module.nextcloud.whiteboard.server.url.placeholder",
+                type: "url",
+            },
+            {
+                id: "nextcloud-whiteboard-image-upload-limit",
+                configKey: "imageUploadMaxBytes",
+                labelKey: "module.nextcloud.whiteboard.image.upload.limit",
+                descriptionKey:
+                    "module.nextcloud.whiteboard.image.upload.limit.description",
+                placeholderKey:
+                    "module.nextcloud.whiteboard.image.upload.limit.placeholder",
+                type: "number",
+            },
+            {
+                id: "nextcloud-whiteboard-api-key",
+                configKey: "apiKey",
+                labelKey: "module.nextcloud.whiteboard.api.key",
+                descriptionKey:
+                    "module.nextcloud.whiteboard.api.key.description",
+                placeholderKey:
+                    "module.nextcloud.whiteboard.api.key.placeholder",
+                type: "password",
+            },
+        ],
+    });
+}

@@ -16,8 +16,10 @@ Users can create and select boards at `/whiteboards`, then collaborate at `/whit
 npm install
 npm run lint
 npm test
+npx playwright install chromium
+npm run test:browser
 npm run check:manifest
 git diff --check
 ```
 
-Read [`docs/standard.en.md`](docs/standard.en.md) for configuration, capabilities, routes, security boundaries, and operational guidance.
+Read [`docs/index.en.md`](docs/index.en.md) for configuration, capabilities, routes, security boundaries, and operational guidance.

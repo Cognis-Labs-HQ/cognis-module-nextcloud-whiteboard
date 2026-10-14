@@ -1,0 +1,93 @@
+# キャンバス連携とライフサイクルを分離
+
+**機能ブランチ:** feature-scoped-whiteboard-contract-cleanup
+
+## 責務に沿った構造と安全なキャンバス解決
+
+リリース 2.3.161 — キャンバスの実装は `api/canvas/` と `ui/canvas/` にまとめ、`source-binding.js`、`events.js`、`snapshot.js` のような短いファイル名を使用します。実行時の有効化チェックは `api/configuration/enablement.js` で、単体テストは `api/tests/` に置きます。共有ページは通常ルートと同じリビジョン付きアセットURLを使用します。管理画面は非アクティブな参加状態を除き、不正な削除JSONには `invalid_json` を返します。標準リソースパスに一つだけ存在するアクセス可能なキャンバスには、内容を変更せず不変の参照を割り当てます。複数存在する場合は自動選択せず、競合と問題のあるキャンバスとして表示します。
+
+## キャンバス管理の診断
+
+リリース 2.3.160 — キャンバス管理には、すべてのキャンバス、使用中のキャンバス、問題のあるキャンバスの各フィルターと専用の空状態メッセージがあります。問題のあるビューには、所有者や所有者のアクセス権がないもの、不完全な参照元の関連付け、重複した汎用の参照元の関連付けやリソース参照を表示します。小さな問題ピルで各問題を説明します。診断はWhiteboard自身のデータのみを使用します。管理者権限は引き続き必須で、キャンバスの認証情報は返しません。
+
+## 公開表示契約
+
+ブラウザーはホストが初期化した ctx から `whiteboard:uiGateway` を取得します。`createCanvas({title, participantHandles})` と `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` は `{whiteboardId}` を返します。`requestCanvasPage({signal})` は Component Page の記述子を、`openCanvas({whiteboardId, elementId, signal})` はウィンドウハンドルを返します。呼び出し元は自身のマウント先を指定し、終了時にハンドルを破棄します。Whiteboard がルート識別、表示設定、通信トークンと寿命を管理し、連携側はそれらを再構成しません。各マウントには正確なキャンバス ID が必要です。
+
+## 所有するアクションと確実な終了処理
+
+有効なモジュールの非同期 Store アクションは、ctx を通じて所有する `nextcloud-whiteboard:*` Flow の `initialize-store` と `execute-action` 段階を実行します。結果の欠落と無効な Flow はエラーになります。ホストは無効なモジュールの Flow を登録しないため、無効時の設定は注入された Store を直接使います。変更前に認証と検証を行い、内部 Store 呼び出しはトランザクションを維持します。ボード削除と全データ削除は子テーブル優先の共通カタログを使用し、全削除は失敗時にロールバックします。
+
+画面移動は通信検査と保留中のシーン処理を中止します。古いセッションやスクリプト応答は離れたキャンバスを再表示できません。検査は成功、失敗、中止のいずれでも Socket、Listener、Timer とスクリプトハンドルを解放します。Page Composer のスタイルはホストが管理します。
+
+## パッケージリビジョンを使うブラウザー入口
+
+Whiteboard は Manifest のインストール済みパッケージリビジョンを登録するブラウザー入口 URL に付けます。Cognis のビルドが同じでも、Whiteboard の更新後は Provider とキャンバスの入口に新しい URL が与えられます。ブラウザー契約テストは実際のローカルモジュールグラフをリンクし、名前付き Export の欠落をリリース前に検出します。有効なモジュールを更新した後、開いているページを再読み込みしてブラウザーコンテキストに新しい Provider を読み込んでください。
+
+## 無限キャンバスの移動をローカルに保つ
+
+埋め込みキャンバスは枠なしの Composer ビューポートを使用し、コンテンツのスクロールを無効にします。マウスの中央ボタンでドラッグするとローカルの表示位置だけが変わり、シーン変更の配信、スナップショット保存、同期状態の変更は行いません。
+
+## 埋め込みキャンバスをコンテナーに合わせる
+
+埋め込みキャンバスのサイズ封じ込めにより、以前のビットマップの高さが枠なしコンポーネントウィンドウを拡大することを防ぎます。ツールバーとキャンバスは実際のコンテナーの高さを共有し、切り取りや縦スクロールを生じさせません。Chromium の回帰テストで大きすぎるビットマップのマウントと繰り返しのサイズ変更を確認します。Jitsi 固有やページシェルのスタイルは不要です。
+
+## コンポーネントページ契約で埋め込みレイアウトを指定する
+
+`openCanvas` はコンポーネントページの生成リクエスト直下で `borderless: true` を指定します。キャンバスのコンテキスト内に入れたレイアウト指定はホストに読み取られず、親領域に合わせるサイズ指定が付かないため、サイズを封じ込めたキャンバスが縮んでいました。コンテキストにはキャンバスの識別情報とモードだけを残します。Gateway テストは公開リクエストと枠なしウィンドウを確認し、Chromium 回帰テストは実際の Gateway と描画を入れ子の標準モード領域で実行します。
+
+## テンプレートの開発指針
+
+ドメイン固有の規則を保持して AGENTS.md を外部モジュールテンプレートに同期します。リリース文書を標準の配置に移し、過去の内容と永久的なモジュール識別情報を保持します。
+
+## 標準構成と所有範囲を守る統合
+
+テンプレートの指針、ドメイン別ルート、翻訳された統合文書、実行可能な構成チェック、最終パッケージハッシュを同期します。公開URLとモジュール識別子は維持します。ブラウザーの提供機能は担当ホストのライフサイクル契約に従います。
+
+## Cognis とプロバイダーの画像
+
+Marketplace バナーを Cognis とプロバイダーの構成へ置き換え、ブランドを中央の表示領域に収めます。既存のアイコンは維持します。
+
+## Marketplace の説明を統一する
+
+Marketplace のメタデータに短い操作概要と具体的な機能説明を使用し、翻訳の意味を揃えます。
+
+## キャンバスの管理と参照元
+
+管理 → ホワイトボードでは、すべてのキャンバスと所有者、参照元、使用中のユーザー、更新日時を表示します。「すべてのキャンバス」「使用中」「連携キャンバス」のフィルターで絞り込めます。管理者による削除は確認が必要で、共有を取り消してから保存内容、参加状態、参加者のアクセス権、ユーザーのコピーを削除します。アクセストークンは一覧に公開しません。`whiteboard:sourceBinding` は `{whiteboardId, actorAccountId, sourceType, sourceId}` を受け取る `bind` と `release` を提供します。参照元を変更できるのは所有者だけです。条件付き更新により別の参照元は `source_conflict` で拒否し、同じ参照元の再設定は成功します。解除は指定の参照元に一致する場合だけ行い、古い重複参照の整理にも使用します。登録済みの保存処理フローを使用します。連携側は独自の参照元IDを渡し、Whiteboardの内部保存や描画機構を参照しません。
+
+## スコープ付きブラウザー操作と管理者権限の検証
+
+キャンバスの参照元変更と削除は、公開契約 `auth:accountStore` で検証された管理者も実行できます。キャンバスの記録を削除する前に、すべての共有所有者の共有を取り消します。登録済みサーバー操作の名前は、変更されないモジュールプレフィックス以降をcamel caseにします。
+
+## 再利用できるキャンバス参照
+
+リリース 2.3.157 — `createCanvas` と `createDisposableCanvas` は汎用の `resourceType` と `resourceId` を受け取ります。両方を指定すると保存された参照を解決し、繰り返しや同時のリクエストでも内容やメンバーをリセットせず、同じアクセス可能なキャンバスを返します。データベースで参照キーの一意性を保証します。既存キャンバスの保持モードが異なる場合は競合となり、権限のない呼び出し元は再利用できません。永続キャンバスを参照なしで作成すると、独立した新しいキャンバスを作ります。削除すると参照も消え、後で再作成できます。
+
+## ナビゲーション項目なしで直接開く Whiteboard ページ
+
+リリース 2.3.158 — Whiteboards のナビゲーションメニューへのリンクを削除しました。保護された `/whiteboards` ギャラリーと `/whiteboard` キャンバスの URL、表示ゲートウェイ、管理セクション、検索できるページとキャンバスの項目は引き続き利用できます。ナビゲーションのプラグインは検索インデックスだけを管理し、終了時に解除します。
+
+## 汎用のキャンバス不存在回復
+
+リリース 2.3.159 — 提供元のボード情報は resourceType と resourceId を持つ汎用の resourceReference を公開します。連携先は保存方式を知らずにこの公開識別情報を使います。削除すると参照キーも解除され、その後の認可された作成または解決要求で空の置換先を作ります。ログイン済みの単独ページでセッションの実際の not_found 応答を受けた場合は、汎用キャンバス参照から置換先を作り、一度読み込んでアクティブ ID と URL を更新します。共有や埋め込みの表示では独立した置換先を作りません。権限とサービスのエラーは維持し、再度の不存在で無限再試行しません。成功はトーストで通知し、提供元での解決を認証情報なしで記録します。
+
+## コミット
+
+- [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)
+- [a42cff8](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a42cff8c865ae0388fd3ded03d2e957e9ff5dd3e)
+- [a79203e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/a79203ed13a22bfe77ae59c32efe5b43b331c559)
+- [c818b40](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c818b40db5010cb220cb54ffd23bc45940539f44)
+- [05e253c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/05e253c37054f54197c4f79511f722ef96df4631)
+- [6ea9026](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/6ea902628f55686585e8f709ff0ddf79a1632a83)
+- [080abb5](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/080abb5cb88fee15491b2ef17787dfb7226890c3)
+- [0db0f41](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/0db0f410182c2c8d897360bc818e670ae391130e)
+- [bd1f069](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bd1f069c5bc597469c0b06cc7377ab4b837d6902)
+- [b35f85d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b35f85daa2fd905fa6cf4efe2c1fc092f5c7bee5)
+- [c8ecbc2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/c8ecbc2fb2c8471a95302e9c92aea69f767e7501)
+- [569cdc2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/569cdc2e3296f1d665b75bff1240f6738e084deb)
+- [f90735c](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f90735ca73e8df6644171083dd07f24e2d544515)
+- [df1396f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/df1396fb4fb02272a31edcf9c274c2d3d5ba8e02)
+- [bad53a2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/bad53a26a4d4fcc5dcb0ebefb30ef9dde7d37b31)
+
+- [45af8df](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/45af8df1258b96896178f8460aef3285409222bc)

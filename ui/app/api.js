@@ -40,17 +40,51 @@ export async function renameWhiteboard(boardId, title, failureMessage) {
     });
 }
 
-export async function spawnWhiteboard({ title, participants = [] } = {}) {
+export async function spawnWhiteboard(
+    { title, participants = [], resourceType, resourceId, disposable } = {},
+    { signal } = {},
+) {
     return apiFetchJson("/whiteboards/spawn", {
         method: "POST",
-        body: JSON.stringify({ title, participants }),
+        body: JSON.stringify({
+            title,
+            participants,
+            resourceType,
+            resourceId,
+            disposable,
+        }),
+        signal,
     });
 }
 
-export async function fetchWhiteboardSession(boardId) {
-    return apiFetchJson(
-        `/whiteboards/session?id=${encodeURIComponent(boardId)}`,
-    );
+export async function fetchWhiteboardSession(
+    boardId,
+    { signal, recoverMissing = false, title } = {},
+) {
+    const readSession = (id) =>
+        apiFetchJson(`/whiteboards/session?id=${encodeURIComponent(id)}`, {
+            signal,
+        });
+    try {
+        return await readSession(boardId);
+    } catch (error) {
+        if (
+            !recoverMissing ||
+            error.status !== 404 ||
+            error.code !== "not_found"
+        )
+            throw error;
+        signal?.throwIfAborted();
+        const result = await spawnWhiteboard(
+            { resourceType: "canvas", resourceId: boardId, title },
+            { signal },
+        );
+        const replacementId = result?.whiteboard?.id;
+        if (!replacementId)
+            throw new Error("Canvas recovery did not return an identifier.");
+        signal?.throwIfAborted();
+        return { ...(await readSession(replacementId)), recreated: true };
+    }
 }
 
 export async function uploadWhiteboardImage(boardId, dataUrl) {

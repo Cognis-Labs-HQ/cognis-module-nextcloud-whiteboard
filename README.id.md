@@ -16,8 +16,10 @@ Pengguna dapat membuat dan memilih papan di `/whiteboards`, lalu berkolaborasi d
 npm install
 npm run lint
 npm test
+npx playwright install chromium
+npm run test:browser
 npm run check:manifest
 git diff --check
 ```
 
-Baca [`docs/standard.id.md`](docs/standard.id.md) untuk konfigurasi, capability, route, batas keamanan, dan panduan operasional.
+Baca [`docs/index.id.md`](docs/index.id.md) untuk konfigurasi, capability, route, batas keamanan, dan panduan operasional.

@@ -17,7 +17,7 @@ const paths = execFileSync(
             path &&
             path !== "manifest.json" &&
             path !== "README.md" &&
-            !path.startsWith("changelog/") &&
+            !path.startsWith("docs/changelog/") &&
             existsSync(path) &&
             lstatSync(path).isFile(),
     )
@@ -30,11 +30,9 @@ manifest.files = await Promise.all(
             .digest("hex"),
     })),
 );
-const prettierOptions = (await resolveConfig("manifest.json")) ?? {};
-await writeFile(
-    "manifest.json",
-    await format(JSON.stringify(manifest), {
-        ...prettierOptions,
-        parser: "json",
-    }),
-);
+const prettierConfig = (await resolveConfig("manifest.json")) ?? {};
+const formattedManifest = await format(JSON.stringify(manifest), {
+    ...prettierConfig,
+    parser: "json",
+});
+await writeFile("manifest.json", formattedManifest);

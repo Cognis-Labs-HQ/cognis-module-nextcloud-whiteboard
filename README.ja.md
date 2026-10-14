@@ -16,8 +16,10 @@ Nextcloud を基盤とし、Cognis のアクセス制御と統合された共同
 npm install
 npm run lint
 npm test
+npx playwright install chromium
+npm run test:browser
 npm run check:manifest
 git diff --check
 ```
 
-構成、Capability、ルート、セキュリティ境界、運用方法については [`docs/standard.ja.md`](docs/standard.ja.md) を参照してください。
+構成、Capability、ルート、セキュリティ境界、運用方法については [`docs/index.ja.md`](docs/index.ja.md) を参照してください。

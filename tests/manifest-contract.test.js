@@ -16,6 +16,8 @@ test("module manifest declares its supplied whiteboard capabilities", () => {
         "whiteboard:fetchBoardData",
         "whiteboard:membership",
         "whiteboard:deleteCanvas",
+        "whiteboard:uiGateway",
+        "whiteboard:sourceBinding",
     ]);
 });
 
@@ -62,13 +64,13 @@ test("module manifest requires the Cognis authentication gateway", () => {
 });
 
 test("module manifest isolates its disabled lifecycle API", () => {
-    assert.equal(manifest.entrypoints.api, "./api/index.js");
+    assert.equal(manifest.entrypoints.bootstrap, "./bootstrap.js");
     assert.equal(manifest.entrypoints.disabledApi, "./api/disabled.js");
 });
 
 test("module manifest excludes changelog entries from packaged hashes", () => {
     assert.equal(
-        manifest.files.some(({ path }) => path.startsWith("changelog/")),
+        manifest.files.some(({ path }) => path.startsWith("docs/changelog/")),
         false,
     );
 });
@@ -128,10 +130,10 @@ test("module manifest exposes localized preference metadata", () => {
         "/static/modules/nextcloud-whiteboard/languages",
     );
     for (const preference of manifest.ui.preferences) {
-        assert.match(preference.labelKey, /^module\.nextcloud_whiteboard\./);
+        assert.match(preference.labelKey, /^module\.nextcloud\.whiteboard\./);
         assert.match(
             preference.descriptionKey,
-            /^module\.nextcloud_whiteboard\./,
+            /^module\.nextcloud\.whiteboard\./,
         );
         assert.equal(preference.label, undefined);
         assert.equal(preference.description, undefined);

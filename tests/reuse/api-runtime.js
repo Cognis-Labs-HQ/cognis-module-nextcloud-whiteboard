@@ -51,7 +51,9 @@ export function createMemoryDb() {
                             (column) => row[column] === values[column],
                         ),
                 );
-                if (existing && command.conflict?.action === "update") {
+                if (existing && command.conflict?.action === "ignore") {
+                    return { rows: [] };
+                } else if (existing && command.conflict?.action === "update") {
                     Object.assign(existing, command.conflict.update ?? values);
                 } else if (existing && command.onConflict) {
                     for (const column of command.onConflict.merge ?? []) {

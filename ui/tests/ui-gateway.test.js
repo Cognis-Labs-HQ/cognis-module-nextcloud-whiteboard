@@ -65,11 +65,15 @@ test("provider registers complete creation and presentation methods", async () =
     ])
         assert.equal(typeof gateway[name], "function");
     const result = await gateway.createCanvas({
+        resourceType: "workspace",
+        resourceId: "workspace-1",
         title: "Shared board",
         participantHandles: ["alice", "bob"],
     });
     assert.deepEqual(result, { whiteboardId: "canvas-1" });
     assert.deepEqual(JSON.parse(requests.at(-1).options.body), {
+        resourceType: "workspace",
+        resourceId: "workspace-1",
         title: "Shared board",
         participants: ["alice", "bob"],
     });

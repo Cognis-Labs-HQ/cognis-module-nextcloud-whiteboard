@@ -49,7 +49,7 @@ await spawnWhiteboardWindow({
 
 ### Provider が所有する表示とアクション Flow
 
-ブラウザーはホストが初期化した ctx から `whiteboard:uiGateway` を取得します。`createCanvas({title, participantHandles})` と `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` は `{whiteboardId}` を返します。`requestCanvasPage({signal})` は Component Page の記述子を、`openCanvas({whiteboardId, elementId, signal})` はウィンドウハンドルを返します。呼び出し元は自身のマウント先を指定し、終了時にハンドルを破棄します。Whiteboard がルート識別、表示設定、通信トークンと寿命を管理し、連携側はそれらを再構成しません。各マウントには正確なキャンバス ID が必要です。 プロバイダーはホストの生成契約の直下で枠なし表示を指定し、キャンバスのコンテキストには識別情報とモードだけを渡します。
+ブラウザーはホストが初期化した ctx から `whiteboard:uiGateway` を取得します。`createCanvas({resourceType, resourceId, title, participantHandles})` と `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` は `{whiteboardId}` を返します。`requestCanvasPage({signal})` は Component Page の記述子を、`openCanvas({whiteboardId, elementId, signal})` はウィンドウハンドルを返します。呼び出し元は自身のマウント先を指定し、終了時にハンドルを破棄します。Whiteboard がルート識別、表示設定、通信トークンと寿命を管理し、連携側はそれらを再構成しません。各マウントには正確なキャンバス ID が必要です。 プロバイダーはホストの生成契約の直下で枠なし表示を指定し、キャンバスのコンテキストには識別情報とモードだけを渡します。
 
 有効なモジュールの非同期 Store アクションは、ctx を通じて所有する `nextcloud-whiteboard:*` Flow の `initialize-store` と `execute-action` 段階を実行します。結果の欠落と無効な Flow はエラーになります。ホストは無効なモジュールの Flow を登録しないため、無効時の設定は注入された Store を直接使います。変更前に認証と検証を行い、内部 Store 呼び出しはトランザクションを維持します。ボード削除と全データ削除は子テーブル優先の共通カタログを使用し、全削除は失敗時にロールバックします。
 
@@ -125,3 +125,7 @@ Marketplace バナーは Cognis とプロバイダーのブランドを中央の
 管理 → ホワイトボードでは、すべてのキャンバスと所有者、参照元、使用中のユーザー、更新日時を表示します。「すべてのキャンバス」「使用中」「連携キャンバス」のフィルターで絞り込めます。管理者による削除は確認が必要で、共有を取り消してから保存内容、参加状態、参加者のアクセス権、ユーザーのコピーを削除します。アクセストークンは一覧に公開しません。`whiteboard:sourceBinding` は `{whiteboardId, actorAccountId, sourceType, sourceId}` を受け取る `bind` と `release` を提供します。参照元を変更できるのは所有者だけです。条件付き更新により別の参照元は `source_conflict` で拒否し、同じ参照元の再設定は成功します。解除は指定の参照元に一致する場合だけ行い、古い重複参照の整理にも使用します。登録済みの保存処理フローを使用します。連携側は独自の参照元IDを渡し、Whiteboardの内部保存や描画機構を参照しません。
 
 キャンバスの参照元変更と削除は、公開契約 `auth:accountStore` で検証された管理者も実行できます。キャンバスの記録を削除する前に、すべての共有所有者の共有を取り消します。登録済みサーバー操作の名前は、変更されないモジュールプレフィックス以降をcamel caseにします。
+
+## 再利用できるキャンバス参照
+
+`createCanvas` と `createDisposableCanvas` は汎用の `resourceType` と `resourceId` を受け取ります。両方を指定すると保存された参照を解決し、繰り返しや同時のリクエストでも内容やメンバーをリセットせず、同じアクセス可能なキャンバスを返します。データベースで参照キーの一意性を保証します。既存キャンバスの保持モードが異なる場合は競合となり、権限のない呼び出し元は再利用できません。永続キャンバスを参照なしで作成すると、独立した新しいキャンバスを作ります。削除すると参照も消え、後で再作成できます。

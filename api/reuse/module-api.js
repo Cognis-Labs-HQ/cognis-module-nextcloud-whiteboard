@@ -3,6 +3,7 @@ import { createCanvasSourceBinding } from "./canvas-source-binding.js";
 import { buildCognisWhiteboardUrl } from "./access.js";
 import { createCanvasMembershipCapability } from "./canvas-membership.js";
 import { createCanvasDeletionCapability } from "./canvas-deletion.js";
+import { resolveResourceCanvas } from "./resource-canvas.js";
 
 export function createWhiteboardModuleApi({
     store,
@@ -61,13 +62,34 @@ export function createWhiteboardModuleApi({
                     "Nextcloud Whiteboard server URL and API key must be configured.",
                 );
             }
-            const whiteboard = await store.createWhiteboard({
+            const input = {
                 title: options.title,
                 createdBy,
                 participants: options.participants,
                 externalPath: options.externalPath,
                 disposable: options.disposable === true,
-            });
+            };
+            let whiteboard;
+            if (
+                options.resourceType !== undefined ||
+                options.resourceId !== undefined
+            ) {
+                const resolved = await resolveResourceCanvas({
+                    ...input,
+                    username: createdBy,
+                    store,
+                    resourceType: options.resourceType,
+                    resourceId: options.resourceId,
+                });
+                if (!resolved.whiteboard)
+                    throw Object.assign(
+                        new Error("Canvas reference could not be resolved."),
+                        { code: resolved.error, status: resolved.status },
+                    );
+                whiteboard = resolved.whiteboard;
+            } else {
+                whiteboard = await store.createWhiteboard(input);
+            }
             const launchUrl = buildCognisWhiteboardUrl(whiteboard.id, {
                 instantCanvas:
                     options.instantCanvas === true ||
@@ -85,13 +107,8 @@ export function createWhiteboardModuleApi({
                 windowFeatures:
                     "popup,width=1280,height=900,noopener,noreferrer",
                 access: {
-                    owner: createdBy,
-                    participants: [
-                        createdBy,
-                        ...(Array.isArray(options.participants)
-                            ? options.participants
-                            : []),
-                    ],
+                    owner: whiteboard.createdBy,
+                    participants: await store.listParticipants(whiteboard.id),
                 },
                 disposable: whiteboard.disposable,
             };

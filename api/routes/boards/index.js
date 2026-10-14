@@ -2,7 +2,7 @@ import { hasMinRole, readJson, sendError, sendJson } from "../../reuse/http.js";
 import { getFirstStageResult } from "../../reuse/flow-helpers.js";
 import { checkHttpLiveness } from "../../reuse/http-liveness.js";
 import { resolveExpiry } from "../../configuration/values.js";
-import { resolveDisposableCanvas } from "../../reuse/disposable-canvas.js";
+import { resolveResourceCanvas } from "../../reuse/resource-canvas.js";
 import { loadCanvasElements } from "../../reuse/canvas-loader.js";
 import { registerWhiteboardImageRoutes } from "../image/index.js";
 import {
@@ -650,9 +650,14 @@ export function registerBoardRoutes(
                 hasMinRole(claims.role, "admin"),
             );
             let whiteboard;
-            if (body.disposable) {
-                const resolved = await resolveDisposableCanvas({
+            if (
+                body.disposable ||
+                body.resourceType !== undefined ||
+                body.resourceId !== undefined
+            ) {
+                const resolved = await resolveResourceCanvas({
                     store,
+                    disposable: body.disposable === true,
                     resourceType: body.resourceType,
                     resourceId: body.resourceId,
                     title: body.title,
@@ -664,7 +669,7 @@ export function registerBoardRoutes(
                         res,
                         resolved.status,
                         resolved.error,
-                        "Disposable canvas could not be resolved.",
+                        "Canvas reference could not be resolved.",
                     );
                     return;
                 }

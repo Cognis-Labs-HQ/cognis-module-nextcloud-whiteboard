@@ -82,9 +82,16 @@ export function mountProvider(uiCtx) {
             });
         },
 
-        async createCanvas({ title, participantHandles } = {}) {
+        async createCanvas({
+            resourceType,
+            resourceId,
+            title,
+            participantHandles,
+        } = {}) {
             return createCanvasRequest(
                 {
+                    resourceType,
+                    resourceId,
                     title,
                     participants: participantHandles,
                 },

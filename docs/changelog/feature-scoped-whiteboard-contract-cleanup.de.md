@@ -52,6 +52,10 @@ Administration → Whiteboards zeigt alle Zeichenflächen mit Eigentümer, Quell
 
 Quellzuordnung und Löschung von Zeichenflächen erlauben auch Administratoren, die über den öffentlichen Vertrag `auth:accountStore` verifiziert werden. Vor dem Entfernen der Zeichenfläche werden ihre Freigaben sämtlicher Freigabeeigentümer widerrufen. Registrierte Server-Aktionen verwenden Camel Case nach dem unveränderlichen Modulpräfix.
 
+## Wiederverwendbare Canvas-Verknüpfungen
+
+Ausgabe 2.3.157 — `createCanvas` und `createDisposableCanvas` akzeptieren einen allgemeinen `resourceType` und eine `resourceId`. Zusammen lösen sie eine gespeicherte Canvas-Verknüpfung auf; wiederholte und gleichzeitige Anfragen liefern dieselbe autorisierte Zeichenfläche, ohne Inhalte oder Mitgliedschaften zurückzusetzen. Die Datenbank erzwingt einen eindeutigen Referenzschlüssel. Eine vorhandene Zeichenfläche mit anderem Persistenzmodus führt zu einem Konflikt; unberechtigte Aufrufer dürfen sie nicht wiederverwenden. Ohne Verknüpfung entsteht bei dauerhaften Zeichenflächen eine neue unabhängige Zeichenfläche. Löschen entfernt die Verknüpfung und erlaubt eine spätere Neuerstellung.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

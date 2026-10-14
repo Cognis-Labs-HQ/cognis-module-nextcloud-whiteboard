@@ -149,6 +149,7 @@ export class NextcloudWhiteboardStore {
                 { name: "id", type: "text", primaryKey: true },
                 { name: "title", type: "text", notNull: true },
                 { name: "external_path", type: "text", notNull: true },
+                { name: "reference_key", type: "text", unique: true },
                 { name: "source_type", type: "text" },
                 { name: "source_id", type: "text" },
                 {
@@ -346,6 +347,7 @@ export class NextcloudWhiteboardStore {
         createdBy,
         participants,
         externalPath,
+        referenceKey,
         disposable = false,
     }) {
         const id = randomUUID();
@@ -362,6 +364,7 @@ export class NextcloudWhiteboardStore {
             externalPath || `/apps/whiteboard/${id}.whiteboard`,
         );
         const now = new Date().toISOString();
+        let resolvedId = id;
         await this.db.transaction(async (executor) => {
             await executor.executeCommand({
                 option: "INSERT",
@@ -370,13 +373,34 @@ export class NextcloudWhiteboardStore {
                     id,
                     title: normalizeCollapsedText(title, "Cognis Whiteboard"),
                     external_path: resolvedPath,
+                    reference_key: referenceKey ?? null,
                     access_token: accessToken,
                     created_by: normalizedCreator,
                     disposable: disposable ? 1 : 0,
                     created_at: now,
                     updated_at: now,
                 },
+                ...(referenceKey
+                    ? {
+                          conflict: {
+                              action: "ignore",
+                              target: ["reference_key"],
+                          },
+                      }
+                    : {}),
             });
+            if (referenceKey) {
+                const result = await executor.executeCommand({
+                    option: "SELECT",
+                    table: "nextcloud_whiteboards",
+                    columns: ["id"],
+                    where: [{ column: "reference_key", value: referenceKey }],
+                });
+                resolvedId = result.rows?.[0]?.id;
+                if (!resolvedId)
+                    throw new Error("Canvas reference could not be resolved.");
+                if (resolvedId !== id) return;
+            }
             for (const username of normalizedParticipants) {
                 await executor.executeCommand({
                     option: "INSERT",
@@ -402,10 +426,10 @@ export class NextcloudWhiteboardStore {
                 });
             }
         });
-        if (!disposable) {
+        if (!disposable && resolvedId === id) {
             await this.saveUserCopies(id, [], normalizedParticipants);
         }
-        return this.getWhiteboardById(id);
+        return this.getWhiteboardById(resolvedId);
     }
 
     async getWhiteboardById(id) {
@@ -429,6 +453,15 @@ export class NextcloudWhiteboardStore {
                 },
             ],
             limit: 1,
+        });
+        return this.mapBoard(result.rows?.[0]);
+    }
+
+    async getWhiteboardByReferenceKey(referenceKey) {
+        const result = await this.db.executeCommand({
+            option: "SELECT",
+            table: "nextcloud_whiteboards",
+            where: [{ column: "reference_key", value: referenceKey }],
         });
         return this.mapBoard(result.rows?.[0]);
     }

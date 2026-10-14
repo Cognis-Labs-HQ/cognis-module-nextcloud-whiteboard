@@ -206,6 +206,9 @@ test("whiteboard spawning uses the host profile identity normalizer", async () =
                     apiKeyConfigured: true,
                 };
             },
+            async listParticipants() {
+                return ["canonical-alice"];
+            },
             async createWhiteboard(options) {
                 return {
                     id: "canvas-1",

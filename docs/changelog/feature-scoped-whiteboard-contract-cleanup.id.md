@@ -50,6 +50,10 @@ Administrasi → Papan tulis menampilkan semua kanvas beserta pemilik, pengikata
 
 Perubahan sumber dan penghapusan kanvas juga mengizinkan administrator yang diverifikasi melalui kontrak publik `auth:accountStore`. Penghapusan mencabut berbagi kanvas dari setiap pemilik berbagi sebelum menghapus catatan kanvas. Nama tindakan server terdaftar menggunakan camel case setelah awalan modul yang tetap.
 
+## Referensi kanvas yang dapat digunakan kembali
+
+Rilis 2.3.157 — `createCanvas` dan `createDisposableCanvas` menerima `resourceType` dan `resourceId` generik. Keduanya menyelesaikan satu referensi kanvas tersimpan; permintaan berulang dan bersamaan mengembalikan kanvas berizin yang sama tanpa mereset isi atau keanggotaan. Basis data memastikan kunci referensi unik. Kanvas yang sudah ada dengan mode persistensi berbeda menimbulkan konflik, dan pemanggil tanpa izin tidak dapat menggunakannya kembali. Membuat kanvas persisten tanpa referensi menghasilkan kanvas baru yang terpisah. Penghapusan kanvas menghapus referensinya sehingga kanvas dapat dibuat lagi.
+
 ## Komit
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

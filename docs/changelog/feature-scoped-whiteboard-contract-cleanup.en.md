@@ -52,6 +52,10 @@ Administration → Whiteboards lists every canvas with owner, source binding, ac
 
 Canvas source changes and deletion also permit administrators verified through the public `auth:accountStore` contract. Deletion revokes every share owner’s canvas shares before removing canvas records. Registered server action names use camel case after the immutable module prefix.
 
+## Reusable canvas references
+
+Release 2.3.157 — `createCanvas` and `createDisposableCanvas` accept a generic `resourceType` and `resourceId`. Supplying both resolves one stored canvas reference; repeated and concurrent requests return the same authorized canvas without resetting its contents or membership. The database enforces uniqueness of the reference key. An existing canvas with a different disposal mode is a conflict, and unauthorized callers cannot reuse it. Omitting the reference when creating a persistent canvas creates a new independent canvas. Deleting a canvas removes its reference, permitting later recreation.
+
 ## Commits
 
 - [b78213e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b78213eb77660d59c9bac3aafe2dfd2677a488b0)

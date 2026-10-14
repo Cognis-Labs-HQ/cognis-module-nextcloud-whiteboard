@@ -1,4 +1,5 @@
 import { readJson, sendJson, sendError } from "../../reuse/http.js";
+import { diagnoseCanvases } from "../../administration/canvases.js";
 
 export function registerAdminCanvasRoutes(
     router,
@@ -9,9 +10,11 @@ export function registerAdminCanvasRoutes(
         async (req, res) => {
             if (!requireAuth(req, res, "admin")) return;
             const boards = await store.listWhiteboards();
+            const diagnose = diagnoseCanvases(boards);
             const rows = await Promise.all(
                 boards.map(async (board) => {
                     const presence = await store.listPresence(board.id);
+                    const members = await store.listParticipants(board.id);
                     return {
                         id: board.id,
                         title: board.title,
@@ -19,6 +22,7 @@ export function registerAdminCanvasRoutes(
                         updatedAt: board.updatedAt,
                         sourceType: board.sourceType,
                         sourceId: board.sourceId,
+                        issues: diagnose(board, members),
                         activeUsers: presence
                             .filter(
                                 (entry) =>

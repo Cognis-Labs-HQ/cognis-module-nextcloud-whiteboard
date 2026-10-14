@@ -37,6 +37,7 @@ function fixture() {
                 listPresence: async () => [
                     { username: "owner", active: true, lastSeenAt: new Date() },
                 ],
+                listParticipants: async () => ["owner"],
                 getWhiteboardById: async () => ({
                     id: "board",
                     createdBy: "owner",
@@ -84,6 +85,7 @@ test("canvas administration authenticates before reads and hides access tokens",
     await list({}, harness.response);
     assert.equal(harness.response.body.data[0].accessToken, undefined);
     assert.deepEqual(harness.response.body.data[0].activeUsers, ["owner"]);
+    assert.deepEqual(harness.response.body.data[0].issues, []);
 });
 
 test("administrator deletion revokes canvas shares before removing saved canvas data", async () => {

@@ -2,6 +2,10 @@
 
 **機能ブランチ:** feature-scoped-whiteboard-contract-cleanup
 
+## キャンバス管理の診断
+
+リリース 2.3.160 — キャンバス管理には、すべてのキャンバス、使用中のキャンバス、問題のあるキャンバスの各フィルターと専用の空状態メッセージがあります。問題のあるビューには、所有者や所有者のアクセス権がないもの、不完全な参照元の関連付け、重複した汎用の参照元の関連付けやリソース参照を表示します。小さな問題ピルで各問題を説明します。診断はWhiteboard自身のデータのみを使用します。管理者権限は引き続き必須で、キャンバスの認証情報は返しません。
+
 ## 公開表示契約
 
 ブラウザーはホストが初期化した ctx から `whiteboard:uiGateway` を取得します。`createCanvas({title, participantHandles})` と `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` は `{whiteboardId}` を返します。`requestCanvasPage({signal})` は Component Page の記述子を、`openCanvas({whiteboardId, elementId, signal})` はウィンドウハンドルを返します。呼び出し元は自身のマウント先を指定し、終了時にハンドルを破棄します。Whiteboard がルート識別、表示設定、通信トークンと寿命を管理し、連携側はそれらを再構成しません。各マウントには正確なキャンバス ID が必要です。

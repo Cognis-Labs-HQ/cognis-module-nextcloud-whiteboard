@@ -2,6 +2,10 @@
 
 **Feature Branch:** feature-scoped-whiteboard-contract-cleanup
 
+## Canvas administration diagnostics
+
+Release 2.3.160 — Canvas administration offers All Canvases, Active Canvases and Troubled Canvases, each with its own empty message. The troubled view lists canvases with missing owners or owner access, incomplete source bindings, or duplicate generic source bindings or resource references. Small issue pills explain each problem. Diagnostics use only Whiteboard-owned data; administration still requires administrator access and never returns canvas credentials.
+
 ## Public presentation contract
 
 The browser resolves `whiteboard:uiGateway` from the host-initialized ctx. `createCanvas({title, participantHandles})` and `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` return `{whiteboardId}`. `requestCanvasPage({signal})` returns the host component-page descriptor; `openCanvas({whiteboardId, elementId, signal})` returns its window handle. The caller supplies its own mount target and discards the returned handle on teardown. Whiteboard owns route identity, presentation flags, transport tokens and disposal semantics; integrations must not reconstruct these details. Each mount requires its exact canvas ID.

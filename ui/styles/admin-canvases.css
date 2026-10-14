@@ -2,6 +2,8 @@
     display: flex;
     gap: 0.5rem;
     margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.25rem;
 }
 
 .whiteboard-admin-filter-button {
@@ -11,4 +13,22 @@
 .whiteboard-admin-filter-button[aria-pressed="true"] {
     color: var(--accent);
     border-color: var(--accent);
+}
+
+.whiteboard-admin-filter-button:hover {
+    transform: none;
+}
+
+.whiteboard-admin-issues {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.whiteboard-admin-issue-pill {
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    line-height: 1.4;
 }

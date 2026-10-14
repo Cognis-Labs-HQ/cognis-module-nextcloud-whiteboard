@@ -115,9 +115,8 @@
   <string name="module.nextcloud.whiteboard.font.size">Ukuran font</string>
   <string name="module.nextcloud.whiteboard.font.family">Jenis font</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.title">Papan tulis</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.all">Semua kanvas</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.active">Aktif</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.bound">Kanvas integrasi</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.all">Semua Kanvas</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.active">Kanvas Aktif</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.canvas">Kanvas</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.owner">Pemilik</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.source">Pengikatan sumber</string>
@@ -128,6 +127,15 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.confirm">Hapus kanvas ini, konten tersimpan, dan aksesnya? Pengguna yang terhubung akan kehilangan akses.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.deleted">Kanvas dihapus.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.failed">Kanvas tidak dapat dimuat atau diperbarui.</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.empty">Tidak ada kanvas.</string>
   <string name="module.nextcloud.whiteboard.canvas.recreated">Kanvas yang dihapus diganti dengan kanvas baru.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.troubled">Kanvas Bermasalah</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.all">Tidak ada kanvas ditemukan.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.active">Tidak ada kanvas aktif.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.troubled">Semua kanvas Anda siap digunakan!</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issues">Masalah</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.missingowner">Pemilik tidak ada</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.owneraccessmissing">Pemilik tidak memiliki akses kanvas</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">Ikatan sumber tidak lengkap</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Ikatan sumber duplikat</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Referensi sumber daya duplikat</string>
 </resources>

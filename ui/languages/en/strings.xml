@@ -115,9 +115,8 @@
   <string name="module.nextcloud.whiteboard.font.size">Font size</string>
   <string name="module.nextcloud.whiteboard.font.family">Font family</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.title">Whiteboards</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.all">All canvases</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.active">Active</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.bound">Integration canvases</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.all">All Canvases</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.active">Active Canvases</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.canvas">Canvas</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.owner">Owner</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.source">Source binding</string>
@@ -128,6 +127,15 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.confirm">Delete this canvas, its saved content and access? Connected users will lose access.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.deleted">Canvas deleted.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.failed">Canvases could not be loaded or updated.</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.empty">No canvases found.</string>
   <string name="module.nextcloud.whiteboard.canvas.recreated">The deleted canvas was replaced with a new canvas.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.troubled">Troubled Canvases</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.all">No canvases found.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.active">No active canvases.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.troubled">All your canvases are good to go!</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issues">Issues</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.missingowner">Missing owner</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.owneraccessmissing">Owner has no canvas access</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">Incomplete source binding</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Duplicate source binding</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Duplicate resource reference</string>
 </resources>

@@ -116,8 +116,7 @@
   <string name="module.nextcloud.whiteboard.font.family">Schriftfamilie</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.title">Whiteboards</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.all">Alle Zeichenflächen</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.active">Aktiv</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.bound">Integrations-Zeichenflächen</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.active">Aktive Zeichenflächen</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.canvas">Zeichenfläche</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.owner">Eigentümer</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.source">Quellzuordnung</string>
@@ -128,6 +127,15 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.confirm">Diese Zeichenfläche einschließlich gespeicherter Inhalte und Zugriffe löschen? Verbundene Benutzer verlieren den Zugriff.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.deleted">Zeichenfläche gelöscht.</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.failed">Zeichenflächen konnten nicht geladen oder aktualisiert werden.</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.empty">Keine Zeichenflächen gefunden.</string>
   <string name="module.nextcloud.whiteboard.canvas.recreated">Die gelöschte Zeichenfläche wurde durch eine neue ersetzt.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.troubled">Problematische Zeichenflächen</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.all">Keine Zeichenflächen gefunden.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.active">Keine aktiven Zeichenflächen.</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.troubled">Alle Ihre Zeichenflächen sind bereit!</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issues">Probleme</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.missingowner">Eigentümer fehlt</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.owneraccessmissing">Eigentümer hat keinen Zugriff</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">Unvollständige Quellverknüpfung</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Doppelte Quellverknüpfung</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Doppelter Ressourcenverweis</string>
 </resources>

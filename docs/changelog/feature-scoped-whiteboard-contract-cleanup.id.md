@@ -2,6 +2,10 @@
 
 **Cabang Fitur:** feature-scoped-whiteboard-contract-cleanup
 
+## Diagnostik administrasi kanvas
+
+Rilis 2.3.160 — Administrasi kanvas menyediakan Semua Kanvas, Kanvas Aktif, dan Kanvas Bermasalah dengan pesan kosong tersendiri. Tampilan bermasalah menampilkan kanvas tanpa pemilik atau akses pemilik, ikatan sumber tidak lengkap, atau ikatan sumber generik maupun referensi sumber daya duplikat. Pil masalah kecil menjelaskan setiap temuan. Diagnostik hanya menggunakan data milik Whiteboard. Administrasi tetap memerlukan akses administrator dan tidak mengembalikan kredensial kanvas.
+
 ## Kontrak presentasi publik
 
 Browser memperoleh `whiteboard:uiGateway` melalui ctx yang diinisialisasi host. `createCanvas({title, participantHandles})` dan `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` mengembalikan `{whiteboardId}`. `requestCanvasPage({signal})` mengembalikan deskriptor component-page; `openCanvas({whiteboardId, elementId, signal})` mengembalikan handle jendelanya. Pemanggil menyediakan target pemasangan sendiri dan membuang handle saat pembongkaran. Whiteboard memiliki identitas rute, parameter presentasi, token transport dan masa hidup; integrasi tidak boleh membangun ulang detail tersebut. Setiap pemasangan memerlukan ID kanvas yang tepat.

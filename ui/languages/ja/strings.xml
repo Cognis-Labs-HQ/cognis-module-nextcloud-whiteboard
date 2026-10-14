@@ -116,8 +116,7 @@
   <string name="module.nextcloud.whiteboard.font.family">フォントファミリー</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.title">ホワイトボード</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.all">すべてのキャンバス</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.active">使用中</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.bound">連携キャンバス</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.active">使用中のキャンバス</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.canvas">キャンバス</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.owner">所有者</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.source">参照元</string>
@@ -128,6 +127,15 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.confirm">このキャンバスと保存内容、アクセス権を削除しますか？接続中のユーザーはアクセスできなくなります。</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.deleted">キャンバスを削除しました。</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.failed">キャンバスを取得または更新できませんでした。</string>
-  <string name="module.nextcloud.whiteboard.admin.canvases.empty">キャンバスがありません。</string>
   <string name="module.nextcloud.whiteboard.canvas.recreated">削除されたキャンバスを新しいキャンバスで置き換えました。</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.troubled">問題のあるキャンバス</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.all">キャンバスがありません。</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.active">使用中のキャンバスはありません。</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.empty.troubled">すべてのキャンバスは正常です！</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issues">問題</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.missingowner">所有者がありません</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.owneraccessmissing">所有者にアクセス権がありません</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.incompletesource">参照元の関連付けが不完全です</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">参照元の関連付けが重複しています</string>
+  <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">リソース参照が重複しています</string>
 </resources>

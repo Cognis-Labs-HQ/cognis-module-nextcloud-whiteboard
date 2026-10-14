@@ -2,6 +2,10 @@
 
 **Feature-Zweig:** feature-scoped-whiteboard-contract-cleanup
 
+## Diagnose in der Zeichenflächen-Verwaltung
+
+Ausgabe 2.3.160 — Die Zeichenflächen-Verwaltung bietet Alle Zeichenflächen, Aktive Zeichenflächen und Problematische Zeichenflächen mit eigenen Leermeldungen. Die Problemansicht zeigt fehlende Eigentümer oder Eigentümerzugriffe, unvollständige Quellverknüpfungen sowie doppelte allgemeine Quellverknüpfungen oder Ressourcenverweise. Kleine Problemmarkierungen erläutern jeden Befund. Die Diagnose verwendet nur Whiteboard-eigene Daten. Die Verwaltung erfordert weiterhin Administratorrechte und gibt keine Zugangsdaten aus.
+
 ## Öffentlicher Darstellungsvertrag
 
 Der Browser bezieht `whiteboard:uiGateway` über den vom Host initialisierten ctx. `createCanvas({title, participantHandles})` und `createDisposableCanvas({resourceType, resourceId, title, participantHandles})` liefern `{whiteboardId}`. `requestCanvasPage({signal})` liefert den Component-Page-Deskriptor; `openCanvas({whiteboardId, elementId, signal})` liefert dessen Fensterhandle. Der Aufrufer stellt sein Mount-Ziel bereit und verwirft das Handle beim Abbau. Whiteboard verwaltet Routenidentität, Darstellungsparameter, Transporttoken und Lebensdauer; Integrationen dürfen diese Details nicht nachbilden. Jeder Mount benötigt seine exakte Canvas-ID.

@@ -139,4 +139,21 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Ikatan sumber duplikat</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Referensi sumber daya duplikat</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Jalur kanvas duplikat</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.title">Panduan Papan Tulis</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step1.title">Pilih Papan</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step1.body">Buka papan tersedia atau buat yang baru melalui kontrol papan biasa.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step2.title">Alat Menggambar</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step2.body">Pilih seleksi, gambar, bentuk, atau teks, lalu sesuaikan pengaturan alat sebelum menyunting.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step3.title">Kanvas dan Riwayat</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step3.body">Geser dan perbesar tampilan kanvas; Urungkan dan Ulangi mengelola suntingan tanpa mengosongkan papan.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step4.title">Menyimpan dan Berbagi</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step4.body">Periksa status simpan dan koneksi sebelum keluar; berbagi dan menyimpan kanvas sementara menggunakan aksi tersendiri.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.title">Administrasi Kanvas</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step1.title">Cari Kanvas</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step1.body">Saring kanvas aktif atau bermasalah lalu periksa pemilik, sumber, dan pesertanya.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step2.title">Tinjau Penghapusan</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step2.body">Periksa kanvas sebelum menghapusnya; penghapusan memerlukan konfirmasi administrator.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.title">Konfigurasi Papan Tulis</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.step1.title">Koneksi dan Batas</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.step1.body">Periksa koneksi server, kolom kredensial tersembunyi, dan batas unggahan sebelum menyimpan konfigurasi.</string>
 </resources>

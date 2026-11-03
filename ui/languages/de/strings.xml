@@ -139,4 +139,21 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Doppelte Quellverknüpfung</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Doppelter Ressourcenverweis</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Doppelter Zeichenflächenpfad</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.title">Whiteboard-Anleitung</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step1.title">Board auswählen</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step1.body">Öffnen Sie ein verfügbares Board oder erstellen Sie eines über die normalen Bedienelemente.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step2.title">Zeichenwerkzeuge</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step2.body">Wählen Sie Auswahl, Zeichnen, Formen oder Text und passen Sie Einstellungen vor dem Bearbeiten an.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step3.title">Zeichenfläche und Verlauf</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step3.body">Verschieben und zoomen Sie die Ansicht; Rückgängig und Wiederholen verwalten Änderungen ohne das Board zu leeren.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step4.title">Speichern und Teilen</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.step4.body">Prüfen Sie Speicher- und Verbindungsstatus vor dem Verlassen; Teilen und Speichern einer temporären Zeichenfläche sind eigene Aktionen.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.title">Zeichenflächen verwalten</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step1.title">Zeichenflächen finden</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step1.body">Filtern Sie aktive oder problematische Zeichenflächen und prüfen Sie Besitzer, Quelle und Teilnehmer.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step2.title">Löschung prüfen</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.step2.body">Prüfen Sie eine Zeichenfläche vor dem Löschen; die Löschung benötigt eine bewusste Administratorbestätigung.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.title">Whiteboard konfigurieren</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.step1.title">Verbindung und Grenzen</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.step1.body">Prüfen Sie Serververbindung, verdeckte Zugangsdaten und Uploadgrenzen vor dem Speichern.</string>
 </resources>

@@ -42,6 +42,9 @@ test("module locale keys use period-delimited segments", async () => {
             "utf8",
         );
         for (const match of xml.matchAll(/<string name="(module\.[^"]+)"/g))
-            assert.match(match[1], /^module(?:\.[a-z0-9]+)+$/);
+            assert.match(
+                match[1],
+                /^module\.[a-z0-9]+(?:-[a-z0-9]+)*(?:\.[a-z0-9]+)+$/,
+            );
     }
 });

@@ -639,10 +639,16 @@ test("whiteboard registers one dedicated canvas UI gateway provider", async () =
     assert.doesNotMatch(gatewaySource, /uiCtx\.capabilities\.set\(/);
 });
 
-test("whiteboard capability discovery has a single provider registration", () => {
+test("whiteboard capability discovery declares tutorials and its browser gateway", () => {
     const { capabilityProviders, navbarPlugins } = captureUiRegistration();
 
     assert.deepEqual(capabilityProviders, [
+        {
+            scriptUrl:
+                "/static/modules/nextcloud-whiteboard/tutorials/provider.js",
+            providesCapabilities: ["nextcloud-whiteboard:pageTutorials"],
+            access: { minRole: "user" },
+        },
         {
             scriptUrl: `/static/modules/nextcloud-whiteboard/reuse/gateway.js?revision=${moduleVersion}`,
             providesCapabilities: ["whiteboard:uiGateway"],

@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -401,11 +401,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "abfd2acfb45e2318545c44b6c7a5e0aa691c8095ca4d805d88a10f5e11f4ecd6"
+            "sha256": "c790c6d007f8aaf71a0c7b7325563307a04bd3fa9280a2a22e8d9b004e760207"
         },
         {
             "path": "package.json",
-            "sha256": "246d8c43ad29cc4fccfb2ceb059e0a7190f1ef71b1c9c23fe9f5895a69ec38db"
+            "sha256": "3dd900f6357285502c61acd041e605baf0894b4674d88e546e1040aa4c274cbe"
         },
         {
             "path": "routes.json",
@@ -613,19 +613,19 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "675af61eedb6618e869c90c63f6037b5d816c808a5384bf66a46056cc9927461"
+            "sha256": "b59d54da930f767d05466f26f2ce01ee561fe2d5fe5ca7d66435a36cd8b9b19a"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "1f4f0989fd7f480614a50e603530e51b40c4a45b53ce78780b3416a48babe885"
+            "sha256": "b4efc3c305ce083231afe1bab4fe74664f2180819b67f30ccd3a0e4ccc7df8ad"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "670c6621a2d9365d19a819595d6ac18e401e7670452540dbee283c990794add4"
+            "sha256": "1c3ce87ffb8f760380b38cc1a217338554a3e8e6f415bb0f5dedb56c8643b2a2"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "98c72e6da9fd536121878ee777569b620a8034eacb2bc5570e362a7c46214377"
+            "sha256": "7e8f86656dcb2fae11ff79990339480ebbb0f345c4a944f0814de77446245022"
         },
         {
             "path": "ui/navbar.js",
@@ -849,7 +849,7 @@
         },
         {
             "path": "ui/tutorials/guides.js",
-            "sha256": "9b81ad0bc9ea8c901e8512df2f83dee2295f6909adb437e082c1b0557ad7c310"
+            "sha256": "e3ca6726ea77fd6937de89799a1a3525819882716aa05bb5cc39cfc7734b7d08"
         },
         {
             "path": "ui/tutorials/provider.js",

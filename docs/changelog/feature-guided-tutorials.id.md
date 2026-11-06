@@ -22,6 +22,18 @@ Setiap komponen antarmuka wajib dicakup tutorial. Panduan kontribusi mengharuska
 
 Penjelasan penghapusan kanvas menyoroti kontrol Hapus yang ditampilkan. Target pertama yang dapat digunakan dipilih dalam bagian tutorial; langkah dilewati jika tidak ada kontrol yang cocok.
 
+## Wilayah tutorial yang terlihat
+
+Wilayah tutorial dan isyarat Berikutnya ditetapkan secara eksplisit.
+
+## Antrean menu mengambang bersama
+
+Menu mengikuti antrean host bersama dan masa hidup komponen.
+
+## Kontrol pemulihan yang didokumentasikan
+
+Tampilan target hilang menyediakan Berikutnya dan Mulai Ulang Tutorial; pemutaran ulang juga menyediakan Batal.
+
 ## Komit
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

@@ -22,6 +22,18 @@ Tutorial coverage is required for every UI-facing component. Contributor guidanc
 
 The canvas deletion explanation highlights the displayed Delete control. The first usable target is selected inside the tutorial section and the step is skipped when no matching control is available.
 
+## Visible tutorial regions
+
+Tutorial regions and Next cues are authored explicitly.
+
+## Shared floating-menu queue
+
+Menus follow the shared queued host contract and component lifetime.
+
+## Documented recovery controls
+
+Missing-target views provide Next and Restart Tutorial; replay also provides Cancel.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

@@ -22,6 +22,18 @@ Alle UI-Komponenten benötigen eine Anleitung. Die Beitragsrichtlinien verlangen
 
 Die Erklärung zum Löschen einer Zeichenfläche hebt die angezeigte Löschen-Schaltfläche hervor. Der erste nutzbare Treffer wird im Tutorial-Abschnitt gewählt; ohne passenden Treffer wird der Schritt übersprungen.
 
+## Sichtbare Tutorial-Ziele
+
+Tutorial-Ziele und Weiter-Hinweise sind ausdrücklich festgelegt.
+
+## Gemeinsame Menüwarteschlange
+
+Menüs folgen der gemeinsamen Host-Warteschlange und der Komponentenlebensdauer.
+
+## Dokumentierte Wiederherstellungsaktionen
+
+Bei fehlenden Zielen stehen Weiter und Tutorial neu starten bereit; Wiederholungen bieten auch Abbrechen.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

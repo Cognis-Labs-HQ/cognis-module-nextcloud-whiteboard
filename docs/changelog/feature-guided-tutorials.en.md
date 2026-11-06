@@ -12,6 +12,12 @@ The host owns callouts, arrows, spotlight, accessibility and the shared floating
 
 Tutorial step translation keys and target identifiers describe their subject instead of their position in the guide. The same keys are supplied in all four supported languages.
 
+## Author Next cues per step
+
+Each tutorial step now explicitly declares `highlightNext`: explanations that require Next or Finish enable it, while interaction- and wait-driven exercises disable it. The cue retains a static outline for reduced motion.
+
+Tutorial coverage is required for every UI-facing component. Contributor guidance requires user-first, task-focused walkthroughs and a review of existing tutorials whenever features or UI behavior change.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

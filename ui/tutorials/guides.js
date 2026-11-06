@@ -9,6 +9,7 @@ export const guides = [
                     "module.nextcloud-whiteboard.tutorial.more.canvas.title",
                 steps: [
                     {
+                        highlightNext: true,
                         id: "choose-a-board",
                         selector: ".whiteboard-overlay-board-list",
                         titleKey:
@@ -17,6 +18,7 @@ export const guides = [
                             "module.nextcloud-whiteboard.tutorial.more.canvas.choose.a.board.body",
                     },
                     {
+                        highlightNext: true,
                         id: "drawing-tools",
                         selector: "#whiteboard-toolbar",
                         titleKey:
@@ -25,6 +27,7 @@ export const guides = [
                             "module.nextcloud-whiteboard.tutorial.more.canvas.drawing.tools.body",
                     },
                     {
+                        highlightNext: true,
                         id: "canvas-and-history",
                         selector: ".whiteboard-canvas-stage",
                         titleKey:
@@ -33,6 +36,7 @@ export const guides = [
                             "module.nextcloud-whiteboard.tutorial.more.canvas.canvas.and.history.body",
                     },
                     {
+                        highlightNext: true,
                         id: "saving-and-sharing",
                         selector: ".whiteboard-save-state",
                         titleKey:
@@ -55,6 +59,7 @@ export const guides = [
                     "module.nextcloud-whiteboard.tutorial.more.canvases.title",
                 steps: [
                     {
+                        highlightNext: true,
                         id: "find-canvases",
                         selector: ".whiteboard-admin-filters",
                         titleKey:
@@ -63,6 +68,7 @@ export const guides = [
                             "module.nextcloud-whiteboard.tutorial.more.canvases.find.canvases.body",
                     },
                     {
+                        highlightNext: true,
                         id: "deletion-review",
                         selector: "#whiteboard-admin-canvases",
                         titleKey:
@@ -80,6 +86,7 @@ export const guides = [
                     "module.nextcloud-whiteboard.tutorial.more.configuration.title",
                 steps: [
                     {
+                        highlightNext: true,
                         id: "connection-and-limits",
                         selector: "#module-nextcloud-whiteboard",
                         titleKey:

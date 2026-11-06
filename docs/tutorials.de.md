@@ -13,3 +13,5 @@ Der Host verwaltet Hinweise, Pfeile, Hervorhebung, Barrierefreiheit und das geme
 Der Ablauf erklärt nur und führt keine privilegierte Aktion aus. Fehlende Ziele erlauben Weiter im Erstdurchlauf sowie Wiederholen oder Abbrechen bei erneuter Wiedergabe.
 
 Anbietertests prüfen den öffentlichen Vertrag, alle vier Übersetzungen, Verfügbarkeitsregeln, Fehlerbereinigung und die Ablehnung nicht unterstützter Host-Versionen.
+
+Jeder Tutorial-Schritt legt `highlightNext` ausdrücklich fest: Erklärungen, die Weiter oder Fertig benötigen, aktivieren den Hinweis; interaktive und wartebasierte Übungen deaktivieren ihn. Bei reduzierter Bewegung bleibt eine statische Umrandung.

@@ -13,3 +13,5 @@ The host owns callouts, arrows, spotlight, accessibility and the shared floating
 The play is informational and never performs a privileged action. Missing targets allow Next during the first run and Retry or Cancel on replay.
 
 Provider tests check the public contract, all four translations, availability rules, rollback and rejection of unsupported host versions.
+
+Each tutorial step now explicitly declares `highlightNext`: explanations that require Next or Finish enable it, while interaction- and wait-driven exercises disable it. The cue retains a static outline for reduced motion.

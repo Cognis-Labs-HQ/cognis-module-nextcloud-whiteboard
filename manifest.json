@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.4.2",
+    "version": "2.4.3",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -385,27 +385,27 @@
         },
         {
             "path": "docs/tutorials.de.md",
-            "sha256": "dc155df2fbbf3b755fc8b64c58a24ae65e19a17ad3b0e39ffa91f514355997da"
+            "sha256": "52deedcc52ccc06e024c73e65c7123c3be16839640ff0043ad205affd60fd1af"
         },
         {
             "path": "docs/tutorials.en.md",
-            "sha256": "22a331522e5986a8ffcf987ab900cf16924fa9c9448a1526984db4a9d70ba94e"
+            "sha256": "c02118e98d6a39b39b7a638a17d81cff4d6aa2acc4658266d412b4c8ac3790a5"
         },
         {
             "path": "docs/tutorials.id.md",
-            "sha256": "4de309298e699cf5f24e17192d150aeabce91b5f656bbac880def13d65d35e41"
+            "sha256": "fc5b37f7cf5f414b1b00ffb1368760f6106c2541ac2ef093aa08e23b2350419b"
         },
         {
             "path": "docs/tutorials.ja.md",
-            "sha256": "8582959ab6bd396f46da0d7b91096dfed1bd0eca4b12c23e6696460ae37493ca"
+            "sha256": "39bcd5902b0b77e4606a566f75cfec4ae15879e24a4ac538b6d70e8d4c28c3ee"
         },
         {
             "path": "package-lock.json",
-            "sha256": "c69681075d48059e9ebee10e99308d42ce461f1c507882057a8f15c270535819"
+            "sha256": "cc7c83f5e29b42d6e6c0d9ff6502ae373d3ba9b2d23b368aa72a5ebd769e4604"
         },
         {
             "path": "package.json",
-            "sha256": "ad6744bdeff1f0282c2e2950ec5063808c259fb2d765dc946ff479a0f26baa9e"
+            "sha256": "fcc09b4cc0ce9e6126f949a7ac163c22de6b05e72fa320204e34a6e92b526717"
         },
         {
             "path": "routes.json",
@@ -849,7 +849,7 @@
         },
         {
             "path": "ui/tutorials/guides.js",
-            "sha256": "09c577f950d66e18e88a24ebd82b82e5707520179ab6f8058502222f28271723"
+            "sha256": "88081052a612545ba5f9610af3202a38e61449c91093e744b23ee80eb4f7f9d2"
         },
         {
             "path": "ui/tutorials/provider.js",

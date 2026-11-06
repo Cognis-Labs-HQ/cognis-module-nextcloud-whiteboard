@@ -18,6 +18,10 @@ Jeder Tutorial-Schritt legt `highlightNext` ausdrücklich fest: Erklärungen, di
 
 Alle UI-Komponenten benötigen eine Anleitung. Die Beitragsrichtlinien verlangen nutzerorientierte Aufgabenabläufe und eine Prüfung bestehender Anleitungen bei neuen Funktionen oder geänderter Bedienung.
 
+## Präzise Ziele und erneuter Zweigstart
+
+Die Erklärung zum Löschen einer Zeichenfläche hebt die angezeigte Löschen-Schaltfläche hervor. Der erste nutzbare Treffer wird im Tutorial-Abschnitt gewählt; ohne passenden Treffer wird der Schritt übersprungen.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

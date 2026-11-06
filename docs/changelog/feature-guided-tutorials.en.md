@@ -18,6 +18,10 @@ Each tutorial step now explicitly declares `highlightNext`: explanations that re
 
 Tutorial coverage is required for every UI-facing component. Contributor guidance requires user-first, task-focused walkthroughs and a review of existing tutorials whenever features or UI behavior change.
 
+## Specific targets and branch replay
+
+The canvas deletion explanation highlights the displayed Delete control. The first usable target is selected inside the tutorial section and the step is skipped when no matching control is available.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

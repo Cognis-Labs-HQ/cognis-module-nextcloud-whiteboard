@@ -70,7 +70,8 @@ export const guides = [
                     {
                         highlightNext: true,
                         id: "deletion-review",
-                        selector: "#whiteboard-admin-canvases",
+                        selector: "button[data-delete-canvas]:not(:disabled)",
+                        targetMatch: "first",
                         titleKey:
                             "module.nextcloud-whiteboard.tutorial.more.canvases.deletion.review.title",
                         bodyKey:

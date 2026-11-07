@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.4.4",
+    "version": "2.4.5",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -121,7 +121,7 @@
         },
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "a214c0855390ddb94fa88e652837cf74b7ce3c4b8cfe6f2741f6a34cf478276e"
+            "sha256": "2268621c462b96f9cc79dfdcb8d01e70f34d68bca94519e615f890effb1faddb"
         },
         {
             "path": ".gitignore",
@@ -385,27 +385,27 @@
         },
         {
             "path": "docs/tutorials.de.md",
-            "sha256": "d74009113a9410484406edda7ea4942757852e521a5aa8ce33420783c98bd402"
+            "sha256": "6febae817919dbccadebac5d94fef637b9d359f760a50d680c5c8b4a5fd5f815"
         },
         {
             "path": "docs/tutorials.en.md",
-            "sha256": "668f0d11700e1097f7633f60344e00c5673afc95f2eec45581087f02c5a35cb8"
+            "sha256": "eacd91076d7f8e0f74b247fb97bd0254a0662901ee7e01b850b6563233f6d7da"
         },
         {
             "path": "docs/tutorials.id.md",
-            "sha256": "8bad27044e292d2762728a5a2765eece7359da9df7e6466b61421b32edb6a6ee"
+            "sha256": "a5e8f5b8f7d4508b013719dcad1faf3e5239ffa1c5871832db87c640842ff4cd"
         },
         {
             "path": "docs/tutorials.ja.md",
-            "sha256": "c9c24b45a832bca7d7a1ac2e4109e7f3c5490920ba1d4df00b302cbeb2edd8e1"
+            "sha256": "13ad798c261fec3e99d5d18013381b8815151c4a6640c3b99bf4bd064dd8499f"
         },
         {
             "path": "package-lock.json",
-            "sha256": "50224deb5f23f515e92fa257573f60e1616e762e83fc6dc15bab30286cefcabe"
+            "sha256": "f10c559240c22ab2116c843bf20b3791f15df03ebbc6c307a2b1142a73e3478f"
         },
         {
             "path": "package.json",
-            "sha256": "11e961a2c9980ca176f9de08152284526a9489e8d669f6a4ef4c4a781c59773a"
+            "sha256": "71ebed4fb3f9984eb726c18a2124d442b309a573bb9623a2a685f75536768fa7"
         },
         {
             "path": "routes.json",

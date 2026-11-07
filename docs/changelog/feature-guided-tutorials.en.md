@@ -34,6 +34,10 @@ Menus follow the shared queued host contract and component lifetime.
 
 Missing-target views provide Next and Restart Tutorial; replay also provides Cancel.
 
+## Intentional tutorial guidance
+
+Tutorials explain distinct visible controls in UI order. Shared guidance covers active-view discovery, stable examples, empty states, conditional branches and lifecycle cleanup. Replay controls and reduced-motion documentation match the shared host.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

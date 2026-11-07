@@ -139,4 +139,21 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">参照元の関連付けが重複しています</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">リソース参照が重複しています</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">キャンバスのパスが重複しています</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.title">ホワイトボードの使い方</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.choose.a.board.title">ボードを選ぶ</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.choose.a.board.body">利用できるボードを開くか、通常の操作で新しいボードを作成します。</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.drawing.tools.title">描画の道具</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.drawing.tools.body">選択、描画、図形、文字の道具を選び、編集前に設定を調整します。</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.canvas.and.history.title">キャンバスと履歴</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.canvas.and.history.body">キャンバスは移動や拡大縮小で見渡せます。取り消しとやり直しで、全消去せずに編集を管理します。</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.saving.and.sharing.title">保存と共有</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.saving.and.sharing.body">終了前に保存と接続の状態を確認します。共有と一時キャンバスの保存は、それぞれの操作で行います。</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.title">キャンバスの管理</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.find.canvases.title">キャンバスを探す</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.find.canvases.body">使用中や問題のあるキャンバスを絞り込み、所有者、作成元、参加者を確認します。</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.deletion.review.title">削除前の確認</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.deletion.review.body">削除前にキャンバスを確認します。削除には管理者による確認が必要です。</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.title">ホワイトボードの設定</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.connection.and.limits.title">接続と上限</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.connection.and.limits.body">サーバー接続、伏せられた認証情報、アップロード上限を確認してから設定を保存します。</string>
 </resources>

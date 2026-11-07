@@ -139,4 +139,21 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Duplicate source binding</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Duplicate resource reference</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Duplicate canvas path</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.title">Whiteboard Guide</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.choose.a.board.title">Choose A Board</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.choose.a.board.body">Open an available board or create a new one using the normal board controls.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.drawing.tools.title">Drawing Tools</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.drawing.tools.body">Choose selection, drawing, shapes or text, and adjust the tool settings before editing.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.canvas.and.history.title">Canvas And History</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.canvas.and.history.body">Pan and zoom to navigate the canvas; Undo and Redo manage edits without clearing the board.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.saving.and.sharing.title">Saving And Sharing</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvas.saving.and.sharing.body">Check the save and connection state before leaving; sharing and saving a disposable canvas use separate actions.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.title">Canvas Administration</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.find.canvases.title">Find Canvases</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.find.canvases.body">Filter active or troubled canvases and inspect their owner, source and participants.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.deletion.review.title">Deletion Review</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.canvases.deletion.review.body">Inspect a canvas before deleting it; deletion requires the administrator’s deliberate confirmation.</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.title">Whiteboard Configuration</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.connection.and.limits.title">Connection And Limits</string>
+    <string name="module.nextcloud-whiteboard.tutorial.more.configuration.connection.and.limits.body">Review the server connection, concealed credential fields and upload limits before saving configuration.</string>
 </resources>

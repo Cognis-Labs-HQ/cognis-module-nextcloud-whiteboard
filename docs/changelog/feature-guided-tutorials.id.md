@@ -38,6 +38,10 @@ Tampilan target hilang menyediakan Berikutnya dan Mulai Ulang Tutorial; pemutara
 
 Tutorial menjelaskan kontrol terlihat yang berbeda sesuai urutan UI. Petunjuk bersama mencakup penemuan tampilan aktif, contoh stabil, keadaan kosong, cabang bersyarat, dan pembersihan siklus hidup. Kontrol pemutaran ulang serta dokumentasi pengurangan gerakan sesuai host bersama.
 
+## Katalog Terjemahan yang Konsisten
+
+Kunci terjemahan menggunakan kata huruf kecil yang dipisahkan titik pada metadata modul dan tutorial. Entri katalog mempertahankan nilai terjemahan asli dan mengikuti indentasi XML di sekitarnya. Pemeriksaan namespace yang ketat menolak tanda hubung dan garis bawah pada kunci terjemahan. ID modul, UUID, kapabilitas, dan identitas penyelesaian tutorial tetap sama.
+
 ## Komit
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

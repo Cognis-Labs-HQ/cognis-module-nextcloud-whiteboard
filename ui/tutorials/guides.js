@@ -6,43 +6,43 @@ export const guides = [
                 id: "canvas",
                 page: ({ pathname }) => /^\/whiteboards?$/.test(pathname),
                 titleKey:
-                    "module.nextcloud-whiteboard.tutorial.more.canvas.title",
+                    "module.nextcloud.whiteboard.tutorial.more.canvas.title",
                 steps: [
                     {
                         highlightNext: true,
                         id: "choose-a-board",
                         selector: ".whiteboard-overlay-board-list",
                         titleKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.choose.a.board.title",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.title",
                         bodyKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.choose.a.board.body",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.body",
                     },
                     {
                         highlightNext: true,
                         id: "drawing-tools",
                         selector: "#whiteboard-toolbar",
                         titleKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.drawing.tools.title",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.title",
                         bodyKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.drawing.tools.body",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.body",
                     },
                     {
                         highlightNext: true,
                         id: "canvas-and-history",
                         selector: ".whiteboard-canvas-stage",
                         titleKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.canvas.and.history.title",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.title",
                         bodyKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.canvas.and.history.body",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.body",
                     },
                     {
                         highlightNext: true,
                         id: "saving-and-sharing",
                         selector: ".whiteboard-save-state",
                         titleKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.saving.and.sharing.title",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.title",
                         bodyKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvas.saving.and.sharing.body",
+                            "module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.body",
                     },
                 ],
                 scope: ".whiteboard-canvas-wrap",
@@ -56,16 +56,16 @@ export const guides = [
                 id: "canvases",
                 page: "/administration",
                 titleKey:
-                    "module.nextcloud-whiteboard.tutorial.more.canvases.title",
+                    "module.nextcloud.whiteboard.tutorial.more.canvases.title",
                 steps: [
                     {
                         highlightNext: true,
                         id: "find-canvases",
                         selector: ".whiteboard-admin-filters",
                         titleKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvases.find.canvases.title",
+                            "module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.title",
                         bodyKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvases.find.canvases.body",
+                            "module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.body",
                     },
                     {
                         highlightNext: true,
@@ -73,9 +73,9 @@ export const guides = [
                         selector: "button[data-delete-canvas]:not(:disabled)",
                         targetMatch: "first",
                         titleKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvases.deletion.review.title",
+                            "module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.title",
                         bodyKey:
-                            "module.nextcloud-whiteboard.tutorial.more.canvases.deletion.review.body",
+                            "module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.body",
                     },
                 ],
                 scope: "#whiteboard-admin-canvases",
@@ -84,16 +84,16 @@ export const guides = [
                 id: "configuration",
                 page: "/administration",
                 titleKey:
-                    "module.nextcloud-whiteboard.tutorial.more.configuration.title",
+                    "module.nextcloud.whiteboard.tutorial.more.configuration.title",
                 steps: [
                     {
                         highlightNext: true,
                         id: "connection-and-limits",
                         selector: "#module-nextcloud-whiteboard",
                         titleKey:
-                            "module.nextcloud-whiteboard.tutorial.more.configuration.connection.and.limits.title",
+                            "module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title",
                         bodyKey:
-                            "module.nextcloud-whiteboard.tutorial.more.configuration.connection.and.limits.body",
+                            "module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body",
                     },
                 ],
                 scope: "#module-nextcloud-whiteboard",

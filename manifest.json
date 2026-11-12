@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.4.5",
+    "version": "2.4.6",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -121,7 +121,7 @@
         },
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "8e5561cfd68dd655ba184aa5427682ac8bff89a0353f44c857944c329fd969fe"
+            "sha256": "77b65e379ab076ee052ef6311e3ff4b08bb8e5edc2fcc717e7a795e4f5b1a3f4"
         },
         {
             "path": ".gitignore",
@@ -325,7 +325,7 @@
         },
         {
             "path": "api/tests/module-structure.test.js",
-            "sha256": "87404b51bd496178583a0b37ad0c6d77adff92f8f242dff9ea15eb87950e76a9"
+            "sha256": "45cd21b2b31873c1831e52e3a1cfe97c5e52318bd99cb18ded73d21c9c74c83b"
         },
         {
             "path": "api/tests/origin-registration.test.js",
@@ -401,11 +401,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "f10c559240c22ab2116c843bf20b3791f15df03ebbc6c307a2b1142a73e3478f"
+            "sha256": "d1601488e53e35416cad773afeb32e566d2e778bd6ef2c85be56d6b92d0d7aad"
         },
         {
             "path": "package.json",
-            "sha256": "71ebed4fb3f9984eb726c18a2124d442b309a573bb9623a2a685f75536768fa7"
+            "sha256": "0f95e7e02dbcef946705326a8cd1f2067af09a752b2652332688e6e727a414eb"
         },
         {
             "path": "routes.json",
@@ -613,19 +613,19 @@
         },
         {
             "path": "ui/languages/de/strings.xml",
-            "sha256": "b59d54da930f767d05466f26f2ce01ee561fe2d5fe5ca7d66435a36cd8b9b19a"
+            "sha256": "55fd6adb198b9b5a870b016f36a6513c694fd8c94369d450e142c9fc6ce9ad2e"
         },
         {
             "path": "ui/languages/en/strings.xml",
-            "sha256": "b4efc3c305ce083231afe1bab4fe74664f2180819b67f30ccd3a0e4ccc7df8ad"
+            "sha256": "320cb01155fb6df79fd43559509375c8467079b403eea5f31ba3cbff61ea32ec"
         },
         {
             "path": "ui/languages/id/strings.xml",
-            "sha256": "1c3ce87ffb8f760380b38cc1a217338554a3e8e6f415bb0f5dedb56c8643b2a2"
+            "sha256": "b37a3090fcfe263f2aa0cf9b4b6a86467d81ea8bd7ae75e0cbad77935f54e679"
         },
         {
             "path": "ui/languages/ja/strings.xml",
-            "sha256": "7e8f86656dcb2fae11ff79990339480ebbb0f345c4a944f0814de77446245022"
+            "sha256": "4a108179a1b88ba7a2bb28afb1010bb8f7546722ca2235852b25d3768a6b80af"
         },
         {
             "path": "ui/navbar.js",
@@ -849,7 +849,7 @@
         },
         {
             "path": "ui/tutorials/guides.js",
-            "sha256": "88081052a612545ba5f9610af3202a38e61449c91093e744b23ee80eb4f7f9d2"
+            "sha256": "8a4f30e19936fa5a48d68cd929ad5e49038d7ca54f8a1bb3b4470af9bdfe5553"
         },
         {
             "path": "ui/tutorials/provider.js",

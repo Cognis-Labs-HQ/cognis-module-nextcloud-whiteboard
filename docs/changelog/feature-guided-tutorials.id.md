@@ -51,3 +51,4 @@ Kunci terjemahan menggunakan kata huruf kecil yang dipisahkan titik pada metadat
 - [14a33e6](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/14a33e61511202c5c9c2e855f034e554ffd26d7e)
 - [12e63fe54](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/12e63fe545ad3a0d93848bfc8b627723fff6f1de)
 - [8e73fc9d4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/8e73fc9d42b9731cc7fe0ea5265840a95e086134)
+- [988d611](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/988d611e9c81379ac87e58f3e5373437ac72c227)

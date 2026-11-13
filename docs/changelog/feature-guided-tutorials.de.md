@@ -56,3 +56,4 @@ Wählen Sie auf der Whiteboard-Startseite Neue Zeichenfläche oder eine gespeich
 - [12e63fe54](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/12e63fe545ad3a0d93848bfc8b627723fff6f1de)
 - [8e73fc9d4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/8e73fc9d42b9731cc7fe0ea5265840a95e086134)
 - [988d611](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/988d611e9c81379ac87e58f3e5373437ac72c227)
+- [31c9ddb](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/31c9ddb55be15a7bd45329e8e8f1e36b16c44ef4)

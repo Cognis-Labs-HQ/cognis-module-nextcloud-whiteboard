@@ -141,3 +141,11 @@ Metadata papan penyedia menampilkan resourceReference netral berisi resourceType
 Administrasi kanvas menyediakan Semua Kanvas, Kanvas Aktif, dan Kanvas Bermasalah dengan pesan kosong tersendiri. Tampilan bermasalah menampilkan kanvas tanpa pemilik atau akses pemilik, ikatan sumber tidak lengkap, atau ikatan sumber generik maupun referensi sumber daya duplikat. Pil masalah kecil menjelaskan setiap temuan. Diagnostik hanya menggunakan data milik Whiteboard. Administrasi tetap memerlukan akses administrator dan tidak mengembalikan kredensial kanvas.
 
 Implementasi kanvas berada di `api/canvas/` dan `ui/canvas/` dengan nama singkat seperti `source-binding.js`, `events.js`, dan `snapshot.js`. Probe aktivasi runtime bernama `api/configuration/enablement.js`; unit test tetap di `api/tests/`. Entri halaman berbagi memakai resolver aset berkualifikasi revisi yang sama dengan rute biasa. Administrasi mengecualikan kehadiran tidak aktif dan mengembalikan `invalid_json` untuk permintaan penghapusan rusak. Satu kanvas berizin pada jalur sumber daya kanonis mendapat referensi tetap tanpa mengubah konten. Jalur ambigu menghasilkan konflik dan masalah pada Kanvas Bermasalah, bukan pemilihan catatan otomatis.
+
+## Akses tamu terverifikasi
+
+Rute sumber daya memperoleh klaim tamu terverifikasi melalui `share:getGuestClaims` sebelum memeriksa papan serta kapabilitas baca/tulis yang tepat. Permintaan gambar, kehadiran, sesi, dan peluncuran tetap menjalankan pemeriksaan ini, termasuk akses yang didelegasikan. Rute akun dan administrasi memerlukan sesi akun biasa. Awalan nama akun `share:` tidak menandakan tamu. Pasang kontrak penerimaan kredensial Share pada host sebelum mengaktifkan pembaruan modul ini.
+
+### Transport hanya baca dan kesiapan papan bersama
+
+Token sesi Whiteboard kini menegakkan izin tulis yang telah ditentukan pada server waktu nyata. Kanvas bersama memperoleh sesi papan yang diotorisasi sebelum memeriksa kesiapan websocket menggunakan token terbatas yang sama. Kanvas tidak memanggil pemeriksaan awal global khusus akun; pemeriksaan awal akun biasa dan pembatasan administrasi tetap berlaku.

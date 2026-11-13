@@ -12,7 +12,7 @@ export function createWhiteboardPreflightController({
     let status = "idle";
     let requestSequence = 0;
 
-    async function run({ signal } = {}) {
+    async function run({ signal, session } = {}) {
         if (status === "running") return false;
         if (signal?.aborted) return false;
         const sequence = ++requestSequence;
@@ -29,7 +29,13 @@ export function createWhiteboardPreflightController({
         );
         let result;
         try {
-            result = await fetchPreflight({ signal });
+            result = session
+                ? {
+                      alive: true,
+                      serverUrl: session.serverUrl,
+                      websocketAuthToken: session.token,
+                  }
+                : await fetchPreflight({ signal });
             if (!isCurrent()) return false;
         } catch (error) {
             if (!isCurrent()) return false;

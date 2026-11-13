@@ -123,8 +123,8 @@ export async function resolveWhiteboardUserAccess({
                 ? "whiteboard:write"
                 : "whiteboard:read",
         }).catch(() => null);
-        if (shareAccess?.shareGuest) {
-            if (shareAccess.authorized) {
+        if (claims.purpose === "share" || shareAccess?.shareGuest) {
+            if (shareAccess?.authorized) {
                 const writeAccess = requireWrite
                     ? shareAccess
                     : await resolveShareGuestAccess({
@@ -157,6 +157,14 @@ export async function resolveWhiteboardUserAccess({
                     "This share link cannot access the requested whiteboard.",
             };
         }
+    }
+    if (claims.purpose === "share") {
+        return {
+            authorized: false,
+            status: 403,
+            code: "forbidden",
+            message: "This share link cannot access the requested whiteboard.",
+        };
     }
     if (typeof resolveShareUserAccess === "function") {
         const userShareAccess = await resolveShareUserAccess({

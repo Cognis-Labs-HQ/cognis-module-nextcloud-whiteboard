@@ -179,6 +179,7 @@ export function registerApiRoutes(router, ctx) {
     });
     registerBoardRoutes(router, {
         requireAuth,
+        getGuestClaims: ctx.getCapability("share:getGuestClaims"),
         store,
         profileStore,
         profileIdentity,

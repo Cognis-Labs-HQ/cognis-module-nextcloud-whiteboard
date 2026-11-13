@@ -141,3 +141,11 @@ Provider board metadata exposes a neutral resourceReference containing resourceT
 Canvas administration offers All Canvases, Active Canvases and Troubled Canvases, each with its own empty message. The troubled view lists canvases with missing owners or owner access, incomplete source bindings, or duplicate generic source bindings or resource references. Small issue pills explain each problem. Diagnostics use only Whiteboard-owned data; administration still requires administrator access and never returns canvas credentials.
 
 Canvas implementation lives in `api/canvas/` and `ui/canvas/` with short filenames such as `source-binding.js`, `events.js` and `snapshot.js`. The runtime enablement probe is `api/configuration/enablement.js`; unit tests remain in `api/tests/`. Shared-page entries use the same revision-qualified asset resolver as ordinary routes. Administration excludes inactive presence and returns `invalid_json` for malformed deletion requests. A single authorized canvas at a canonical resource path receives an immutable reference assignment without changing its contents; ambiguous paths produce a conflict and a Troubled Canvases issue instead of selecting a record.
+
+## Verified guest access
+
+Resource routes obtain verified guest claims through `share:getGuestClaims` before checking the exact board and read/write capability. Image, presence, session and launch requests retain these checks, including delegated access. Account and management routes require an ordinary account session. A `share:` account-name prefix does not identify a guest. Install the host Share credential-admission contract before enabling this module update.
+
+### Read-only transport and shared readiness
+
+Whiteboard session tokens now enforce the resolved write permission at the realtime server. Shared canvases obtain their authorized board session before probing websocket readiness with that same scoped token. They do not invoke account-only global preflight; ordinary account preflight and management restrictions remain unchanged.

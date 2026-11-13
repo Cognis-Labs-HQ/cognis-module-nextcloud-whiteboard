@@ -34,6 +34,7 @@ export function registerWhiteboardImageRoutes(
     router,
     {
         requireAuth,
+        getGuestClaims,
         store,
         profileStore,
         resolveShareGuestAccess,
@@ -46,9 +47,10 @@ export function registerWhiteboardImageRoutes(
     router.post(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/images",
         async (req, res) => {
-            await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims =
+                (await getGuestClaims?.(req)) ?? requireAuth(req, res, "user");
             if (!claims) return;
+            await store.ensureSchema();
             if (!whiteboardFiles) {
                 sendError(
                     res,
@@ -124,15 +126,15 @@ export function registerWhiteboardImageRoutes(
                 },
             });
         },
-        { access: { minRole: "user" } },
     );
 
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/images",
         async (req, res) => {
-            await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims =
+                (await getGuestClaims?.(req)) ?? requireAuth(req, res, "user");
             if (!claims) return;
+            await store.ensureSchema();
             if (!whiteboardFiles) {
                 sendError(
                     res,
@@ -179,6 +181,5 @@ export function registerWhiteboardImageRoutes(
             });
             res.end(Buffer.from(content));
         },
-        { access: { minRole: "user" } },
     );
 }

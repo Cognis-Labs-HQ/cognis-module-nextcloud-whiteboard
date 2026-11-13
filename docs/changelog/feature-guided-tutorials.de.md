@@ -42,6 +42,10 @@ Anleitungen erklären unterschiedliche sichtbare Bedienelemente in UI-Reihenfolg
 
 Übersetzungsschlüssel verwenden in Modulmetadaten und Tutorials durchgehend kleingeschriebene, durch Punkte getrennte Wörter. Katalogeinträge behalten ihre ursprünglichen Übersetzungen und entsprechen der umgebenden XML-Einrückung. Strenge Namensraumprüfungen weisen Bindestriche und Unterstriche in Übersetzungsschlüsseln zurück. Modul-IDs, UUIDs, Fähigkeiten und Tutorialabschluss-Bezeichner bleiben unverändert.
 
+## Vor dem Zeichnen eine Fläche öffnen
+
+Wählen Sie auf der Whiteboard-Startseite Neue Zeichenfläche oder eine gespeicherte Fläche. Diese bewusste Aktion startet den Zeichenzweig, der auf den Abschluss des Ladevorgangs wartet. Erst danach erscheinen Erklärungen zu Zeichenwerkzeugen, Fläche und Verlauf sowie Speichern und Teilen. Weiter ohne geöffnete Fläche überspringt den Zweig; eine bereits offene Fläche beginnt direkt bei den Werkzeugen. Ausgeblendete Flächen oder fehlgeschlagene Ladevorgänge gelten nicht als bereit.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

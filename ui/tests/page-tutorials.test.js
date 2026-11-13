@@ -43,7 +43,11 @@ test("page tutorials preserve scoped publication, administrator boundaries and f
     );
     for (const play of plays)
         for (const step of play.steps)
-            assert.equal(step.highlightNext, true, `${play.id}:${step.id}`);
+            assert.equal(
+                step.highlightNext,
+                !Boolean(step.advance || step.waitFor),
+                `${play.id}:${step.id}`,
+            );
     for (const locale of ["en", "de", "id", "ja"]) {
         const xml = readFileSync(
             new URL(`../languages/${locale}/strings.xml`, import.meta.url),
@@ -60,4 +64,28 @@ test("page tutorials preserve scoped publication, administrator boundaries and f
     }
     dispose();
     assert.equal(released, true);
+});
+
+test("canvas walkthrough requires a deliberate create/load action or an already ready canvas", async () => {
+    const { guides } = await import("../tutorials/guides.js");
+    const [choose, tools, canvas, save] = guides[0].definitions[0].steps;
+    assert.equal(choose.highlightNext, false);
+    assert.equal(choose.when({ targetAvailable: false }), false);
+    assert.equal(
+        choose.advance.accept({ target: { closest: () => null } }),
+        false,
+    );
+    assert.equal(
+        choose.advance.accept({ target: { closest: () => ({}) } }),
+        true,
+    );
+    assert.equal(tools.when({ completed: [], targetAvailable: false }), false);
+    assert.equal(
+        tools.when({ completed: ["choose-a-board"], targetAvailable: false }),
+        true,
+    );
+    assert.equal(tools.when({ completed: [], targetAvailable: true }), true);
+    assert.equal(tools.missing.action, "retry");
+    assert.deepEqual(canvas.dependsOn, ["drawing-tools"]);
+    assert.deepEqual(save.dependsOn, ["drawing-tools"]);
 });

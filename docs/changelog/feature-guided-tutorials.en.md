@@ -42,6 +42,10 @@ Tutorials explain distinct visible controls in UI order. Shared guidance covers 
 
 Translation keys use lowercase period-delimited words throughout the module metadata and tutorials. Catalog entries retain their original translated values and match the surrounding XML indentation. Strict namespace checks reject hyphens and underscores in translation keys. Module IDs, UUIDs, capabilities and tutorial completion identities remain unchanged.
 
+## Open A Canvas Before Drawing
+
+On the Whiteboard homepage, choose New Board or a saved board. This deliberate action starts the drawing branch, which waits for the owner to finish loading the canvas. Only then do the drawing tools, canvas/history and save/share explanations appear. Next without opening a board bypasses that branch; an already open canvas starts directly with the tools. Hidden or failed-loading canvases never qualify as ready.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

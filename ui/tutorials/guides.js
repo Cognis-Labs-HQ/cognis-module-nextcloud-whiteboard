@@ -9,9 +9,20 @@ export const guides = [
                     "module.nextcloud.whiteboard.tutorial.more.canvas.title",
                 steps: [
                     {
-                        highlightNext: true,
+                        highlightNext: false,
                         id: "choose-a-board",
-                        selector: ".whiteboard-overlay-board-list",
+                        selector: ".whiteboard-start-panel",
+                        when: ({ targetAvailable }) => targetAvailable,
+                        interaction: "target",
+                        advance: {
+                            event: "click",
+                            accept: (event) =>
+                                Boolean(
+                                    event.target.closest(
+                                        "#whiteboard-start-new, .whiteboard-overlay-board",
+                                    ),
+                                ),
+                        },
                         titleKey:
                             "module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.title",
                         bodyKey:
@@ -20,7 +31,12 @@ export const guides = [
                     {
                         highlightNext: true,
                         id: "drawing-tools",
-                        selector: "#whiteboard-toolbar",
+                        selector:
+                            '.whiteboard-canvas-wrap[data-canvas-ready="true"] .whiteboard-drawing-tools',
+                        when: ({ completed, targetAvailable }) =>
+                            completed.includes("choose-a-board") ||
+                            targetAvailable,
+                        missing: { timeoutMs: 5000, action: "retry" },
                         titleKey:
                             "module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.title",
                         bodyKey:
@@ -29,7 +45,9 @@ export const guides = [
                     {
                         highlightNext: true,
                         id: "canvas-and-history",
-                        selector: ".whiteboard-canvas-stage",
+                        selector:
+                            '.whiteboard-canvas-wrap[data-canvas-ready="true"] #whiteboard-canvas',
+                        dependsOn: ["drawing-tools"],
                         titleKey:
                             "module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.title",
                         bodyKey:
@@ -38,7 +56,9 @@ export const guides = [
                     {
                         highlightNext: true,
                         id: "saving-and-sharing",
-                        selector: ".whiteboard-save-state",
+                        selector:
+                            '.whiteboard-canvas-wrap[data-canvas-ready="true"] .whiteboard-save-state',
+                        dependsOn: ["drawing-tools"],
                         titleKey:
                             "module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.title",
                         bodyKey:

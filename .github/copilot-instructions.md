@@ -143,3 +143,5 @@ Treat ctx as the backbone of every supported server and browser action. Extend d
 Template guidance baseline: [d71b980](https://github.com/Cognis-Labs-HQ/cognis-module-template/blob/d71b98077d8d7af087b44009dafc2d736f86b617/.github/copilot-instructions.md).
 
 Keep Whiteboard authorization, encryption, canvas state and rendering inside this module. Integrators consume its public capability/page contracts and never manage canvas internals. Preserve infinite-canvas sizing and avoid treating viewport panning as document modification.
+
+Whiteboard tutorials must establish a real canvas through New Board or a saved-board selection before explaining tools. Wait for owner-confirmed canvas readiness, handle loading failures and pre-opened canvases, and test the selection-to-render transition plus Next bypass without creating a canvas automatically.

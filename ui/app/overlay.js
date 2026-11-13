@@ -7,6 +7,8 @@ export function setOverlayVisible(root, visible, message = "") {
     const overlay = root.querySelector("#whiteboard-canvas-overlay");
     if (!overlay) return;
     overlay.hidden = !visible;
+    const surface = root.querySelector(".whiteboard-canvas-wrap");
+    if (surface) surface.dataset.canvasReady = String(!visible);
     const messageElement = overlay.querySelector(".whiteboard-overlay-message");
     if (messageElement) messageElement.textContent = message;
 }

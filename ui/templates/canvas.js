@@ -37,14 +37,14 @@ export function renderCanvasElement({
         `<button type="button" data-tool="${tool}" class="whiteboard-tool${tool === "select" ? " active" : ""}" title="${escapeHtml(translate(labelKey))}" aria-label="${escapeHtml(translate(labelKey))}">${icon}</button>`;
 
     return `
-    <div class="whiteboard-canvas-wrap${embedded ? " whiteboard-canvas-wrap--embedded" : ""}">
+    <div class="whiteboard-canvas-wrap${embedded ? " whiteboard-canvas-wrap--embedded" : ""}" data-canvas-ready="false">
       <div id="whiteboard-toolbar" class="whiteboard-toolbar" role="toolbar" aria-label="${escapeHtml(translate("module.nextcloud.whiteboard.toolbar.label"))}">
         <div class="whiteboard-toolbar-tools">
         <div class="whiteboard-toolbar-group">
           ${integrationCanvasMode || embedded ? "" : `<button type="button" id="whiteboard-new" class="whiteboard-tool whiteboard-new-tool" title="${escapeHtml(translate("module.nextcloud.whiteboard.new.board"))}" aria-label="${escapeHtml(translate("module.nextcloud.whiteboard.new.board"))}">${icon("new")} <span>${escapeHtml(translate("module.nextcloud.whiteboard.new"))}</span></button>`}
           ${hasActiveBoard ? `<button type="button" id="whiteboard-tool-lock" class="whiteboard-tool" aria-pressed="false" title="${escapeHtml(translate("module.nextcloud.whiteboard.tool.lock"))}" aria-label="${escapeHtml(translate("module.nextcloud.whiteboard.tool.lock"))}">${icon("lock")}</button>` : ""}
         </div>
-        <div class="whiteboard-toolbar-group" ${hasActiveBoard ? "" : "hidden"}>
+        <div class="whiteboard-toolbar-group whiteboard-drawing-tools" ${hasActiveBoard ? "" : "hidden"}>
           ${["select", "pen", "rectangle", "diamond", "ellipse", "arrow", "line", "text", "eraser"].map((tool) => toolButton(tool, `module.nextcloud.whiteboard.tool.${tool}`, icon(tool))).join("")}
         </div>
         <div class="whiteboard-toolbar-group" ${hasActiveBoard ? "" : "hidden"}>

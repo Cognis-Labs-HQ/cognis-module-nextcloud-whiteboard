@@ -42,6 +42,10 @@ Tutorial menjelaskan kontrol terlihat yang berbeda sesuai urutan UI. Petunjuk be
 
 Kunci terjemahan menggunakan kata huruf kecil yang dipisahkan titik pada metadata modul dan tutorial. Entri katalog mempertahankan nilai terjemahan asli dan mengikuti indentasi XML di sekitarnya. Pemeriksaan namespace yang ketat menolak tanda hubung dan garis bawah pada kunci terjemahan. ID modul, UUID, kapabilitas, dan identitas penyelesaian tutorial tetap sama.
 
+## Buka Kanvas Sebelum Menggambar
+
+Di beranda Whiteboard, pilih Papan Baru atau papan tersimpan. Tindakan ini memulai cabang menggambar yang menunggu pemuatan kanvas selesai. Baru setelah itu penjelasan alat gambar, kanvas/riwayat, serta simpan/bagikan muncul. Berikutnya tanpa membuka papan melewati cabang tersebut; kanvas yang sudah terbuka langsung dimulai dari alat. Kanvas tersembunyi atau gagal dimuat tidak dianggap siap.
+
 ## Komit
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

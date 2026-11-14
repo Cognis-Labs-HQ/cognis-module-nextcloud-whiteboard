@@ -66,3 +66,4 @@ Panduan konfigurasi administrasi tetap memakai bagian host sebagai batas penemua
 - [988d611](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/988d611e9c81379ac87e58f3e5373437ac72c227)
 - [31c9ddb](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/31c9ddb55be15a7bd45329e8e8f1e36b16c44ef4)
 - [1cae081](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/1cae081454f489da6d998e5ba9543fd23cff7d03)
+- [95d0a2d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/95d0a2d19e418c11b575b57cd3763a14007cb3aa)

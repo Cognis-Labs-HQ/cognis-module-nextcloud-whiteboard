@@ -156,4 +156,8 @@
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.title">ホワイトボードの設定</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title">接続と上限</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body">サーバー接続、伏せられた認証情報、アップロード上限を確認してから設定を保存します。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.title">接続を確認する</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.body">状態表示でキャンバスの接続と同期を確認できます。読み込みが終わってからキャンバスを探索します。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.title">共有キャンバスを探索する</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.body">この読み取り専用キャンバスはパンやズームで探索できます。このアクセスでは描画や履歴の操作を使えません。変更が必要な場合は所有者に編集アクセスを依頼します。</string>
 </resources>

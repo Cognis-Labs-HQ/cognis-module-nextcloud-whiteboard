@@ -4,7 +4,7 @@ Dieses Modul bindet seinen Einführungsablauf über `ui:tutorials` an seine eige
 
 ## Anwendungsbeispiele
 
-Anleitungen behandeln Boardauswahl, Zeichenwerkzeuge, Ansicht, Verlauf, Speichern und Teilen sowie administrative Zeichenflächenverwaltung und Konfiguration.
+Bereitschaft und Schreibberechtigung sind getrennte, vom Besitzer bestätigte Zustände. Nach dem Laden sehen alle Betrachter die Verbindungserklärung. Zeichen- und Verlaufsschritte erfordern Schreibzugriff; schreibgeschützte Empfänger erhalten stattdessen eine Anleitung zum Verschieben und Zoomen. Unverfügbare Bearbeitungs- und Freigabeaktionen entfallen aus Ablauf und Schrittzahl.
 
 ## Technische Spezifikation
 

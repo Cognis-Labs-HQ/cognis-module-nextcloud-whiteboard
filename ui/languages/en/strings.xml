@@ -156,4 +156,8 @@
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.title">Whiteboard Configuration</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title">Connection And Limits</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body">Review the server connection, concealed credential fields and upload limits before saving configuration.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.title">Check The Connection</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.body">The status indicator shows whether this canvas is connected and synchronized. Wait for loading to finish before exploring it.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.title">Explore A Shared Canvas</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.body">Pan and zoom to explore this read-only canvas. Drawing and history controls are unavailable with this access; ask the owner for editing access if you need to change it.</string>
 </resources>

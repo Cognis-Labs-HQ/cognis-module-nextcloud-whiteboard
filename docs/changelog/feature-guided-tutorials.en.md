@@ -46,6 +46,10 @@ Translation keys use lowercase period-delimited words throughout the module meta
 
 On the Whiteboard homepage, choose New Board or a saved board. This deliberate action starts the drawing branch, which waits for the owner to finish loading the canvas. Only then do the drawing tools, canvas/history and save/share explanations appear. Next without opening a board bypasses that branch; an already open canvas starts directly with the tools. Hidden or failed-loading canvases never qualify as ready.
 
+## Complete And Accessible Walkthroughs
+
+Canvas readiness and write permission are separate owner-confirmed states. After loading, the connection explanation is available to all viewers. Drawing and history steps require write access; read-only recipients get a pan/zoom walkthrough instead. Unavailable editing and sharing actions are excluded from the path and count.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

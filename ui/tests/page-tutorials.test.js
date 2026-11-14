@@ -68,7 +68,13 @@ test("page tutorials preserve scoped publication, administrator boundaries and f
 
 test("canvas walkthrough requires a deliberate create/load action or an already ready canvas", async () => {
     const { guides } = await import("../tutorials/guides.js");
-    const [choose, tools, canvas, save] = guides[0].definitions[0].steps;
+    const steps = Object.fromEntries(
+        guides[0].definitions[0].steps.map((step) => [step.id, step]),
+    );
+    const choose = steps["choose-a-board"];
+    const ready = steps["canvas-ready"];
+    const tools = steps["drawing-tools"];
+    const canvas = steps["canvas-and-history"];
     assert.equal(choose.highlightNext, false);
     assert.equal(choose.when({ targetAvailable: false }), false);
     assert.equal(
@@ -79,13 +85,21 @@ test("canvas walkthrough requires a deliberate create/load action or an already 
         choose.advance.accept({ target: { closest: () => ({}) } }),
         true,
     );
-    assert.equal(tools.when({ completed: [], targetAvailable: false }), false);
+    assert.equal(ready.when({ completed: [], targetAvailable: false }), false);
     assert.equal(
-        tools.when({ completed: ["choose-a-board"], targetAvailable: false }),
+        ready.when({ completed: ["choose-a-board"], targetAvailable: false }),
         true,
     );
-    assert.equal(tools.when({ completed: [], targetAvailable: true }), true);
-    assert.equal(tools.missing.action, "retry");
+    assert.equal(ready.when({ completed: [], targetAvailable: true }), true);
+    assert.equal(ready.missing.action, "retry");
+    assert.equal(tools.when({ targetAvailable: false }), false);
+    assert.equal(
+        steps["read-only-navigation"].when({ targetAvailable: false }),
+        false,
+    );
     assert.deepEqual(canvas.dependsOn, ["drawing-tools"]);
-    assert.deepEqual(save.dependsOn, ["drawing-tools"]);
+    assert.equal(
+        steps["saving-and-sharing"].when({ targetAvailable: false }),
+        false,
+    );
 });

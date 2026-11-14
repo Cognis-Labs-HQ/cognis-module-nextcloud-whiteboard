@@ -4,7 +4,7 @@ This module binds its introductory play to its own page through `ui:tutorials`. 
 
 ## Usage Examples
 
-Guides cover board selection, drawing tools, canvas navigation, history, saving and sharing, plus administrator-only canvas management and configuration.
+Canvas readiness and write permission are separate owner-confirmed states. After loading, the connection explanation is available to all viewers. Drawing and history steps require write access; read-only recipients get a pan/zoom walkthrough instead. Unavailable editing and sharing actions are excluded from the path and count.
 
 ## Technical Specification
 

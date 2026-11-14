@@ -37,7 +37,7 @@ export function renderCanvasElement({
         `<button type="button" data-tool="${tool}" class="whiteboard-tool${tool === "select" ? " active" : ""}" title="${escapeHtml(translate(labelKey))}" aria-label="${escapeHtml(translate(labelKey))}">${icon}</button>`;
 
     return `
-    <div class="whiteboard-canvas-wrap${embedded ? " whiteboard-canvas-wrap--embedded" : ""}" data-canvas-ready="false">
+    <div class="whiteboard-canvas-wrap${embedded ? " whiteboard-canvas-wrap--embedded" : ""}" data-canvas-ready="false" data-can-write="${String(activeSession?.canWrite === true)}">
       <div id="whiteboard-toolbar" class="whiteboard-toolbar" role="toolbar" aria-label="${escapeHtml(translate("module.nextcloud.whiteboard.toolbar.label"))}">
         <div class="whiteboard-toolbar-tools">
         <div class="whiteboard-toolbar-group">

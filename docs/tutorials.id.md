@@ -4,7 +4,7 @@ Modul ini mengikat panduan pengantarnya pada halamannya melalui `ui:tutorials`. 
 
 ## Contoh Penggunaan
 
-Panduan mencakup pemilihan papan, alat gambar, navigasi kanvas, riwayat, menyimpan dan berbagi, serta pengelolaan kanvas dan konfigurasi khusus administrator.
+Kesiapan kanvas dan izin tulis merupakan status terpisah yang dikonfirmasi pemilik. Setelah pemuatan, penjelasan koneksi tersedia bagi semua penonton. Langkah gambar dan riwayat memerlukan akses tulis; penerima hanya baca mendapat panduan geser/perbesar. Aksi edit dan berbagi yang tidak tersedia dikecualikan dari alur dan jumlah langkah.
 
 ## Spesifikasi Teknis
 

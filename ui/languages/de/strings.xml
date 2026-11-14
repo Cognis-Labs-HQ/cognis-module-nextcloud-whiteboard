@@ -156,4 +156,8 @@
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.title">Whiteboard konfigurieren</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title">Verbindung und Grenzen</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body">Prüfen Sie Serververbindung, verdeckte Zugangsdaten und Uploadgrenzen vor dem Speichern.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.title">Die Verbindung prüfen</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.body">Die Statusanzeige zeigt Verbindung und Synchronisierung dieser Fläche. Warten Sie vor dem Erkunden auf das Ende des Ladevorgangs.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.title">Eine geteilte Fläche erkunden</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.body">Verschieben und zoomen Sie die Ansicht dieser schreibgeschützten Fläche. Zeichen- und Verlaufswerkzeuge sind mit diesem Zugriff nicht verfügbar. Bitten Sie bei Änderungsbedarf den Besitzer um Bearbeitungszugriff.</string>
 </resources>

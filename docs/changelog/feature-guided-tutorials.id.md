@@ -46,6 +46,10 @@ Kunci terjemahan menggunakan kata huruf kecil yang dipisahkan titik pada metadat
 
 Di beranda Whiteboard, pilih Papan Baru atau papan tersimpan. Tindakan ini memulai cabang menggambar yang menunggu pemuatan kanvas selesai. Baru setelah itu penjelasan alat gambar, kanvas/riwayat, serta simpan/bagikan muncul. Berikutnya tanpa membuka papan melewati cabang tersebut; kanvas yang sudah terbuka langsung dimulai dari alat. Kanvas tersembunyi atau gagal dimuat tidak dianggap siap.
 
+## Panduan Lengkap Dan Sesuai Akses
+
+Kesiapan kanvas dan izin tulis merupakan status terpisah yang dikonfirmasi pemilik. Setelah pemuatan, penjelasan koneksi tersedia bagi semua penonton. Langkah gambar dan riwayat memerlukan akses tulis; penerima hanya baca mendapat panduan geser/perbesar. Aksi edit dan berbagi yang tidak tersedia dikecualikan dari alur dan jumlah langkah.
+
 ## Komit
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

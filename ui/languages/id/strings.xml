@@ -156,4 +156,8 @@
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.title">Konfigurasi Papan Tulis</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title">Koneksi dan Batas</string>
   <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body">Periksa koneksi server, kolom kredensial tersembunyi, dan batas unggahan sebelum menyimpan konfigurasi.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.title">Periksa Koneksi</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.body">Indikator status menunjukkan apakah kanvas terhubung dan tersinkronisasi. Tunggu pemuatan selesai sebelum menjelajahinya.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.title">Jelajahi Kanvas Bersama</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.body">Geser dan perbesar tampilan kanvas hanya baca ini. Alat gambar dan riwayat tidak tersedia dengan akses ini; minta akses edit dari pemilik jika ingin mengubahnya.</string>
 </resources>

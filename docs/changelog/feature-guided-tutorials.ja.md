@@ -1,0 +1,69 @@
+# ガイド付きチュートリアル
+
+**機能ブランチ:** feature-guided-tutorials
+
+## ページのガイド
+
+ボード選択、描画、キャンバスの移動、履歴、保存、共有と、管理者専用のキャンバス管理・設定を案内します。
+
+ホストは説明、矢印、強調表示、アクセシビリティ、共通のフローティング操作メニューを担当します。初回は常に「次へ」を表示し、中止とスキップは表示しません。再生時の中止には `btn-cancel` を使います。完了はブラウザー内でアカウント別に保存します。移動、アクセス喪失、プロバイダー解除でセッションを終了し、マウント失敗では登録を取り消します。
+
+## 内容を表すチュートリアルのキー
+
+チュートリアルの手順に使う翻訳キーと対象の識別子は、ガイド内の順番ではなく内容を表します。同じキーを対応する四つの言語すべてで提供します。
+
+## ステップごとに次へ進む強調を指定
+
+各ステップで `highlightNext` を明示します。「次へ」や「完了」が必要な説明では有効にし、操作や待機条件で進む練習では無効にします。動きを減らす設定では静的な枠を表示します。
+
+すべての UI コンポーネントにチュートリアルを用意します。開発ガイドラインでは、利用者の目的に沿う操作説明と、機能や UI 動作の変更に伴う既存チュートリアルの見直しを求めます。
+
+## 具体的な対象と分岐の再開始
+
+キャンバス削除の説明では、表示中の削除ボタンを強調します。チュートリアルのセクション内で利用可能な最初の対象を選び、対象がない場合はステップを飛ばします。
+
+## 表示されるチュートリアル対象
+
+強調する領域と「次へ」の強調を明示します。
+
+## 共通のフローティングメニュー待ち行列
+
+メニューはホスト共通の待ち行列とコンポーネントの寿命に従います。
+
+## 復旧操作の説明
+
+対象がない画面では「次へ」と最初からやり直す操作を提供し、再実行では中止も選べます。
+
+## 目的の明確なガイド
+
+表示順に沿って異なる可視操作を説明します。共通指針は画面状態の検出、安定した例、空の状態、条件付き分岐、ライフサイクルの後処理を扱います。再実行操作と動きを減らす設定の文書をホストと一致させます。
+
+## 翻訳カタログの統一
+
+モジュールのメタデータとチュートリアルの翻訳キーは、小文字の単語をピリオドで区切ります。カタログの翻訳内容は維持し、周囲の XML と字下げを揃えます。厳格な名前空間検証により、翻訳キーのハイフンとアンダースコアを拒否します。モジュール ID、UUID、ケイパビリティ、チュートリアル完了の識別子は変更しません。
+
+## 描画前にキャンバスを開く
+
+Whiteboard のホームで新規ボードまたは保存済みボードを選びます。この操作で描画の分岐が始まり、キャンバスの読み込み完了を待ちます。その後に描画ツール、キャンバスと履歴、保存と共有を説明します。開かずに「次へ」を選ぶと分岐を飛ばし、既に開いている場合はツールから始めます。非表示または読み込みに失敗したキャンバスは準備完了としません。
+
+## 完全でアクセスに応じたガイド
+
+キャンバスの準備完了と書き込み権限は所有者が確認する別々の状態です。読み込み後の接続説明は全閲覧者が利用できます。描画と履歴は書き込みアクセスが必要で、読み取り専用の受信者にはパンとズームを案内します。利用できない編集・共有操作は経路とステップ数から除外します。
+
+## 設定フォームを強調する
+
+管理画面の設定ガイドはホストのセクションを探索範囲として維持し、サーバー URL、API キー、アップロード上限を含むモジュール自身のフォームを強調します。コンポーザーのレイアウト ID はチュートリアルの対象にしません。
+
+## コミット
+
+- [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)
+- [93579f2](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/93579f26a30ba1f4a2c778c37861e0ddaf0a3b80)
+- [b97812e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b97812eb7fc854cfaa042c4342bbb713b3609162)
+- [d9e3d34](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/d9e3d346f2a3c878067dbb9d79e4624c28daf63d)
+- [14a33e6](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/14a33e61511202c5c9c2e855f034e554ffd26d7e)
+- [12e63fe54](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/12e63fe545ad3a0d93848bfc8b627723fff6f1de)
+- [8e73fc9d4](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/8e73fc9d42b9731cc7fe0ea5265840a95e086134)
+- [988d611](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/988d611e9c81379ac87e58f3e5373437ac72c227)
+- [31c9ddb](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/31c9ddb55be15a7bd45329e8e8f1e36b16c44ef4)
+- [1cae081](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/1cae081454f489da6d998e5ba9543fd23cff7d03)
+- [95d0a2d](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/95d0a2d19e418c11b575b57cd3763a14007cb3aa)

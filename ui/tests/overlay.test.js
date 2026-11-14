@@ -58,3 +58,18 @@ test("whiteboard mount validates its page root before initialization", async () 
     assert.match(source, /let pageMountRoot = null/);
     assert.doesNotMatch(source, /let mountRoot/);
 });
+
+test("canvas readiness follows the owner overlay and resets on loading or failure", async () => {
+    const { setOverlayVisible } = await import("../app/overlay.js");
+    const overlay = { hidden: false, querySelector: () => null };
+    const surface = { dataset: { canvasReady: "false" } };
+    const root = {
+        querySelector: (selector) =>
+            selector === "#whiteboard-canvas-overlay" ? overlay : surface,
+    };
+    setOverlayVisible(root, false);
+    assert.equal(surface.dataset.canvasReady, "true");
+    setOverlayVisible(root, true, "loading");
+    assert.equal(surface.dataset.canvasReady, "false");
+    assert.equal(overlay.hidden, false);
+});

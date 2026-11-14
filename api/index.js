@@ -21,6 +21,11 @@ import {
 } from "./reuse/access.js";
 
 export function registerUi(ctx) {
+    ctx.registerCapabilityProvider({
+        scriptUrl: "/static/modules/nextcloud-whiteboard/tutorials/provider.js",
+        providesCapabilities: ["nextcloud-whiteboard:pageTutorials"],
+        access: { minRole: "user" },
+    });
     const whiteboardUiAsset = createWhiteboardUiAssetResolver(ctx.moduleRoot);
     const moduleUiRoot = path.join(ctx.moduleRoot, "ui");
     ctx.registerStaticDir("", moduleUiRoot);

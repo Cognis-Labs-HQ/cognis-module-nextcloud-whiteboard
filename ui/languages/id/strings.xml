@@ -139,4 +139,25 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Ikatan sumber duplikat</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Referensi sumber daya duplikat</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Jalur kanvas duplikat</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.title">Panduan Papan Tulis</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.title">Buat Atau Buka Kanvas</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.body">Klik Papan Baru untuk memulai kanvas kosong, atau pilih papan tersimpan di bawah untuk melanjutkan pekerjaan. Panduan menggambar dimulai setelah kanvas selesai dimuat.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.title">Alat Menggambar</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.body">Pilih Pena untuk menggambar bebas, bentuk atau panah untuk diagram, atau Teks untuk label. Pilih memungkinkan Anda memindahkan dan mengubah ukuran objek yang ada.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.title">Kanvas dan Riwayat</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.body">Gambar dan atur objek pada kanvas ini. Gunakan Urungkan dan Ulangi pada bilah alat untuk menelusuri perubahan, serta geser atau perbesar tampilan untuk diagram yang lebih luas.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.title">Menyimpan dan Berbagi</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.body">Periksa indikator penyimpanan dan koneksi sebelum pergi. Untuk kanvas sementara, gunakan Simpan Kanvas untuk menyimpan salinan. Gunakan Bagikan jika tersedia untuk memberi orang lain akses.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.title">Administrasi Kanvas</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.title">Cari Kanvas</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.body">Saring kanvas aktif atau bermasalah lalu periksa pemilik, sumber, dan pesertanya.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.title">Tinjau Penghapusan</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.body">Periksa kanvas sebelum menghapusnya; penghapusan memerlukan konfirmasi administrator.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.title">Konfigurasi Papan Tulis</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title">Koneksi dan Batas</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body">Periksa koneksi server, kolom kredensial tersembunyi, dan batas unggahan sebelum menyimpan konfigurasi.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.title">Periksa Koneksi</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.body">Indikator status menunjukkan apakah kanvas terhubung dan tersinkronisasi. Tunggu pemuatan selesai sebelum menjelajahinya.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.title">Jelajahi Kanvas Bersama</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.body">Geser dan perbesar tampilan kanvas hanya baca ini. Alat gambar dan riwayat tidak tersedia dengan akses ini; minta akses edit dari pemilik jika ingin mengubahnya.</string>
 </resources>

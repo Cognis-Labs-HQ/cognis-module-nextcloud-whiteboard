@@ -139,4 +139,25 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">Duplicate source binding</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">Duplicate resource reference</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">Duplicate canvas path</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.title">Whiteboard Guide</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.title">Create Or Open A Canvas</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.body">Click New Board to start a blank canvas, or select a saved board below to continue your work. The drawing walkthrough starts once your canvas has loaded.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.title">Drawing Tools</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.body">Choose Pen for freehand drawing, a shape or arrow to build a diagram, or Text to label it. Select lets you move and resize existing objects.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.title">Canvas And History</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.body">Draw and arrange objects on this canvas. Use Undo and Redo in the toolbar to step through your changes, and pan or zoom to explore a larger diagram.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.title">Saving And Sharing</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.body">Watch the save and connection indicators before leaving. For a temporary canvas, use Save Canvas to keep a copy. Use Share when available to give others access.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.title">Canvas Administration</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.title">Find Canvases</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.body">Filter active or troubled canvases and inspect their owner, source and participants.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.title">Deletion Review</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.body">Inspect a canvas before deleting it; deletion requires the administrator’s deliberate confirmation.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.title">Whiteboard Configuration</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title">Connection And Limits</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body">Review the server connection, concealed credential fields and upload limits before saving configuration.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.title">Check The Connection</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.body">The status indicator shows whether this canvas is connected and synchronized. Wait for loading to finish before exploring it.</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.title">Explore A Shared Canvas</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.body">Pan and zoom to explore this read-only canvas. Drawing and history controls are unavailable with this access; ask the owner for editing access if you need to change it.</string>
 </resources>

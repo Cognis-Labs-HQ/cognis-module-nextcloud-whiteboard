@@ -139,4 +139,25 @@
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatesource">参照元の関連付けが重複しています</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatereference">リソース参照が重複しています</string>
   <string name="module.nextcloud.whiteboard.admin.canvases.issue.duplicatepath">キャンバスのパスが重複しています</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.title">ホワイトボードの使い方</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.title">キャンバスを作成・開く</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.choose.a.board.body">「新規ボード」で空のキャンバスを作るか、下の保存済みボードを選んで作業を続けます。キャンバスの読み込み後に描画ガイドが始まります。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.title">描画の道具</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.drawing.tools.body">ペンで自由に描き、図形や矢印で図を作り、テキストでラベルを付けます。選択ツールで既存のオブジェクトを移動・拡大縮小できます。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.title">キャンバスと履歴</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.canvas.and.history.body">このキャンバスに描画してオブジェクトを配置します。ツールバーの元に戻す・やり直しで変更をたどり、パンやズームで大きな図を見渡せます。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.title">保存と共有</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.saving.and.sharing.body">離れる前に保存・接続状態を確認します。一時キャンバスは「キャンバスを保存」でコピーを残します。「共有」が利用できる場合は他の人にアクセスを許可できます。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.title">キャンバスの管理</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.title">キャンバスを探す</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.find.canvases.body">使用中や問題のあるキャンバスを絞り込み、所有者、作成元、参加者を確認します。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.title">削除前の確認</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvases.deletion.review.body">削除前にキャンバスを確認します。削除には管理者による確認が必要です。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.title">ホワイトボードの設定</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title">接続と上限</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.body">サーバー接続、伏せられた認証情報、アップロード上限を確認してから設定を保存します。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.title">接続を確認する</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.connection.body">状態表示でキャンバスの接続と同期を確認できます。読み込みが終わってからキャンバスを探索します。</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.title">共有キャンバスを探索する</string>
+  <string name="module.nextcloud.whiteboard.tutorial.more.canvas.read.only.body">この読み取り専用キャンバスはパンやズームで探索できます。このアクセスでは描画や履歴の操作を使えません。変更が必要な場合は所有者に編集アクセスを依頼します。</string>
 </resources>

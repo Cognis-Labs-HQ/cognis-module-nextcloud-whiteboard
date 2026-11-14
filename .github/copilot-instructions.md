@@ -77,6 +77,20 @@ Never navigate with `window.location.href`, `window.location.replace`, or `windo
 
 Do not install or use Playwright; use existing browser tooling or a standalone Chromium/CDP check without a new browser dependency. Put every user-facing string in the German, English, Indonesian, and Japanese XML locale files with matching keys and genuine translations. Namespace keys to the module and use lowercase period-delimited words (for example `module.example.canvas.label`); do not use underscores or kebab-case between words. Localize manifest metadata, page titles, subtitles, labels, errors, empty states, accessibility text, and CLI-facing output where the host contract supports it.
 
+## Tutorial coverage and maintenance
+
+Every UI-facing component must be covered by a page- or URL-bound tutorial through the host's public `ui:tutorials` contract. Cover the actual pages, controls, menus, dialogs and embedded surfaces users encounter, including administrator-only and optional states. Keep coverage with the owning component and use role restrictions, conditions and dependencies so inaccessible or unavailable stages are excluded from the path and total count.
+
+Write consistent user-first walkthroughs: explain the user's goal, prerequisites, useful actions and expected outcome using the real controls. Prefer meaningful task sequences over a list of labels. Do not expose implementation details or add irrelevant reassurances about permissions or actions the guide does not perform. Use the host's shared presentation, localized copy in all four supported languages, lifecycle cleanup and safe interaction/navigation guards; never make destructive changes merely to demonstrate a feature.
+
+Set each step's `highlightNext` flag deliberately: use `true` when the user must choose Next or Finish to continue an explanation, and `false` for steps completed by an event or wait condition. Review branches, conditional controls, empty states, audience-specific counts, replay, restart, keyboard operation and reduced-motion behavior through the public contracts.
+
+Each stage must focus a distinct rendered control or region and follow visual UI order unless an interaction dependency requires otherwise. Do not target composer layout IDs or hidden switch inputs. Retain one example card across hover/reordering. Bind discovery to the active view, including same-URL sections, and keep supplemental introductions opt-in without redirecting visitors away from their chosen activity. Use conditional, event-gated detail branches with dependency-aware skipping/Back and group-lifetime cleanup. Do not explain Save/Discard or Review Changes without enabling real staged changes. Test repeated SPA mounts, scrolling/reflow, empty data, optional controls, dropdown closure and teardown through public contracts. Use the host's owner-authorized `targetAvailable` condition for optional actions instead of reading shared modal markup. Closing overlays retained for animation are not active detail surfaces. Verify rapid Back, reopen and Restart in both source and production builds.
+
+Floating action menus must use the host’s queued `ui:floatingMenus` contract or queued reuse/composer menu API. Bind queue ownership to the component/page signal, wait for the grant before exposing controls, and release it on teardown. Tutorials retain their priority reservation across steps; page menus must wait until the tutorial yields. Do not create a parallel floating-menu visibility path that bypasses these flows.
+
+Every new feature or UI change warrants a review of existing tutorials in the same change. Add or revise affected steps, targets, conditions, branches, localized text and coverage documentation; remove misleading instructions and verify actual progression rather than relying on selectors or source assertions alone. A UI change is incomplete until its tutorial coverage is reviewed and updated where needed.
+
 ## API, persistence, configuration, and security
 
 Validate, bound, sanitize, and normalize at API boundaries. Authenticate and authorize before business logic, use least privilege and secure defaults, and return stable public errors without internal details. Do not impose an arbitrary result limit when the caller did not request one; validate an explicit limit without silently clamping or substituting it.
@@ -86,6 +100,8 @@ Keep persistence behind `ctx` capabilities and module-owned stores. Parameterize
 Use manifest `ui.preferences` and the module-owned `GET`/`PUT /api/v1/modules/<id>/config` contract for administrator configuration rather than building a second settings UI. Persist configuration across disable and restart; clear it only through uninstall semantics. Never return stored passwords. User-specific secrets belong in the host keyring and configuration secrets must use the host's concealed-value contract. Use Web Crypto or Node Crypto—not `Math.random()`—for identifiers, tokens, keys, and generated values.
 
 Declare hard dependencies sparingly and prefer capability requirements or soft dependencies for optional integrations. Disabled modules must not run their normal bootstrap. Use a declared `disabledApi` entrypoint only when configuration must work while disabled, and register only routes explicitly allowed in that state.
+
+Translation namespaces are independent of immutable module IDs: use periods between every word, including tutorial keys, and keep namespace validation strict. Match each XML file’s existing sibling indentation and preserve translation values when formatting. Renaming translation keys must not rename tutorial owners or IDs, module IDs, UUIDs or capabilities.
 
 ## Tests and quality
 
@@ -127,3 +143,9 @@ Treat ctx as the backbone of every supported server and browser action. Extend d
 Template guidance baseline: [d71b980](https://github.com/Cognis-Labs-HQ/cognis-module-template/blob/d71b98077d8d7af087b44009dafc2d736f86b617/.github/copilot-instructions.md).
 
 Keep Whiteboard authorization, encryption, canvas state and rendering inside this module. Integrators consume its public capability/page contracts and never manage canvas internals. Preserve infinite-canvas sizing and avoid treating viewport panning as document modification.
+
+Whiteboard tutorials must establish a real canvas through New Board or a saved-board selection before explaining tools. Wait for owner-confirmed canvas readiness, handle loading failures and pre-opened canvases, and test the selection-to-render transition plus Next bypass without creating a canvas automatically.
+
+Readiness does not imply edit permission. Publish owner-confirmed write access separately, exclude editing stages for read-only recipients, and verify their navigation-only path and counts in real sessions.
+
+For administration tutorials, keep composer section IDs only as discovery boundaries. Highlight the module-rendered form or its fields, and verify the resolved target against the actual mounted controls.

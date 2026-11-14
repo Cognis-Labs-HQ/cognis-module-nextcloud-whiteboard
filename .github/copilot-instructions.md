@@ -147,3 +147,5 @@ Keep Whiteboard authorization, encryption, canvas state and rendering inside thi
 Whiteboard tutorials must establish a real canvas through New Board or a saved-board selection before explaining tools. Wait for owner-confirmed canvas readiness, handle loading failures and pre-opened canvases, and test the selection-to-render transition plus Next bypass without creating a canvas automatically.
 
 Readiness does not imply edit permission. Publish owner-confirmed write access separately, exclude editing stages for read-only recipients, and verify their navigation-only path and counts in real sessions.
+
+For administration tutorials, keep composer section IDs only as discovery boundaries. Highlight the module-rendered form or its fields, and verify the resolved target against the actual mounted controls.

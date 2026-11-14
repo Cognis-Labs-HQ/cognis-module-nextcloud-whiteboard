@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.4.8",
+    "version": "2.4.9",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -121,7 +121,7 @@
         },
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "8f1d4a8e153f3e5ce6a283bd55cf0a0b523d8ee659b4d6d32df97f15218c1e80"
+            "sha256": "e5b397c22a51fe0a9ec94834b5eebdd02009f37098838dfb9452168d9f9773f2"
         },
         {
             "path": ".gitignore",
@@ -385,27 +385,27 @@
         },
         {
             "path": "docs/tutorials.de.md",
-            "sha256": "74ddf3a5ae859a9e009be7140c1a70dcc1c08b40c65bb7e30945c007d357df3c"
+            "sha256": "5c4da3ce029781c9a60e272e4f1ea75c7068f847551265ff678a78366584dc27"
         },
         {
             "path": "docs/tutorials.en.md",
-            "sha256": "49d8ccc3c52d5d06a6000d3f5f9f65674ebd7f765357cf3ee8419025abbbd957"
+            "sha256": "d41d55becb89be04a781a92d85d66d1a8950e726bea95b5859f82e3ae161365b"
         },
         {
             "path": "docs/tutorials.id.md",
-            "sha256": "74b3117c4b7a34bcae2da367a3c9064b6f17d3676fee3b55ffa3351233e40999"
+            "sha256": "9964483b4350984ed43d0d41f9556f3f5abaeb7ed5c4412b8b89ca518868331a"
         },
         {
             "path": "docs/tutorials.ja.md",
-            "sha256": "32f1d3b968f93117c289765d9be5eedff332bc4c4d06cfaf3821a76df8d41f80"
+            "sha256": "ed051306a039a744b5fc18f9b185626a541f009a2f62070a3e9d1773d70d335c"
         },
         {
             "path": "package-lock.json",
-            "sha256": "2b7f8497395f11e1a0684e97dd375d5c3c7b29496e7952f675fa1d3ab15ae866"
+            "sha256": "2f9440761cdce25b1896364d3645d1995549b424f1d62f15f8ea2972189a42c9"
         },
         {
             "path": "package.json",
-            "sha256": "e9e889882c6057453fc4cfc524b45cb54e37affa397c95699ca17e96ff26dcd8"
+            "sha256": "13e4496eecc2f72d8c059cbec9889a4f29f883ac788e7f6b95ca7190810bc4a0"
         },
         {
             "path": "routes.json",
@@ -849,7 +849,7 @@
         },
         {
             "path": "ui/tutorials/guides.js",
-            "sha256": "295927616a0939abd9988e4c52654e2a03efa9d7316384211f420ceb854b74a0"
+            "sha256": "48f88ed280354ccfafef9d20e6bc27715254e5b7f95750abcdad5954bcd9ae85"
         },
         {
             "path": "ui/tutorials/provider.js",

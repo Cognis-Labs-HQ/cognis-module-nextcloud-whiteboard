@@ -132,7 +132,7 @@ export const guides = [
                     {
                         highlightNext: true,
                         id: "connection-and-limits",
-                        selector: "#module-nextcloud-whiteboard",
+                        selector: "form.whiteboard-admin",
                         titleKey:
                             "module.nextcloud.whiteboard.tutorial.more.configuration.connection.and.limits.title",
                         bodyKey:

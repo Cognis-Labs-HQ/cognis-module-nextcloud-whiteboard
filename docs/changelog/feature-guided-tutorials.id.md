@@ -50,6 +50,10 @@ Di beranda Whiteboard, pilih Papan Baru atau papan tersimpan. Tindakan ini memul
 
 Kesiapan kanvas dan izin tulis merupakan status terpisah yang dikonfirmasi pemilik. Setelah pemuatan, penjelasan koneksi tersedia bagi semua penonton. Langkah gambar dan riwayat memerlukan akses tulis; penerima hanya baca mendapat panduan geser/perbesar. Aksi edit dan berbagi yang tidak tersedia dikecualikan dari alur dan jumlah langkah.
 
+## Sorot Formulir Konfigurasi
+
+Panduan konfigurasi administrasi tetap memakai bagian host sebagai batas penemuan dan menyorot formulir milik modul yang berisi URL server, kunci API, dan batas unggahan. ID tata letak composer tidak menjadi target tutorial.
+
 ## Komit
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

@@ -50,6 +50,10 @@ On the Whiteboard homepage, choose New Board or a saved board. This deliberate a
 
 Canvas readiness and write permission are separate owner-confirmed states. After loading, the connection explanation is available to all viewers. Drawing and history steps require write access; read-only recipients get a pan/zoom walkthrough instead. Unavailable editing and sharing actions are excluded from the path and count.
 
+## Highlight The Configuration Form
+
+The administration configuration guide keeps the host section as its discovery boundary and highlights the module-rendered form containing the server URL, API key and upload limit. Composer layout identifiers are not tutorial targets.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

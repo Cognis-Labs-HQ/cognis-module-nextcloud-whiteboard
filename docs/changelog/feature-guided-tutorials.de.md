@@ -50,6 +50,10 @@ Wählen Sie auf der Whiteboard-Startseite Neue Zeichenfläche oder eine gespeich
 
 Bereitschaft und Schreibberechtigung sind getrennte, vom Besitzer bestätigte Zustände. Nach dem Laden sehen alle Betrachter die Verbindungserklärung. Zeichen- und Verlaufsschritte erfordern Schreibzugriff; schreibgeschützte Empfänger erhalten stattdessen eine Anleitung zum Verschieben und Zoomen. Unverfügbare Bearbeitungs- und Freigabeaktionen entfallen aus Ablauf und Schrittzahl.
 
+## Das Konfigurationsformular hervorheben
+
+Die Konfigurationsanleitung verwendet den Host-Abschnitt weiterhin als Suchbereich und hebt das vom Modul dargestellte Formular mit Server-URL, API-Schlüssel und Uploadlimit hervor. Layoutkennungen des Composers sind keine Tutorialziele.
+
 ## Commits
 
 - [b63cde3](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/b63cde3de36183dd8426cad60e10112c9084571e)

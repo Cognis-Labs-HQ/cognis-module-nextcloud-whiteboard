@@ -12,5 +12,4 @@ Token sesi Whiteboard kini menegakkan izin tulis yang telah ditentukan pada serv
 
 ## Komit
 
-- [7c5b43f](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7c5b43fd1cd3129e55f4c79b278b068d2be6c25c)
-- [f9f8964](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/f9f896488c44628f14cfc80b44b7a5324b000def)
+- [7d08f5e](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/commit/7d08f5e91549c0922580d30255902ecf3cc1e0ba)

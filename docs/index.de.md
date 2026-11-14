@@ -141,3 +141,11 @@ Anbieter-Metadaten veröffentlichen eine neutrale resourceReference mit resource
 Die Zeichenflächen-Verwaltung bietet Alle Zeichenflächen, Aktive Zeichenflächen und Problematische Zeichenflächen mit eigenen Leermeldungen. Die Problemansicht zeigt fehlende Eigentümer oder Eigentümerzugriffe, unvollständige Quellverknüpfungen sowie doppelte allgemeine Quellverknüpfungen oder Ressourcenverweise. Kleine Problemmarkierungen erläutern jeden Befund. Die Diagnose verwendet nur Whiteboard-eigene Daten. Die Verwaltung erfordert weiterhin Administratorrechte und gibt keine Zugangsdaten aus.
 
 Die Zeichenflächen-Implementierung liegt in `api/canvas/` und `ui/canvas/` mit kurzen Dateinamen wie `source-binding.js`, `events.js` und `snapshot.js`. Die Laufzeitprüfung für die Aktivierung heißt `api/configuration/enablement.js`; Unit-Tests bleiben in `api/tests/`. Geteilte Seiten verwenden denselben revisionsgebundenen Asset-Resolver wie normale Routen. Die Verwaltung schließt inaktive Präsenz aus und liefert `invalid_json` bei fehlerhaften Löschanfragen. Eine einzelne zugängliche Zeichenfläche am kanonischen Ressourcenpfad erhält einen unveränderlichen Verweis ohne Inhaltsänderung. Mehrdeutige Pfade führen zu einem Konflikt und einer Problemmarkierung statt einer automatischen Datensatzauswahl.
+
+## Verifizierter Gastzugriff
+
+Ressourcenrouten beziehen verifizierte Gastansprüche über `share:getGuestClaims`, bevor sie das konkrete Whiteboard und die Lese-/Schreibberechtigung prüfen. Bild-, Präsenz-, Sitzungs- und Startanfragen behalten diese Prüfungen einschließlich delegierter Zugriffe bei. Konto- und Verwaltungsrouten erfordern eine reguläre Kontositzung. Das Präfix `share:` in einem Kontonamen kennzeichnet keinen Gast. Installieren Sie vor Aktivierung dieses Modulupdates den Vertrag zur Gastanmeldung des Share-Hosts.
+
+### Schreibgeschützter Transport und Bereitschaft geteilter Boards
+
+Whiteboard-Sitzungstoken setzen die ermittelte Schreibberechtigung jetzt auch am Echtzeitserver durch. Geteilte Zeichenflächen beziehen ihre autorisierte Boardsitzung, bevor sie die Websocket-Bereitschaft mit demselben eingeschränkten Token prüfen. Sie rufen keine kontogebundene globale Vorprüfung auf; die Vorprüfung regulärer Konten und Verwaltungsbeschränkungen bleiben unverändert.

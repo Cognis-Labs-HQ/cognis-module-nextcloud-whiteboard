@@ -539,8 +539,8 @@ async function renameActiveBoard() {
     titleEl.addEventListener("keydown", onKeydown);
 }
 
-async function runPreflightCheck(signal) {
-    return preflightController.run({ signal });
+async function runPreflightCheck(signal, session) {
+    return preflightController.run({ signal, session });
 }
 
 async function openBoard(board) {
@@ -557,9 +557,10 @@ async function openBoard(board) {
     const isCurrent = () =>
         boardController === controller && !controller.signal.aborted;
     composer.refresh(buildElements());
-    const passed = await runPreflightCheck(controller.signal);
-    if (!isCurrent()) return;
-    if (!passed) return;
+    if (!activeShareContext) {
+        const passed = await runPreflightCheck(controller.signal);
+        if (!isCurrent() || !passed) return;
+    }
     setOverlayVisible(
         pageMountRoot,
         true,
@@ -600,6 +601,10 @@ async function openBoard(board) {
         if (!isCurrent()) return;
         reportCanvasLoadError(error, board.id, "session");
         return;
+    }
+    if (activeShareContext) {
+        const passed = await runPreflightCheck(controller.signal, session);
+        if (!isCurrent() || !passed) return;
     }
     activeSession = session;
     disposableCanvasMode = session.disposable === true;

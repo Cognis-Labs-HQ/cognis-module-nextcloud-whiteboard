@@ -18,6 +18,7 @@ export function registerBoardRoutes(
     router,
     {
         requireAuth,
+        getGuestClaims,
         store,
         profileStore,
         profileIdentity,
@@ -121,6 +122,7 @@ export function registerBoardRoutes(
 
     registerWhiteboardImageRoutes(router, {
         requireAuth,
+        getGuestClaims,
         store,
         profileStore,
         resolveShareGuestAccess,
@@ -133,9 +135,10 @@ export function registerBoardRoutes(
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/session",
         async (req, res) => {
-            await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims =
+                (await getGuestClaims?.(req)) ?? requireAuth(req, res, "user");
             if (!claims) return;
+            await store.ensureSchema();
             const url = new URL(req.url, "http://localhost");
             const whiteboardId = url.searchParams.get("id") ?? "";
             const whiteboard = await store.getWhiteboardById(whiteboardId);
@@ -169,6 +172,7 @@ export function registerBoardRoutes(
             const token = await store.mintSessionToken(config, whiteboard, {
                 id: username,
                 name: displayName,
+                readOnly: access.canWrite !== true,
             });
             log?.("info", "Nextcloud Whiteboard session token issued.", {
                 component: "nextcloud-whiteboard-module",
@@ -200,15 +204,15 @@ export function registerBoardRoutes(
                 },
             });
         },
-        { access: { minRole: "user" } },
     );
 
     router.post(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/elements",
         async (req, res) => {
-            await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims =
+                (await getGuestClaims?.(req)) ?? requireAuth(req, res, "user");
             if (!claims) return;
+            await store.ensureSchema();
             const body = await readJson(req);
             const whiteboardId = String(body.id ?? "").trim();
             const whiteboard = await store.getWhiteboardById(whiteboardId);
@@ -253,15 +257,15 @@ export function registerBoardRoutes(
             );
             sendJson(res, 200, { data: saved });
         },
-        { access: { minRole: "user" } },
     );
 
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/presence",
         async (req, res) => {
-            await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims =
+                (await getGuestClaims?.(req)) ?? requireAuth(req, res, "user");
             if (!claims) return;
+            await store.ensureSchema();
             const url = new URL(req.url, "http://localhost");
             const whiteboardId = url.searchParams.get("pageId") ?? "";
             const whiteboard = await store.getWhiteboardById(whiteboardId);
@@ -322,13 +326,13 @@ export function registerBoardRoutes(
             }
             sendJson(res, 200, { data: { presence } });
         },
-        { access: { minRole: "user" } },
     );
 
     router.post(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/presence",
         async (req, res) => {
-            const claims = requireAuth(req, res, "user");
+            const claims =
+                (await getGuestClaims?.(req)) ?? requireAuth(req, res, "user");
             if (!claims) return;
             let body;
             try {
@@ -378,7 +382,6 @@ export function registerBoardRoutes(
                 );
             }
         },
-        { access: { minRole: "user" } },
     );
 
     router.post(
@@ -588,9 +591,10 @@ export function registerBoardRoutes(
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/launch",
         async (req, res) => {
-            await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims =
+                (await getGuestClaims?.(req)) ?? requireAuth(req, res, "user");
             if (!claims) return;
+            await store.ensureSchema();
             const url = new URL(req.url, "http://localhost");
             const whiteboardId = url.searchParams.get("id") ?? "";
             const whiteboard = await store.getWhiteboardById(whiteboardId);
@@ -614,7 +618,6 @@ export function registerBoardRoutes(
             });
             res.end();
         },
-        { access: { minRole: "user" } },
     );
 
     router.post(

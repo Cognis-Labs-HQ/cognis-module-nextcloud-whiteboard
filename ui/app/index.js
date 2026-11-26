@@ -53,6 +53,8 @@ const [
     reuse.importModule("escape-html.js"),
 ]);
 await reuse.loadStylesheets(["page-sections.css"]);
+const log = uiCtx.capabilities.bind("ui:log");
+
 const EMIT_DEBOUNCE_MS = 80;
 const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
@@ -93,12 +95,14 @@ const {
     sharePageFlag,
     translate: translateModuleString,
 } = createWhiteboardStatusController({
+    log,
     getI18n: () => i18n,
     getIntegrationCanvasMode: () => integrationCanvasMode,
     getShareContext: () => activeShareContext,
     showToast,
 });
 const preflightController = createWhiteboardPreflightController({
+    log,
     fetchPreflight: ({ signal } = {}) =>
         apiFetchJson("/whiteboards/preflight", { method: "POST", signal }),
     getMountRoot: () => pageMountRoot,
@@ -128,17 +132,14 @@ const collectWhiteboardSearchGroups = createWhiteboardSearchCollector({
 });
 
 function reportCanvasLoadError(error, boardId, stage) {
-    console.error("[nextcloud-whiteboard] whiteboard canvas load failed.", {
+    log("error", "whiteboard.canvas.load_failed", {
         boardId: String(boardId ?? ""),
         stage,
-        error,
+        errorName: error?.name,
     });
-    const detail = String(error?.message ?? "").trim();
-    const message = detail
-        ? `${translateModuleString("module.nextcloud.whiteboard.canvas.load.failed")} ${detail}`
-        : translateModuleString(
-              "module.nextcloud.whiteboard.canvas.load.failed",
-          );
+    const message = translateModuleString(
+        "module.nextcloud.whiteboard.canvas.load.failed",
+    );
     setOverlayVisible(pageMountRoot, true, message);
     showToast(message, { variant: "error" });
 }
@@ -155,10 +156,9 @@ function teardownCanvas() {
             socketInstance.removeAllListeners();
             socketInstance.disconnect();
         } catch (error) {
-            console.warn(
-                "[nextcloud-whiteboard] socket disconnect failed:",
-                error,
-            );
+            log("error", "whiteboard.socket.disconnect_failed", {
+                errorName: error?.name,
+            });
         }
         socketInstance = null;
     }
@@ -166,10 +166,9 @@ function teardownCanvas() {
         try {
             canvasInstance.destroy();
         } catch (error) {
-            console.warn(
-                "[nextcloud-whiteboard] canvas destroy failed:",
-                error,
-            );
+            log("error", "whiteboard.canvas.destroy_failed", {
+                errorName: error?.name,
+            });
         }
         canvasInstance = null;
     }
@@ -400,10 +399,9 @@ function connectSocket(io, session, canvas) {
                 savedElements = canvas.getElements();
             }
         } catch (error) {
-            console.warn(
-                "[nextcloud-whiteboard] ignored remote sync payload",
-                error,
-            );
+            log("error", "whiteboard.sync.payload_rejected", {
+                errorName: error?.name,
+            });
         }
     });
     return socket;

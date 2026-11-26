@@ -133,3 +133,34 @@ test("a replaced preflight releases late script handles without opening a socket
     assert.equal(await running, false);
     assert.equal(disposals, 1);
 });
+
+test("websocket preflight failures publish safe diagnostics through the injected gateway", async () => {
+    const entries = [];
+    const toasts = [];
+    const controller = createWhiteboardPreflightController({
+        log: (...args) => entries.push(args),
+        fetchPreflight: async () => ({
+            alive: true,
+            serverUrl: "https://whiteboard.test",
+        }),
+        getMountRoot: () => "root",
+        getResourceLoader: () => ({}),
+        loadSocketIo: async () => {
+            throw new TypeError("private credential");
+        },
+        setOverlayVisible() {},
+        showToast: (message) => toasts.push(message),
+        translate: (key) => `localized:${key}`,
+    });
+    assert.equal(await controller.run(), false);
+    assert.deepEqual(entries, [
+        [
+            "error",
+            "whiteboard.websocket.preflight_failed",
+            { errorName: "TypeError" },
+        ],
+    ]);
+    assert.deepEqual(toasts, [
+        "localized:module.nextcloud.whiteboard.preflight.websocket.failed",
+    ]);
+});

@@ -1,25 +1,19 @@
-# Nextcloud Whiteboard
+# Papan Tulis
 
-[English](README.en.md) · [Deutsch](README.de.md) · **Bahasa Indonesia** · [日本語](README.ja.md)
+Buat dan bagikan kanvas gambar kolaboratif di Cognis.
 
-Papan tulis kolaboratif yang didukung Nextcloud dan terintegrasi dengan kontrol akses Cognis. Repositori ini merupakan modul eksternal Cognis yang mandiri.
+## Yang Dapat Anda Lakukan
 
-## Memulai
+Menggambar, menambah bentuk dan teks, membuka papan tersimpan, serta bekerja bersama peserta lain. Penerima hanya-baca dapat melihat dan menavigasi kanvas.
 
-Instal modul melalui Marketplace Modul atau tempatkan di direktori modul eksternal yang telah dikonfigurasi. Aktifkan modul, buka **Nextcloud Whiteboard Settings**, lalu atur URL server Whiteboard, batas unggah gambar, dan kunci API bersama.
+## Sebelum Memulai
 
-Pengguna dapat membuat dan memilih papan di `/whiteboards`, lalu berkolaborasi di `/whiteboard?id=<board-id>`. Pemilik dapat memberikan akses baca atau tulis melalui dialog berbagi host.
+Administrator harus mengatur server Whiteboard dan kunci API. Cognis dan peramban harus dapat menjangkaunya. Penyuntingan memerlukan akses tulis ke papan yang dipilih.
 
-## Pemeriksaan kontributor
+## Langkah Awal
 
-```sh
-npm install
-npm run lint
-npm test
-npx playwright install chromium
-npm run test:browser
-npm run check:manifest
-git diff --check
-```
+Buka Whiteboard lalu pilih New Board atau papan tersimpan. Tunggu status koneksi, kemudian menggambar atau melihat sesuai akses Anda.
 
-Baca [`docs/index.id.md`](docs/index.id.md) untuk konfigurasi, capability, route, batas keamanan, dan panduan operasional.
+## Pelajari Lebih Lanjut
+
+[Penggunaan](docs/USAGE.id.md) menyediakan prosedur. [Teknis](docs/TECHNICAL.id.md) menjelaskan kontrak dan konfigurasi.

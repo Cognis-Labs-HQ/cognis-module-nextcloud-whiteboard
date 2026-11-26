@@ -1,25 +1,19 @@
-# Nextcloud Whiteboard
+# ホワイトボード
 
-[English](README.en.md) · [Deutsch](README.de.md) · [Bahasa Indonesia](README.id.md) · **日本語**
+Cognis で共同編集できる描画キャンバスを作成し、共有できます。
 
-Nextcloud を基盤とし、Cognis のアクセス制御と統合された共同ホワイトボードです。このリポジトリは自己完結型の Cognis 外部モジュールです。
+## できること
+
+描画、図形や文字の追加、保存済みボードの参照、共同作業ができます。閲覧専用の受信者はキャンバスを確認し、移動して閲覧できます。
+
+## 始める前に
+
+管理者が Whiteboard サーバーと API キーを設定する必要があります。Cognis とブラウザーの両方からサーバーに接続でき、編集するボードへの書き込み権限が必要です。
 
 ## はじめに
 
-モジュールマーケットプレイスからインストールするか、構成済みの外部モジュールディレクトリに配置します。モジュールを有効化し、**Nextcloud Whiteboard Settings** を開いて、Whiteboard サーバー URL、画像アップロード上限、共有 API キーを設定します。
+Whiteboard を開いて New Board または保存済みボードを選びます。接続状態を確認してから、権限に応じて描画または閲覧します。
 
-ユーザーは `/whiteboards` でボードを作成・選択し、`/whiteboard?id=<board-id>` で共同編集できます。所有者はホストの共有ダイアログから読み取りまたは書き込みアクセスを付与できます。
+## 詳しい情報
 
-## コントリビューター向けチェック
-
-```sh
-npm install
-npm run lint
-npm test
-npx playwright install chromium
-npm run test:browser
-npm run check:manifest
-git diff --check
-```
-
-構成、Capability、ルート、セキュリティ境界、運用方法については [`docs/index.ja.md`](docs/index.ja.md) を参照してください。
+手順は[使用例](docs/USAGE.ja.md)、契約と設定は[技術情報](docs/TECHNICAL.ja.md)を参照してください。

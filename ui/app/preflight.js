@@ -1,6 +1,7 @@
 import { probeWebsocketAuthorization } from "./reuse/websocket-probe.js";
 
 export function createWhiteboardPreflightController({
+    log,
     fetchPreflight,
     getMountRoot,
     getResourceLoader,
@@ -34,6 +35,9 @@ export function createWhiteboardPreflightController({
         } catch (error) {
             if (!isCurrent()) return false;
             status = "failed";
+            log("error", "whiteboard.preflight.request_failed", {
+                errorName: error?.name,
+            });
             const message =
                 error.code === "config_required"
                     ? translate(
@@ -70,10 +74,9 @@ export function createWhiteboardPreflightController({
             );
         } catch (error) {
             if (!isCurrent()) return false;
-            console.error(
-                "[nextcloud-whiteboard] Websocket preflight failed.",
-                { errorName: error?.name },
-            );
+            log("error", "whiteboard.websocket.preflight_failed", {
+                errorName: error?.name,
+            });
         }
         if (!isCurrent()) return false;
         if (!websocketAuthorized) {

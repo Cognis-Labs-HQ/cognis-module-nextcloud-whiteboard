@@ -1,25 +1,19 @@
-# Nextcloud Whiteboard
+# Whiteboard
 
-**English** · [Deutsch](README.de.md) · [Bahasa Indonesia](README.id.md) · [日本語](README.ja.md)
+Create and share collaborative drawing canvases in Cognis.
 
-Collaborative whiteboards backed by Nextcloud and integrated with Cognis access controls. This repository is a self-contained Cognis external module.
+## What You Can Do
 
-## Get started
+Draw, add shapes and text, browse saved boards and work with other participants. Read-only recipients can inspect and navigate a canvas.
 
-Install the module through the Module Marketplace or place it in the configured external modules directory. Enable it, open **Nextcloud Whiteboard Settings**, and configure the Whiteboard server URL, image upload limit, and shared API key.
+## Before You Start
 
-Users can create and select boards at `/whiteboards`, then collaborate at `/whiteboard?id=<board-id>`. Owners can grant read or write access through the host share dialog.
+An administrator must configure the Whiteboard server and its API key. Both Cognis and the browser must reach that server. Editing requires write access to the selected board.
 
-## Contributor checks
+## Get Started
 
-```sh
-npm install
-npm run lint
-npm test
-npx playwright install chromium
-npm run test:browser
-npm run check:manifest
-git diff --check
-```
+Open Whiteboard and choose New Board or a saved board. Wait for the connection status, then draw or inspect the canvas according to your access.
 
-Read [`docs/index.en.md`](docs/index.en.md) for configuration, capabilities, routes, security boundaries, and operational guidance.
+## Learn More
+
+[Usage](docs/USAGE.en.md) provides procedures. [Technical](docs/TECHNICAL.en.md) provides contracts and configuration.

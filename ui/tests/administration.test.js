@@ -14,7 +14,7 @@ const reuse = {
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
         bind(id) {
-            return (...args) => this.get(id)?.(...args);
+            return (...argumentsList) => this.get(id)?.(...argumentsList);
         },
         get: (id) =>
             id === "ui:reuse"
@@ -36,7 +36,7 @@ const { createAdminSection } = await import("../administration/canvases.js");
 const section = createAdminSection({
     i18n: { t: (key) => key },
     escapeHtml: String,
-    showToast: (...args) => toasts.push(args),
+    showToast: (...argumentsList) => toasts.push(argumentsList),
 });
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 

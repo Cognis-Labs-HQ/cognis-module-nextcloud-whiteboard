@@ -1,8 +1,8 @@
 export function debounce(callback, delay) {
     let timer = null;
-    const run = (...args) => {
+    const run = (...argumentsList) => {
         clearTimeout(timer);
-        timer = setTimeout(() => callback(...args), delay);
+        timer = setTimeout(() => callback(...argumentsList), delay);
     };
     run.cancel = () => {
         clearTimeout(timer);
@@ -13,27 +13,27 @@ export function debounce(callback, delay) {
 
 export function throttleLatest(callback, delay) {
     let timer = null;
-    let lastArgs = null;
-    const run = (...args) => {
+    let lastArgumentsList = null;
+    const run = (...argumentsList) => {
         if (!timer) {
-            callback(...args);
+            callback(...argumentsList);
         } else {
-            lastArgs = args;
+            lastArgumentsList = argumentsList;
             return;
         }
         timer = setTimeout(() => {
             timer = null;
-            if (lastArgs) {
-                const pendingArgs = lastArgs;
-                lastArgs = null;
-                callback(...pendingArgs);
+            if (lastArgumentsList) {
+                const pendingArgumentsList = lastArgumentsList;
+                lastArgumentsList = null;
+                callback(...pendingArgumentsList);
             }
         }, delay);
     };
     run.cancel = () => {
         clearTimeout(timer);
         timer = null;
-        lastArgs = null;
+        lastArgumentsList = null;
     };
     return run;
 }
@@ -48,12 +48,12 @@ export async function loadSocketIo(serverUrl, resourceLoader) {
         src: `${origin}/socket.io/socket.io.js`,
         globalName: "io",
     });
-    const io = resource?.value ?? resource?.global ?? window.io;
-    if (typeof io !== "function") {
+    const socketLibrary = resource?.value ?? resource?.global ?? window.io;
+    if (typeof socketLibrary !== "function") {
         resource?.dispose?.();
         throw new Error("Whiteboard runtime unavailable");
     }
-    return { io, dispose: () => resource?.dispose?.() };
+    return { io: socketLibrary, dispose: () => resource?.dispose?.() };
 }
 
 export function encodeSyncMessage(type, payload = {}) {

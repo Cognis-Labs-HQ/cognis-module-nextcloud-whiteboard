@@ -11,17 +11,17 @@ export function hasMinRole(role, minRole) {
     return (ROLE_RANK[role] ?? -1) >= (ROLE_RANK[minRole] ?? Number.MAX_VALUE);
 }
 
-export async function readJson(req) {
+export async function readJson(request) {
     const chunks = [];
-    for await (const chunk of req) chunks.push(Buffer.from(chunk));
+    for await (const chunk of request) chunks.push(Buffer.from(chunk));
     return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
 }
 
-export function sendJson(res, statusCode, payload) {
-    res.writeHead(statusCode, { "content-type": "application/json" });
-    res.end(JSON.stringify(payload));
+export function sendJson(response, statusCode, payload) {
+    response.writeHead(statusCode, { "content-type": "application/json" });
+    response.end(JSON.stringify(payload));
 }
 
-export function sendError(res, statusCode, code, message, details = {}) {
-    sendJson(res, statusCode, { error: { code, message, ...details } });
+export function sendError(response, statusCode, code, message, details = {}) {
+    sendJson(response, statusCode, { error: { code, message, ...details } });
 }

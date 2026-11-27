@@ -6,15 +6,15 @@ export function issueAccessToken(subject, role = "user", options = {}) {
     return token;
 }
 
-export function requireTestAuth(req, res) {
-    const token = String(req?.headers?.authorization ?? "").replace(
+export function requireTestAuth(request, response) {
+    const token = String(request?.headers?.authorization ?? "").replace(
         /^Bearer\s+/i,
         "",
     );
     const claims = accessTokens.get(token) ?? null;
     if (!claims) {
-        res.writeHead(401, { "content-type": "application/json" });
-        res.end(JSON.stringify({ error: "unauthorized" }));
+        response.writeHead(401, { "content-type": "application/json" });
+        response.end(JSON.stringify({ error: "unauthorized" }));
     }
     return claims;
 }

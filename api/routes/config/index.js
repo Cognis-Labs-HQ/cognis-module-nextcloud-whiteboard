@@ -9,22 +9,24 @@ export function registerWhiteboardConfigRoutes(
 ) {
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/config",
-        async (req, res) => {
-            const claims = requireAuth(req, res, "user");
+        async (request, response) => {
+            const claims = requireAuth(request, response, "user");
             if (!claims) return;
             await store.ensureSchema();
-            sendJson(res, 200, { data: publicConfig(await store.getConfig()) });
+            sendJson(response, 200, {
+                data: publicConfig(await store.getConfig()),
+            });
         },
         { access: { minRole: "user" }, allowWhenDisabled: true },
     );
 
     router.put(
         "/api/v1/modules/nextcloud-whiteboard/config",
-        async (req, res) => {
-            const claims = requireAuth(req, res, "admin");
+        async (request, response) => {
+            const claims = requireAuth(request, response, "admin");
             if (!claims) return;
             await store.ensureSchema();
-            const body = await readJson(req);
+            const body = await readJson(request);
             const serverUrl = normalizeHttpUrl(body.serverUrl);
             const existingConfig = await store.getConfig();
             const apiKey =
@@ -34,7 +36,7 @@ export function registerWhiteboardConfigRoutes(
             );
             if (!serverUrl) {
                 sendError(
-                    res,
+                    response,
                     400,
                     "bad_request",
                     "A valid Whiteboard server URL is required.",
@@ -44,7 +46,7 @@ export function registerWhiteboardConfigRoutes(
             }
             if (apiKey && apiKey.length < 16) {
                 sendError(
-                    res,
+                    response,
                     400,
                     "bad_request",
                     "API key must be at least 16 characters for sufficient security.",
@@ -66,15 +68,15 @@ export function registerWhiteboardConfigRoutes(
                 imageUploadMaxBytes: saved.imageUploadMaxBytes,
                 updatedBy: claims.sub,
             });
-            sendJson(res, 200, { data: publicConfig(saved) });
+            sendJson(response, 200, { data: publicConfig(saved) });
         },
         { access: { minRole: "admin" }, allowWhenDisabled: true },
     );
 
     router.delete(
         "/api/v1/modules/nextcloud-whiteboard/config",
-        async (req, res) => {
-            const claims = requireAuth(req, res, "admin");
+        async (request, response) => {
+            const claims = requireAuth(request, response, "admin");
             if (!claims) return;
             await store.ensureSchema();
             await store.deleteConfig();
@@ -83,8 +85,8 @@ export function registerWhiteboardConfigRoutes(
                 operation: "delete_config",
                 deletedBy: claims.sub,
             });
-            res.writeHead(204);
-            res.end();
+            response.writeHead(204);
+            response.end();
         },
         { access: { minRole: "admin" }, allowWhenDisabled: true },
     );

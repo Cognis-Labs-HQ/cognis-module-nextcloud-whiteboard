@@ -4,15 +4,15 @@ const PAGE_RESOURCE_ORIGIN_OWNER_ID = "module:nextcloud-whiteboard";
 
 const storeByExecutor = new WeakMap();
 
-export function resolveStore(dbExecutor, log, profileIdentity) {
-    const existingStore = storeByExecutor.get(dbExecutor);
+export function resolveStore(databaseExecutor, log, profileIdentity) {
+    const existingStore = storeByExecutor.get(databaseExecutor);
     if (existingStore) return existingStore;
     const store = new NextcloudWhiteboardStore({
-        db: dbExecutor,
+        db: databaseExecutor,
         log,
         profileIdentity,
     });
-    storeByExecutor.set(dbExecutor, store);
+    storeByExecutor.set(databaseExecutor, store);
     return store;
 }
 
@@ -25,11 +25,11 @@ export function createProfileStoreCapability(ctx) {
         return profileStore;
     };
     return {
-        getProfile(...args) {
-            return requireProfileStore().getProfile(...args);
+        getProfile(...argumentsList) {
+            return requireProfileStore().getProfile(...argumentsList);
         },
-        getProfileByHandle(...args) {
-            return requireProfileStore().getProfileByHandle(...args);
+        getProfileByHandle(...argumentsList) {
+            return requireProfileStore().getProfileByHandle(...argumentsList);
         },
     };
 }
@@ -43,17 +43,23 @@ export function createProfileIdentityCapability(ctx) {
         return profileIdentity;
     };
     return {
-        normalizeHandleKey(...args) {
-            return requireProfileIdentity().normalizeHandleKey(...args);
+        normalizeHandleKey(...argumentsList) {
+            return requireProfileIdentity().normalizeHandleKey(
+                ...argumentsList,
+            );
         },
-        normalizeHandleKeys(...args) {
-            return requireProfileIdentity().normalizeHandleKeys(...args);
+        normalizeHandleKeys(...argumentsList) {
+            return requireProfileIdentity().normalizeHandleKeys(
+                ...argumentsList,
+            );
         },
-        resolveAccountHandle(...args) {
-            return requireProfileIdentity().resolveAccountHandle(...args);
+        resolveAccountHandle(...argumentsList) {
+            return requireProfileIdentity().resolveAccountHandle(
+                ...argumentsList,
+            );
         },
-        resolveAccountId(...args) {
-            return requireProfileIdentity().resolveAccountId(...args);
+        resolveAccountId(...argumentsList) {
+            return requireProfileIdentity().resolveAccountId(...argumentsList);
         },
     };
 }
@@ -97,10 +103,10 @@ export function buildCognisWhiteboardUrl(
     whiteboardId,
     { instantCanvas = false, disposable = false } = {},
 ) {
-    const params = new URLSearchParams({ id: whiteboardId });
-    if (instantCanvas) params.set("instantCanvas", "1");
-    if (disposable) params.set("disposable", "1");
-    return `/whiteboard?${params.toString()}`;
+    const parameters = new URLSearchParams({ id: whiteboardId });
+    if (instantCanvas) parameters.set("instantCanvas", "1");
+    if (disposable) parameters.set("disposable", "1");
+    return `/whiteboard?${parameters.toString()}`;
 }
 
 export async function resolveWhiteboardUserAccess({

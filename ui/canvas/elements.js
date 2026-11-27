@@ -46,11 +46,11 @@ export function buildFreedrawElement(
         minY = Infinity,
         maxX = -Infinity,
         maxY = -Infinity;
-    for (const [x, y] of points) {
-        if (x < minX) minX = x;
-        if (y < minY) minY = y;
-        if (x > maxX) maxX = x;
-        if (y > maxY) maxY = y;
+    for (const [horizontalCoordinate, verticalCoordinate] of points) {
+        if (horizontalCoordinate < minX) minX = horizontalCoordinate;
+        if (verticalCoordinate < minY) minY = verticalCoordinate;
+        if (horizontalCoordinate > maxX) maxX = horizontalCoordinate;
+        if (verticalCoordinate > maxY) maxY = verticalCoordinate;
     }
     return {
         id: generateElementId(),
@@ -65,7 +65,10 @@ export function buildFreedrawElement(
         strokeWidth,
         roughness: 1,
         opacity: 100,
-        points: points.map(([x, y]) => [x - minX, y - minY]),
+        points: points.map(([horizontalCoordinate, verticalCoordinate]) => [
+            horizontalCoordinate - minX,
+            verticalCoordinate - minY,
+        ]),
         pressures: [],
         simulatePressure: true,
         isDeleted: false,
@@ -87,15 +90,15 @@ export function buildShapeElement(
 ) {
     const [startX, startY] = startPoint;
     const [endX, endY] = endPoint;
-    const x = Math.min(startX, endX);
-    const y = Math.min(startY, endY);
+    const horizontalCoordinate = Math.min(startX, endX);
+    const verticalCoordinate = Math.min(startY, endY);
     const width = Math.max(1, Math.abs(endX - startX));
     const height = Math.max(1, Math.abs(endY - startY));
     return {
         id: generateElementId(),
         type,
-        x,
-        y,
+        x: horizontalCoordinate,
+        y: verticalCoordinate,
         width,
         height,
         strokeColor,
@@ -107,8 +110,11 @@ export function buildShapeElement(
         points:
             type === "line" || type === "arrow"
                 ? [
-                      [startX - x, startY - y],
-                      [endX - x, endY - y],
+                      [
+                          startX - horizontalCoordinate,
+                          startY - verticalCoordinate,
+                      ],
+                      [endX - horizontalCoordinate, endY - verticalCoordinate],
                   ]
                 : undefined,
         isDeleted: false,
@@ -348,13 +354,25 @@ export function getElementBounds(element) {
             [0, 0],
             [element.width ?? 1, element.height ?? 1],
         ];
-        const xs = points.map(([px]) => element.x + px);
-        const ys = points.map(([, py]) => element.y + py);
+        const horizontalCoordinates = points.map(
+            ([pointX]) => element.x + pointX,
+        );
+        const verticalCoordinates = points.map(
+            ([, pointY]) => element.y + pointY,
+        );
         return {
-            x: Math.min(...xs),
-            y: Math.min(...ys),
-            width: Math.max(1, Math.max(...xs) - Math.min(...xs)),
-            height: Math.max(1, Math.max(...ys) - Math.min(...ys)),
+            x: Math.min(...horizontalCoordinates),
+            y: Math.min(...verticalCoordinates),
+            width: Math.max(
+                1,
+                Math.max(...horizontalCoordinates) -
+                    Math.min(...horizontalCoordinates),
+            ),
+            height: Math.max(
+                1,
+                Math.max(...verticalCoordinates) -
+                    Math.min(...verticalCoordinates),
+            ),
         };
     }
     return {
@@ -415,26 +433,29 @@ export function buildDragBox(startPoint, endPoint) {
     };
 }
 function distanceToSegment(pointX, pointY, startX, startY, endX, endY) {
-    const dx = endX - startX;
-    const dy = endY - startY;
-    if (dx === 0 && dy === 0)
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+    if (deltaX === 0 && deltaY === 0)
         return Math.hypot(pointX - startX, pointY - startY);
-    const t = Math.max(
+    const projection = Math.max(
         0,
         Math.min(
             1,
-            ((pointX - startX) * dx + (pointY - startY) * dy) /
-                (dx * dx + dy * dy),
+            ((pointX - startX) * deltaX + (pointY - startY) * deltaY) /
+                (deltaX * deltaX + deltaY * deltaY),
         ),
     );
-    return Math.hypot(pointX - (startX + t * dx), pointY - (startY + t * dy));
+    return Math.hypot(
+        pointX - (startX + projection * deltaX),
+        pointY - (startY + projection * deltaY),
+    );
 }
 
 function elementContentPoints(element) {
     if (Array.isArray(element.points) && element.points.length > 0) {
-        return element.points.map(([px, py]) => [
-            element.x + px,
-            element.y + py,
+        return element.points.map(([pointX, pointY]) => [
+            element.x + pointX,
+            element.y + pointY,
         ]);
     }
     switch (element.type) {
@@ -464,13 +485,16 @@ function elementContentPoints(element) {
                 [element.x, element.y + (element.height ?? 1) / 2],
             ];
         case "ellipse": {
-            const cx = element.x + (element.width ?? 1) / 2;
-            const cy = element.y + (element.height ?? 1) / 2;
-            const rx = Math.abs((element.width ?? 1) / 2);
-            const ry = Math.abs((element.height ?? 1) / 2);
+            const centerX = element.x + (element.width ?? 1) / 2;
+            const centerY = element.y + (element.height ?? 1) / 2;
+            const radiusX = Math.abs((element.width ?? 1) / 2);
+            const radiusY = Math.abs((element.height ?? 1) / 2);
             return Array.from({ length: 16 }, (_, index) => {
                 const angle = (Math.PI * 2 * index) / 16;
-                return [cx + Math.cos(angle) * rx, cy + Math.sin(angle) * ry];
+                return [
+                    centerX + Math.cos(angle) * radiusX,
+                    centerY + Math.sin(angle) * radiusY,
+                ];
             });
         }
         default:
@@ -480,15 +504,19 @@ function elementContentPoints(element) {
 
 export function boxContainsElementContent(container, element) {
     return elementContentPoints(element).every(
-        ([x, y]) =>
-            x >= container.x &&
-            y >= container.y &&
-            x <= container.x + container.width &&
-            y <= container.y + container.height,
+        ([horizontalCoordinate, verticalCoordinate]) =>
+            horizontalCoordinate >= container.x &&
+            verticalCoordinate >= container.y &&
+            horizontalCoordinate <= container.x + container.width &&
+            verticalCoordinate <= container.y + container.height,
     );
 }
 
-export function elementContainsPoint(element, x, y) {
+export function elementContainsPoint(
+    element,
+    horizontalCoordinate,
+    verticalCoordinate,
+) {
     const tolerance = Math.max(8, (element.strokeWidth ?? 2) + 4);
     const points = elementContentPoints(element);
     if (["freedraw", "line", "arrow"].includes(element.type)) {
@@ -497,8 +525,8 @@ export function elementContainsPoint(element, x, y) {
             const previous = points[index - 1];
             return (
                 distanceToSegment(
-                    x,
-                    y,
+                    horizontalCoordinate,
+                    verticalCoordinate,
                     previous[0],
                     previous[1],
                     point[0],
@@ -513,43 +541,54 @@ export function elementContainsPoint(element, x, y) {
         const right = element.x + (element.width ?? 1);
         const bottom = element.y + (element.height ?? 1);
         if (element.type === "image")
-            return x >= left && x <= right && y >= top && y <= bottom;
+            return (
+                horizontalCoordinate >= left &&
+                horizontalCoordinate <= right &&
+                verticalCoordinate >= top &&
+                verticalCoordinate <= bottom
+            );
         return (
-            x >= left - tolerance &&
-            x <= right + tolerance &&
-            y >= top - tolerance &&
-            y <= bottom + tolerance &&
-            (Math.abs(x - left) <= tolerance ||
-                Math.abs(x - right) <= tolerance ||
-                Math.abs(y - top) <= tolerance ||
-                Math.abs(y - bottom) <= tolerance)
+            horizontalCoordinate >= left - tolerance &&
+            horizontalCoordinate <= right + tolerance &&
+            verticalCoordinate >= top - tolerance &&
+            verticalCoordinate <= bottom + tolerance &&
+            (Math.abs(horizontalCoordinate - left) <= tolerance ||
+                Math.abs(horizontalCoordinate - right) <= tolerance ||
+                Math.abs(verticalCoordinate - top) <= tolerance ||
+                Math.abs(verticalCoordinate - bottom) <= tolerance)
         );
     }
     if (element.type === "text") {
         const bounds = getElementBounds(element);
         return (
-            x >= bounds.x &&
-            x <= bounds.x + bounds.width &&
-            y >= bounds.y &&
-            y <= bounds.y + bounds.height
+            horizontalCoordinate >= bounds.x &&
+            horizontalCoordinate <= bounds.x + bounds.width &&
+            verticalCoordinate >= bounds.y &&
+            verticalCoordinate <= bounds.y + bounds.height
         );
     }
     return points.some((point, index) => {
         const next = points[(index + 1) % points.length];
         return (
-            distanceToSegment(x, y, point[0], point[1], next[0], next[1]) <=
-            tolerance
+            distanceToSegment(
+                horizontalCoordinate,
+                verticalCoordinate,
+                point[0],
+                point[1],
+                next[0],
+                next[1],
+            ) <= tolerance
         );
     });
 }
 
-export function drawAnchor(context, x, y) {
+export function drawAnchor(context, horizontalCoordinate, verticalCoordinate) {
     context.save();
     context.fillStyle = "#ffffff";
     context.strokeStyle = "#2563eb";
     context.lineWidth = 2;
     context.beginPath();
-    context.arc(x, y, 5, 0, Math.PI * 2);
+    context.arc(horizontalCoordinate, verticalCoordinate, 5, 0, Math.PI * 2);
     context.fill();
     context.stroke();
     context.restore();
@@ -563,7 +602,10 @@ export function getElementAnchorPoints(element) {
         ];
         return points
             .slice(0, 2)
-            .map(([px, py]) => [element.x + px, element.y + py]);
+            .map(([pointX, pointY]) => [
+                element.x + pointX,
+                element.y + pointY,
+            ]);
     }
     return [
         [element.x, element.y],

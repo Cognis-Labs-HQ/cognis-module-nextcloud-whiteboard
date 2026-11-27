@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { registerApiRoutes as registerModuleRoutes } from "../../api/index.js";
 import { withFlowRuntime } from "./flow-runtime.js";
 
-export function createMemoryDb() {
+function createMemoryDatabase() {
     const tables = new Map();
     const primaryKeys = new Map();
     const applyWhere = (rows, where = []) =>
@@ -14,7 +14,7 @@ export function createMemoryDb() {
                     : row[clause.column] === clause.value,
             ),
         );
-    const db = {
+    const database = {
         async ensureTable(definition) {
             if (!tables.has(definition.name)) tables.set(definition.name, []);
             const explicitPrimaryKey = Array.isArray(definition.primaryKey)
@@ -96,7 +96,7 @@ export function createMemoryDb() {
         async transaction(callback) {
             const snapshot = structuredClone([...tables]);
             try {
-                return await callback(db);
+                return await callback(database);
             } catch (error) {
                 tables.clear();
                 for (const [name, rows] of snapshot) tables.set(name, rows);
@@ -104,8 +104,9 @@ export function createMemoryDb() {
             }
         },
     };
-    return db;
+    return database;
 }
+export { createMemoryDatabase as createMemoryDb };
 
 export function createRouterCapture() {
     const routes = new Map();

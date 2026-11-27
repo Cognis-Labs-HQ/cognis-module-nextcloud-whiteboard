@@ -5,9 +5,9 @@ export function syncBoardUrl({
     shareContext,
 }) {
     if (!hostNavigationAllowed || shareContext || !boardId) return;
-    const searchParams = new URLSearchParams({ id: boardId });
-    if (integrationCanvasMode) searchParams.set("instantCanvas", "1");
-    const nextSearch = `?${searchParams.toString()}`;
+    const searchParameters = new URLSearchParams({ id: boardId });
+    if (integrationCanvasMode) searchParameters.set("instantCanvas", "1");
+    const nextSearch = `?${searchParameters.toString()}`;
     const nextUrl = `/whiteboard${nextSearch}`;
     if (
         window.location.pathname !== "/whiteboard" ||

@@ -30,20 +30,25 @@ function normalizeSelectionItems(selection) {
     return items
         .slice(0, 24)
         .map((item) => {
-            const x = Number(item?.x);
-            const y = Number(item?.y);
+            const horizontalCoordinate = Number(item?.x);
+            const verticalCoordinate = Number(item?.y);
             const width = Number(item?.width);
             const height = Number(item?.height);
             if (
-                !Number.isFinite(x) ||
-                !Number.isFinite(y) ||
+                !Number.isFinite(horizontalCoordinate) ||
+                !Number.isFinite(verticalCoordinate) ||
                 !Number.isFinite(width) ||
                 !Number.isFinite(height) ||
                 width <= 0 ||
                 height <= 0
             )
                 return null;
-            return { x, y, width, height };
+            return {
+                x: horizontalCoordinate,
+                y: verticalCoordinate,
+                width,
+                height,
+            };
         })
         .filter(Boolean);
 }
@@ -100,8 +105,8 @@ function parsePresenceSelection(value) {
 }
 
 export class NextcloudWhiteboardStore {
-    constructor({ db, log, profileIdentity }) {
-        this.db = db;
+    constructor({ db: database, log, profileIdentity }) {
+        this.db = database;
         this.log = log;
         this.profileIdentity = profileIdentity;
         this.schemaPromise = null;

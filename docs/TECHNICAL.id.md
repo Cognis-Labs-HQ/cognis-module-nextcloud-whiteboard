@@ -130,3 +130,7 @@ Gunakan hanya capability dan flow `ctx` publik yang dinyatakan dalam manifes. Ja
 ### Referensi kanvas yang dapat digunakan kembali
 
 `createCanvas` dan `createDisposableCanvas` menerima `resourceType` dan `resourceId` generik. Keduanya menyelesaikan satu referensi kanvas tersimpan; permintaan berulang dan bersamaan mengembalikan kanvas berizin yang sama tanpa mereset isi atau keanggotaan. Basis data memastikan kunci referensi unik. Kanvas yang sudah ada dengan mode persistensi berbeda menimbulkan konflik, dan pemanggil tanpa izin tidak dapat menggunakannya kembali. Membuat kanvas persisten tanpa referensi menghasilkan kanvas baru yang terpisah. Penghapusan kanvas menghapus referensinya sehingga kanvas dapat dibuat lagi.
+
+### Validasi nama
+
+`npm test` memeriksa nama binding dengan detektor pohon sintaks lokal, termasuk bootstrap, skrip, pengujian, dan fixture. Kesalahan penguraian menggagalkan validasi. Fixture regresi mencakup deklarasi, parameter, anggota privat, penegasan tipe TypeScript, dan nama khusus tipe yang sah. Lihat [standar penamaan host](https://github.com/Cognis-Labs-HQ/Cognis/blob/HEAD/src/docs/standard/TECHNICAL.id.md#nama-binding) untuk kebijakan bersama.

@@ -47,8 +47,11 @@ test("selects a board from the page root created by an SPA transition", () => {
 });
 
 test("whiteboard mount validates its page root before initialization", async () => {
-    const source = await import("node:fs/promises").then((fs) =>
-        fs.readFile(new URL("../app/index.js", import.meta.url), "utf8"),
+    const source = await import("node:fs/promises").then((fileSystem) =>
+        fileSystem.readFile(
+            new URL("../app/index.js", import.meta.url),
+            "utf8",
+        ),
     );
 
     assert.match(

@@ -138,7 +138,7 @@ test("websocket preflight failures publish safe diagnostics through the injected
     const entries = [];
     const toasts = [];
     const controller = createWhiteboardPreflightController({
-        log: (...args) => entries.push(args),
+        log: (...argumentsList) => entries.push(argumentsList),
         fetchPreflight: async () => ({
             alive: true,
             serverUrl: "https://whiteboard.test",

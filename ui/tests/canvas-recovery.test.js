@@ -6,7 +6,7 @@ let execute;
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
         bind(id) {
-            return (...args) => this.get(id)?.(...args);
+            return (...argumentsList) => this.get(id)?.(...argumentsList);
         },
         get: () => ({
             loadStylesheets() {},

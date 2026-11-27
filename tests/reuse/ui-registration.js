@@ -3,15 +3,15 @@ import { registerUi } from "../../api/index.js";
 
 export function captureUiRegistration() {
     const spaRoutes = [];
-    const staticDirs = [];
+    const staticDirectories = [];
     const pageExtensions = [];
     const navbarPlugins = [];
     const capabilityProviders = [];
     const adminSections = [];
     registerUi({
         moduleRoot: resolve(import.meta.dirname, "../.."),
-        registerStaticDir(prefix, dir) {
-            staticDirs.push({ prefix, dir });
+        registerStaticDir(prefix, directory) {
+            staticDirectories.push({ prefix, dir: directory });
         },
         registerNavbarPlugin(plugin) {
             navbarPlugins.push(plugin);
@@ -31,7 +31,7 @@ export function captureUiRegistration() {
     });
     return {
         spaRoutes,
-        staticDirs,
+        staticDirs: staticDirectories,
         pageExtensions,
         navbarPlugins,
         capabilityProviders,

@@ -136,3 +136,7 @@ Verwenden Sie ausschließlich die im Manifest deklarierten öffentlichen `ctx`-C
 - [manifest.json](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/blob/HEAD/manifest.json)
 - [bootstrap.js](https://github.com/Cognis-Labs-HQ/cognis-module-nextcloud-whiteboard/blob/HEAD/bootstrap.js)
 - [Cognis](https://github.com/Cognis-Labs-HQ/Cognis/blob/HEAD/src/docs/modules/external/TECHNICAL.en.md)
+
+### Namensprüfung
+
+`npm test` prüft Bindungsnamen mit dem lokalen Syntaxbaumdetektor einschließlich Bootstrap, Skripten, Tests und Testdaten. Syntaxfehler lassen die Prüfung fehlschlagen. Die Regressionstestfälle decken Deklarationen, Parameter, private Mitglieder, TypeScript-Typzusicherungen und zulässige reine Typnamen ab. Die gemeinsamen Regeln beschreibt der [Namensstandard des Hosts](https://github.com/Cognis-Labs-HQ/Cognis/blob/HEAD/src/docs/standard/TECHNICAL.de.md#bindungsnamen).

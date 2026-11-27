@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { execFileSync } from "node:child_process";
+import { execFileSync as executeFileSync } from "node:child_process";
 import { readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { createWhiteboardUiAssetResolver } from "../../api/reuse/assets.js";
@@ -41,7 +41,7 @@ for (const entry of [
 ]) {
     test(`browser entry ${entry} links its actual repository module graph`, () => {
         assert.doesNotThrow(() =>
-            execFileSync(
+            executeFileSync(
                 process.execPath,
                 [
                     "--experimental-vm-modules",

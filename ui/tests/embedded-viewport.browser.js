@@ -31,7 +31,7 @@ const capabilities = new Map([
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
         bind(id) {
-            return (...args) => this.get(id)?.(...args);
+            return (...argumentsList) => this.get(id)?.(...argumentsList);
         },
         get: (name) => capabilities.get(name),
         contribute: (name, value) => capabilities.set(name, value),
@@ -97,9 +97,10 @@ try {
                 host.style.height = `${height}px`;
                 const canvas = document.querySelector("canvas");
                 for (let iteration = 0; iteration < 6; iteration++) {
-                    const rect = canvas.parentElement.getBoundingClientRect();
-                    canvas.width = Math.ceil(rect.width);
-                    canvas.height = Math.ceil(rect.height);
+                    const rectangle =
+                        canvas.parentElement.getBoundingClientRect();
+                    canvas.width = Math.ceil(rectangle.width);
+                    canvas.height = Math.ceil(rectangle.height);
                     canvas.style.width = `${canvas.width}px`;
                     canvas.style.height = `${canvas.height}px`;
                 }

@@ -45,24 +45,24 @@ export function registerWhiteboardImageRoutes(
 ) {
     router.post(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/images",
-        async (req, res) => {
+        async (request, response) => {
             await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims = requireAuth(request, response, "user");
             if (!claims) return;
             if (!whiteboardFiles) {
                 sendError(
-                    res,
+                    response,
                     503,
                     "file_storage_unavailable",
                     "Whiteboard image storage is unavailable.",
                 );
                 return;
             }
-            const body = await readJson(req);
+            const body = await readJson(request);
             const whiteboardId = String(body.id ?? "").trim();
             const whiteboard = await store.getWhiteboardById(whiteboardId);
             if (!whiteboard) {
-                sendError(res, 404, "not_found", "Whiteboard not found.");
+                sendError(response, 404, "not_found", "Whiteboard not found.");
                 return;
             }
             const access = await resolveWhiteboardUserAccess({
@@ -76,14 +76,14 @@ export function registerWhiteboardImageRoutes(
                 requireWrite: true,
             });
             if (!access.authorized) {
-                sendError(res, access.status, access.code, access.message);
+                sendError(response, access.status, access.code, access.message);
                 return;
             }
             const decoded = decodeImageDataUrl(body.dataUrl);
             const config = await store.getConfig();
             if (!decoded || decoded.bytes.byteLength === 0) {
                 sendError(
-                    res,
+                    response,
                     400,
                     "bad_request",
                     "A base64 image data URL is required.",
@@ -95,7 +95,7 @@ export function registerWhiteboardImageRoutes(
                 Number(config.imageUploadMaxBytes ?? 1048576)
             ) {
                 sendError(
-                    res,
+                    response,
                     413,
                     "image_too_large",
                     "Image exceeds the configured upload limit.",
@@ -115,7 +115,7 @@ export function registerWhiteboardImageRoutes(
                 decoded.bytes,
                 { contentType: decoded.contentType, groupIds },
             );
-            sendJson(res, 201, {
+            sendJson(response, 201, {
                 data: {
                     key: stored.key,
                     url: whiteboardImageUrl(whiteboard.id, stored.key),
@@ -129,26 +129,26 @@ export function registerWhiteboardImageRoutes(
 
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/images",
-        async (req, res) => {
+        async (request, response) => {
             await store.ensureSchema();
-            const claims = requireAuth(req, res, "user");
+            const claims = requireAuth(request, response, "user");
             if (!claims) return;
             if (!whiteboardFiles) {
                 sendError(
-                    res,
+                    response,
                     503,
                     "file_storage_unavailable",
                     "Whiteboard image storage is unavailable.",
                 );
                 return;
             }
-            const url = new URL(req.url, "http://localhost");
+            const url = new URL(request.url, "http://localhost");
             const whiteboardId = String(
                 url.searchParams.get("id") ?? "",
             ).trim();
             const whiteboard = await store.getWhiteboardById(whiteboardId);
             if (!whiteboard) {
-                sendError(res, 404, "not_found", "Whiteboard not found.");
+                sendError(response, 404, "not_found", "Whiteboard not found.");
                 return;
             }
             const access = await resolveWhiteboardUserAccess({
@@ -161,7 +161,7 @@ export function registerWhiteboardImageRoutes(
                 resolveShareDelegatedAccess,
             });
             if (!access.authorized) {
-                sendError(res, access.status, access.code, access.message);
+                sendError(response, access.status, access.code, access.message);
                 return;
             }
             const key = String(url.searchParams.get("key") ?? "").trim();
@@ -170,14 +170,14 @@ export function registerWhiteboardImageRoutes(
                 key,
             );
             if (!content) {
-                sendError(res, 404, "not_found", "Image not found.");
+                sendError(response, 404, "not_found", "Image not found.");
                 return;
             }
-            res.writeHead(200, {
+            response.writeHead(200, {
                 "content-type": inferImageContentType(key),
                 "cache-control": "private, max-age=3600",
             });
-            res.end(Buffer.from(content));
+            response.end(Buffer.from(content));
         },
         { access: { minRole: "user" } },
     );

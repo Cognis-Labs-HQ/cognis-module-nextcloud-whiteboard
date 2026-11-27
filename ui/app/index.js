@@ -55,8 +55,8 @@ const [
 await reuse.loadStylesheets(["page-sections.css"]);
 const log = uiCtx.capabilities.bind("ui:log");
 
-const EMIT_DEBOUNCE_MS = 80;
-const RECONNECT_MAX_DELAY_MS = 30000;
+const EMIT_DEBOUNCE_MILLISECONDS = 80;
+const RECONNECT_MAX_DELAY_MILLISECONDS = 30000;
 const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
 const SYNC_MESSAGE_SCENE_UPDATE = "SCENE_UPDATE";
 const SYNC_MESSAGE_SCENE_REQUEST = "SCENE_REQUEST";
@@ -191,9 +191,9 @@ function applyBoardTitle(title) {
         title: normalizedTitle,
     };
     if (activeSession) activeSession.title = normalizedTitle;
-    const titleEl = withinMount("#whiteboard-board-title");
-    if (titleEl && titleEl.dataset.renaming !== "true") {
-        titleEl.textContent = normalizedTitle;
+    const titleElement = withinMount("#whiteboard-board-title");
+    if (titleElement && titleElement.dataset.renaming !== "true") {
+        titleElement.textContent = normalizedTitle;
     }
 }
 
@@ -207,14 +207,14 @@ function emitBoardRenamed(title) {
     );
 }
 
-function connectSocket(io, session, canvas) {
+function connectSocket(socketFactory, session, canvas) {
     const { serverUrl, roomId, token } = session;
     const canWrite = session.canWrite === true;
-    const socket = io(serverUrl, {
+    const socket = socketFactory(serverUrl, {
         auth: { token },
         transports: ["websocket"],
         reconnectionDelay: 1000,
-        reconnectionDelayMax: RECONNECT_MAX_DELAY_MS,
+        reconnectionDelayMax: RECONNECT_MAX_DELAY_MILLISECONDS,
         closeOnBeforeunload: true,
     });
     const handleVisibilityChange = () => {
@@ -270,7 +270,7 @@ function connectSocket(io, session, canvas) {
                 "module.nextcloud.whiteboard.status.sync.failed",
             );
         }
-    }, EMIT_DEBOUNCE_MS);
+    }, EMIT_DEBOUNCE_MILLISECONDS);
     const emitChanges = throttleLatest(
         (elements, type = SYNC_MESSAGE_SCENE_INIT, transient = false) => {
             if (!canWrite) return;
@@ -298,7 +298,7 @@ function connectSocket(io, session, canvas) {
                 );
             }
         },
-        EMIT_DEBOUNCE_MS,
+        EMIT_DEBOUNCE_MILLISECONDS,
     );
     const removeVisibilityListener = socket.cognisCleanup;
     let disposed = false;
@@ -308,26 +308,26 @@ function connectSocket(io, session, canvas) {
         emitChanges.cancel();
         removeVisibilityListener();
     };
-    canvas.onChange((elements, meta) => {
+    canvas.onChange((elements, metadata) => {
         if (disposed) return;
-        if (meta?.type === "image_rejected") {
+        if (metadata?.type === "image_rejected") {
             showToast(
                 translateModuleString(
                     "module.nextcloud.whiteboard.image.too.large",
-                ).replace("{limit}", String(meta.limit)),
+                ).replace("{limit}", String(metadata.limit)),
                 { variant: "error" },
             );
             return;
         }
         savedElements = elements;
         composer?.refreshPresence?.();
-        if (meta?.transient !== true) setDisposableSaveDirty(session, true);
-        if (canWrite && meta?.transient !== true) persistChanges(elements);
+        if (metadata?.transient !== true) setDisposableSaveDirty(session, true);
+        if (canWrite && metadata?.transient !== true) persistChanges(elements);
         if (canWrite) {
             emitChanges(
                 elements,
                 SYNC_MESSAGE_SCENE_UPDATE,
-                meta?.transient === true,
+                metadata?.transient === true,
             );
         }
     });
@@ -472,26 +472,26 @@ function openSharePopup() {
 
 async function renameActiveBoard() {
     if (!activeBoard || !canRenameActiveBoard()) return;
-    const titleEl = withinMount("#whiteboard-board-title");
-    if (!titleEl || titleEl.dataset.renaming === "true") return;
-    titleEl.dataset.renaming = "true";
-    titleEl.contentEditable = "true";
-    titleEl.focus();
-    document.getSelection()?.selectAllChildren(titleEl);
+    const titleElement = withinMount("#whiteboard-board-title");
+    if (!titleElement || titleElement.dataset.renaming === "true") return;
+    titleElement.dataset.renaming = "true";
+    titleElement.contentEditable = "true";
+    titleElement.focus();
+    document.getSelection()?.selectAllChildren(titleElement);
     let finishing = false;
     const cleanup = () => {
-        titleEl.contentEditable = "false";
-        delete titleEl.dataset.renaming;
-        titleEl.removeEventListener("blur", finish);
-        titleEl.removeEventListener("keydown", onKeydown);
+        titleElement.contentEditable = "false";
+        delete titleElement.dataset.renaming;
+        titleElement.removeEventListener("blur", finish);
+        titleElement.removeEventListener("keydown", onKeydown);
     };
     const finish = async () => {
         if (finishing) return;
         finishing = true;
-        const nextTitle = titleEl.textContent?.trim() || activeBoard.title;
+        const nextTitle = titleElement.textContent?.trim() || activeBoard.title;
         cleanup();
         if (nextTitle === activeBoard.title) {
-            titleEl.textContent = activeBoard.title;
+            titleElement.textContent = activeBoard.title;
             return;
         }
         try {
@@ -520,21 +520,21 @@ async function renameActiveBoard() {
                 error,
                 "module.nextcloud.whiteboard.rename.failed",
             );
-            titleEl.textContent = activeBoard.title;
+            titleElement.textContent = activeBoard.title;
         }
     };
     const onKeydown = (event) => {
         if (event.key === "Enter") {
             event.preventDefault();
-            titleEl.blur();
+            titleElement.blur();
         } else if (event.key === "Escape") {
             event.preventDefault();
             cleanup();
-            titleEl.textContent = activeBoard.title;
+            titleElement.textContent = activeBoard.title;
         }
     };
-    titleEl.addEventListener("blur", finish);
-    titleEl.addEventListener("keydown", onKeydown);
+    titleElement.addEventListener("blur", finish);
+    titleElement.addEventListener("keydown", onKeydown);
 }
 
 async function runPreflightCheck(signal) {
@@ -608,7 +608,7 @@ async function openBoard(board) {
     preflightController.setStatus("rendering");
     composer.refresh(buildElements());
     preflightController.setStatus("passed");
-    let io;
+    let socketFactory;
     try {
         const runtime = await loadSocketIo(
             session.serverUrl,
@@ -618,7 +618,7 @@ async function openBoard(board) {
             runtime.dispose();
             return;
         }
-        io = runtime.io;
+        socketFactory = runtime.io;
         runtimeDispose?.();
         runtimeDispose = runtime.dispose;
     } catch (error) {
@@ -648,7 +648,7 @@ async function openBoard(board) {
         return;
     }
     setSyncStatus("syncing", "module.nextcloud.whiteboard.status.syncing");
-    socketInstance = connectSocket(io, session, canvasInstance);
+    socketInstance = connectSocket(socketFactory, session, canvasInstance);
     composer?.refreshPresence?.();
     bindCanvasToolbar(canvasInstance);
     bindDisposableSaveButton(session, canvasInstance);

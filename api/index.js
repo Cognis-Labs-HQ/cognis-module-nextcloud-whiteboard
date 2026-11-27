@@ -103,8 +103,8 @@ export function registerApiRoutes(router, ctx) {
     if (!configurationApi) {
         router.get(
             "/api/v1/modules/nextcloud-whiteboard/ping",
-            async (_req, res) => {
-                sendJson(res, 200, {
+            async (_request, response) => {
+                sendJson(response, 200, {
                     data: {
                         ready: false,
                         reason: "required_capabilities_missing",

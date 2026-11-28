@@ -2,7 +2,7 @@
 export function probeWebsocketAuthorization(
     runtime,
     result,
-    { signal, timeoutMs: timeoutMilliseconds = 5500 } = {},
+    { signal, timeoutMs: timeoutMs = 5500 } = {},
 ) {
     return new Promise((resolve, reject) => {
         if (signal?.aborted) {
@@ -36,7 +36,7 @@ export function probeWebsocketAuthorization(
             runtime.dispose();
             resolve(passed);
         };
-        timer = setTimeout(() => finish(false), timeoutMilliseconds);
+        timer = setTimeout(() => finish(false), timeoutMs);
         signal?.addEventListener("abort", onAbort, { once: true });
         socket.on("connect", () => finish(true));
         socket.on("connect_error", () => finish(false));

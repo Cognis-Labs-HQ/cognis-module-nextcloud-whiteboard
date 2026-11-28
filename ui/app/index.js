@@ -55,8 +55,8 @@ const [
 await reuse.loadStylesheets(["page-sections.css"]);
 const log = uiCtx.capabilities.bind("ui:log");
 
-const EMIT_DEBOUNCE_MILLISECONDS = 80;
-const RECONNECT_MAX_DELAY_MILLISECONDS = 30000;
+const EMIT_DEBOUNCE_MS = 80;
+const RECONNECT_MAX_DELAY_MS = 30000;
 const SYNC_MESSAGE_SCENE_INITIALIZATION = "SCENE_INIT";
 const SYNC_MESSAGE_SCENE_UPDATE = "SCENE_UPDATE";
 const SYNC_MESSAGE_SCENE_REQUEST = "SCENE_REQUEST";
@@ -214,7 +214,7 @@ function connectSocket(io, session, canvas) {
         auth: { token },
         transports: ["websocket"],
         reconnectionDelay: 1000,
-        reconnectionDelayMax: RECONNECT_MAX_DELAY_MILLISECONDS,
+        reconnectionDelayMax: RECONNECT_MAX_DELAY_MS,
         closeOnBeforeunload: true,
     });
     const handleVisibilityChange = () => {
@@ -273,7 +273,7 @@ function connectSocket(io, session, canvas) {
                 "module.nextcloud.whiteboard.status.sync.failed",
             );
         }
-    }, EMIT_DEBOUNCE_MILLISECONDS);
+    }, EMIT_DEBOUNCE_MS);
     const emitChanges = throttleLatest(
         (
             elements,
@@ -305,7 +305,7 @@ function connectSocket(io, session, canvas) {
                 );
             }
         },
-        EMIT_DEBOUNCE_MILLISECONDS,
+        EMIT_DEBOUNCE_MS,
     );
     const removeVisibilityListener = socket.cognisCleanup;
     let disposed = false;

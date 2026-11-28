@@ -1,7 +1,7 @@
 export function createWhiteboardEnableTest({
     store,
     checkHttpLiveness,
-    timeoutMs: timeoutMilliseconds,
+    timeoutMs: timeoutMs,
 }) {
     return async function runEnableTest() {
         await store.ensureSchema();
@@ -15,7 +15,7 @@ export function createWhiteboardEnableTest({
             };
         }
         const liveness = await checkHttpLiveness(config.serverUrl, {
-            timeoutMs: timeoutMilliseconds,
+            timeoutMs: timeoutMs,
         });
         return {
             ok: Boolean(liveness.alive),

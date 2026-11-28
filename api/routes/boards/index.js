@@ -10,9 +10,9 @@ import {
     resolveParticipantHandles,
     resolveRequesterUsername,
 } from "../../reuse/access.js";
-import { WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS } from "../../configuration/index.js";
+import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../../configuration/index.js";
 
-const PRESENCE_ACTIVE_WINDOW_MILLISECONDS = 15_000;
+const PRESENCE_ACTIVE_WINDOW_MS = 15_000;
 
 export function registerBoardRoutes(
     router,
@@ -66,7 +66,7 @@ export function registerBoardRoutes(
                 return;
             }
             const liveness = await checkHttpLiveness(config.serverUrl, {
-                timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS,
+                timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
             });
             const websocketAuthToken = await store.mintSessionToken(
                 config,
@@ -283,8 +283,7 @@ export function registerBoardRoutes(
             const rows = await store.listPresence(whiteboard.id);
             const profileCache = new Map();
             const presence = [];
-            const activeCutoff =
-                Date.now() - PRESENCE_ACTIVE_WINDOW_MILLISECONDS;
+            const activeCutoff = Date.now() - PRESENCE_ACTIVE_WINDOW_MS;
             for (const entry of rows) {
                 const lastSeenAt = Date.parse(entry.lastSeenAt || 0);
                 if (

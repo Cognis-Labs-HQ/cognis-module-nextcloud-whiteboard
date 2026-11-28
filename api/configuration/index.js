@@ -12,8 +12,8 @@ import {
 import { checkHttpLiveness } from "../reuse/http-liveness.js";
 import { sendError, sendJson } from "../reuse/http.js";
 
-const WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS = 5000;
-export { WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS };
+const WHITEBOARD_LIVENESS_TIMEOUT_MS = 5000;
+export { WHITEBOARD_LIVENESS_TIMEOUT_MS };
 
 export function registerWhiteboardConfigurationApi(
     router,
@@ -48,7 +48,7 @@ export function registerWhiteboardConfigurationApi(
     const runEnableTest = createWhiteboardEnableTest({
         store,
         checkHttpLiveness,
-        timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS,
+        timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS,
     });
     try {
         if (enabled)

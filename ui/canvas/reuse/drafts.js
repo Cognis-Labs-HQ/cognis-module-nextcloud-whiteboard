@@ -8,11 +8,11 @@ const SHAPE_TOOLS = new Set([
     "arrow",
 ]);
 
-const REMOTE_DRAFT_TTL_MILLISECONDS = 15_000;
-export { REMOTE_DRAFT_TTL_MILLISECONDS };
+const REMOTE_DRAFT_TTL_MS = 15_000;
+export { REMOTE_DRAFT_TTL_MS };
 
 export function createRemoteDraftStore({
-    ttl = REMOTE_DRAFT_TTL_MILLISECONDS,
+    ttl = REMOTE_DRAFT_TTL_MS,
     schedule = setTimeout,
     cancel = clearTimeout,
     onExpire = () => {},

@@ -8,7 +8,7 @@ import {
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS } from "../configuration/index.js";
+import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../configuration/index.js";
 import { NextcloudWhiteboardStore } from "../store.js";
 
 import { issueAccessToken, requireTestAuth } from "../../tests/reuse/auth.js";
@@ -122,11 +122,8 @@ test("nextcloud whiteboard preflight uses the shared liveness timeout", () => {
         "utf8",
     );
 
-    assert.equal(WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS, 5000);
-    assert.match(
-        apiSource,
-        /timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS/,
-    );
+    assert.equal(WHITEBOARD_LIVENESS_TIMEOUT_MS, 5000);
+    assert.match(apiSource, /timeoutMs: WHITEBOARD_LIVENESS_TIMEOUT_MS/);
     assert.doesNotMatch(apiSource, /\bLIVENESS_TIMEOUT_MS\b/);
 });
 

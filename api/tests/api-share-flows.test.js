@@ -8,7 +8,7 @@ import {
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS } from "../configuration/index.js";
+import { WHITEBOARD_LIVENESS_TIMEOUT_MS } from "../configuration/index.js";
 import { NextcloudWhiteboardStore } from "../store.js";
 
 import { issueAccessToken, requireTestAuth } from "../../tests/reuse/auth.js";

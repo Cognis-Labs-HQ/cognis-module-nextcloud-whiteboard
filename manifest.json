@@ -2,7 +2,7 @@
     "id": "nextcloud-whiteboard",
     "uuid": "5bb6105d-14d2-5d9d-a284-b2969fb4e35d",
     "name": "module.nextcloud.whiteboard.name",
-    "version": "2.4.13",
+    "version": "2.4.14",
     "privileged": true,
     "class": "extension",
     "coreApiVersion": "v1",
@@ -105,7 +105,7 @@
     "files": [
         {
             "path": ".github/copilot-instructions.md",
-            "sha256": "abbaf404b64b78f391ff1f0f84be9808e737608befeca54d137eab44a25b3955"
+            "sha256": "2a0b9a5a5bc811241a7b33fac0674e997b580237ba67b85871882f2fbdb56fa3"
         },
         {
             "path": ".github/documentation/README.de.md",
@@ -225,11 +225,11 @@
         },
         {
             "path": "api/configuration/enablement.js",
-            "sha256": "2b56d1a520f5b880634edf4fc6e71166ae2325f3c1d73535e8c6d921f85fa8e4"
+            "sha256": "bc09e748993d29597bb35caae9694b3fe02ade4f7cb51811210acc6dfd1484ea"
         },
         {
             "path": "api/configuration/index.js",
-            "sha256": "a0a4924d67ac5c16d25ea0b7d9ac8f3b053511aa7e231d759f4e4744c3514402"
+            "sha256": "9b6a041919c9769b220a366d3b6e4fbc208e6f8fb7acbd8540298cc219943a03"
         },
         {
             "path": "api/configuration/values.js",
@@ -269,7 +269,7 @@
         },
         {
             "path": "api/reuse/http-liveness.js",
-            "sha256": "441fd100af5ed299c96b71cc1cfff6e0cca4e08b10c41d130d410fc40e7570f9"
+            "sha256": "14ba5cf37ccbff61df1149f4ccabe2bd6460e67bcfbe4187723962d082b21d69"
         },
         {
             "path": "api/reuse/http.js",
@@ -305,7 +305,7 @@
         },
         {
             "path": "api/routes/boards/index.js",
-            "sha256": "a054479801e95b406794bfad81461ad94ea129d99e97f5b2aa4937ac96938963"
+            "sha256": "6cac4e49dccd9cdf15001a1e59b579d151431361ed2f16e85090c49a08ced2b0"
         },
         {
             "path": "api/routes/config/index.js",
@@ -333,11 +333,11 @@
         },
         {
             "path": "api/tests/api-routes.test.js",
-            "sha256": "b98286ed17dd18e2457f7f54e6bc9993fb66097d9d8db03afa67984f3238cc57"
+            "sha256": "f52d4ace36d53ec09948d484fc96ec457424e833ca11364bebd35aabb0809a4e"
         },
         {
             "path": "api/tests/api-share-flows.test.js",
-            "sha256": "b01464ea598a4c5d448a61c6d175b97ed65d588aebad900b6aed9092c74fd299"
+            "sha256": "2cb794a04a86ec2a82e4823f5591d940aab83cd64877ac0665518cd13f07042e"
         },
         {
             "path": "api/tests/deletion.test.js",
@@ -433,19 +433,19 @@
         },
         {
             "path": "docs/TECHNICAL.de.md",
-            "sha256": "2978939d0828551cf4f8c1847fe61fac7159a4676f81840d34cb0543d13b63ec"
+            "sha256": "9a6fdaf20709132d6e67a59145f1ddf679828f45b39c4b4b0c6bca76e39df6c6"
         },
         {
             "path": "docs/TECHNICAL.en.md",
-            "sha256": "4b68a20b555bba86a5ed930abc68fb1f4a0913bddeb7f1cfff28c04bc36365fe"
+            "sha256": "3a4b543c81ae99d39719acb1eb9096be393c4f5dd9d1be4606f445a5e8c44477"
         },
         {
             "path": "docs/TECHNICAL.id.md",
-            "sha256": "06676ffd3aca7c1f517fc6e20b4aec6d17d5d428fe2fc2d4a9ae543157ff8011"
+            "sha256": "91cb911458d1e6a77963400ddc0a630f4e1eecbf03f5366a2ce6f69a841cc74c"
         },
         {
             "path": "docs/TECHNICAL.ja.md",
-            "sha256": "e6f624902e293ca9a58e23fdcd9d67ba034048435880de4a42c8e63af6590a87"
+            "sha256": "de474c1e9e8abf2f0bfaf2a40a932fd25a65dcc8607bc4bcac1eb3c7e8132291"
         },
         {
             "path": "docs/USAGE.de.md",
@@ -465,11 +465,11 @@
         },
         {
             "path": "package-lock.json",
-            "sha256": "ca7bc8af50e018fc864971afaadc949ce2328f732f7209d8d2011ff5d95a13f3"
+            "sha256": "e0317bb7e948627d4017bbaf61cd64a925b20b5ab2c17e7c9e768d37fce73f12"
         },
         {
             "path": "package.json",
-            "sha256": "5d63b6b2b27f6adbc6a25e4d99e8fe3a5f5651ff83f67cbd69aa4c2ff6bbc7d8"
+            "sha256": "6fa26e2a4ec18162d105aeeaec117c930a2ab3c7ae837cb1912099f6ed53f71e"
         },
         {
             "path": "routes.json",
@@ -525,7 +525,7 @@
         },
         {
             "path": "tests/fixtures/naming-cases.json",
-            "sha256": "dcb3f32c6d28e24f2442687bd241379b7779d95db9a22f3cd574b460c42b3ef2"
+            "sha256": "262bd84ff7483a61a4cba4162e2567d68466fff68ee6b3b1cae263a0cc332289"
         },
         {
             "path": "tests/language-keys.test.js",
@@ -585,11 +585,11 @@
         },
         {
             "path": "tooling/reuse/ambiguous-name-words.json",
-            "sha256": "4b021010dde8a029186cc4d4e9bcaf5e3ac2484c38d27733ece49c53916cf212"
+            "sha256": "1c181f2061b3a4c452a8f79045a9291a400b0e3247fc337cda5949f98d2d2d2e"
         },
         {
             "path": "tooling/reuse/ambiguous-names.js",
-            "sha256": "428bed8de094747472e17de6795aee6e0d5fc939538afc02b8d2aeba0cb72423"
+            "sha256": "a1b37d839e684e5dd73076e80a8338c5b820cb6a3bac2ffa9a3bdc8a13368e89"
         },
         {
             "path": "tooling/reuse/source-files.js",
@@ -621,7 +621,7 @@
         },
         {
             "path": "ui/app/index.js",
-            "sha256": "eeb609614512a0b92c6ccbc52186ada99fea0e414ab1cfc5574a3c6fc009a131"
+            "sha256": "e2cb03d3bf5288a16a6b9a6ea6d7981c21131606308c434729b1e2dd80f14564"
         },
         {
             "path": "ui/app/overlay.js",
@@ -645,7 +645,7 @@
         },
         {
             "path": "ui/app/reuse/websocket-probe.js",
-            "sha256": "6a0e79693c220f6c46dce24b375cfb1071f321b39a157bea4488731eb06ca68c"
+            "sha256": "fc97691330526a0586dd4b7b0740eade0e14fd116c98d1ea9dbeb435924fa1f8"
         },
         {
             "path": "ui/app/save.js",
@@ -689,7 +689,7 @@
         },
         {
             "path": "ui/canvas/reuse/drafts.js",
-            "sha256": "f44bfa16a420dfbd9c39ac3204c96e9a5d2d3266bdca4c4d6e4bd2d55402d7ad"
+            "sha256": "942cfa74243c1ea7a2b233bdef6a1fc6596ea8b64ea5c87f6a2027105e4ee766"
         },
         {
             "path": "ui/canvas/reuse/history.js",

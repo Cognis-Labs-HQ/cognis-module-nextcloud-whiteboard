@@ -1,5 +1,5 @@
 import {
-    createMemoryDb as createMemoryDatabase,
+    createMemoryDatabase,
     createRouterCapture,
     createJsonResponse,
     decodeJwtPayload,
@@ -8,7 +8,7 @@ import {
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { WHITEBOARD_LIVENESS_TIMEOUT_MS as WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS } from "../configuration/index.js";
+import { WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS } from "../configuration/index.js";
 import { NextcloudWhiteboardStore } from "../store.js";
 
 import { issueAccessToken, requireTestAuth } from "../../tests/reuse/auth.js";
@@ -160,21 +160,21 @@ test("nextcloud whiteboard admin listing does not require a profile handle", asy
         },
     });
 
-    const request = {
+    const req = {
         url: "/api/v1/modules/nextcloud-whiteboard/whiteboards?scope=all",
         headers: {
             authorization: `Bearer ${issueAccessToken("system:cognis-cli", "admin", 60)}`,
         },
     };
-    const response = createJsonResponse();
+    const res = createJsonResponse();
 
     await router.handler(
         "GET",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards",
-    )(request, response);
+    )(req, res);
 
-    assert.equal(response.statusCode, 200);
-    assert.deepEqual(response.json().data, [board]);
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.json().data, [board]);
 });
 
 test("nextcloud whiteboard session route works without share capabilities", async () => {
@@ -212,19 +212,19 @@ test("nextcloud whiteboard session route works without share capabilities", asyn
     });
 
     const token = issueAccessToken("alice", "user", 60);
-    const request = {
+    const req = {
         url: `/api/v1/modules/nextcloud-whiteboard/whiteboards/session?id=${board.id}`,
         headers: { authorization: `Bearer ${token}` },
     };
-    const response = createJsonResponse();
+    const res = createJsonResponse();
 
     await router.handler(
         "GET",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/session",
-    )(request, response);
+    )(req, res);
 
-    assert.equal(response.statusCode, 200);
-    const body = response.json();
+    assert.equal(res.statusCode, 200);
+    const body = res.json();
     assert.equal(body.data.roomId, board.id);
     assert.equal(body.data.serverUrl, "https://whiteboard.example.test");
     assert.equal(body.data.canRename, true);
@@ -278,7 +278,7 @@ test("whiteboard canvas load failures are explicit in server logs and responses"
             return undefined;
         },
     });
-    const response = createJsonResponse();
+    const res = createJsonResponse();
 
     await router.handler(
         "GET",
@@ -290,11 +290,11 @@ test("whiteboard canvas load failures are explicit in server logs and responses"
                 authorization: `Bearer ${issueAccessToken("alice", "user", 60)}`,
             },
         },
-        response,
+        res,
     );
 
-    assert.equal(response.statusCode, 500);
-    assert.deepEqual(response.json(), {
+    assert.equal(res.statusCode, 500);
+    assert.deepEqual(res.json(), {
         error: {
             code: "canvas_load_failed",
             message: "Whiteboard canvas could not be loaded.",
@@ -416,7 +416,7 @@ test("nextcloud whiteboard presence route handles store failures without server-
         },
     });
 
-    const response = createJsonResponse();
+    const res = createJsonResponse();
     await router.handler(
         "POST",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/presence",
@@ -435,11 +435,11 @@ test("nextcloud whiteboard presence route handles store failures without server-
                 );
             },
         },
-        response,
+        res,
     );
 
-    assert.equal(response.statusCode, 503);
-    assert.equal(response.json().error.code, "presence_unavailable");
+    assert.equal(res.statusCode, 503);
+    assert.equal(res.json().error.code, "presence_unavailable");
     assert.ok(
         logs.some((entry) => entry.details?.operation === "upsert_presence"),
     );

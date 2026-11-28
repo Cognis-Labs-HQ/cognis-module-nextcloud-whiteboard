@@ -105,8 +105,8 @@ function parsePresenceSelection(value) {
 }
 
 export class NextcloudWhiteboardStore {
-    constructor({ db: database, log, profileIdentity }) {
-        this.db = database;
+    constructor({ db: db, log, profileIdentity }) {
+        this.db = db;
         this.log = log;
         this.profileIdentity = profileIdentity;
         this.schemaPromise = null;

@@ -7,8 +7,8 @@ export function registerAdminCanvasRoutes(
 ) {
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/admin/canvases",
-        async (request, response) => {
-            if (!requireAuth(request, response, "admin")) return;
+        async (req, res) => {
+            if (!requireAuth(req, res, "admin")) return;
             const boards = await store.listWhiteboards();
             const diagnose = diagnoseCanvases(boards);
             const rows = await Promise.all(
@@ -35,25 +35,25 @@ export function registerAdminCanvasRoutes(
                     };
                 }),
             );
-            sendJson(response, 200, { data: rows });
+            sendJson(res, 200, { data: rows });
         },
         { access: { minRole: "admin" } },
     );
     router.post(
         "/api/v1/modules/nextcloud-whiteboard/admin/canvases/delete",
-        async (request, response) => {
-            const claims = requireAuth(request, response, "admin");
+        async (req, res) => {
+            const claims = requireAuth(req, res, "admin");
             if (!claims) return;
             let body;
             try {
-                body = await readJson(request);
+                body = await readJson(req);
             } catch (error) {
                 log?.("error", "Canvas deletion received malformed JSON.", {
                     operation: "admin_delete_canvas",
                     errorName: error?.name,
                 });
                 sendError(
-                    response,
+                    res,
                     400,
                     "invalid_json",
                     "Request body must be valid JSON.",
@@ -64,7 +64,7 @@ export function registerAdminCanvasRoutes(
                 typeof body?.whiteboardId === "string" ? body.whiteboardId : "",
             );
             if (!board) {
-                sendError(response, 404, "not_found", "Canvas not found.");
+                sendError(res, 404, "not_found", "Canvas not found.");
                 return;
             }
             await deleteCanvasRecords(board.id);
@@ -73,7 +73,7 @@ export function registerAdminCanvasRoutes(
                 whiteboardId: board.id,
                 accountId: claims.sub,
             });
-            sendJson(response, 200, { data: { deleted: true } });
+            sendJson(res, 200, { data: { deleted: true } });
         },
         { access: { minRole: "admin" } },
     );

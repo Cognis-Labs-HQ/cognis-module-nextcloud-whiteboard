@@ -1,8 +1,8 @@
 export function debounce(callback, delay) {
     let timer = null;
-    const run = (...argumentsList) => {
+    const run = (...args) => {
         clearTimeout(timer);
-        timer = setTimeout(() => callback(...argumentsList), delay);
+        timer = setTimeout(() => callback(...args), delay);
     };
     run.cancel = () => {
         clearTimeout(timer);
@@ -14,11 +14,11 @@ export function debounce(callback, delay) {
 export function throttleLatest(callback, delay) {
     let timer = null;
     let lastArgumentsList = null;
-    const run = (...argumentsList) => {
+    const run = (...args) => {
         if (!timer) {
-            callback(...argumentsList);
+            callback(...args);
         } else {
-            lastArgumentsList = argumentsList;
+            lastArgumentsList = args;
             return;
         }
         timer = setTimeout(() => {
@@ -48,12 +48,12 @@ export async function loadSocketIo(serverUrl, resourceLoader) {
         src: `${origin}/socket.io/socket.io.js`,
         globalName: "io",
     });
-    const socketLibrary = resource?.value ?? resource?.global ?? window.io;
-    if (typeof socketLibrary !== "function") {
+    const io = resource?.value ?? resource?.global ?? window.io;
+    if (typeof io !== "function") {
         resource?.dispose?.();
         throw new Error("Whiteboard runtime unavailable");
     }
-    return { io: socketLibrary, dispose: () => resource?.dispose?.() };
+    return { io: io, dispose: () => resource?.dispose?.() };
 }
 
 export function encodeSyncMessage(type, payload = {}) {

@@ -266,8 +266,8 @@ test("nextcloud whiteboard store renames boards", async () => {
 });
 
 test("nextcloud whiteboard store uses structured update payloads", async () => {
-    const source = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(new URL("../store.js", import.meta.url), "utf8"),
+    const source = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../store.js", import.meta.url), "utf8"),
     );
     assert.doesNotMatch(
         source,

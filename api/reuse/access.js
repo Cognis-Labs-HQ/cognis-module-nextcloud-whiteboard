@@ -25,11 +25,11 @@ export function createProfileStoreCapability(ctx) {
         return profileStore;
     };
     return {
-        getProfile(...argumentsList) {
-            return requireProfileStore().getProfile(...argumentsList);
+        getProfile(...args) {
+            return requireProfileStore().getProfile(...args);
         },
-        getProfileByHandle(...argumentsList) {
-            return requireProfileStore().getProfileByHandle(...argumentsList);
+        getProfileByHandle(...args) {
+            return requireProfileStore().getProfileByHandle(...args);
         },
     };
 }
@@ -43,23 +43,17 @@ export function createProfileIdentityCapability(ctx) {
         return profileIdentity;
     };
     return {
-        normalizeHandleKey(...argumentsList) {
-            return requireProfileIdentity().normalizeHandleKey(
-                ...argumentsList,
-            );
+        normalizeHandleKey(...args) {
+            return requireProfileIdentity().normalizeHandleKey(...args);
         },
-        normalizeHandleKeys(...argumentsList) {
-            return requireProfileIdentity().normalizeHandleKeys(
-                ...argumentsList,
-            );
+        normalizeHandleKeys(...args) {
+            return requireProfileIdentity().normalizeHandleKeys(...args);
         },
-        resolveAccountHandle(...argumentsList) {
-            return requireProfileIdentity().resolveAccountHandle(
-                ...argumentsList,
-            );
+        resolveAccountHandle(...args) {
+            return requireProfileIdentity().resolveAccountHandle(...args);
         },
-        resolveAccountId(...argumentsList) {
-            return requireProfileIdentity().resolveAccountId(...argumentsList);
+        resolveAccountId(...args) {
+            return requireProfileIdentity().resolveAccountId(...args);
         },
     };
 }
@@ -103,10 +97,10 @@ export function buildCognisWhiteboardUrl(
     whiteboardId,
     { instantCanvas = false, disposable = false } = {},
 ) {
-    const parameters = new URLSearchParams({ id: whiteboardId });
-    if (instantCanvas) parameters.set("instantCanvas", "1");
-    if (disposable) parameters.set("disposable", "1");
-    return `/whiteboard?${parameters.toString()}`;
+    const params = new URLSearchParams({ id: whiteboardId });
+    if (instantCanvas) params.set("instantCanvas", "1");
+    if (disposable) params.set("disposable", "1");
+    return `/whiteboard?${params.toString()}`;
 }
 
 export async function resolveWhiteboardUserAccess({

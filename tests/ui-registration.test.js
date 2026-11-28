@@ -256,7 +256,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         /class="whiteboard-toolbar-group whiteboard-presence" aria-live="polite"/,
     );
     assert.match(realtimeSource, /function throttleLatest\(callback, delay\)/);
-    assert.match(realtimeSource, /callback\(\.\.\.argumentsList\)/);
+    assert.match(realtimeSource, /callback\(\.\.\.args\)/);
     assert.match(source, /pointerThrottleMs:\s*16/);
     assert.match(source, /refreshIntervalMs:\s*250/);
     assert.match(textToolsSource, /addEventListener\(["']input["']/);
@@ -285,7 +285,7 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     );
     assert.match(
         source,
-        /if \(canWrite && metadata\?\.transient !== true\) persistChanges\(elements\)/,
+        /if \(canWrite && meta\?\.transient !== true\) persistChanges\(elements\)/,
     );
     assert.match(
         styles,

@@ -2,19 +2,19 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { NextcloudWhiteboardStore } from "../api/store.js";
 import { registerWhiteboardActions } from "../api/reuse/action-store.js";
-import { createMemoryDb as createMemoryDatabase } from "./reuse/api-runtime.js";
+import { createMemoryDatabase } from "./reuse/api-runtime.js";
 import { createFlowRuntime } from "./reuse/flow-runtime.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
 
 function createActions() {
     const ctx = createFlowRuntime();
-    const database = createMemoryDatabase();
+    const db = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
-        db: database,
+        db: db,
         profileIdentity: testProfileIdentity,
     });
     const actions = registerWhiteboardActions(ctx, store);
-    return { ctx, db: database, store, actions };
+    return { ctx, db: db, store, actions };
 }
 
 test("all supported store operations execute declared owned stages", async () => {
@@ -58,14 +58,14 @@ test("initialization failure and disabled flows cannot bypass the owner runner",
 });
 
 test("full content deletion rolls back if a dependent table cannot be cleared", async () => {
-    const { db: database, store } = createActions();
+    const { db: db, store } = createActions();
     await store.ensureSchema();
     const board = await store.createWhiteboard({
         title: "Keep on failure",
         createdBy: "alice",
     });
-    const execute = database.executeCommand;
-    database.executeCommand = async (command) => {
+    const execute = db.executeCommand;
+    db.executeCommand = async (command) => {
         if (
             command.option === "DELETE" &&
             command.table === "nextcloud_whiteboards"

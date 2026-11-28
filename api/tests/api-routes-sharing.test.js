@@ -307,22 +307,22 @@ test("nextcloud whiteboard share route accepts issue-token flow result", async (
         },
     });
     const token = issueAccessToken("alice", "user", 60);
-    const request = {
+    const req = {
         url: "/api/v1/modules/nextcloud-whiteboard/share",
         headers: { authorization: `Bearer ${token}` },
         async *[Symbol.asyncIterator]() {
             yield Buffer.from(JSON.stringify({ whiteboardId: board.id }));
         },
     };
-    const response = createJsonResponse();
+    const res = createJsonResponse();
 
     await router.handler("POST", "/api/v1/modules/nextcloud-whiteboard/share")(
-        request,
-        response,
+        req,
+        res,
     );
 
-    assert.equal(response.statusCode, 200);
-    assert.deepEqual(response.json().data, shareRecord);
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.json().data, shareRecord);
 });
 
 test("nextcloud whiteboard share guests use gateway guest profiles", async () => {
@@ -370,19 +370,19 @@ test("nextcloud whiteboard share guests use gateway guest profiles", async () =>
     });
 
     const token = issueAccessToken("share:share-1:guest-1", "user", 60);
-    const request = {
+    const req = {
         url: `/api/v1/modules/nextcloud-whiteboard/whiteboards/session?id=${board.id}`,
         headers: { authorization: `Bearer ${token}` },
     };
-    const response = createJsonResponse();
+    const res = createJsonResponse();
 
     await router.handler(
         "GET",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/session",
-    )(request, response);
+    )(req, res);
 
-    assert.equal(response.statusCode, 200);
-    const sessionPayload = decodeJwtPayload(response.json().data.token);
+    assert.equal(res.statusCode, 200);
+    const sessionPayload = decodeJwtPayload(res.json().data.token);
     assert.equal(sessionPayload.user.id, "guest:guest-1");
     assert.equal(sessionPayload.user.name, "Guest #123456");
 });
@@ -447,7 +447,7 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
         [ownerToken, "owner-session"],
         [guestToken, "guest-session"],
     ]) {
-        const response = createJsonResponse();
+        const res = createJsonResponse();
         await router.handler(
             "POST",
             "/api/v1/modules/nextcloud-whiteboard/whiteboards/presence",
@@ -487,9 +487,9 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
                     );
                 },
             },
-            response,
+            res,
         );
-        assert.equal(response.statusCode, 200);
+        assert.equal(res.statusCode, 200);
     }
 
     const listResponse = createJsonResponse();
@@ -583,14 +583,14 @@ test("nextcloud whiteboard config route returns 503 when dependencies are unavai
         },
     });
 
-    const response = createJsonResponse();
+    const res = createJsonResponse();
     await router.handler("GET", "/api/v1/modules/nextcloud-whiteboard/config")(
         {},
-        response,
+        res,
     );
 
-    assert.equal(response.statusCode, 503);
-    assert.equal(response.json().error.code, "service_unavailable");
+    assert.equal(res.statusCode, 503);
+    assert.equal(res.json().error.code, "service_unavailable");
 });
 
 test("nextcloud whiteboard config remains available without the profile store", async () => {
@@ -605,19 +605,19 @@ test("nextcloud whiteboard config remains available without the profile store", 
         },
     });
 
-    const response = createJsonResponse();
+    const res = createJsonResponse();
     await router.handler("GET", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
                 authorization: `Bearer ${issueAccessToken("alice", "user", 60)}`,
             },
         },
-        response,
+        res,
     );
 
-    assert.equal(response.statusCode, 200);
-    assert.equal(response.json().data.serverUrl, "");
-    assert.equal(response.json().data.apiKeyConfigured, false);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.json().data.serverUrl, "");
+    assert.equal(res.json().data.apiKeyConfigured, false);
 });
 
 test("nextcloud whiteboard routes resolve a profile store registered later", async () => {
@@ -652,7 +652,7 @@ test("nextcloud whiteboard routes resolve a profile store registered later", asy
         },
     };
 
-    const response = createJsonResponse();
+    const res = createJsonResponse();
     await router.handler(
         "GET",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards",
@@ -663,11 +663,11 @@ test("nextcloud whiteboard routes resolve a profile store registered later", asy
                 authorization: `Bearer ${issueAccessToken("alice", "user", 60)}`,
             },
         },
-        response,
+        res,
     );
 
-    assert.equal(response.statusCode, 200);
-    assert.deepEqual(response.json().data, []);
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.json().data, []);
 });
 
 test("nextcloud whiteboard config save preserves existing API key when omitted", async () => {
@@ -694,7 +694,7 @@ test("nextcloud whiteboard config save preserves existing API key when omitted",
         },
     });
 
-    const response = createJsonResponse();
+    const res = createJsonResponse();
     await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
@@ -710,10 +710,10 @@ test("nextcloud whiteboard config save preserves existing API key when omitted",
                 );
             },
         },
-        response,
+        res,
     );
 
-    assert.equal(response.statusCode, 200);
+    assert.equal(res.statusCode, 200);
     const saved = await store.getConfig();
     assert.equal(saved.serverUrl, "https://whiteboard2.example.test");
     assert.equal(saved.apiKey, "existing-secret-at-least-16-chars");
@@ -734,7 +734,7 @@ test("nextcloud whiteboard config save accepts URL updates before an API key is 
         },
     });
 
-    const response = createJsonResponse();
+    const res = createJsonResponse();
     await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
@@ -750,16 +750,13 @@ test("nextcloud whiteboard config save accepts URL updates before an API key is 
                 );
             },
         },
-        response,
+        res,
     );
 
-    assert.equal(response.statusCode, 200);
-    assert.equal(
-        response.json().data.serverUrl,
-        "https://whiteboard.example.test",
-    );
-    assert.equal(response.json().data.apiKeyConfigured, false);
-    assert.equal(response.json().data.imageUploadMaxBytes, 4096);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.json().data.serverUrl, "https://whiteboard.example.test");
+    assert.equal(res.json().data.apiKeyConfigured, false);
+    assert.equal(res.json().data.imageUploadMaxBytes, 4096);
 });
 
 test("nextcloud whiteboard config validation identifies the invalid field", async () => {

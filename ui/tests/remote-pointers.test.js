@@ -31,8 +31,7 @@ function createHarness() {
         {
             get(target, property) {
                 if (property in target) return target[property];
-                return (...argumentsList) =>
-                    calls.push([property, ...argumentsList]);
+                return (...args) => calls.push([property, ...args]);
             },
             set(target, property, value) {
                 target[property] = value;

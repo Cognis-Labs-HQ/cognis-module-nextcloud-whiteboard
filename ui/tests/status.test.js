@@ -48,11 +48,11 @@ test("client failures use the injected log gateway and translated feedback", () 
     const entries = [];
     const toasts = [];
     const controller = createWhiteboardStatusController({
-        log: (...argumentsList) => entries.push(argumentsList),
+        log: (...args) => entries.push(args),
         getI18n: () => ({ t: (key) => `localized:${key}` }),
         getIntegrationCanvasMode: () => false,
         getShareContext: () => null,
-        showToast: (...argumentsList) => toasts.push(argumentsList),
+        showToast: (...args) => toasts.push(args),
     });
     controller.reportClientError(
         new Error("private provider payload"),

@@ -36,13 +36,13 @@ export function registerWhiteboardEnableTestRoute({
 }) {
     router.post(
         "/api/v1/modules/nextcloud-whiteboard/admin/enable-test",
-        async (_request, response) => {
+        async (_request, res) => {
             const result = await runEnableTest();
             if (!result.ok) {
-                sendError(response, 409, result.code, result.message);
+                sendError(res, 409, result.code, result.message);
                 return;
             }
-            sendJson(response, 200, { data: result.data });
+            sendJson(res, 200, { data: result.data });
         },
         { access: { minRole: "admin" }, allowWhenDisabled: true },
     );

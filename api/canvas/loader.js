@@ -3,7 +3,7 @@ import { sendError } from "../reuse/http.js";
 export async function loadCanvasElements({
     store,
     log,
-    res: response,
+    res: res,
     whiteboardId,
     username,
 }) {
@@ -18,7 +18,7 @@ export async function loadCanvasElements({
             errorName: error?.name ?? "Error",
         });
         sendError(
-            response,
+            res,
             500,
             "canvas_load_failed",
             "Whiteboard canvas could not be loaded.",

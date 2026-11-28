@@ -13,7 +13,7 @@ import { checkHttpLiveness } from "../reuse/http-liveness.js";
 import { sendError, sendJson } from "../reuse/http.js";
 
 const WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS = 5000;
-export { WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS as WHITEBOARD_LIVENESS_TIMEOUT_MS };
+export { WHITEBOARD_LIVENESS_TIMEOUT_MILLISECONDS };
 
 export function registerWhiteboardConfigurationApi(
     router,
@@ -22,9 +22,9 @@ export function registerWhiteboardConfigurationApi(
 ) {
     const databaseExecutor = ctx.getCapability("db:executor");
     if (!databaseExecutor) {
-        const unavailablePayload = (response) =>
+        const unavailablePayload = (res) =>
             sendError(
-                response,
+                res,
                 503,
                 "service_unavailable",
                 "Nextcloud Whiteboard dependencies are unavailable.",
@@ -33,7 +33,7 @@ export function registerWhiteboardConfigurationApi(
         for (const method of ["get", "put", "delete"]) {
             router[method](
                 "/api/v1/modules/nextcloud-whiteboard/config",
-                async (_request, response) => unavailablePayload(response),
+                async (_request, res) => unavailablePayload(res),
                 { access: { minRole: "admin" }, allowWhenDisabled: true },
             );
         }

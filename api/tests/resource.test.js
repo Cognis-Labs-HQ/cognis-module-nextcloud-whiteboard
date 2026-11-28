@@ -4,7 +4,7 @@ import { NextcloudWhiteboardStore } from "../store.js";
 import { resolveResourceCanvas } from "../canvas/resource.js";
 import { createWhiteboardModuleApi } from "../reuse/capabilities.js";
 import { registerWhiteboardActions } from "../reuse/action-store.js";
-import { createMemoryDb as createMemoryDatabase } from "../../tests/reuse/api-runtime.js";
+import { createMemoryDatabase } from "../../tests/reuse/api-runtime.js";
 import { createFlowRuntime } from "../../tests/reuse/flow-runtime.js";
 import { testProfileIdentity } from "../../tests/reuse/profile-identity.js";
 

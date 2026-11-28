@@ -9,7 +9,7 @@ const SHAPE_TOOLS = new Set([
 ]);
 
 const REMOTE_DRAFT_TTL_MILLISECONDS = 15_000;
-export { REMOTE_DRAFT_TTL_MILLISECONDS as REMOTE_DRAFT_TTL_MS };
+export { REMOTE_DRAFT_TTL_MILLISECONDS };
 
 export function createRemoteDraftStore({
     ttl = REMOTE_DRAFT_TTL_MILLISECONDS,

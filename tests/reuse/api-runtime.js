@@ -14,7 +14,7 @@ function createMemoryDatabase() {
                     : row[clause.column] === clause.value,
             ),
         );
-    const database = {
+    const db = {
         async ensureTable(definition) {
             if (!tables.has(definition.name)) tables.set(definition.name, []);
             const explicitPrimaryKey = Array.isArray(definition.primaryKey)
@@ -96,7 +96,7 @@ function createMemoryDatabase() {
         async transaction(callback) {
             const snapshot = structuredClone([...tables]);
             try {
-                return await callback(database);
+                return await callback(db);
             } catch (error) {
                 tables.clear();
                 for (const [name, rows] of snapshot) tables.set(name, rows);
@@ -104,9 +104,9 @@ function createMemoryDatabase() {
             }
         },
     };
-    return database;
+    return db;
 }
-export { createMemoryDatabase as createMemoryDb };
+export { createMemoryDatabase };
 
 export function createRouterCapture() {
     const routes = new Map();

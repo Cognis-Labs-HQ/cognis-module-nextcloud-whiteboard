@@ -207,10 +207,10 @@ function emitBoardRenamed(title) {
     );
 }
 
-function connectSocket(socketFactory, session, canvas) {
+function connectSocket(io, session, canvas) {
     const { serverUrl, roomId, token } = session;
     const canWrite = session.canWrite === true;
-    const socket = socketFactory(serverUrl, {
+    const socket = io(serverUrl, {
         auth: { token },
         transports: ["websocket"],
         reconnectionDelay: 1000,
@@ -308,26 +308,26 @@ function connectSocket(socketFactory, session, canvas) {
         emitChanges.cancel();
         removeVisibilityListener();
     };
-    canvas.onChange((elements, metadata) => {
+    canvas.onChange((elements, meta) => {
         if (disposed) return;
-        if (metadata?.type === "image_rejected") {
+        if (meta?.type === "image_rejected") {
             showToast(
                 translateModuleString(
                     "module.nextcloud.whiteboard.image.too.large",
-                ).replace("{limit}", String(metadata.limit)),
+                ).replace("{limit}", String(meta.limit)),
                 { variant: "error" },
             );
             return;
         }
         savedElements = elements;
         composer?.refreshPresence?.();
-        if (metadata?.transient !== true) setDisposableSaveDirty(session, true);
-        if (canWrite && metadata?.transient !== true) persistChanges(elements);
+        if (meta?.transient !== true) setDisposableSaveDirty(session, true);
+        if (canWrite && meta?.transient !== true) persistChanges(elements);
         if (canWrite) {
             emitChanges(
                 elements,
                 SYNC_MESSAGE_SCENE_UPDATE,
-                metadata?.transient === true,
+                meta?.transient === true,
             );
         }
     });
@@ -608,7 +608,7 @@ async function openBoard(board) {
     preflightController.setStatus("rendering");
     composer.refresh(buildElements());
     preflightController.setStatus("passed");
-    let socketFactory;
+    let io;
     try {
         const runtime = await loadSocketIo(
             session.serverUrl,
@@ -618,7 +618,7 @@ async function openBoard(board) {
             runtime.dispose();
             return;
         }
-        socketFactory = runtime.io;
+        io = runtime.io;
         runtimeDispose?.();
         runtimeDispose = runtime.dispose;
     } catch (error) {
@@ -648,7 +648,7 @@ async function openBoard(board) {
         return;
     }
     setSyncStatus("syncing", "module.nextcloud.whiteboard.status.syncing");
-    socketInstance = connectSocket(socketFactory, session, canvasInstance);
+    socketInstance = connectSocket(io, session, canvasInstance);
     composer?.refreshPresence?.();
     bindCanvasToolbar(canvasInstance);
     bindDisposableSaveButton(session, canvasInstance);

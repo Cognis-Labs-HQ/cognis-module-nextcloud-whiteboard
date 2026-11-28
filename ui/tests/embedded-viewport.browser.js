@@ -31,7 +31,7 @@ const capabilities = new Map([
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
         bind(id) {
-            return (...argumentsList) => this.get(id)?.(...argumentsList);
+            return (...args) => this.get(id)?.(...args);
         },
         get: (name) => capabilities.get(name),
         contribute: (name, value) => capabilities.set(name, value),

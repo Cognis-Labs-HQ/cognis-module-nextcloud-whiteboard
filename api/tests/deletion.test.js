@@ -128,11 +128,8 @@ test("canvas deletion removes dependent records transactionally", async () => {
 });
 
 test("canvas deletion capability is published for orchestrators", async () => {
-    const source = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../../bootstrap.js", import.meta.url),
-            "utf8",
-        ),
+    const source = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../../bootstrap.js", import.meta.url), "utf8"),
     );
     assert.match(
         source,
@@ -142,17 +139,11 @@ test("canvas deletion capability is published for orchestrators", async () => {
 
 test("window spawning capability has only one owner-tracked publisher", async () => {
     const [apiSource, bootstrapSource] = await Promise.all([
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
-                new URL("../index.js", import.meta.url),
-                "utf8",
-            ),
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(new URL("../index.js", import.meta.url), "utf8"),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
-                new URL("../../bootstrap.js", import.meta.url),
-                "utf8",
-            ),
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(new URL("../../bootstrap.js", import.meta.url), "utf8"),
         ),
     ]);
     const capability = /["']whiteboard:spawnWhiteboardWindow["']/g;

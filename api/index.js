@@ -28,7 +28,7 @@ export function registerUi(ctx) {
     });
     const whiteboardUiAsset = createWhiteboardUiAssetResolver(ctx.moduleRoot);
     const moduleUiRoot = path.join(ctx.moduleRoot, "ui");
-    ctx.registerStaticDir("", moduleUiRoot);
+    ctx.registerStaticDirectory("", moduleUiRoot);
     registerWhiteboardUiProvider(ctx);
     ctx.registerNavbarPlugin({
         scriptUrl: whiteboardUiAsset("navbar.js"),

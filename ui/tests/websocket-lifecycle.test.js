@@ -59,7 +59,7 @@ test("preflight ignores a response after its mount was aborted", async () => {
         setOverlayVisible() {},
         showToast: (message) => toasts.push(message),
         translate: (key) => key,
-        loadSocketIo: () =>
+        loadSocketLibrary: () =>
             assert.fail("Cancelled mount cannot load transport"),
     });
     const running = preflight.run({ signal: controller.signal });
@@ -116,7 +116,7 @@ test("a replaced preflight releases late script handles without opening a socket
         showToast: () =>
             assert.fail("Superseded preflight cannot show a toast"),
         translate: (key) => key,
-        loadSocketIo: () =>
+        loadSocketLibrary: () =>
             new Promise((resolve) => {
                 finishLoad = resolve;
             }),
@@ -145,7 +145,7 @@ test("websocket preflight failures publish safe diagnostics through the injected
         }),
         getMountRoot: () => "root",
         getResourceLoader: () => ({}),
-        loadSocketIo: async () => {
+        loadSocketLibrary: async () => {
             throw new TypeError("private credential");
         },
         setOverlayVisible() {},

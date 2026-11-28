@@ -23,7 +23,7 @@ import {
     decodeSceneMessage,
     encodeSceneMessage,
     encodeSyncMessage,
-    loadSocketIo,
+    loadSocketLibrary,
     throttleLatest,
 } from "./realtime.js";
 import { applyRemoteSceneUpdate } from "./reuse/updates.js";
@@ -57,7 +57,7 @@ const log = uiCtx.capabilities.bind("ui:log");
 
 const EMIT_DEBOUNCE_MILLISECONDS = 80;
 const RECONNECT_MAX_DELAY_MILLISECONDS = 30000;
-const SYNC_MESSAGE_SCENE_INIT = "SCENE_INIT";
+const SYNC_MESSAGE_SCENE_INITIALIZATION = "SCENE_INIT";
 const SYNC_MESSAGE_SCENE_UPDATE = "SCENE_UPDATE";
 const SYNC_MESSAGE_SCENE_REQUEST = "SCENE_REQUEST";
 const SYNC_MESSAGE_BOARD_RENAMED = "BOARD_RENAMED";
@@ -107,7 +107,7 @@ const preflightController = createWhiteboardPreflightController({
         apiFetchJson("/whiteboards/preflight", { method: "POST", signal }),
     getMountRoot: () => pageMountRoot,
     getResourceLoader: () => uiCtx.capabilities.get("ui:resourceLoader"),
-    loadSocketIo,
+    loadSocketLibrary: loadSocketLibrary,
     setOverlayVisible,
     showToast,
     translate: translateModuleString,
@@ -237,7 +237,10 @@ function connectSocket(io, session, canvas) {
         socket.emit(
             "server-broadcast",
             roomId,
-            encodeSceneMessage(SYNC_MESSAGE_SCENE_INIT, canvas.getElements()),
+            encodeSceneMessage(
+                SYNC_MESSAGE_SCENE_INITIALIZATION,
+                canvas.getElements(),
+            ),
             [],
         );
     };
@@ -272,7 +275,11 @@ function connectSocket(io, session, canvas) {
         }
     }, EMIT_DEBOUNCE_MILLISECONDS);
     const emitChanges = throttleLatest(
-        (elements, type = SYNC_MESSAGE_SCENE_INIT, transient = false) => {
+        (
+            elements,
+            type = SYNC_MESSAGE_SCENE_INITIALIZATION,
+            transient = false,
+        ) => {
             if (!canWrite) return;
             if (!socket.connected || !joinedRoom) {
                 setSyncStatus(
@@ -385,7 +392,7 @@ function connectSocket(io, session, canvas) {
                 return;
             }
             if (
-                (message.type === SYNC_MESSAGE_SCENE_INIT ||
+                (message.type === SYNC_MESSAGE_SCENE_INITIALIZATION ||
                     message.type === SYNC_MESSAGE_SCENE_UPDATE) &&
                 applyRemoteSceneUpdate({
                     message,
@@ -610,7 +617,7 @@ async function openBoard(board) {
     preflightController.setStatus("passed");
     let io;
     try {
-        const runtime = await loadSocketIo(
+        const runtime = await loadSocketLibrary(
             session.serverUrl,
             uiCtx.capabilities.get("ui:resourceLoader"),
         );

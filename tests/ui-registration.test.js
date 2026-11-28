@@ -45,19 +45,16 @@ test("nextcloud whiteboard exposes its canvas as a component page", () => {
 });
 
 test("nextcloud whiteboard does not reload shared layout styles", async () => {
-    const shellSource = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/index.html", import.meta.url),
-            "utf8",
-        ),
+    const shellSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/index.html", import.meta.url), "utf8"),
     );
     assert.match(shellSource, /\/static\/styles\/page-builder\.css/);
     assert.doesNotMatch(shellSource, /\/static\/styles\/reuse\/layout\.css/);
 });
 
 test("nextcloud whiteboard share permissions use explicit access labels", async () => {
-    const strings = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
+    const strings = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
             new URL("../ui/languages/en/strings.xml", import.meta.url),
             "utf8",
         ),
@@ -68,11 +65,8 @@ test("nextcloud whiteboard share permissions use explicit access labels", async 
 });
 
 test("nextcloud whiteboard disables page layout editing", async () => {
-    const appSource = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/app/index.js", import.meta.url),
-            "utf8",
-        ),
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(appSource, /allowCustomization:\s*false/);
     assert.match(appSource, /contentScrolling:\s*!embeddedComponentMode/);
@@ -82,8 +76,8 @@ test("nextcloud whiteboard disables page layout editing", async () => {
 });
 
 test("nextcloud whiteboard canvas fills its widget without stage scrolling", async () => {
-    const styles = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
+    const styles = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
             new URL("../ui/styles/whiteboards.css", import.meta.url),
             "utf8",
         ),
@@ -103,11 +97,8 @@ test("nextcloud whiteboard canvas fills its widget without stage scrolling", asy
 });
 
 test("direct-account SPA shares mount the full Whiteboard page", async () => {
-    const appSource = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/app/index.js", import.meta.url),
-            "utf8",
-        ),
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(
         appSource,
@@ -127,56 +118,53 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
         textToolsSource,
         styles,
     ] = await Promise.all([
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
-                new URL("../ui/app/index.js", import.meta.url),
-                "utf8",
-            ),
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/app/toolbar.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/canvas/index.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/app/presence.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/app/realtime.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/templates/canvas.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/app/sharing.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/canvas/text.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/styles/whiteboards.css", import.meta.url),
                 "utf8",
             ),
@@ -240,8 +228,8 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
     assert.match(canvasSource, /function getSelectedElementIds\(\)/);
     assert.match(canvasSource, /function setRemoteSelections\(/);
     assert.match(
-        await import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        await import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/canvas/render.js", import.meta.url),
                 "utf8",
             ),
@@ -299,14 +287,14 @@ test("nextcloud whiteboard app loads module strings and omits inline status elem
 
 test("nextcloud whiteboard canvas deletes selected objects via keyboard", async () => {
     const [source, canvasEventsSource] = await Promise.all([
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/canvas/index.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/canvas/events.js", import.meta.url),
                 "utf8",
             ),
@@ -345,11 +333,8 @@ test("nextcloud whiteboard canvas deletes selected objects via keyboard", async 
 });
 
 test("drawing starts before canvas focus can move the viewport", async () => {
-    const source = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/canvas/index.js", import.meta.url),
-            "utf8",
-        ),
+    const source = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/canvas/index.js", import.meta.url), "utf8"),
     );
     const pointerDownSource = source.slice(
         source.indexOf("function onPointerDown(event)"),
@@ -373,11 +358,8 @@ test("collaborative scenes merge remote edits before saving", async () => {
             "../ui/canvas/index.js",
             "../ui/app/reuse/updates.js",
         ].map((relativePath) =>
-            import("node:fs/promises").then((fileSystem) =>
-                fileSystem.readFile(
-                    new URL(relativePath, import.meta.url),
-                    "utf8",
-                ),
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
             ),
         ),
     );
@@ -409,11 +391,8 @@ test("collaborative scenes merge remote edits before saving", async () => {
 });
 
 test("joining collaborators request a scene from peers after reconnecting", async () => {
-    const appSource = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/app/index.js", import.meta.url),
-            "utf8",
-        ),
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(
         appSource,
@@ -441,26 +420,26 @@ test("joining collaborators request a scene from peers after reconnecting", asyn
 test("nextcloud whiteboard image paste saves and selects resizable image objects", async () => {
     const [canvasSource, clipboardSource, canvasEventsSource, elementsSource] =
         await Promise.all([
-            import("node:fs/promises").then((fileSystem) =>
-                fileSystem.readFile(
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(
                     new URL("../ui/canvas/index.js", import.meta.url),
                     "utf8",
                 ),
             ),
-            import("node:fs/promises").then((fileSystem) =>
-                fileSystem.readFile(
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(
                     new URL("../ui/canvas/clipboard.js", import.meta.url),
                     "utf8",
                 ),
             ),
-            import("node:fs/promises").then((fileSystem) =>
-                fileSystem.readFile(
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(
                     new URL("../ui/canvas/events.js", import.meta.url),
                     "utf8",
                 ),
             ),
-            import("node:fs/promises").then((fileSystem) =>
-                fileSystem.readFile(
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(
                     new URL("../ui/canvas/elements.js", import.meta.url),
                     "utf8",
                 ),
@@ -501,32 +480,29 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
         elementsSource,
         stylesSource,
     ] = await Promise.all([
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/canvas/index.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
-                new URL("../ui/app/index.js", import.meta.url),
-                "utf8",
-            ),
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/templates/canvas.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/canvas/elements.js", import.meta.url),
                 "utf8",
             ),
         ),
-        import("node:fs/promises").then((fileSystem) =>
-            fileSystem.readFile(
+        import("node:fs/promises").then((fs) =>
+            fs.readFile(
                 new URL("../ui/styles/whiteboards.css", import.meta.url),
                 "utf8",
             ),
@@ -571,12 +547,11 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
     );
     assert.match(appSource, /function canRenameActiveBoard\(\)/);
     assert.match(appSource, /function emitBoardRenamed\(title\)/);
-    const navigationSource = await import("node:fs/promises").then(
-        (fileSystem) =>
-            fileSystem.readFile(
-                new URL("../ui/reuse/navigation.js", import.meta.url),
-                "utf8",
-            ),
+    const navigationSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(
+            new URL("../ui/reuse/navigation.js", import.meta.url),
+            "utf8",
+        ),
     );
     assert.match(navigationSource, /function syncBoardUrl\(/);
     assert.match(
@@ -596,11 +571,8 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
     );
 });
 test("nextcloud whiteboard entrusts its internal URL to the share popup", async () => {
-    const appSource = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/app/sharing.js", import.meta.url),
-            "utf8",
-        ),
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/sharing.js", import.meta.url), "utf8"),
     );
     assert.match(
         appSource,
@@ -611,11 +583,8 @@ test("nextcloud whiteboard entrusts its internal URL to the share popup", async 
 test("whiteboard suspends realtime work while its tab is hidden", async () => {
     const [appSource, realtimeSource] = await Promise.all(
         ["../ui/app/index.js", "../ui/app/realtime.js"].map((relativePath) =>
-            import("node:fs/promises").then((fileSystem) =>
-                fileSystem.readFile(
-                    new URL(relativePath, import.meta.url),
-                    "utf8",
-                ),
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
             ),
         ),
     );
@@ -641,11 +610,8 @@ test("whiteboard registers one dedicated canvas UI gateway provider", async () =
                 "../api/index.js",
                 "../api/reuse/providers.js",
             ].map((relativePath) =>
-                import("node:fs/promises").then((fileSystem) =>
-                    fileSystem.readFile(
-                        new URL(relativePath, import.meta.url),
-                        "utf8",
-                    ),
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
                 ),
             ),
         );
@@ -713,8 +679,8 @@ test("whiteboard component mounts the disposable canvas from focus state", async
             "../ui/reuse/navigation.js",
             "../ui/templates/canvas.js",
         ].map((path) =>
-            import("node:fs/promises").then((fileSystem) =>
-                fileSystem.readFile(new URL(path, import.meta.url), "utf8"),
+            import("node:fs/promises").then((fs) =>
+                fs.readFile(new URL(path, import.meta.url), "utf8"),
             ),
         ),
     );
@@ -772,11 +738,8 @@ test("whiteboard component mounts the disposable canvas from focus state", async
 });
 
 test("whiteboard direct entry mounts only on declared whiteboard routes", async () => {
-    const appSource = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/app/index.js", import.meta.url),
-            "utf8",
-        ),
+    const appSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
     );
     assert.match(
         appSource,
@@ -798,11 +761,8 @@ test("whiteboard toolbar wraps tools and keeps disposable save controls visible"
                 "../ui/templates/canvas.js",
                 "../ui/styles/whiteboards.css",
             ].map((relativePath) =>
-                import("node:fs/promises").then((fileSystem) =>
-                    fileSystem.readFile(
-                        new URL(relativePath, import.meta.url),
-                        "utf8",
-                    ),
+                import("node:fs/promises").then((fs) =>
+                    fs.readFile(new URL(relativePath, import.meta.url), "utf8"),
                 ),
             ),
         );
@@ -918,11 +878,8 @@ test("canvas source keeps readable spacing between top-level sections", async ()
 });
 
 test("clear canvas uses delegated toolbar confirmation handling", async () => {
-    const toolbarSource = await import("node:fs/promises").then((fileSystem) =>
-        fileSystem.readFile(
-            new URL("../ui/app/toolbar.js", import.meta.url),
-            "utf8",
-        ),
+    const toolbarSource = await import("node:fs/promises").then((fs) =>
+        fs.readFile(new URL("../ui/app/toolbar.js", import.meta.url), "utf8"),
     );
 
     assert.match(toolbarSource, /toolbar\.addEventListener\(["']click["']/);

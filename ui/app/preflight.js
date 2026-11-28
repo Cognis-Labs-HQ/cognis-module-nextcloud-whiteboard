@@ -5,7 +5,7 @@ export function createWhiteboardPreflightController({
     fetchPreflight,
     getMountRoot,
     getResourceLoader,
-    loadSocketIo,
+    loadSocketLibrary,
     setOverlayVisible,
     showToast,
     translate,
@@ -59,7 +59,7 @@ export function createWhiteboardPreflightController({
         }
         let websocketAuthorized = false;
         try {
-            const runtime = await loadSocketIo(
+            const runtime = await loadSocketLibrary(
                 result.serverUrl,
                 getResourceLoader(),
             );

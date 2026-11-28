@@ -10,7 +10,7 @@ export function captureUiRegistration() {
     const adminSections = [];
     registerUi({
         moduleRoot: resolve(import.meta.dirname, "../.."),
-        registerStaticDir(prefix, dir) {
+        registerStaticDirectory(prefix, dir) {
             staticDirectories.push({ prefix, dir: dir });
         },
         registerNavbarPlugin(plugin) {

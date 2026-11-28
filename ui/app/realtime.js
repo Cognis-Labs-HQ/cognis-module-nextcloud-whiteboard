@@ -38,7 +38,7 @@ export function throttleLatest(callback, delay) {
     return run;
 }
 
-export async function loadSocketIo(serverUrl, resourceLoader) {
+export async function loadSocketLibrary(serverUrl, resourceLoader) {
     if (typeof resourceLoader?.loadScript !== "function") {
         throw new Error("Whiteboard runtime loader unavailable");
     }

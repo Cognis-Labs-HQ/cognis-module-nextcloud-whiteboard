@@ -1,4 +1,5 @@
 export function createWhiteboardStatusController({
+    log,
     getI18n,
     getIntegrationCanvasMode,
     getShareContext,
@@ -8,12 +9,14 @@ export function createWhiteboardStatusController({
     let syncStatusMessage = "";
 
     function translate(key) {
-        return getI18n()?.t(key) ?? key;
+        const i18n = getI18n();
+        if (!i18n) throw new Error("whiteboard_translations_unavailable");
+        return i18n.t(key);
     }
 
     function reportClientError(error, fallbackKey) {
-        console.error("[nextcloud-whiteboard] client error:", error);
-        showToast(error?.message || translate(fallbackKey), {
+        log("error", "whiteboard.client.failed", { errorName: error?.name });
+        showToast(translate(fallbackKey), {
             variant: "error",
         });
     }

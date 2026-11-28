@@ -13,6 +13,9 @@ const reuse = {
 };
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
+        bind(id) {
+            return (...args) => this.get(id)?.(...args);
+        },
         get: (id) =>
             id === "ui:reuse"
                 ? {

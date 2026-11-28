@@ -3,7 +3,7 @@ import { sendError } from "../reuse/http.js";
 export async function loadCanvasElements({
     store,
     log,
-    res,
+    res: res,
     whiteboardId,
     username,
 }) {

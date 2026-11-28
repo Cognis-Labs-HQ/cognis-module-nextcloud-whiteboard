@@ -46,8 +46,8 @@ export function bindWhiteboardCanvasToolbar({
     let keepToolActive = false;
     function activateTool(tool) {
         activeTool = tool;
-        toolbar.querySelectorAll("[data-tool]").forEach((btn) => {
-            btn.classList.toggle("active", btn.dataset.tool === tool);
+        toolbar.querySelectorAll("[data-tool]").forEach((button) => {
+            button.classList.toggle("active", button.dataset.tool === tool);
         });
         updateStyleControls();
         const textControls = withinMount("#whiteboard-text-controls");

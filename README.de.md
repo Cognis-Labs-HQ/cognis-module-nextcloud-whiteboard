@@ -1,25 +1,19 @@
-# Nextcloud Whiteboard
+# Whiteboard
 
-[English](README.en.md) · **Deutsch** · [Bahasa Indonesia](README.id.md) · [日本語](README.ja.md)
+Erstellen und teilen Sie gemeinsame Zeichenflächen in Cognis.
 
-Kollaborative Whiteboards auf Basis von Nextcloud mit integrierter Cognis-Zugriffskontrolle. Dieses Repository ist ein eigenständiges externes Cognis-Modul.
+## Möglichkeiten
+
+Zeichnen Sie, ergänzen Sie Formen und Text, öffnen Sie gespeicherte Tafeln und arbeiten Sie gemeinsam. Empfänger mit Lesezugriff können die Zeichenfläche ansehen und verschieben.
+
+## Vor dem Start
+
+Ein Administrator muss Whiteboard-Server und API-Schlüssel einrichten. Cognis und Browser müssen den Server erreichen. Bearbeitung erfordert Schreibzugriff auf die gewählte Tafel.
 
 ## Erste Schritte
 
-Installieren Sie das Modul über den Modul-Marktplatz oder legen Sie es im konfigurierten Verzeichnis für externe Module ab. Aktivieren Sie es, öffnen Sie **Nextcloud Whiteboard Settings** und konfigurieren Sie die Whiteboard-Server-URL, das Bild-Upload-Limit und den gemeinsamen API-Schlüssel.
+Öffnen Sie Whiteboard und wählen Sie eine neue oder gespeicherte Tafel. Warten Sie auf den Verbindungsstatus und zeichnen oder lesen Sie entsprechend Ihren Rechten.
 
-Benutzer können unter `/whiteboards` Boards erstellen und auswählen und anschließend unter `/whiteboard?id=<board-id>` zusammenarbeiten. Eigentümer können über den Freigabedialog des Hosts Lese- oder Schreibzugriff gewähren.
+## Weitere Informationen
 
-## Prüfungen für Mitwirkende
-
-```sh
-npm install
-npm run lint
-npm test
-npx playwright install chromium
-npm run test:browser
-npm run check:manifest
-git diff --check
-```
-
-Lesen Sie [`docs/index.de.md`](docs/index.de.md) für Konfiguration, Capabilities, Routen, Sicherheitsgrenzen und Betriebshinweise.
+[Anwendung](docs/USAGE.de.md) beschreibt Abläufe. [Technik](docs/TECHNICAL.de.md) erklärt Verträge und Konfiguration.

@@ -1,5 +1,5 @@
 import {
-    createMemoryDb,
+    createMemoryDatabase,
     createRouterCapture,
     createJsonResponse,
     decodeJwtPayload,
@@ -15,7 +15,7 @@ import { issueAccessToken, requireTestAuth } from "../../tests/reuse/auth.js";
 import { testProfileIdentity } from "../../tests/reuse/profile-identity.js";
 
 test("nextcloud whiteboard registers share hooks on its scoped ctx flow", () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const router = createRouterCapture();
     const extensions = [];
     const systemCtx = {
@@ -114,7 +114,7 @@ test("nextcloud whiteboard registers share hooks on its scoped ctx flow", () => 
 });
 
 test("nextcloud whiteboard registers scoped share hooks only once", () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const router = createRouterCapture();
     const extensions = [];
     const flow = {
@@ -144,7 +144,7 @@ test("nextcloud whiteboard registers scoped share hooks only once", () => {
 });
 
 test("nextcloud whiteboard share hooks reject share guests managing links", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -233,7 +233,7 @@ test("nextcloud whiteboard share hooks reject share guests managing links", asyn
 });
 
 test("nextcloud whiteboard share hooks preserve direct participant sessions without reusing minter sessions", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,

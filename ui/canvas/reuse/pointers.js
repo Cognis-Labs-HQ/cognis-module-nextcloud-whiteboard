@@ -10,17 +10,26 @@ export function renderRemotePointers({
     const rootWidth = Math.max(root.scrollWidth, rootBounds.width);
     const rootHeight = Math.max(root.scrollHeight, rootBounds.height);
     for (const pointer of pointers) {
-        const x =
+        const horizontalCoordinate =
             pointer.x * rootWidth -
             root.scrollLeft -
             (canvasBounds.left - rootBounds.left);
-        const y =
+        const verticalCoordinate =
             pointer.y * rootHeight -
             root.scrollTop -
             (canvasBounds.top - rootBounds.top);
-        if (x < 0 || y < 0 || x > canvasBounds.width || y > canvasBounds.height)
+        if (
+            horizontalCoordinate < 0 ||
+            verticalCoordinate < 0 ||
+            horizontalCoordinate > canvasBounds.width ||
+            verticalCoordinate > canvasBounds.height
+        )
             continue;
-        drawRemotePointer(context, { ...pointer, x, y });
+        drawRemotePointer(context, {
+            ...pointer,
+            x: horizontalCoordinate,
+            y: verticalCoordinate,
+        });
     }
 }
 

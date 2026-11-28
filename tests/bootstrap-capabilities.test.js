@@ -40,7 +40,7 @@ function createRuntime({ conflictingCapabilityId } = {}) {
         registerCapabilityProvider: registerUi,
         registerNavbarPlugin: registerUi,
         registerSpaRoute: registerUi,
-        registerStaticDir: registerUi,
+        registerStaticDirectory: registerUi,
     };
     return { ctx, events, publicCapabilities };
 }

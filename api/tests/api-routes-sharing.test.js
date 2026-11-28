@@ -118,7 +118,7 @@ test("delegated access cannot broaden the requested resource scope", async () =>
 
 import { issueAccessToken, requireTestAuth } from "../../tests/reuse/auth.js";
 
-function createMemoryDb() {
+function createMemoryDatabase() {
     const tables = new Map();
     const primaryKeys = new Map();
     const applyWhere = (rows, where = []) =>
@@ -246,7 +246,7 @@ function createJsonResponse() {
 }
 
 test("nextcloud whiteboard share route accepts issue-token flow result", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -326,7 +326,7 @@ test("nextcloud whiteboard share route accepts issue-token flow result", async (
 });
 
 test("nextcloud whiteboard share guests use gateway guest profiles", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -389,7 +389,7 @@ test("nextcloud whiteboard share guests use gateway guest profiles", async () =>
 
 test("nextcloud whiteboard presence tracks share guests and profile users", async () => {
     const guestAccessRequests = [];
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -492,7 +492,7 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
         assert.equal(res.statusCode, 200);
     }
 
-    const listRes = createJsonResponse();
+    const listResponse = createJsonResponse();
     await router.handler(
         "GET",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/presence",
@@ -501,11 +501,11 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
             url: `/api/v1/modules/nextcloud-whiteboard/whiteboards/presence?pageId=${board.id}`,
             headers: { authorization: `Bearer ${ownerToken}` },
         },
-        listRes,
+        listResponse,
     );
 
-    assert.equal(listRes.statusCode, 200);
-    const entries = listRes.json().data.presence;
+    assert.equal(listResponse.statusCode, 200);
+    const entries = listResponse.json().data.presence;
     const ownerPresence = entries.find(
         (entry) =>
             entry.handle === "alice" && entry.avatarKey === "avatars/alice",
@@ -522,7 +522,7 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
         ),
     );
 
-    const inactiveRes = createJsonResponse();
+    const inactiveResponse = createJsonResponse();
     await router.handler(
         "POST",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/presence",
@@ -539,9 +539,9 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
                 );
             },
         },
-        inactiveRes,
+        inactiveResponse,
     );
-    assert.equal(inactiveRes.statusCode, 200);
+    assert.equal(inactiveResponse.statusCode, 200);
     assert.ok(
         guestAccessRequests.some(
             (request) => request.requiredCapability === "whiteboard:read",
@@ -560,7 +560,7 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
         ],
     });
 
-    const filteredRes = createJsonResponse();
+    const filteredResponse = createJsonResponse();
     await router.handler(
         "GET",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/presence",
@@ -569,10 +569,10 @@ test("nextcloud whiteboard presence tracks share guests and profile users", asyn
             url: `/api/v1/modules/nextcloud-whiteboard/whiteboards/presence?pageId=${board.id}`,
             headers: { authorization: `Bearer ${ownerToken}` },
         },
-        filteredRes,
+        filteredResponse,
     );
-    assert.equal(filteredRes.statusCode, 200);
-    assert.deepEqual(filteredRes.json().data.presence, []);
+    assert.equal(filteredResponse.statusCode, 200);
+    assert.deepEqual(filteredResponse.json().data.presence, []);
 });
 
 test("nextcloud whiteboard config route returns 503 when dependencies are unavailable", async () => {
@@ -594,7 +594,7 @@ test("nextcloud whiteboard config route returns 503 when dependencies are unavai
 });
 
 test("nextcloud whiteboard config remains available without the profile store", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
@@ -621,7 +621,7 @@ test("nextcloud whiteboard config remains available without the profile store", 
 });
 
 test("nextcloud whiteboard routes resolve a profile store registered later", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const router = createRouterCapture();
     let profileStore;
     registerApiRoutes(router, {
@@ -671,7 +671,7 @@ test("nextcloud whiteboard routes resolve a profile store registered later", asy
 });
 
 test("nextcloud whiteboard config save preserves existing API key when omitted", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -721,7 +721,7 @@ test("nextcloud whiteboard config save preserves existing API key when omitted",
 });
 
 test("nextcloud whiteboard config save accepts URL updates before an API key is configured", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
@@ -760,7 +760,7 @@ test("nextcloud whiteboard config save accepts URL updates before an API key is 
 });
 
 test("nextcloud whiteboard config validation identifies the invalid field", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -783,7 +783,7 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
         },
     });
 
-    const urlRes = createJsonResponse();
+    const urlResponse = createJsonResponse();
     await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
@@ -795,15 +795,15 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
                 );
             },
         },
-        urlRes,
+        urlResponse,
     );
-    assert.equal(urlRes.statusCode, 400);
+    assert.equal(urlResponse.statusCode, 400);
     assert.equal(
-        urlRes.json().error.fieldId,
+        urlResponse.json().error.fieldId,
         "nextcloud-whiteboard-server-url",
     );
 
-    const apiKeyRes = createJsonResponse();
+    const apiKeyResponse = createJsonResponse();
     await router.handler("PUT", "/api/v1/modules/nextcloud-whiteboard/config")(
         {
             headers: {
@@ -818,11 +818,11 @@ test("nextcloud whiteboard config validation identifies the invalid field", asyn
                 );
             },
         },
-        apiKeyRes,
+        apiKeyResponse,
     );
-    assert.equal(apiKeyRes.statusCode, 400);
+    assert.equal(apiKeyResponse.statusCode, 400);
     assert.equal(
-        apiKeyRes.json().error.fieldId,
+        apiKeyResponse.json().error.fieldId,
         "nextcloud-whiteboard-api-key",
     );
 });

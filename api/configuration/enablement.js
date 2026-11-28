@@ -1,7 +1,7 @@
 export function createWhiteboardEnableTest({
     store,
     checkHttpLiveness,
-    timeoutMs,
+    timeoutMs: timeoutMs,
 }) {
     return async function runEnableTest() {
         await store.ensureSchema();
@@ -15,7 +15,7 @@ export function createWhiteboardEnableTest({
             };
         }
         const liveness = await checkHttpLiveness(config.serverUrl, {
-            timeoutMs,
+            timeoutMs: timeoutMs,
         });
         return {
             ok: Boolean(liveness.alive),
@@ -36,7 +36,7 @@ export function registerWhiteboardEnableTestRoute({
 }) {
     router.post(
         "/api/v1/modules/nextcloud-whiteboard/admin/enable-test",
-        async (_req, res) => {
+        async (_request, res) => {
             const result = await runEnableTest();
             if (!result.ok) {
                 sendError(res, 409, result.code, result.message);

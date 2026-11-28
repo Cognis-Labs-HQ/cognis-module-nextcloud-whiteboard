@@ -3,7 +3,7 @@ import test from "node:test";
 import { NextcloudWhiteboardStore } from "../store.js";
 import { testProfileIdentity } from "../../tests/reuse/profile-identity.js";
 
-function createMemoryDb() {
+function createMemoryDatabase() {
     const tables = new Map();
     const primaryKeys = new Map();
     const applyWhere = (rows, where = []) =>
@@ -144,7 +144,7 @@ test("merged snapshot reads and writes through one transaction", async () => {
 
 test("nextcloud whiteboard store persists normalized configuration", async () => {
     const store = new NextcloudWhiteboardStore({
-        db: createMemoryDb(),
+        db: createMemoryDatabase(),
         profileIdentity: testProfileIdentity,
     });
     await store.ensureSchema();
@@ -211,7 +211,7 @@ test("nextcloud whiteboard store retries schema creation after a failure", async
 
 test("nextcloud whiteboard store deletes configuration", async () => {
     const store = new NextcloudWhiteboardStore({
-        db: createMemoryDb(),
+        db: createMemoryDatabase(),
         profileIdentity: testProfileIdentity,
     });
     await store.ensureSchema();
@@ -233,7 +233,7 @@ test("nextcloud whiteboard store deletes configuration", async () => {
 
 test("nextcloud whiteboard store enforces allow-list access", async () => {
     const store = new NextcloudWhiteboardStore({
-        db: createMemoryDb(),
+        db: createMemoryDatabase(),
         profileIdentity: testProfileIdentity,
     });
     await store.ensureSchema();
@@ -250,7 +250,7 @@ test("nextcloud whiteboard store enforces allow-list access", async () => {
 
 test("nextcloud whiteboard store renames boards", async () => {
     const store = new NextcloudWhiteboardStore({
-        db: createMemoryDb(),
+        db: createMemoryDatabase(),
         profileIdentity: testProfileIdentity,
     });
     await store.ensureSchema();
@@ -360,7 +360,7 @@ test("nextcloud whiteboard presence stores null pointer timestamp when no pointe
 
 test("nextcloud whiteboard presence preserves interaction without a selection", async () => {
     const store = new NextcloudWhiteboardStore({
-        db: createMemoryDb(),
+        db: createMemoryDatabase(),
         profileIdentity: testProfileIdentity,
     });
     await store.ensureSchema();
@@ -380,7 +380,7 @@ test("nextcloud whiteboard presence preserves interaction without a selection", 
 
 test("nextcloud whiteboard store allows configuration before API key is set", async () => {
     const store = new NextcloudWhiteboardStore({
-        db: createMemoryDb(),
+        db: createMemoryDatabase(),
         profileIdentity: testProfileIdentity,
     });
     await store.ensureSchema();

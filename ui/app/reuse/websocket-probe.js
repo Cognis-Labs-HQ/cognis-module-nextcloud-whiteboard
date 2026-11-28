@@ -2,7 +2,7 @@
 export function probeWebsocketAuthorization(
     runtime,
     result,
-    { signal, timeoutMs = 5500 } = {},
+    { signal, timeoutMs: timeoutMs = 5500 } = {},
 ) {
     return new Promise((resolve, reject) => {
         if (signal?.aborted) {

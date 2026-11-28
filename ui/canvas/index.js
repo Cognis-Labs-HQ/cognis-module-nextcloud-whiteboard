@@ -112,10 +112,10 @@ export function createWhiteboardCanvas(
 
     function updateCanvasSize() {
         const parent = canvasElement.parentElement;
-        const rect = parent?.getBoundingClientRect();
-        if (!rect) return;
-        const width = Math.ceil(rect.width);
-        const height = Math.ceil(rect.height);
+        const rectangle = parent?.getBoundingClientRect();
+        if (!rectangle) return;
+        const width = Math.ceil(rectangle.width);
+        const height = Math.ceil(rectangle.height);
         if (canvasElement.width !== width) canvasElement.width = width;
         if (canvasElement.height !== height) canvasElement.height = height;
         canvasElement.style.width = `${width}px`;
@@ -123,17 +123,21 @@ export function createWhiteboardCanvas(
     }
 
     function getCanvasPoint(event) {
-        const rect = canvasElement.getBoundingClientRect();
+        const rectangle = canvasElement.getBoundingClientRect();
         return [
-            event.clientX - rect.left + viewportOffsetX,
-            event.clientY - rect.top + viewportOffsetY,
+            event.clientX - rectangle.left + viewportOffsetX,
+            event.clientY - rectangle.top + viewportOffsetY,
         ];
     }
 
-    function findAnchorAt(element, x, y) {
+    function findAnchorAt(element, horizontalCoordinate, verticalCoordinate) {
         if (!element) return -1;
         return getElementAnchorPoints(element).findIndex(
-            ([anchorX, anchorY]) => Math.hypot(anchorX - x, anchorY - y) <= 10,
+            ([anchorX, anchorY]) =>
+                Math.hypot(
+                    anchorX - horizontalCoordinate,
+                    anchorY - verticalCoordinate,
+                ) <= 10,
         );
     }
 
@@ -179,12 +183,17 @@ export function createWhiteboardCanvas(
         textTools.syncTextFormatMenu();
     }
 
-    function findElementAt(x, y) {
+    function findElementAt(horizontalCoordinate, verticalCoordinate) {
         return [...elements]
             .reverse()
             .find(
                 (element) =>
-                    !element.isDeleted && elementContainsPoint(element, x, y),
+                    !element.isDeleted &&
+                    elementContainsPoint(
+                        element,
+                        horizontalCoordinate,
+                        verticalCoordinate,
+                    ),
             );
     }
 
@@ -375,7 +384,8 @@ export function createWhiteboardCanvas(
         }
         if (event.button !== 0) return;
         event.preventDefault();
-        const [x, y] = getCanvasPoint(event);
+        const [horizontalCoordinate, verticalCoordinate] =
+            getCanvasPoint(event);
         canvasElement.setPointerCapture(event.pointerId);
         canvasElement.focus({ preventScroll: true });
         isDrawing = true;
@@ -384,13 +394,19 @@ export function createWhiteboardCanvas(
             selectedElementId = null;
             notifySelection();
         }
-        dragStartPoint = [x, y];
+        dragStartPoint = [horizontalCoordinate, verticalCoordinate];
         historySnapshot = cloneElements();
         if (activeTool === "select") {
             const selected = selectedElement();
-            activeAnchorIndex = findAnchorAt(selected, x, y);
+            activeAnchorIndex = findAnchorAt(
+                selected,
+                horizontalCoordinate,
+                verticalCoordinate,
+            );
             const target =
-                activeAnchorIndex >= 0 ? selected : findElementAt(x, y);
+                activeAnchorIndex >= 0
+                    ? selected
+                    : findElementAt(horizontalCoordinate, verticalCoordinate);
             if (event.shiftKey && target) {
                 toggleElementSelection(target.id);
                 isDrawing = false;
@@ -422,19 +438,25 @@ export function createWhiteboardCanvas(
             } else {
                 selectOnlyElement(null);
                 selectDragMode = "box";
-                dragSelectBox = buildDragBox(dragStartPoint, [x, y]);
+                dragSelectBox = buildDragBox(dragStartPoint, [
+                    horizontalCoordinate,
+                    verticalCoordinate,
+                ]);
             }
             notifySelection();
             scheduleRender();
             return;
         }
         if (activeTool === "eraser") {
-            currentPoints = [[x, y]];
-            updateEraserSelection([x, y]);
+            currentPoints = [[horizontalCoordinate, verticalCoordinate]];
+            updateEraserSelection([horizontalCoordinate, verticalCoordinate]);
             return;
         }
         if (activeTool === "text") {
-            const existingText = findElementAt(x, y);
+            const existingText = findElementAt(
+                horizontalCoordinate,
+                verticalCoordinate,
+            );
             if (existingText?.type === "text") {
                 selectOnlyElement(existingText.id);
                 textTools.openTextEditor(existingText);
@@ -443,7 +465,11 @@ export function createWhiteboardCanvas(
                 return;
             }
             const element = {
-                ...buildTextElement([x, y], "Text", strokeColor),
+                ...buildTextElement(
+                    [horizontalCoordinate, verticalCoordinate],
+                    "Text",
+                    strokeColor,
+                ),
                 fontSize: textFontSize,
                 fontFamily: textFontFamily,
             };
@@ -452,7 +478,7 @@ export function createWhiteboardCanvas(
             isDrawing = false;
             return;
         }
-        currentPoints = [[x, y]];
+        currentPoints = [[horizontalCoordinate, verticalCoordinate]];
         updateDrawingDraft();
         scheduleRender();
     }
@@ -471,11 +497,19 @@ export function createWhiteboardCanvas(
             return;
         }
         if (isDrawing) event.preventDefault();
-        const [x, y] = getCanvasPoint(event);
+        const [horizontalCoordinate, verticalCoordinate] =
+            getCanvasPoint(event);
         if (!isDrawing) {
             if (activeTool === "select") {
-                const anchorIndex = findAnchorAt(selectedElement(), x, y);
-                const hoveredElement = findElementAt(x, y);
+                const anchorIndex = findAnchorAt(
+                    selectedElement(),
+                    horizontalCoordinate,
+                    verticalCoordinate,
+                );
+                const hoveredElement = findElementAt(
+                    horizontalCoordinate,
+                    verticalCoordinate,
+                );
                 canvasElement.style.cursor =
                     anchorIndex >= 0
                         ? "pointer"
@@ -486,10 +520,13 @@ export function createWhiteboardCanvas(
             return;
         }
         if (activeTool === "select" && dragStartPoint) {
-            const dx = x - dragStartPoint[0];
-            const dy = y - dragStartPoint[1];
+            const deltaX = horizontalCoordinate - dragStartPoint[0];
+            const deltaY = verticalCoordinate - dragStartPoint[1];
             if (selectDragMode === "box") {
-                dragSelectBox = buildDragBox(dragStartPoint, [x, y]);
+                dragSelectBox = buildDragBox(dragStartPoint, [
+                    horizontalCoordinate,
+                    verticalCoordinate,
+                ]);
                 selectedElementIds = new Set(
                     elements
                         .filter((element) =>
@@ -506,8 +543,8 @@ export function createWhiteboardCanvas(
                     const original = originalSelection.get(element.id);
                     if (!original) return element;
                     return bumpElementVersion(element, {
-                        x: original.x + dx,
-                        y: original.y + dy,
+                        x: original.x + deltaX,
+                        y: original.y + deltaY,
                     });
                 });
                 scheduleRender();
@@ -528,33 +565,35 @@ export function createWhiteboardCanvas(
                             (point) => [...point],
                         );
                         points[activeAnchorIndex] = [
-                            (points[activeAnchorIndex]?.[0] ?? 0) + dx,
-                            (points[activeAnchorIndex]?.[1] ?? 0) + dy,
+                            (points[activeAnchorIndex]?.[0] ?? 0) + deltaX,
+                            (points[activeAnchorIndex]?.[1] ?? 0) + deltaY,
                         ];
-                        const absolutePoints = points.map(([px, py]) => [
-                            originalElement.x + px,
-                            originalElement.y + py,
-                        ]);
+                        const absolutePoints = points.map(
+                            ([pointX, pointY]) => [
+                                originalElement.x + pointX,
+                                originalElement.y + pointY,
+                            ],
+                        );
                         const minX = Math.min(
-                            ...absolutePoints.map(([px]) => px),
+                            ...absolutePoints.map(([pointX]) => pointX),
                         );
                         const minY = Math.min(
-                            ...absolutePoints.map(([, py]) => py),
+                            ...absolutePoints.map(([, pointY]) => pointY),
                         );
                         const maxX = Math.max(
-                            ...absolutePoints.map(([px]) => px),
+                            ...absolutePoints.map(([pointX]) => pointX),
                         );
                         const maxY = Math.max(
-                            ...absolutePoints.map(([, py]) => py),
+                            ...absolutePoints.map(([, pointY]) => pointY),
                         );
                         return bumpElementVersion(element, {
                             x: minX,
                             y: minY,
                             width: Math.max(1, maxX - minX),
                             height: Math.max(1, maxY - minY),
-                            points: absolutePoints.map(([px, py]) => [
-                                px - minX,
-                                py - minY,
+                            points: absolutePoints.map(([pointX, pointY]) => [
+                                pointX - minX,
+                                pointY - minY,
                             ]),
                         });
                     }
@@ -563,17 +602,17 @@ export function createWhiteboardCanvas(
                     const right = originalElement.x + originalElement.width;
                     const bottom = originalElement.y + originalElement.height;
                     const nextX = leftAnchors.has(activeAnchorIndex)
-                        ? originalElement.x + dx
+                        ? originalElement.x + deltaX
                         : originalElement.x;
                     const nextY = topAnchors.has(activeAnchorIndex)
-                        ? originalElement.y + dy
+                        ? originalElement.y + deltaY
                         : originalElement.y;
                     const nextRight = leftAnchors.has(activeAnchorIndex)
                         ? right
-                        : right + dx;
+                        : right + deltaX;
                     const nextBottom = topAnchors.has(activeAnchorIndex)
                         ? bottom
-                        : bottom + dy;
+                        : bottom + deltaY;
                     return scaleElementToBounds(element, {
                         x: Math.min(nextX, nextRight),
                         y: Math.min(nextY, nextBottom),
@@ -590,11 +629,11 @@ export function createWhiteboardCanvas(
             }
         }
         if (activeTool === "eraser") {
-            currentPoints.push([x, y]);
-            updateEraserSelection([x, y]);
+            currentPoints.push([horizontalCoordinate, verticalCoordinate]);
+            updateEraserSelection([horizontalCoordinate, verticalCoordinate]);
             return;
         }
-        currentPoints.push([x, y]);
+        currentPoints.push([horizontalCoordinate, verticalCoordinate]);
         updateDrawingDraft();
     }
 
@@ -663,8 +702,9 @@ export function createWhiteboardCanvas(
     }
 
     function onDoubleClick(event) {
-        const [x, y] = getCanvasPoint(event);
-        const element = findElementAt(x, y);
+        const [horizontalCoordinate, verticalCoordinate] =
+            getCanvasPoint(event);
+        const element = findElementAt(horizontalCoordinate, verticalCoordinate);
         if (activeTool === "select" && element?.type === "text") {
             selectOnlyElement(element.id);
             textTools.openTextEditor(element);

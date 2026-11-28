@@ -2,19 +2,19 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { NextcloudWhiteboardStore } from "../api/store.js";
 import { registerWhiteboardActions } from "../api/reuse/action-store.js";
-import { createMemoryDb } from "./reuse/api-runtime.js";
+import { createMemoryDatabase } from "./reuse/api-runtime.js";
 import { createFlowRuntime } from "./reuse/flow-runtime.js";
 import { testProfileIdentity } from "./reuse/profile-identity.js";
 
 function createActions() {
     const ctx = createFlowRuntime();
-    const db = createMemoryDb();
+    const db = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
-        db,
+        db: db,
         profileIdentity: testProfileIdentity,
     });
     const actions = registerWhiteboardActions(ctx, store);
-    return { ctx, db, store, actions };
+    return { ctx, db: db, store, actions };
 }
 
 test("all supported store operations execute declared owned stages", async () => {
@@ -58,7 +58,7 @@ test("initialization failure and disabled flows cannot bypass the owner runner",
 });
 
 test("full content deletion rolls back if a dependent table cannot be cleared", async () => {
-    const { db, store } = createActions();
+    const { db: db, store } = createActions();
     await store.ensureSchema();
     const board = await store.createWhiteboard({
         title: "Keep on failure",

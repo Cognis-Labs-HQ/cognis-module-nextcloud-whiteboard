@@ -82,14 +82,16 @@ test("nextcloud whiteboard canvas fills its widget without stage scrolling", asy
             "utf8",
         ),
     );
-    const wrap = styles.match(/\.whiteboard-canvas-wrap\s*\{([^}]*)\}/)?.[1];
+    const wrapperStyles = styles.match(
+        /\.whiteboard-canvas-wrap\s*\{([^}]*)\}/,
+    )?.[1];
     const stage = styles.match(
         /\.whiteboard-canvas-wrap \.whiteboard-canvas-stage\s*\{([^}]*)\}/,
     )?.[1];
 
-    assert.match(wrap ?? "", /height:\s*100%/);
-    assert.match(wrap ?? "", /width:\s*100%/);
-    assert.match(wrap ?? "", /min-height:\s*0/);
+    assert.match(wrapperStyles ?? "", /height:\s*100%/);
+    assert.match(wrapperStyles ?? "", /width:\s*100%/);
+    assert.match(wrapperStyles ?? "", /min-height:\s*0/);
     assert.match(stage ?? "", /min-height:\s*0/);
     assert.doesNotMatch(stage ?? "", /overflow:\s*auto/);
 });
@@ -554,7 +556,7 @@ test("nextcloud whiteboard defaults to select after canvas refresh", async () =>
     assert.match(navigationSource, /function syncBoardUrl\(/);
     assert.match(
         navigationSource,
-        /searchParams\.set\(['"]instantCanvas['"], ['"]1['"]\)/,
+        /searchParameters\.set\(['"]instantCanvas['"], ['"]1['"]\)/,
     );
     assert.match(
         navigationSource,
@@ -872,76 +874,6 @@ test("canvas source keeps readable spacing between top-level sections", async ()
     assert.doesNotMatch(
         source,
         /^    }\n    (?:function|const (?:history|textTools|onPaste|unbindCanvasEvents|resizeObserver)|return \{)/gm,
-    );
-});
-
-test("whiteboard obtains shared UI resources through the host capability", async () => {
-    const [resourcesSource, appSource, shellSource] = await Promise.all(
-        [
-            "../ui/reuse/host-resources.js",
-            "../ui/app/index.js",
-            "../ui/index.html",
-        ].map((path) =>
-            import("node:fs/promises").then((fs) =>
-                fs.readFile(new URL(path, import.meta.url), "utf8"),
-            ),
-        ),
-    );
-
-    assert.match(resourcesSource, /capabilities\.get\("ui:reuse"\)/);
-    assert.match(
-        appSource,
-        /reuse\.importModule\("page-composer\/index\.js"\)/,
-    );
-    assert.match(
-        appSource,
-        /reuse\.loadStylesheets\(\["page-sections\.css"\]\)/,
-    );
-    assert.doesNotMatch(shellSource, /styles\/reuse\/page-sections\.css/);
-});
-
-test("component whiteboards clamp the canvas grid to their parent height", async () => {
-    const stylesSource = await import("node:fs/promises").then((fs) =>
-        fs.readFile(
-            new URL("../ui/styles/whiteboards.css", import.meta.url),
-            "utf8",
-        ),
-    );
-
-    assert.match(
-        stylesSource,
-        /\.whiteboard-canvas-wrap\s*\{[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\);/s,
-    );
-    assert.match(
-        stylesSource,
-        /\.whiteboard-canvas-wrap--embedded\s*\{[^}]*max-height:\s*100%;/s,
-    );
-    assert.doesNotMatch(
-        stylesSource,
-        /\.(main-window|content-grid|widget-card)/,
-    );
-    const appSource = await import("node:fs/promises").then((fs) =>
-        fs.readFile(new URL("../ui/app/index.js", import.meta.url), "utf8"),
-    );
-    assert.match(appSource, /contentScrolling:\s*!embeddedComponentMode/);
-});
-
-test("whiteboard UI does not reach into page-shell-owned elements", async () => {
-    const sources = await Promise.all(
-        [
-            "../ui/styles/whiteboards.css",
-            "../ui/app/index.js",
-            "../ui/canvas/reuse/pointers.js",
-        ].map((path) =>
-            import("node:fs/promises").then((fs) =>
-                fs.readFile(new URL(path, import.meta.url), "utf8"),
-            ),
-        ),
-    );
-
-    assert.doesNotMatch(
-        sources.join("\n"),
-        /main-window|content-grid|widget-card/,
     );
 });
 

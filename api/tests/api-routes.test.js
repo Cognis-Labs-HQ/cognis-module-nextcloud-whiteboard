@@ -1,5 +1,5 @@
 import {
-    createMemoryDb,
+    createMemoryDatabase,
     createRouterCapture,
     createJsonResponse,
     decodeJwtPayload,
@@ -28,7 +28,7 @@ test("API registration returns its implementation without publishing a facade", 
         },
         getCapability(key) {
             if (key === "auth:requireAuth") return requireTestAuth;
-            if (key === "db:executor") return createMemoryDb();
+            if (key === "db:executor") return createMemoryDatabase();
             if (key === "social:profile:identity") return testProfileIdentity;
             return undefined;
         },
@@ -50,7 +50,7 @@ test("API registration returns its implementation without publishing a facade", 
 });
 
 test("nextcloud whiteboard config endpoint reads and persists configuration", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const router = createRouterCapture();
     registerApiRoutes(router, {
         getCapability(key) {
@@ -128,7 +128,7 @@ test("nextcloud whiteboard preflight uses the shared liveness timeout", () => {
 });
 
 test("nextcloud whiteboard admin listing does not require a profile handle", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -175,7 +175,7 @@ test("nextcloud whiteboard admin listing does not require a profile handle", asy
 });
 
 test("nextcloud whiteboard session route works without share capabilities", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -229,7 +229,7 @@ test("nextcloud whiteboard session route works without share capabilities", asyn
 });
 
 test("whiteboard canvas load failures are explicit in server logs and responses", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -310,7 +310,7 @@ test("whiteboard canvas load failures are explicit in server logs and responses"
 });
 
 test("nextcloud whiteboard rename route allows only the owner", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -339,7 +339,7 @@ test("nextcloud whiteboard rename route allows only the owner", async () => {
         },
     });
 
-    const participantRes = createJsonResponse();
+    const participantResponse = createJsonResponse();
     await router.handler(
         "POST",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/rename",
@@ -354,11 +354,11 @@ test("nextcloud whiteboard rename route allows only the owner", async () => {
                 );
             },
         },
-        participantRes,
+        participantResponse,
     );
-    assert.equal(participantRes.statusCode, 403);
+    assert.equal(participantResponse.statusCode, 403);
 
-    const ownerRes = createJsonResponse();
+    const ownerResponse = createJsonResponse();
     await router.handler(
         "POST",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/rename",
@@ -373,10 +373,10 @@ test("nextcloud whiteboard rename route allows only the owner", async () => {
                 );
             },
         },
-        ownerRes,
+        ownerResponse,
     );
-    assert.equal(ownerRes.statusCode, 200);
-    assert.equal(ownerRes.json().data.title, "Owner title");
+    assert.equal(ownerResponse.statusCode, 200);
+    assert.equal(ownerResponse.json().data.title, "Owner title");
 });
 
 test("nextcloud whiteboard presence route handles store failures without server-level 400", async () => {
@@ -443,7 +443,7 @@ test("nextcloud whiteboard presence route handles store failures without server-
 });
 
 test("nextcloud whiteboard elements persist through session reload", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -486,42 +486,42 @@ test("nextcloud whiteboard elements persist through session reload", async () =>
             height: 50,
         },
     ];
-    const saveReq = {
+    const saveRequest = {
         url: "/api/v1/modules/nextcloud-whiteboard/whiteboards/elements",
         headers: { authorization: `Bearer ${token}` },
         async *[Symbol.asyncIterator]() {
             yield Buffer.from(JSON.stringify({ id: board.id, elements }));
         },
     };
-    const saveRes = createJsonResponse();
+    const saveResponse = createJsonResponse();
     await router.handler(
         "POST",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/elements",
-    )(saveReq, saveRes);
-    assert.equal(saveRes.statusCode, 200);
-    const secondSaveRes = createJsonResponse();
+    )(saveRequest, saveResponse);
+    assert.equal(saveResponse.statusCode, 200);
+    const secondSaveResponse = createJsonResponse();
     await router.handler(
         "POST",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/elements",
-    )(saveReq, secondSaveRes);
-    assert.equal(secondSaveRes.statusCode, 200);
+    )(saveRequest, secondSaveResponse);
+    assert.equal(secondSaveResponse.statusCode, 200);
 
-    const sessionReq = {
+    const sessionRequest = {
         url: `/api/v1/modules/nextcloud-whiteboard/whiteboards/session?id=${board.id}`,
         headers: { authorization: `Bearer ${token}` },
     };
-    const sessionRes = createJsonResponse();
+    const sessionResponse = createJsonResponse();
     await router.handler(
         "GET",
         "/api/v1/modules/nextcloud-whiteboard/whiteboards/session",
-    )(sessionReq, sessionRes);
+    )(sessionRequest, sessionResponse);
 
-    assert.equal(sessionRes.statusCode, 200);
-    assert.deepEqual(sessionRes.json().data.elements, elements);
+    assert.equal(sessionResponse.statusCode, 200);
+    assert.deepEqual(sessionResponse.json().data.elements, elements);
 });
 
 test("saved shared canvases reopen from one synchronized snapshot", async () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     const store = new NextcloudWhiteboardStore({
         db: database,
         profileIdentity: testProfileIdentity,
@@ -614,7 +614,7 @@ test("saved shared canvases reopen from one synchronized snapshot", async () => 
 });
 
 test("nextcloud whiteboard reuses its registered file namespace after re-enablement", () => {
-    const database = createMemoryDb();
+    const database = createMemoryDatabase();
     let namespaceRegistered = false;
     let registrationCount = 0;
     const namespaceClient = {};

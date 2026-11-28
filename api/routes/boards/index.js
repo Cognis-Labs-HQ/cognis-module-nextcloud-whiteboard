@@ -34,7 +34,7 @@ export function registerBoardRoutes(
 ) {
     router.get(
         "/api/v1/modules/nextcloud-whiteboard/ping",
-        async (_req, res) => {
+        async (_request, res) => {
             await store.ensureSchema();
             const config = await store.getConfig();
             sendJson(res, 200, {
@@ -179,7 +179,7 @@ export function registerBoardRoutes(
             const elements = await loadCanvasElements({
                 store,
                 log,
-                res,
+                res: res,
                 whiteboardId: whiteboard.id,
                 username,
             });

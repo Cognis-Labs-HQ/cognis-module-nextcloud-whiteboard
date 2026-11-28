@@ -4,15 +4,15 @@ const PAGE_RESOURCE_ORIGIN_OWNER_ID = "module:nextcloud-whiteboard";
 
 const storeByExecutor = new WeakMap();
 
-export function resolveStore(dbExecutor, log, profileIdentity) {
-    const existingStore = storeByExecutor.get(dbExecutor);
+export function resolveStore(databaseExecutor, log, profileIdentity) {
+    const existingStore = storeByExecutor.get(databaseExecutor);
     if (existingStore) return existingStore;
     const store = new NextcloudWhiteboardStore({
-        db: dbExecutor,
+        db: databaseExecutor,
         log,
         profileIdentity,
     });
-    storeByExecutor.set(dbExecutor, store);
+    storeByExecutor.set(databaseExecutor, store);
     return store;
 }
 

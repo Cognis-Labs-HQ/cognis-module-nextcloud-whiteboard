@@ -13,32 +13,32 @@ export function debounce(callback, delay) {
 
 export function throttleLatest(callback, delay) {
     let timer = null;
-    let lastArgs = null;
+    let lastArgumentsList = null;
     const run = (...args) => {
         if (!timer) {
             callback(...args);
         } else {
-            lastArgs = args;
+            lastArgumentsList = args;
             return;
         }
         timer = setTimeout(() => {
             timer = null;
-            if (lastArgs) {
-                const pendingArgs = lastArgs;
-                lastArgs = null;
-                callback(...pendingArgs);
+            if (lastArgumentsList) {
+                const pendingArgumentsList = lastArgumentsList;
+                lastArgumentsList = null;
+                callback(...pendingArgumentsList);
             }
         }, delay);
     };
     run.cancel = () => {
         clearTimeout(timer);
         timer = null;
-        lastArgs = null;
+        lastArgumentsList = null;
     };
     return run;
 }
 
-export async function loadSocketIo(serverUrl, resourceLoader) {
+export async function loadSocketLibrary(serverUrl, resourceLoader) {
     if (typeof resourceLoader?.loadScript !== "function") {
         throw new Error("Whiteboard runtime loader unavailable");
     }
@@ -53,7 +53,7 @@ export async function loadSocketIo(serverUrl, resourceLoader) {
         resource?.dispose?.();
         throw new Error("Whiteboard runtime unavailable");
     }
-    return { io, dispose: () => resource?.dispose?.() };
+    return { io: io, dispose: () => resource?.dispose?.() };
 }
 
 export function encodeSyncMessage(type, payload = {}) {

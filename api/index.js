@@ -28,7 +28,7 @@ export function registerUi(ctx) {
     });
     const whiteboardUiAsset = createWhiteboardUiAssetResolver(ctx.moduleRoot);
     const moduleUiRoot = path.join(ctx.moduleRoot, "ui");
-    ctx.registerStaticDir("", moduleUiRoot);
+    ctx.registerStaticDirectory("", moduleUiRoot);
     registerWhiteboardUiProvider(ctx);
     ctx.registerNavbarPlugin({
         scriptUrl: whiteboardUiAsset("navbar.js"),
@@ -103,7 +103,7 @@ export function registerApiRoutes(router, ctx) {
     if (!configurationApi) {
         router.get(
             "/api/v1/modules/nextcloud-whiteboard/ping",
-            async (_req, res) => {
+            async (_request, res) => {
                 sendJson(res, 200, {
                     data: {
                         ready: false,

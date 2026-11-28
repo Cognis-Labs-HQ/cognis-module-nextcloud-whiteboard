@@ -12,15 +12,16 @@ import {
 import { checkHttpLiveness } from "../reuse/http-liveness.js";
 import { sendError, sendJson } from "../reuse/http.js";
 
-export const WHITEBOARD_LIVENESS_TIMEOUT_MS = 5000;
+const WHITEBOARD_LIVENESS_TIMEOUT_MS = 5000;
+export { WHITEBOARD_LIVENESS_TIMEOUT_MS };
 
 export function registerWhiteboardConfigurationApi(
     router,
     ctx,
     { enabled = false } = {},
 ) {
-    const dbExecutor = ctx.getCapability("db:executor");
-    if (!dbExecutor) {
+    const databaseExecutor = ctx.getCapability("db:executor");
+    if (!databaseExecutor) {
         const unavailablePayload = (res) =>
             sendError(
                 res,
@@ -32,7 +33,7 @@ export function registerWhiteboardConfigurationApi(
         for (const method of ["get", "put", "delete"]) {
             router[method](
                 "/api/v1/modules/nextcloud-whiteboard/config",
-                async (_req, res) => unavailablePayload(res),
+                async (_request, res) => unavailablePayload(res),
                 { access: { minRole: "admin" }, allowWhenDisabled: true },
             );
         }
@@ -42,7 +43,7 @@ export function registerWhiteboardConfigurationApi(
     const requireAuth = ctx.getCapability("auth:requireAuth");
     const log = ctx.getCapability("logging:log");
     const profileIdentity = createProfileIdentityCapability(ctx);
-    const rawStore = resolveStore(dbExecutor, log, profileIdentity);
+    const rawStore = resolveStore(databaseExecutor, log, profileIdentity);
     const store = enabled ? registerWhiteboardActions(ctx, rawStore) : rawStore;
     const runEnableTest = createWhiteboardEnableTest({
         store,

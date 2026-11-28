@@ -43,3 +43,33 @@ test("whiteboard status controller exposes current render state", () => {
         globalThis.document = previousDocument;
     }
 });
+
+test("client failures use the injected log gateway and translated feedback", () => {
+    const entries = [];
+    const toasts = [];
+    const controller = createWhiteboardStatusController({
+        log: (...args) => entries.push(args),
+        getI18n: () => ({ t: (key) => `localized:${key}` }),
+        getIntegrationCanvasMode: () => false,
+        getShareContext: () => null,
+        showToast: (...args) => toasts.push(args),
+    });
+    controller.reportClientError(
+        new Error("private provider payload"),
+        "failure.key",
+    );
+    assert.deepEqual(entries, [
+        ["error", "whiteboard.client.failed", { errorName: "Error" }],
+    ]);
+    assert.deepEqual(toasts, [["localized:failure.key", { variant: "error" }]]);
+});
+
+test("missing translations remain explicit rather than rendering raw keys", () => {
+    const controller = createWhiteboardStatusController({
+        getI18n: () => null,
+    });
+    assert.throws(
+        () => controller.translate("missing.key"),
+        /whiteboard_translations_unavailable/,
+    );
+});

@@ -13,7 +13,9 @@ export function registerWhiteboardConfigRoutes(
             const claims = requireAuth(req, res, "user");
             if (!claims) return;
             await store.ensureSchema();
-            sendJson(res, 200, { data: publicConfig(await store.getConfig()) });
+            sendJson(res, 200, {
+                data: publicConfig(await store.getConfig()),
+            });
         },
         { access: { minRole: "user" }, allowWhenDisabled: true },
     );

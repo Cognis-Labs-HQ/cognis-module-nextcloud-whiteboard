@@ -3,6 +3,9 @@ import assert from "node:assert/strict";
 
 globalThis[Symbol.for("cognis.uiCtx")] = {
     capabilities: {
+        bind(id) {
+            return (...args) => this.get(id)?.(...args);
+        },
         get: () => ({
             loadStylesheets() {},
             importModule: async () => ({
@@ -37,7 +40,7 @@ test("middle-button panning moves the local viewport without publishing scene ch
     const view = createWhiteboardCanvas(canvas);
     const changes = [];
     view.onChange((elements, metadata) => changes.push(metadata));
-    for (const [type, x, y] of [
+    for (const [type, horizontalCoordinate, verticalCoordinate] of [
         ["pointerdown", 20, 30],
         ["pointermove", 80, 90],
         ["pointerup", 80, 90],
@@ -47,8 +50,8 @@ test("middle-button panning moves the local viewport without publishing scene ch
             button: 1,
             buttons: 4,
             pointerId: 1,
-            clientX: x,
-            clientY: y,
+            clientX: horizontalCoordinate,
+            clientY: verticalCoordinate,
         });
         canvas.dispatchEvent(event);
     }

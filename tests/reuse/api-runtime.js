@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { registerApiRoutes as registerModuleRoutes } from "../../api/index.js";
 import { withFlowRuntime } from "./flow-runtime.js";
 
-export function createMemoryDb() {
+function createMemoryDatabase() {
     const tables = new Map();
     const primaryKeys = new Map();
     const applyWhere = (rows, where = []) =>
@@ -106,6 +106,7 @@ export function createMemoryDb() {
     };
     return db;
 }
+export { createMemoryDatabase };
 
 export function createRouterCapture() {
     const routes = new Map();
